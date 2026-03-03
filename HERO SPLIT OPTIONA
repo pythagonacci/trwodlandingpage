@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trak - Create Boldly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      /* Core neutrals - cleaner, more sophisticated */
+      --background: #fafaf9;
+      --surface: #ffffff;
+      --surface-hover: #f5f5f4;
+      --surface-muted: #f5f5f4;
+      --border: #e7e5e4;
+      --border-strong: #292524;
+
+      /* Text */
+      --foreground: #1c1917;
+      --muted-foreground: #78716c;
+      --tertiary-foreground: #a8a29e;
+
+      /* Primary/Secondary - more restrained */
+      --primary: #292524;
+      --secondary: #44403c;
+
+      /* Accent - using the blue from design system */
+      --accent: #78716c;
+      --blue: #3080a6;
+      --blue-light: rgba(48, 128, 166, 0.1);
+
+      /* Spacing */
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--background);
+      color: var(--foreground);
+      font-size: 14px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Typography */
+    h1, h2 {
+      font-family: 'Newsreader', Georgia, serif;
+    }
+
+    h1 {
+      font-size: 64px;
+      font-weight: 600;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--foreground);
+    }
+
+    h2 {
+      font-size: 42px;
+      font-weight: 600;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: var(--foreground);
+    }
+
+    h3 {
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      color: var(--foreground);
+    }
+
+    .subtitle {
+      font-size: 20px;
+      color: var(--muted-foreground);
+      line-height: 1.6;
+    }
+
+    .label {
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+    }
+
+    /* Layout */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    .wide-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border-bottom: 2px solid var(--border);
+      z-index: 100;
+      height: 72px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--foreground);
+      letter-spacing: -0.01em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--muted-foreground);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--foreground);
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--blue-light);
+      color: var(--blue);
+      border: 2px solid var(--blue);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .cta-button:hover {
+      background: var(--blue);
+      color: white;
+    }
+
+    .cta-button.primary {
+      background: var(--blue-light);
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+
+    .cta-button.primary:hover {
+      background: var(--blue);
+      color: white;
+    }
+
+    .cta-button.secondary {
+      background: transparent;
+      color: var(--foreground);
+      border-color: var(--border);
+    }
+
+    .cta-button.secondary:hover {
+      background: var(--surface-hover);
+      border-color: var(--foreground);
+      color: var(--foreground);
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: var(--surface-muted);
+      border: 2px solid var(--border);
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--foreground);
+      margin-bottom: 24px;
+    }
+
+    /* Hero (Option A: Split) */
+    .hero {
+      margin-top: 72px;
+      padding: 110px 0 90px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.02fr 0.98fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .hero-copy {
+      text-align: left;
+    }
+
+    .hero-copy h1 {
+      margin-bottom: 18px;
+    }
+
+    .hero-copy .subtitle {
+      max-width: 560px;
+      margin: 0 0 26px;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      justify-content: flex-start;
+      align-items: center;
+      margin-top: 22px;
+    }
+
+    .tagline {
+      font-size: 14px;
+      color: var(--muted-foreground);
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      margin-top: 22px;
+    }
+
+    .hero-visual {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .hero-media {
+      width: 100%;
+      max-width: 640px;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      position: relative;
+      aspect-ratio: 16 / 10;
+    }
+
+    .hero-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero-media-label {
+      position: absolute;
+      left: 14px;
+      bottom: 14px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 2px solid var(--border);
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(8px);
+      color: var(--foreground);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    /* Feature Sections */
+    .section {
+      padding: 100px 0;
+      border-top: 2px solid var(--border);
+    }
+
+    .section-header {
+      margin-bottom: 60px;
+      max-width: 800px;
+    }
+
+    .section-label {
+      margin-bottom: 16px;
+    }
+
+    .section h2 {
+      margin-bottom: 20px;
+    }
+
+    .section-intro {
+      font-size: 18px;
+      color: var(--muted-foreground);
+      line-height: 1.7;
+    }
+
+    /* Feature Cards */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-top: 60px;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 40px 32px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .feature-card:hover {
+      border-color: var(--foreground);
+      transform: translateY(-2px);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--foreground);
+      margin-bottom: 24px;
+    }
+
+    .feature-card h3 {
+      margin-bottom: 12px;
+    }
+
+    .feature-card p {
+      color: var(--muted-foreground);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    /* Two Column Layout */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      margin-top: 60px;
+    }
+
+    .content-block h2 {
+      margin-bottom: 24px;
+    }
+
+    .content-block p {
+      color: var(--muted-foreground);
+      font-size: 16px;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .visual-placeholder {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      aspect-ratio: 16/10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--tertiary-foreground);
+      font-size: 14px;
+    }
+
+    /* Value Props */
+    .value-list {
+      display: grid;
+      gap: 40px;
+      margin-top: 60px;
+    }
+
+    .value-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 24px;
+    }
+
+    .value-number {
+      width: 56px;
+      height: 56px;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--foreground);
+      flex-shrink: 0;
+    }
+
+    .value-content h3 {
+      margin-bottom: 8px;
+    }
+
+    .value-content p {
+      color: var(--muted-foreground);
+      line-height: 1.7;
+    }
+
+    /* Final CTA */
+    .final-cta {
+      padding: 120px 0;
+      text-align: center;
+      border-top: 2px solid var(--border);
+    }
+
+    .final-cta h2 {
+      margin-bottom: 24px;
+    }
+
+    .final-cta .subtitle {
+      margin-bottom: 40px;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--surface);
+      border-top: 2px solid var(--border);
+      padding: 60px 0 40px;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 60px;
+      margin-bottom: 60px;
+    }
+
+    .footer-brand {
+      max-width: 300px;
+    }
+
+    .footer-brand .logo {
+      margin-bottom: 16px;
+    }
+
+    .footer-brand p {
+      color: var(--muted-foreground);
+      line-height: 1.7;
+    }
+
+    .footer-links h4 {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 20px;
+      color: var(--foreground);
+    }
+
+    .footer-links ul {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      color: var(--muted-foreground);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--foreground);
+    }
+
+    .footer-bottom {
+      padding-top: 40px;
+      border-top: 2px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--muted-foreground);
+      font-size: 13px;
+    }
+
+    /* Accent Elements */
+    .accent-line {
+      width: 60px;
+      height: 3px;
+      background: var(--foreground);
+      margin-bottom: 24px;
+    }
+
+    /* Responsive */
+    @media (max-width: 968px) {
+      h1 { font-size: 42px; }
+      h2 { font-size: 32px; }
+
+      .hero { padding: 80px 0 60px; }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        text-align: center;
+      }
+
+      .hero-copy {
+        text-align: center;
+      }
+
+      .hero-copy .subtitle {
+        margin: 0 auto 22px;
+      }
+
+      .hero-cta {
+        justify-content: center;
+      }
+
+      .hero-visual {
+        justify-content: center;
+      }
+
+      .two-col {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+      }
+
+      .container, .wide-container, nav {
+        padding: 0 24px;
+      }
+
+      .section {
+        padding: 60px 0;
+      }
+    }
+
+    @media (max-width: 640px) {
+      h1 { font-size: 36px; }
+      h2 { font-size: 28px; }
+
+      .nav-links {
+        display: none;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-cta {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <header>
+    <nav>
+      <div class="logo">Trak</div>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#about">About</a>
+        <a href="#" class="cta-button">Get Started</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero (Option A: Split) -->
+  <section class="hero">
+    <div class="wide-container">
+      <div class="hero-grid">
+        <!-- Left: copy -->
+        <div class="hero-copy">
+          <div class="badge">Built for Modern D2C Brands</div>
+          <h1>The Operating System for Modern D2C Brands.</h1>
+          <p class="subtitle">Powerful enough for everything you do. Designed to feel effortless.</p>
+
+          <div class="hero-cta">
+            <a href="#" class="cta-button primary">Start Free Trial</a>
+            <a href="#" class="cta-button secondary">Watch Demo</a>
+          </div>
+
+          <p class="tagline">Launch January 19th</p>
+        </div>
+
+        <!-- Right: visual -->
+        <div class="hero-visual" aria-label="Trak workflow demo video">
+          <div class="hero-media">
+            <!-- Replace with your hosted video. Keep muted/autoplay/loop for a premium silent loop. -->
+            <video
+              class="hero-video"
+              src="YOUR_DEMO_VIDEO.mp4"
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="metadata"
+              poster="YOUR_POSTER_IMAGE.jpg"
+            ></video>
+
+            <div class="hero-media-label">Workflow demo • Launch control center</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What is Trak -->
+  <section style="padding: 60px 0; background: var(--surface); border-bottom: 2px solid var(--border);">
+    <div class="container" style="max-width: 900px; text-align: center;">
+      <p style="font-size: 18px; line-height: 1.8; color: var(--muted-foreground);">
+        Trak combines AI-powered project management, native Shopify integration, and frictionless collaboration in one platform. Manage launches, campaigns, and operations while your team and external partners stay perfectly in sync.
+      </p>
+    </div>
+  </section>
+
+  <!-- It Just Works -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="label section-label">DESIGNED FOR SPEED</div>
+        <h2>It Just Works.</h2>
+        <p class="section-intro">Your brand moves fast. New product concepts, photoshoots, influencer campaigns, restocks. Every day, dozens of decisions that need the right information at the right moment. You need software that's as capable as you are—without the complexity.</p>
+      </div>
+
+      <div class="two-col">
+        <div class="content-block">
+          <p>Open Trak. Your projects are there. Your files are there. Your Shopify data is there. The photographer you emailed yesterday? Their work is already in your workspace.</p>
+          <p>No hunting. No syncing. No "let me check and get back to you."</p>
+          <p style="font-weight: 600; color: var(--foreground);">Everything just works. So you can focus on what matters—building a brand people love.</p>
+        </div>
+        <div class="visual-placeholder">[Workspace Dashboard]</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Just Ask -->
+  <section class="section" style="background: var(--surface);">
+    <div class="container">
+      <div class="two-col">
+        <div class="visual-placeholder">[AI Assistant Demo]</div>
+        <div class="content-block">
+          <div class="label section-label">AI-POWERED</div>
+          <h2>Just Ask.</h2>
+          <p>You shouldn't need to learn software. You should just use it.</p>
+          <p>Type what you need in plain English. "Create a table of all content creators organized by submission status." "Update all March deadlines to April 15th." "Pull the latest inventory numbers for all lip products." Complex operations, simple commands.</p>
+          <p style="font-weight: 600; color: var(--foreground);">Trak understands. Trak does it. Enterprise functionality without enterprise complexity.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Shopify Built In -->
+  <section class="section">
+    <div class="container">
+      <div class="two-col">
+        <div class="content-block">
+          <div class="label section-label">SHOPIFY NATIVE</div>
+          <h2>Shopify. Built In.</h2>
+          <p>Your product lives in Shopify. Your workflow should too.</p>
+          <p>Trak doesn't integrate with Shopify. It's built around it. Create a project for your Barrier Restore Cream restock, and Trak automatically connects to that SKU. Real-time inventory levels. Pre-order counts. Fulfillment status. Product variants. All the data you need, exactly when you need it.</p>
+          <p style="font-weight: 600; color: var(--foreground);">One system, always in sync with the truth. The power of deep integration, the simplicity of native design.</p>
+        </div>
+        <div class="visual-placeholder">[Shopify Integration]</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Magic Links -->
+  <section class="section" style="background: var(--surface);">
+    <div class="container">
+      <div class="two-col">
+        <div class="visual-placeholder">[Magic Link Flow]</div>
+        <div class="content-block">
+          <div class="label section-label">ZERO FRICTION</div>
+          <h2>Magic Links.</h2>
+          <p>You work with people outside your team. Photographers. Agencies. Influencers. Contractors. They need to deliver work. You need to receive it. Neither of you needs the complexity.</p>
+          <p>Generate a magic link. Send it. They click. They see exactly what they need—a brief, an upload area, a deadline. They drag in their files. The work appears in your project, right where it belongs.</p>
+          <p style="font-weight: 600; color: var(--foreground);">No accounts. No access issues. Just a link.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Features Grid -->
+  <section class="section" id="features">
+    <div class="wide-container">
+      <div class="section-header">
+        <div class="label section-label">POWERFUL & INTUITIVE</div>
+        <h2>One Place. Everything.</h2>
+      </div>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">01</div>
+          <h3>Search. Instant.</h3>
+          <p>Type "What did we decide about the March launch date?" or "Where are those product shots from the desert shoot?" AI-powered search that understands context, not just keywords. Information shouldn't hide in folders. With Trak, it doesn't.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">02</div>
+          <h3>Workspaces. Organized.</h3>
+          <p>Dedicated environments for different parts of your business. Product launches, influencer partnerships, operations. Each with its own structure, permissions, and workflows. Scale your organization without losing control.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">03</div>
+          <h3>Beautiful. Intentionally.</h3>
+          <p>Every pixel is considered. Clean design, thoughtful details, smooth interactions. Software that looks like it belongs next to your brand, not fighting against it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Premium Brand Section -->
+  <section class="section" style="background: var(--surface);">
+    <div class="container">
+      <div class="section-header" style="text-align: center; max-width: 800px; margin: 0 auto;">
+        <div class="label section-label">CRAFTED WITH PRECISION</div>
+        <h2>Software Built Like a Brand.</h2>
+        <p class="section-intro">Most productivity software is built for everyone. Trak is built for brands that refuse to compromise—on their products, their standards, or their tools.</p>
+      </div>
+
+      <div class="two-col" style="margin-top: 80px;">
+        <div class="content-block">
+          <p>Every interaction is deliberate. Every pixel is intentional. Every feature is refined until it disappears into your workflow.</p>
+          <p>This isn't software that apologizes for looking good. It's software that understands that design is infrastructure. That details matter. That the tools you use every day should reflect the quality you demand from your own work.</p>
+          <p style="font-weight: 600; color: var(--foreground);">Premium brands deserve premium tools. Trak is built for companies that know the difference.</p>
+        </div>
+        <div class="visual-placeholder">[Premium Design Detail]</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Now / Problem -->
+  <section class="section" style="background: var(--surface);">
+    <div class="container">
+      <div class="section-header">
+        <div class="label section-label">THE PROBLEM</div>
+        <h2>Here's what doesn't work:</h2>
+      </div>
+
+      <div class="value-list">
+        <div class="value-item">
+          <div class="value-number">01</div>
+          <div class="value-content">
+            <h3>Scattered Tools</h3>
+            <p>Shopify for products. Notion for plans. Slack for updates. Dropbox for files. Email for contractors. Your attention, shattered across six tabs.</p>
+          </div>
+        </div>
+
+        <div class="value-item">
+          <div class="value-number">02</div>
+          <div class="value-content">
+            <h3>Complicated Collaboration</h3>
+            <p>Adding contractors to internal systems. Explaining folder structures. Managing permissions. The friction of working with external partners.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 60px; padding: 40px; background: var(--surface-muted); border-radius: var(--radius-lg); border: 2px solid var(--border);">
+        <h3 style="margin-bottom: 16px;">Here's what does:</h3>
+        <p style="color: var(--muted-foreground); font-size: 16px; line-height: 1.8;">Open Trak. Your projects. Your files. Your Shopify data. Your collaborators' work. Your AI assistant. One place, always current, infinitely capable. Built for how D2C brands actually operate.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Create Boldly -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section-header" style="text-align: center; max-width: 700px; margin: 0 auto;">
+        <div class="accent-line" style="margin: 0 auto 24px;"></div>
+        <h2>Create Boldly.</h2>
+        <p class="section-intro">You started this brand because you saw something missing. You built something better. You launch products people didn't know they needed, coordinate teams across continents, move faster than anyone expects.</p>
+      </div>
+
+      <div class="two-col" style="margin-top: 80px;">
+        <div class="content-block">
+          <p style="font-size: 16px;">Your tools should match your ambition. Not limit it.</p>
+          <p style="font-size: 16px;">Trak is infrastructure built for scale. Launch as fast as you want. Coordinate as many people as you need. Manage complexity without drowning in it. Build as boldly as you dare.</p>
+          <p style="font-size: 16px; font-weight: 600; color: var(--foreground);">The software just works. So you can focus on creating something that matters.</p>
+        </div>
+        <div class="visual-placeholder">[Brand Vision]</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="final-cta" id="pricing">
+    <div class="container">
+      <h2>Ready to create boldly?</h2>
+      <p class="subtitle">Join the modern D2C brands building faster with Trak.</p>
+      <div class="hero-cta" style="justify-content: center; margin-top: 0;">
+        <a href="#" class="cta-button primary" style="padding: 14px 32px; font-size: 16px;">Start Free Trial</a>
+        <a href="#" class="cta-button secondary" style="padding: 14px 32px; font-size: 16px;">Schedule Demo</a>
+      </div>
+      <p class="tagline" style="margin-top: 28px;">Launch January 19th</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="wide-container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="logo">Trak</div>
+          <p>The project management platform built for modern D2C brands. Beautiful, intelligent, effortless.</p>
+        </div>
+
+        <div class="footer-links">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#">Integrations</a></li>
+            <li><a href="#">Changelog</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#">Privacy</a></li>
+            <li><a href="#">Terms</a></li>
+            <li><a href="#">Security</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2025 Trak. All rights reserved.</p>
+        <p>Built with intention.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

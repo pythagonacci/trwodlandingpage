@@ -1,0 +1,74 @@
+.main {
+  margin-top: var(--header-height);
+  padding: 56px 0 72px;
+  border-top: 2px solid var(--border);
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 18px;
+  color: var(--muted-foreground);
+  margin-bottom: 4px;
+}
+
+.why {
+  margin-top: 72px;
+}
+
+.whyInner {
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.whyTitle {
+  text-align: left;
+  margin-bottom: 12px;
+}
+
+.whyText {
+  color: var(--muted-foreground);
+  font-size: 16px;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+.orgExample {
+  padding: 24px 24px 20px;
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--border);
+  background: var(--surface-muted);
+}
+
+.orgName {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.orgList {
+  list-style: none;
+  padding-left: 0;
+  margin: 0 0 12px;
+  display: grid;
+  gap: 4px;
+}
+
+.orgCaption {
+  font-size: 14px;
+  color: var(--muted-foreground);
+}
+
+.scale {
+  margin-top: 72px;
+  text-align: center;
+}
+
+.scaleLine {
+  font-size: 15px;
+  color: var(--muted-foreground);
+  line-height: 1.8;
+}

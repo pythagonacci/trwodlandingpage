@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&display=swap');
+
+:root {
+  --font-newsreader: 'Newsreader', Georgia, serif;
+  /* Core neutrals */
+  --background: #fdfdfd;
+  --surface: #ffffff;
+  --surface-hover: #f5f5f4;
+  --surface-muted: #f5f5f4;
+  --border: #e7e5e4;
+  --border-strong: #292524;
+
+  /* Text */
+  --foreground: #1c1917;
+  --muted-foreground: #78716c;
+  --tertiary-foreground: #a8a29e;
+
+  /* Primary / Secondary */
+  --primary: #292524;
+  --secondary: #44403c;
+
+  /* Accent */
+  --accent: #78716c;
+  --blue: #3080a6;
+  --blue-light: rgba(48, 128, 166, 0.1);
+
+  /* Spacing */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  /* Layout */
+  --header-height: 72px;
+  --container-max: 1200px;
+  --wide-container-max: 1400px;
+  --container-padding: 40px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-inter), 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--background);
+  color: var(--foreground);
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+h1,
+h2 {
+  font-family: var(--font-newsreader), 'Newsreader', Georgia, serif;
+}
+
+h1 {
+  font-size: 64px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+}
+
+h2 {
+  font-size: 42px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+}
+
+h3 {
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--foreground);
+}
+
+.subtitle {
+  font-size: 20px;
+  color: var(--muted-foreground);
+  line-height: 1.6;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-padding);
+}
+
+.wide-container {
+  max-width: var(--wide-container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-padding);
+}
+
+@media (max-width: 968px) {
+  h1 {
+    font-size: 42px;
+  }
+  h2 {
+    font-size: 32px;
+  }
+  .container,
+  .wide-container {
+    padding: 0 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  h1 {
+    font-size: 36px;
+  }
+  h2 {
+    font-size: 28px;
+  }
+}
