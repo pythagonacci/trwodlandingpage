@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trak — The Brand Operating System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+em { font-style: normal; }
+
+:root {
+  --cream:   #FAF8F4;
+  --cream-2: #F2EFE8;
+  --cream-3: #E8E3D8;
+  --sand:    #D4CBB8;
+  --stone:   #9A9184;
+  --ink:     #1C1917;
+  --ink-2:   #44403C;
+  --ink-3:   #78716C;
+  --accent:  #1D4ED8;
+  --accent-2:#3B82F6;
+  --accent-bg: #EFF6FF;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans:  'DM Sans', system-ui, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-weight: 400;
+  line-height: 1.65;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* subtle grain texture */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 200px;
+}
+
+* { position: relative; z-index: 1; }
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 60px;
+  background: rgba(250,248,244,0.94);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--cream-3);
+}
+
+.nav-logo {
+  font-family: var(--serif);
+  font-size: 21px;
+  font-weight: 700;
+  
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: -0.3px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--ink-3);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.nav-links a:hover { color: var(--ink); }
+
+.nav-cta {
+  background: var(--accent) !important;
+  color: #fff !important;
+  padding: 9px 22px;
+  border-radius: 100px;
+  font-weight: 500 !important;
+  transition: background 0.2s !important;
+}
+
+.nav-cta:hover { background: #1e40af !important; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  padding-top: 62px;
+  display: grid;
+  grid-template-columns: 52% 48%;
+}
+
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 64px 80px 60px;
+  border-right: 1px solid var(--cream-3);
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 1px solid #BFDBFE;
+  padding: 5px 14px 5px 8px;
+  border-radius: 100px;
+  margin-bottom: 40px;
+  width: fit-content;
+  letter-spacing: 0.02em;
+}
+
+.badge-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent-2);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.85); }
+}
+
+.hero-h1 {
+  font-family: var(--serif);
+  font-size: clamp(48px, 5.2vw, 72px);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -1px;
+  color: var(--ink);
+  margin-bottom: 28px;
+}
+
+.hero-h1 em {
+  
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.hero-sub {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.8;
+  color: var(--ink-2);
+  max-width: 420px;
+  margin-bottom: 44px;
+}
+
+.hero-sub strong { color: var(--ink); font-weight: 500; }
+
+.hero-btns {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 52px;
+}
+
+.btn-fill {
+  background: var(--accent);
+  color: #fff;
+  padding: 13px 30px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+  display: inline-block;
+}
+
+.btn-fill:hover { background: #1e40af; transform: translateY(-1px); }
+
+.btn-line {
+  color: var(--ink-2);
+  font-size: 14px;
+  font-weight: 400;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transition: color 0.15s;
+  border-bottom: 1px solid var(--cream-3);
+  padding-bottom: 2px;
+}
+
+.btn-line:hover { color: var(--ink); border-color: var(--ink); }
+.btn-line svg { transition: transform 0.15s; }
+.btn-line:hover svg { transform: translateX(3px); }
+
+.hero-note {
+  font-size: 12px;
+  color: var(--stone);
+  padding-top: 28px;
+  border-top: 1px solid var(--cream-3);
+  letter-spacing: 0.02em;
+}
+
+.hero-right {
+  background: var(--cream-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 36px;
+  overflow: hidden;
+}
+
+.hero-img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 32px 80px rgba(28,25,23,0.12), 0 8px 24px rgba(28,25,23,0.06);
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.hero-img:hover { transform: translateY(-4px); }
+
+/* ── STRIP ── */
+.strip {
+  background: var(--cream-2);
+  border-top: 1px solid var(--cream-3);
+  border-bottom: 1px solid var(--cream-3);
+  padding: 16px 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.strip-inner {
+  display: inline-flex;
+  animation: scroll 28s linear infinite;
+}
+
+.strip-item {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--stone);
+  padding: 0 32px;
+  border-right: 1px solid var(--cream-3);
+}
+
+@keyframes scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ── PAIN ── */
+.pain {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid var(--cream-3);
+}
+
+.pain-left {
+  padding: 100px 60px;
+  border-right: 1px solid var(--cream-3);
+  position: sticky;
+  top: 62px;
+  align-self: start;
+}
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--stone);
+  margin-bottom: 28px;
+}
+
+.sh {
+  font-family: var(--serif);
+  font-size: clamp(36px, 3.8vw, 54px);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.8px;
+  color: var(--ink);
+  margin-bottom: 24px;
+}
+
+.sh em {  font-weight: 700; color: var(--accent); }
+
+.sec-body {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.8;
+  color: var(--ink-2);
+  max-width: 320px;
+}
+
+.pain-right { display: flex; flex-direction: column; }
+
+.pain-item {
+  padding: 44px 60px;
+  border-bottom: 1px solid var(--cream-3);
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  gap: 18px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.pain-item.in { opacity: 1; transform: translateY(0); }
+
+.pain-n {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--sand);
+  padding-top: 5px;
+  letter-spacing: 0.05em;
+}
+
+.pain-title {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 700;
+  
+  line-height: 1.25;
+  color: var(--ink);
+  margin-bottom: 10px;
+  letter-spacing: -0.2px;
+}
+
+.pain-body {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.8;
+  color: var(--ink-2);
+}
+
+.pain-body strong { color: var(--ink); font-weight: 500; }
+
+/* ── FEATURES ── */
+.features { border-bottom: 1px solid var(--cream-3); }
+
+.feat-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  padding: 100px 60px 64px;
+  border-bottom: 1px solid var(--cream-3);
+  align-items: end;
+}
+
+.feat-top-desc {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.8;
+  color: var(--ink-2);
+}
+
+.main-demo {
+  padding: 48px 60px;
+  border-bottom: 1px solid var(--cream-3);
+  background: var(--cream-2);
+}
+
+.demo-shell {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: var(--cream);
+  border: 1.5px dashed var(--cream-3);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.demo-shell img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: 11px;
+  display: block;
+}
+
+.ph {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sand);
+}
+
+.feat-grid { display: grid; grid-template-columns: 1fr 1fr; }
+
+.fc {
+  padding: 52px 60px;
+  border-bottom: 1px solid var(--cream-3);
+  border-right: 1px solid var(--cream-3);
+  transition: background 0.2s;
+}
+
+.fc:nth-child(even) { border-right: none; }
+.fc:hover { background: var(--cream-2); }
+
+.fc-full {
+  grid-column: 1/-1;
+  padding: 52px 60px;
+  border-bottom: 1px solid var(--cream-3);
+  transition: background 0.2s;
+}
+
+.fc-full:hover { background: var(--cream-2); }
+.fc-full:last-child { border-bottom: none; }
+
+.feat-tag {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 18px;
+  display: block;
+}
+
+.feat-h {
+  font-family: var(--serif);
+  font-size: clamp(26px, 2.6vw, 36px);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.4px;
+  color: var(--ink);
+  margin-bottom: 14px;
+}
+
+.feat-h em {  font-weight: 700; color: var(--accent); }
+
+.feat-p {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.8;
+  color: var(--ink-2);
+  max-width: 440px;
+  margin-bottom: 28px;
+}
+
+.feat-p strong { color: var(--ink); font-weight: 500; }
+
+.feat-img-wrap {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--cream-3);
+}
+
+.feat-img-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.feat-img-wrap:hover img { transform: scale(1.02); }
+
+.feat-demo-wide {
+  width: 100%;
+  aspect-ratio: 21/9;
+  background: var(--cream-2);
+  border: 1.5px dashed var(--cream-3);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── COMPARISON ── */
+.comparison {
+  padding: 100px 60px;
+  border-bottom: 1px solid var(--cream-3);
+  background: var(--cream-2);
+}
+
+.cmp-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  margin-bottom: 52px;
+  align-items: end;
+}
+
+.cmp-desc {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--ink-2);
+  padding-top: 20px;
+  border-top: 1px solid var(--cream-3);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--cream-3);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+thead th {
+  padding: 16px 24px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--stone);
+  border-bottom: 1px solid var(--cream-3);
+  border-right: 1px solid var(--cream-3);
+  text-align: left;
+  background: var(--cream);
+}
+
+thead th:last-child { border-right: none; }
+
+thead th.tc {
+  background: var(--accent);
+  color: #fff;
+}
+
+tbody td {
+  padding: 15px 24px;
+  font-size: 13px;
+  color: var(--stone);
+  border-bottom: 1px solid var(--cream-3);
+  border-right: 1px solid var(--cream-3);
+}
+
+tbody td:last-child { border-right: none; }
+tbody tr:last-child td { border-bottom: none; }
+tbody td.fc2 { color: var(--ink-2); }
+tbody td.tc { background: #EFF6FF; color: var(--ink); font-weight: 500; }
+tbody tr:hover td { background: rgba(250,248,244,0.7); }
+tbody tr:hover td.tc { background: #DBEAFE; }
+
+.ck { color: #16A34A; font-weight: 600; font-size: 15px; }
+.cx { color: var(--cream-3); font-size: 15px; }
+.cp { color: var(--stone); font-size: 13px; }
+
+/* ── MAGIC ── */
+.magic {
+  border-bottom: 1px solid var(--cream-3);
+  background: var(--cream);
+}
+
+.magic-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.magic-l {
+  padding: 100px 60px;
+  border-right: 1px solid var(--cream-3);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: sticky;
+  top: 62px;
+  align-self: start;
+}
+
+.magic-p {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.8;
+  color: var(--ink-2);
+  margin-bottom: 44px;
+  max-width: 380px;
+}
+
+.magic-list { display: flex; flex-direction: column; }
+
+.magic-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 0;
+  border-top: 1px solid var(--cream-3);
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--ink-2);
+  line-height: 1.6;
+}
+
+.magic-row:last-child { border-bottom: 1px solid var(--cream-3); }
+.magic-row strong { color: var(--ink); font-weight: 500; }
+
+.mdot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-top: 8px;
+  flex-shrink: 0;
+}
+
+.magic-r {
+  display: flex;
+  flex-direction: column;
+  background: var(--cream-2);
+  border-left: 1px solid var(--cream-3);
+}
+
+.magic-beat {
+  padding: 48px 52px;
+  border-bottom: 1px solid var(--cream-3);
+}
+
+.magic-beat:last-child { border-bottom: none; }
+
+.beat-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.beat-num {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 1px solid #BFDBFE;
+  padding: 3px 10px;
+  border-radius: 100px;
+}
+
+.beat-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-2);
+  letter-spacing: 0.01em;
+}
+
+.beat-visual-full {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: var(--cream);
+  border: 1.5px dashed var(--cream-3);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.beat-visual-full img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: 11px;
+  display: block;
+}
+
+.beat-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1.5px dashed var(--cream-3);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--cream);
+  aspect-ratio: 16/7;
+  position: relative;
+}
+
+.beat-half {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: var(--cream);
+}
+
+.beat-half:first-child {
+  border-right: 1.5px dashed var(--cream-3);
+}
+
+.beat-half-label {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--stone);
+  white-space: nowrap;
+  background: var(--cream);
+  padding: 4px 12px;
+  border-radius: 100px;
+  border: 1px solid var(--cream-3);
+}
+
+.beat-half img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.beat-divider {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  background: var(--cream);
+  border: 1px solid var(--cream-3);
+  border-radius: 100px;
+  padding: 6px 14px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--stone);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.ph-split {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sand);
+}
+
+/* ── CTA ── */
+.cta {
+  padding: 160px 60px;
+  text-align: center;
+  background: var(--cream-2);
+  border-bottom: 1px solid var(--cream-3);
+  overflow: hidden;
+}
+
+/* decorative rings */
+.cta::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  border: 1px solid var(--cream-3);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.cta::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 900px; height: 900px;
+  border-radius: 50%;
+  border: 1px solid var(--cream-3);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.cta > * { position: relative; z-index: 2; }
+
+.cta-tag {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 24px;
+  display: block;
+}
+
+.cta-h {
+  font-family: var(--serif);
+  font-size: clamp(52px, 6.5vw, 88px);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -1.5px;
+  color: var(--ink);
+  margin-bottom: 24px;
+  max-width: 700px;
+  margin-left: auto; margin-right: auto;
+}
+
+.cta-h em {  font-weight: 700; color: var(--accent); }
+
+.cta-sub {
+  font-size: 16px;
+  color: var(--ink-2);
+  max-width: 380px;
+  margin: 0 auto 44px;
+  line-height: 1.8;
+}
+
+.cta-note {
+  font-size: 12px;
+  color: var(--stone);
+  margin-top: 18px;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--cream);
+  border-top: 1px solid var(--cream-3);
+  padding: 36px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-logo {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 700;
+  
+  color: var(--ink);
+}
+
+.footer-mid {
+  font-size: 12px;
+  color: var(--stone);
+  letter-spacing: 0.04em;
+}
+
+.footer-copy {
+  font-size: 12px;
+  color: var(--sand);
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-badge { animation: fadeUp 0.5s ease both 0.05s; opacity:0; }
+.hero-h1    { animation: fadeUp 0.6s ease both 0.15s; opacity:0; }
+.hero-sub   { animation: fadeUp 0.6s ease both 0.28s; opacity:0; }
+.hero-btns  { animation: fadeUp 0.6s ease both 0.38s; opacity:0; }
+.hero-note  { animation: fadeUp 0.6s ease both 0.48s; opacity:0; }
+.hero-right { animation: fadeUp 0.8s ease both 0.2s;  opacity:0; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 880px) {
+  nav { padding: 0 20px; }
+  .nav-links li:not(:last-child) { display: none; }
+  .hero, .pain, .feat-grid, .magic-header, .cmp-top, .feat-top { grid-template-columns: 1fr; }
+  .hero-left { padding: 60px 24px 40px; border-right: none; }
+  .hero-right { display: none; }
+  .pain-left { padding: 60px 24px 40px; position: static; border-right: none; border-bottom: 1px solid var(--cream-3); }
+  .pain-item { padding: 36px 24px; }
+  .feat-top { padding: 60px 24px 40px; gap: 24px; }
+  .main-demo { padding: 40px 24px; }
+  .fc, .fc-full { padding: 40px 24px; border-right: none; }
+  .comparison { padding: 60px 24px; }
+  .cmp-top { gap: 24px; }
+  .magic-inner { grid-template-columns: 1fr; }
+  .magic-l { padding: 60px 24px; border-right: none; border-bottom: 1px solid var(--cream-3); position: static; }
+  .magic-beat { padding: 36px 24px; }
+  .beat-split { aspect-ratio: unset; grid-template-columns: 1fr; height: 320px; }
+  .beat-half:first-child { border-right: none; border-bottom: 1.5px dashed var(--cream-3); }
+  .beat-divider { top: 50%; }
+  .cta { padding: 100px 24px; }
+  footer { padding: 28px 24px; flex-direction: column; gap: 10px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Trak</a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#compare">Why Trak</a></li>
+    <li><a href="#magic">Collaboration</a></li>
+    <li><a href="#" class="nav-cta">Start Free Trial</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-badge">
+      <div class="badge-dot"></div>
+      Built for D2C Brands
+    </div>
+    <h1 class="hero-h1">
+      Your launch is<br>in three weeks.<br>
+      <em>Is everything ready?</em>
+    </h1>
+    <p class="hero-sub">
+      Your creative is in Dropbox. Your brief is in Notion. Your agency is in your inbox. Your Shopify data is in another tab. <strong>Trak is the workspace built for D2C brands</strong> — everything your team runs on, finally in one place.
+    </p>
+    <div class="hero-btns">
+      <a href="#" class="btn-fill">Start Free Trial</a>
+      <a href="#" class="btn-line">
+        Watch Demo
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+    <div class="hero-note">Trusted by D2C brands on Shopify · Setup in minutes</div>
+  </div>
+  <div class="hero-right">
+    <img src="/mnt/user-data/uploads/1773169286570_image.png" alt="Trak workspace" class="hero-img">
+  </div>
+</section>
+
+<!-- STRIP -->
+<div class="strip">
+  <div class="strip-inner">
+    <span class="strip-item">Launch Management</span>
+    <span class="strip-item">Shopify Native</span>
+    <span class="strip-item">Magic Links</span>
+    <span class="strip-item">Influencer Tracking</span>
+    <span class="strip-item">Brand Calendar</span>
+    <span class="strip-item">AI Assistant</span>
+    <span class="strip-item">Creative Workspace</span>
+    <span class="strip-item">Campaign Ops</span>
+    <span class="strip-item">Launch Management</span>
+    <span class="strip-item">Shopify Native</span>
+    <span class="strip-item">Magic Links</span>
+    <span class="strip-item">Influencer Tracking</span>
+    <span class="strip-item">Brand Calendar</span>
+    <span class="strip-item">AI Assistant</span>
+    <span class="strip-item">Creative Workspace</span>
+    <span class="strip-item">Campaign Ops</span>
+  </div>
+</div>
+
+<!-- PAIN -->
+<section class="pain">
+  <div class="pain-left">
+    <div class="eyebrow">The Problem</div>
+    <h2 class="sh">
+      Monday was built<br>for engineers.<br>
+      Asana for enterprise.<br>
+      <em>Nothing was<br>built for you.</em>
+    </h2>
+    <p class="sec-body">DTC brands have been duct-taping together five tools because nothing was designed for how a brand team actually thinks, works, and launches.</p>
+  </div>
+  <div class="pain-right">
+    <div class="pain-item">
+      <div class="pain-n">01</div>
+      <div>
+        <div class="pain-title">Your attention is shattered.</div>
+        <p class="pain-body">Shopify for products. Notion for plans. Slack for updates. Dropbox for assets. Email for contractors. <strong>Six tabs, zero clarity.</strong> You spend more time tracking down information than acting on it.</p>
+      </div>
+    </div>
+    <div class="pain-item">
+      <div class="pain-n">02</div>
+      <div>
+        <div class="pain-title">Launch day is still chaos.</div>
+        <p class="pain-body">You have a hard deadline. Creative, ops, marketing, inventory, and external partners all need to move together. <strong>No existing tool holds all of that</strong> with live business context attached.</p>
+      </div>
+    </div>
+    <div class="pain-item">
+      <div class="pain-n">03</div>
+      <div>
+        <div class="pain-title">External collaboration is a nightmare.</div>
+        <p class="pain-body">Adding agencies to internal systems. Explaining folder structures. Chasing influencers for deliverables over DM. <strong>Every external partner is a new coordination headache.</strong></p>
+      </div>
+    </div>
+    <div class="pain-item">
+      <div class="pain-n">04</div>
+      <div>
+        <div class="pain-title">Your Shopify data lives somewhere else.</div>
+        <p class="pain-body">Planning a campaign in Notion, checking inventory in Shopify, writing a brief in Google Docs. <strong>Your business context is never where your work is.</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="feat-top">
+    <div>
+      <div class="eyebrow">Built for Brand Ops</div>
+      <h2 class="sh">
+        Infrastructure for<br>how brands<br>
+        <em>actually work.</em>
+      </h2>
+    </div>
+    <p class="feat-top-desc">Most tools manage tasks. Trak embeds your entire workflow — products, images, files, tasks, approvals, and live Shopify data — so execution happens where the work actually lives.</p>
+  </div>
+
+  <div class="main-demo">
+    <div class="demo-shell">
+      <span class="ph">Product Demo</span>
+    </div>
+  </div>
+
+  <div class="feat-grid">
+    <div class="fc">
+      <span class="feat-tag">Shopify Native</span>
+      <h3 class="feat-h">Trak doesn't integrate<br>with Shopify.<br><em>It's built around it.</em></h3>
+      <p class="feat-p">Live inventory, variants, pre-order counts, and fulfillment status — attached to the projects they belong to. <strong>Your business context lives next to your work.</strong></p>
+      <div class="feat-img-wrap">
+        <img src="/mnt/user-data/uploads/1773169286570_image.png" alt="Shopify integration in Trak">
+      </div>
+    </div>
+
+    <div class="fc">
+      <span class="feat-tag">Creative Workspace</span>
+      <h3 class="feat-h">Assets, briefs,<br>moodboards.<br><em>All in one tab.</em></h3>
+      <p class="feat-p">Inspiration photos next to quality checklists. Campaign briefs next to production timelines. <strong>Everything your team touches, in one place.</strong></p>
+      <div class="feat-img-wrap">
+        <img src="/mnt/user-data/uploads/1773169299968_image.png" alt="Creative workspace in Trak">
+      </div>
+    </div>
+
+    <div class="fc-full">
+      <span class="feat-tag">AI-Powered</span>
+      <h3 class="feat-h">Ask questions. Get answers. <em>Take action.</em></h3>
+      <p class="feat-p">Your AI assistant operates inside your work — not on top of it. Ask it anything. Then tell it what to do.<br><br>
+        <strong>"Create a table of all influencers by submission status." &nbsp;·&nbsp; "Update every campaign deadline to April 15th." &nbsp;·&nbsp; "What's blocking the Spring launch?"</strong>
+      </p>
+      <div class="feat-demo-wide">
+        <span class="ph">Your AI demo here</span>
+      </div>
+    </div>
+
+    <div class="fc-full">
+      <span class="feat-tag">Brand Calendar</span>
+      <h3 class="feat-h">Your brand's entire operating rhythm. <em>One view.</em></h3>
+      <p class="feat-p">Every launch, campaign, content drop, and influencer post date in a single calendar. <strong>See the whole picture</strong> without assembling it from five places.</p>
+      <div class="feat-demo-wide">
+        <span class="ph">Your calendar demo here</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section class="comparison" id="compare">
+  <div class="cmp-top">
+    <h2 class="sh">
+      Built for brands.<br>
+      <em>Not borrowed<br>from enterprise.</em>
+    </h2>
+    <p class="cmp-desc">Every other PM tool was built for someone else and adapted for brands. Trak was designed from day one for DTC teams — with the integrations, templates, and workflows that actually matter.</p>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:38%">Capability</th>
+        <th>Monday</th>
+        <th>Asana</th>
+        <th>Notion</th>
+        <th class="tc">Trak</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="fc2">Native Shopify integration</td>
+        <td><span class="cx">—</span></td><td><span class="cx">—</span></td><td><span class="cx">—</span></td>
+        <td class="tc"><span class="ck">✓</span></td>
+      </tr>
+      <tr>
+        <td class="fc2">External collaboration without accounts</td>
+        <td><span class="cx">—</span></td><td><span class="cx">—</span></td><td><span class="cx">—</span></td>
+        <td class="tc"><span class="ck">✓</span></td>
+      </tr>
+      <tr>
+        <td class="fc2">Influencer & creator management</td>
+        <td><span class="cx">—</span></td><td><span class="cx">—</span></td><td><span class="cx">—</span></td>
+        <td class="tc"><span class="ck">✓</span></td>
+      </tr>
+      <tr>
+        <td class="fc2">Creative workspace with assets & moodboards</td>
+        <td><span class="cx">—</span></td><td><span class="cx">—</span></td><td><span class="cp">Partial</span></td>
+        <td class="tc"><span class="ck">✓</span></td>
+      </tr>
+      <tr>
+        <td class="fc2">DTC product launch templates</td>
+        <td><span class="cx">—</span></td><td><span class="cx">—</span></td><td><span class="cx">—</span></td>
+        <td class="tc"><span class="ck">✓</span></td>
+      </tr>
+      <tr>
+        <td class="fc2">AI that acts inside your workspace</td>
+        <td><span class="cx">—</span></td><td><span class="cx">—</span></td><td><span class="cx">—</span></td>
+        <td class="tc"><span class="ck">✓</span></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- MAGIC LINKS -->
+<section class="magic" id="magic">
+  <div class="magic-inner">
+
+    <!-- Left: copy -->
+    <div class="magic-l">
+      <div class="eyebrow">Magic Links</div>
+      <h2 class="sh">
+        Every person who<br>touches your brand.<br>
+        <em>One link away.</em>
+      </h2>
+      <p class="magic-p">You work with agencies, photographers, influencers, and freelancers every day. Managing them shouldn't require onboarding them into your internal systems. Send a Magic Link — they click, they see what they need, they deliver.</p>
+      <div class="magic-list">
+        <div class="magic-row"><div class="mdot"></div><span><strong>Photographers</strong> receive briefs, upload deliverables, get paid — no account needed</span></div>
+        <div class="magic-row"><div class="mdot"></div><span><strong>Influencers</strong> get their brief, submit content for approval, track payment status</span></div>
+        <div class="magic-row"><div class="mdot"></div><span><strong>Agencies</strong> review briefs, upload creative, give feedback — all in one place</span></div>
+        <div class="magic-row"><div class="mdot"></div><span><strong>Brand partners</strong> coordinate co-launch assets and timelines without friction</span></div>
+      </div>
+    </div>
+
+    <!-- Right: all 3 beats stacked -->
+    <div class="magic-r">
+
+      <!-- Beat 01 -->
+      <div class="magic-beat">
+        <div class="beat-label">
+          <span class="beat-num">01</span>
+          <span class="beat-title">Create &amp; send a Magic Link</span>
+        </div>
+        <div class="beat-visual-full">
+          <span class="ph">Visual — creating &amp; sending a Magic Link</span>
+        </div>
+      </div>
+
+      <!-- Beats 02 + 03: split screen -->
+      <div class="magic-beat">
+        <div class="beat-label">
+          <span class="beat-num">02 — 03</span>
+          <span class="beat-title">Collaborator uploads · You're notified instantly</span>
+        </div>
+        <div class="beat-split">
+          <div class="beat-half">
+            <span class="ph-split">Collaborator view — uploading</span>
+            <div class="beat-half-label">Their view</div>
+          </div>
+          <div class="beat-half">
+            <span class="ph-split">Trak — real-time notification</span>
+            <div class="beat-half-label">Your view</div>
+          </div>
+          <div class="beat-divider">Simultaneously</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <span class="cta-tag">Create Boldly</span>
+  <h2 class="cta-h">
+    Your tools should<br>match your <em>ambition.</em>
+  </h2>
+  <p class="cta-sub">You built something people didn't know they needed. Your workspace should be built the same way.</p>
+  <a href="#" class="btn-fill" style="border-radius: 100px; padding: 15px 44px; font-size: 15px;">Start Free Trial</a>
+  <p class="cta-note">No credit card required · Free 14-day trial · Setup in minutes</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Trak</div>
+  <div class="footer-mid">The operating system for modern D2C brands</div>
+  <div class="footer-copy">© 2025 Trak. All rights reserved.</div>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) setTimeout(() => e.target.classList.add('in'), i * 90);
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.pain-item').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
