@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trak — Built for D2C Brands</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,300;1,6..72,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F5F2EC;
+    --ink: #0F0E0C;
+    --blue: #1A46E5;
+    --blue-hover: #1338C8;
+    --muted: #6B6760;
+    --border: #DDD9D0;
+    --pill-bg: #EAE8FF;
+    --pill-dot: #1A46E5;
+  }
+
+  html { font-size: 16px; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    height: 64px;
+    border-bottom: 1px solid var(--border);
+    background: var(--cream);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    opacity: 0;
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  .nav-logo {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 17px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.01em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--ink); }
+
+  .btn-primary {
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    border-radius: 100px;
+    padding: 10px 22px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s, transform 0.15s;
+    white-space: nowrap;
+  }
+
+  .btn-primary:hover {
+    background: var(--blue-hover);
+    transform: translateY(-1px);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: calc(100vh - 64px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-left {
+    padding: 72px 56px 72px 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-right: 1px solid var(--border);
+  }
+
+  .hero-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* pill badge */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--pill-bg);
+    border-radius: 100px;
+    padding: 6px 16px 6px 10px;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--blue);
+    letter-spacing: 0.02em;
+    width: fit-content;
+    margin-bottom: 36px;
+    opacity: 0;
+    animation: fadeUp 0.5s ease 0.1s forwards;
+  }
+
+  .pill-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--pill-dot);
+    flex-shrink: 0;
+  }
+
+  /* headline */
+  .headline {
+    font-family: 'Newsreader', serif;
+    font-weight: 400;
+    font-size: clamp(42px, 5vw, 62px);
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin-bottom: 0;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.2s forwards;
+  }
+
+  .headline-emphasis {
+    color: var(--blue);
+    font-style: italic;
+    display: block;
+  }
+
+  /* body */
+  .hero-body {
+    margin-top: 28px;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--muted);
+    max-width: 440px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.35s forwards;
+  }
+
+  /* CTAs */
+  .cta-row {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-top: 40px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.45s forwards;
+  }
+
+  .btn-primary-lg {
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    border-radius: 100px;
+    padding: 14px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    white-space: nowrap;
+  }
+
+  .btn-primary-lg:hover {
+    background: var(--blue-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(26,70,229,0.25);
+  }
+
+  .btn-no-card {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 400;
+    margin-top: 3px;
+    letter-spacing: 0.01em;
+  }
+
+  .cta-primary-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .btn-ghost {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14.5px;
+    font-weight: 400;
+    color: var(--ink);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 1px;
+    transition: gap 0.2s, opacity 0.2s;
+  }
+
+  .btn-ghost:hover { gap: 10px; opacity: 0.7; }
+
+  /* divider + trust */
+  .trust-row {
+    margin-top: 52px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.55s forwards;
+  }
+
+  .trust-label {
+    font-size: 11.5px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin-bottom: 16px;
+  }
+
+  .brand-logos {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    flex-wrap: wrap;
+  }
+
+  .brand-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+
+  .brand-name:hover { opacity: 1; }
+
+  .brand-sep {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+
+  /* ── VISUAL PLACEHOLDER ── */
+  .visual-placeholder {
+    width: 100%;
+    max-width: 620px;
+    aspect-ratio: 16/10;
+    border: 1.5px dashed var(--border);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.5);
+    position: relative;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.3s forwards;
+  }
+
+  .visual-placeholder-label {
+    font-size: 10.5px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+
+  /* subtle bg texture on right */
+  .hero-right::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 60% 60% at 70% 40%, rgba(26,70,229,0.04) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 30% 70%, rgba(26,70,229,0.03) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* ── FEATURES STRIP ── */
+  .features-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-bottom: 1px solid var(--border);
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.65s forwards;
+  }
+
+  .feature-cell {
+    padding: 32px 36px;
+    border-right: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+
+  .feature-cell:last-child { border-right: none; }
+  .feature-cell:hover { background: rgba(255,255,255,0.6); }
+
+  .feature-icon {
+    width: 28px;
+    height: 28px;
+    margin-bottom: 14px;
+    color: var(--blue);
+  }
+
+  .feature-title {
+    font-family: 'Newsreader', serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+
+  .feature-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 0 24px; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 48px 24px; border-right: none; border-bottom: 1px solid var(--border); }
+    .hero-right { padding: 36px 24px; min-height: 320px; }
+    .features-strip { grid-template-columns: 1fr 1fr; }
+    .feature-cell:nth-child(2) { border-right: none; }
+    .feature-cell:nth-child(3) { border-right: 1px solid var(--border); border-top: 1px solid var(--border); }
+    .feature-cell:nth-child(4) { border-right: none; border-top: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Trak</a>
+  <ul class="nav-links">
+    <li><a href="#">Shopify Integration</a></li>
+    <li><a href="#">For Brand Teams</a></li>
+    <li><a href="#">Collaboration</a></li>
+  </ul>
+  <a href="#" class="btn-primary">Start Free Trial</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+
+    <div class="pill">
+      <span class="pill-dot"></span>
+      Built for D2C Brands on Shopify
+    </div>
+
+    <h1 class="headline">
+      Your launch is in<br>three weeks.
+      <span class="headline-emphasis">Trak keeps<br>it together.</span>
+    </h1>
+
+    <p class="hero-body">
+      Briefs, timelines, Shopify data, and your agency — all in one workspace built for how D2C teams actually work. Stop hunting across Dropbox, Notion, and your inbox. Everything lives here.
+    </p>
+
+    <div class="cta-row">
+      <div class="cta-primary-wrap">
+        <a href="#" class="btn-primary-lg">
+          Start Free Trial
+        </a>
+        <span class="btn-no-card">No credit card required</span>
+      </div>
+      <a href="#" class="btn-ghost">
+        See how it works →
+      </a>
+    </div>
+
+    <div class="trust-row">
+      <p class="trust-label">Trusted by teams at</p>
+      <div class="brand-logos">
+        <span class="brand-name">RHODE</span>
+        <span class="brand-sep"></span>
+        <span class="brand-name">GISOU</span>
+        <span class="brand-sep"></span>
+        <span class="brand-name">RIDGE</span>
+        <span class="brand-sep"></span>
+        <span class="brand-name">DAIRY BOY</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="hero-right">
+    <!-- DROP YOUR SCREENSHOT IN HERE -->
+    <div class="visual-placeholder">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#C8C4BB" stroke-width="1.5">
+        <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+      </svg>
+      <span class="visual-placeholder-label">Your screenshot goes here</span>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES STRIP -->
+<div class="features-strip">
+  <div class="feature-cell">
+    <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+    </svg>
+    <div class="feature-title">Shopify Native</div>
+    <div class="feature-desc">Products, inventory, and sales data live inside your workspace — no extra tabs.</div>
+  </div>
+  <div class="feature-cell">
+    <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+    </svg>
+    <div class="feature-title">Magic Links</div>
+    <div class="feature-desc">Share branded client portals with your agency. No login required on their end.</div>
+  </div>
+  <div class="feature-cell">
+    <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+    </svg>
+    <div class="feature-title">Launch Timelines</div>
+    <div class="feature-desc">Visual campaign and product launch timelines your whole team can actually follow.</div>
+  </div>
+  <div class="feature-cell">
+    <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+    </svg>
+    <div class="feature-title">AI-Powered</div>
+    <div class="feature-desc">CMD+K to automate briefs, generate tasks, and surface insights from your brand data.</div>
+  </div>
+</div>
+
+</body>
+</html>

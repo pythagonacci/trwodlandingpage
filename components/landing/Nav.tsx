@@ -4,8 +4,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const LINKS = [
-  { href: "#features", label: "Features" },
-  { href: "#why-trak", label: "Why Trak" },
+  { href: "#features", label: "Shopify Integration" },
+  { href: "#why-trak", label: "For Brand Teams" },
   { href: "#collaboration", label: "Collaboration" }
 ];
 
