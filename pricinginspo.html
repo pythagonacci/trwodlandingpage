@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trak — Pricing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #F5F0E8;
+      --cream-dark: #EDE8DF;
+      --cream-border: #DDD5C5;
+      --terracotta: #C4622D;
+      --terracotta-dark: #A84F23;
+      --ink: #1A1714;
+      --ink-light: #3A3330;
+      --muted: #7A6E63;
+      --faint: #9A8E83;
+      --card-bg: #FDFAF5;
+      --serif: 'Instrument Serif', serif;
+      --sans: 'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--cream);
+      color: var(--ink);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      border-bottom: 0.5px solid var(--cream-border);
+      position: sticky;
+      top: 0;
+      background: var(--cream);
+      z-index: 100;
+    }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 22px;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+
+    .nav-cta {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink);
+      text-decoration: none;
+      border: 1px solid var(--ink);
+      padding: 8px 20px;
+      border-radius: 6px;
+      transition: all 0.15s;
+    }
+
+    .nav-cta:hover {
+      background: var(--ink);
+      color: var(--cream);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      padding: 72px 24px 56px;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 0.6s ease forwards;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      margin-bottom: 14px;
+    }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: 48px;
+      font-weight: 400;
+      line-height: 1.08;
+      color: var(--ink);
+      margin-bottom: 14px;
+    }
+
+    .hero p {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--muted);
+      max-width: 360px;
+      margin: 0 auto 36px;
+      line-height: 1.65;
+    }
+
+    /* ── TOGGLE ── */
+    .toggle-wrapper {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--card-bg);
+      border: 0.5px solid var(--cream-border);
+      border-radius: 100px;
+      padding: 6px 16px;
+    }
+
+    .toggle-label {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--faint);
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.15s;
+    }
+
+    .toggle-label.active {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .toggle-track {
+      width: 40px;
+      height: 22px;
+      background: var(--cream-border);
+      border-radius: 11px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.25s;
+    }
+
+    .toggle-track.on { background: var(--terracotta); }
+
+    .toggle-thumb {
+      width: 16px;
+      height: 16px;
+      background: white;
+      border-radius: 50%;
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    }
+
+    .toggle-track.on .toggle-thumb { transform: translateX(18px); }
+
+    .save-pill {
+      background: var(--terracotta);
+      color: white;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 100px;
+    }
+
+    /* ── CARDS ── */
+    .cards-section {
+      padding: 0 48px 72px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.08fr 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 0.5px solid var(--cream-border);
+      border-radius: 18px;
+      padding: 32px 28px 28px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .card:nth-child(1) { animation: fadeUp 0.5s ease 0.15s forwards; }
+    .card:nth-child(2) { animation: fadeUp 0.5s ease 0.25s forwards; }
+    .card:nth-child(3) { animation: fadeUp 0.5s ease 0.35s forwards; }
+
+    .card.featured {
+      background: var(--ink);
+      border-color: var(--ink);
+      padding-top: 44px;
+    }
+
+    .card.muted {
+      background: var(--card-bg);
+      opacity: 0;
+    }
+
+    .card.muted { animation: fadeUp 0.5s ease 0.15s forwards; }
+
+    .card.muted .card-name,
+    .card.muted .price-amount { opacity: 0.55; }
+
+    .popular-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: var(--terracotta);
+      color: white;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 11px;
+      border-radius: 100px;
+    }
+
+    .card-tier {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      margin-bottom: 8px;
+    }
+
+    .card.featured .card-tier { color: #E8A080; }
+    .card.muted .card-tier { color: #C0B5A8; }
+
+    .card-name {
+      font-family: var(--serif);
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 6px;
+      line-height: 1.1;
+    }
+
+    .card.featured .card-name { color: var(--cream); }
+    .card.muted .card-name { color: var(--muted); }
+
+    .card-tagline {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.55;
+      margin-bottom: 24px;
+      min-height: 40px;
+    }
+
+    .card.featured .card-tagline { color: #A89E94; }
+
+    .price-block { margin-bottom: 24px; }
+
+    .price-amount {
+      font-family: var(--serif);
+      font-size: 44px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1;
+    }
+
+    .card.featured .price-amount { color: var(--cream); }
+    .card.muted .price-amount { color: var(--muted); }
+
+    .price-amount sup {
+      font-size: 20px;
+      vertical-align: top;
+      margin-top: 8px;
+      display: inline-block;
+    }
+
+    .price-period {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--faint);
+      margin-top: 5px;
+      line-height: 1.5;
+    }
+
+    .card.featured .price-period { color: #6A6059; }
+
+    .divider {
+      height: 0.5px;
+      background: var(--cream-border);
+      margin-bottom: 22px;
+    }
+
+    .card.featured .divider { background: #3A3330; }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--faint);
+      margin-bottom: 10px;
+      margin-top: 18px;
+    }
+
+    .section-label:first-of-type { margin-top: 0; }
+    .card.featured .section-label { color: #5A5249; }
+
+    .feature-list {
+      list-style: none;
+    }
+
+    .feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--ink-light);
+      padding: 4.5px 0;
+      line-height: 1.45;
+    }
+
+    .card.featured .feature-list li { color: #C8BDB5; }
+    .card.muted .feature-list li { color: var(--faint); }
+
+    .check-icon {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .check-terracotta { color: var(--terracotta); }
+    .check-warm { color: #E8A080; }
+    .check-dim { color: #C8BDB5; }
+
+    .cta-btn {
+      display: block;
+      width: 100%;
+      margin-top: 26px;
+      padding: 13px 0;
+      border-radius: 9px;
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      transition: all 0.15s ease;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border-color: var(--cream-border);
+      color: var(--faint);
+    }
+    .btn-ghost:hover { border-color: var(--muted); color: var(--muted); }
+
+    .btn-terracotta {
+      background: var(--terracotta);
+      border-color: var(--terracotta);
+      color: white;
+    }
+    .btn-terracotta:hover { background: var(--terracotta-dark); border-color: var(--terracotta-dark); }
+
+    .btn-cream {
+      background: var(--cream);
+      border-color: var(--cream);
+      color: var(--ink);
+    }
+    .btn-cream:hover { background: var(--cream-dark); border-color: var(--cream-dark); }
+
+    /* ── ENTERPRISE ── */
+    .enterprise-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 48px 72px;
+    }
+
+    .enterprise-band {
+      border: 0.5px solid var(--cream-border);
+      border-radius: 18px;
+      background: var(--card-bg);
+      padding: 36px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+    }
+
+    .enterprise-band h3 {
+      font-family: var(--serif);
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    .enterprise-band p {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--muted);
+      max-width: 440px;
+      line-height: 1.6;
+    }
+
+    .btn-ink {
+      display: inline-block;
+      padding: 12px 28px;
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      border: 1.5px solid var(--ink);
+      color: var(--ink);
+      background: transparent;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+
+    .btn-ink:hover { background: var(--ink); color: var(--cream); }
+
+    /* ── FAQ ── */
+    .faq-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 48px 80px;
+    }
+
+    .faq-section .eyebrow { margin-bottom: 28px; }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px 56px;
+    }
+
+    .faq-item h4 {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    .faq-item p {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 0.5px solid var(--cream-border);
+      padding: 28px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    footer .logo {
+      font-family: var(--serif);
+      font-size: 18px;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    footer p {
+      font-size: 12px;
+      color: var(--faint);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 18px 24px; }
+      .nav-links { display: none; }
+      .cards-section, .enterprise-section, .faq-section { padding-left: 20px; padding-right: 20px; }
+      .cards-grid { grid-template-columns: 1fr; max-width: 440px; margin: 0 auto; }
+      .enterprise-band { flex-direction: column; align-items: flex-start; }
+      .faq-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 10px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#">Trak</a>
+    <ul class="nav-links">
+      <li><a href="#">Product</a></li>
+      <li><a href="#">Integrations</a></li>
+      <li><a href="#">Docs</a></li>
+    </ul>
+    <a class="nav-cta" href="#">Get started</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="eyebrow">Pricing</p>
+    <h1>Simple pricing,<br>built to scale with you.</h1>
+    <p>One plan for most brands. More when you need it.</p>
+    <div class="toggle-wrapper">
+      <span class="toggle-label active" id="lbl-monthly">Monthly</span>
+      <div class="toggle-track" id="billing-toggle" onclick="toggleBilling()">
+        <div class="toggle-thumb"></div>
+      </div>
+      <span class="toggle-label" id="lbl-annual">Annual</span>
+      <span class="save-pill">Save 20%</span>
+    </div>
+  </section>
+
+  <!-- CARDS -->
+  <section class="cards-section">
+    <div class="cards-grid">
+
+      <!-- STARTER (muted) -->
+      <div class="card muted">
+        <p class="card-tier">Free</p>
+        <h2 class="card-name">Starter</h2>
+        <p class="card-tagline">Try Trak before you commit.</p>
+        <div class="price-block">
+          <div class="price-amount"><sup>$</sup>0</div>
+          <p class="price-period">No credit card required</p>
+        </div>
+        <div class="divider"></div>
+        <ul class="feature-list">
+          <li>
+            <svg class="check-icon check-dim" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.25" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            1 workspace · 3 projects
+          </li>
+          <li>
+            <svg class="check-icon check-dim" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.25" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            3 tabs · 20 blocks per tab
+          </li>
+          <li>
+            <svg class="check-icon check-dim" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.25" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Shopify view (read-only)
+          </li>
+          <li>
+            <svg class="check-icon check-dim" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.25" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            5 AI actions / month
+          </li>
+        </ul>
+        <a class="cta-btn btn-ghost" href="#">Get started free</a>
+      </div>
+
+      <!-- SCALE (featured, center) -->
+      <div class="card featured">
+        <div class="popular-badge">Most popular</div>
+        <p class="card-tier">Business</p>
+        <h2 class="card-name">Scale</h2>
+        <p class="card-tagline">For teams running a full creative operation.</p>
+        <div class="price-block">
+          <div class="price-amount"><sup>$</sup><span class="price-val" data-m="25" data-a="20">25</span></div>
+          <p class="price-period">per user / month · billed <span class="billing-period">monthly</span></p>
+        </div>
+        <div class="divider"></div>
+        <p class="section-label">Workspace</p>
+        <ul class="feature-list">
+          <li><svg class="check-icon check-warm" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.25" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>Unlimited workspaces</li>
+          <li><svg class="check-icon check-warm" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.25" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>Unlimited projects, tabs & blocks</li>
+          <li><svg class="check-icon check-warm" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.25" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>Everything page — full brand view</li>
+          <li><svg class="check-icon check-warm" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.25" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>Configurable dashboard</li>
+          <li><svg class="check-icon check-warm" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.25" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>Cross-project charts & analytics</li>
+          <li><svg class="check-icon check-warm" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.25" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>Magic Links — shareable client views</li>
+        </ul>
+        <p class="section-label">AI</p>
+        <ul class="feature-list">
+          <li><svg class="check-icon check-warm" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.25" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>2,000 AI actions / month</li>
+          <li><svg class="check-icon check-warm" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.25" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>Cross-project AI — sees your full operation</li>
+          <li><svg class="check-icon check-warm" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.25" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>Prompt-to-action across all workspaces</li>
+        </ul>
+        <a class="cta-btn btn-cream" href="#">Start Scale plan</a>
+      </div>
+
+      <!-- GROWTH -->
+      <div class="card">
+        <p class="card-tier">Standard</p>
+        <h2 class="card-name">Growth</h2>
+        <p class="card-tagline">For active brands running campaigns and launches.</p>
+        <div class="price-block">
+          <div class="price-amount"><sup>$</sup><span class="price-val" data-m="15" data-a="12">15</span></div>
+          <p class="price-period">per user / month · billed <span class="billing-period">monthly</span></p>
+        </div>
+        <div class="divider"></div>
+        <p class="section-label">Workspace</p>
+        <ul class="feature-list">
+          <li><svg class="check-icon check-terracotta" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.25" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>1 workspace</li>
+          <li><svg class="check-icon check-terracotta" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.25" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>Unlimited projects, tabs & blocks</li>
+          <li><svg class="check-icon check-terracotta" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.25" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>Full Shopify data in context</li>
+          <li><svg class="check-icon check-terracotta" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.25" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>Magic Links — shareable client views</li>
+          <li><svg class="check-icon check-terracotta" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.25" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>Per-project charts & analytics</li>
+        </ul>
+        <p class="section-label">AI</p>
+        <ul class="feature-list">
+          <li><svg class="check-icon check-terracotta" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.25" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>500 AI actions / month</li>
+          <li><svg class="check-icon check-terracotta" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.25" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>AI scoped to project context</li>
+          <li><svg class="check-icon check-terracotta" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.25" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>Prompt-to-action (CMD+K)</li>
+        </ul>
+        <a class="cta-btn btn-terracotta" href="#">Start Growth plan</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ENTERPRISE -->
+  <section class="enterprise-section">
+    <div class="enterprise-band">
+      <div>
+        <h3>Built for larger operations.</h3>
+        <p>Running a multi-brand portfolio or agency? Trak Enterprise includes white-labeling, custom onboarding, dedicated support, and volume pricing — built around how you actually work.</p>
+      </div>
+      <a class="btn-ink" href="#">Talk to us →</a>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <p class="eyebrow">Common questions</p>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <h4>What counts as a workspace?</h4>
+        <p>A workspace is a container for one brand or Shopify store — its own projects, blocks, and Shopify connection. Scale plan users can create as many as they need.</p>
+      </div>
+      <div class="faq-item">
+        <h4>What's a Magic Link?</h4>
+        <p>Magic Links let you share a clean, client-facing view of any project with no login required. Clients see exactly what you want them to see, nothing more.</p>
+      </div>
+      <div class="faq-item">
+        <h4>What's the Everything page?</h4>
+        <p>A unified view across all your workspaces and projects — one place to see status, deadlines, and activity across your entire operation. Exclusive to the Scale plan.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Can I switch plans later?</h4>
+        <p>Yes, anytime. Upgrade or downgrade from your settings. If you downgrade, you keep access through the end of your billing period.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Is per-user pricing per seat?</h4>
+        <p>Yes — you're only billed for the people who have access. You can add or remove seats at any time and we'll prorate the difference.</p>
+      </div>
+      <div class="faq-item">
+        <h4>What happens to my data if I cancel?</h4>
+        <p>Your data stays accessible for 30 days after cancellation. You can export everything in that window. We never delete your work without notice.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <a class="logo" href="#">Trak</a>
+    <p>© 2025 Trak. Built for brands that move fast.</p>
+  </footer>
+
+  <script>
+    let isAnnual = false;
+
+    function toggleBilling() {
+      isAnnual = !isAnnual;
+      const track = document.getElementById('billing-toggle');
+      const lblMonthly = document.getElementById('lbl-monthly');
+      const lblAnnual = document.getElementById('lbl-annual');
+
+      track.classList.toggle('on', isAnnual);
+      lblMonthly.classList.toggle('active', !isAnnual);
+      lblAnnual.classList.toggle('active', isAnnual);
+
+      document.querySelectorAll('.price-val').forEach(el => {
+        el.textContent = isAnnual ? el.dataset.a : el.dataset.m;
+      });
+
+      document.querySelectorAll('.billing-period').forEach(el => {
+        el.textContent = isAnnual ? 'annually' : 'monthly';
+      });
+    }
+  </script>
+
+</body>
+</html>

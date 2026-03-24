@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trak — Connect</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #F5F0E8;
+  --warm-white: #FDFAF5;
+  --ink: #1A1612;
+  --ink-60: rgba(26,22,18,0.60);
+  --ink-40: rgba(26,22,18,0.40);
+  --ink-20: rgba(26,22,18,0.20);
+  --ink-10: rgba(26,22,18,0.10);
+  --ink-06: rgba(26,22,18,0.06);
+  --accent: #C4622D;
+  --accent-muted: rgba(196,98,45,0.10);
+  --sage: #7A8C7E;
+  --gold: #B8962E;
+  --slate: #7B9DC4;
+  --border: rgba(26,22,18,0.10);
+  --border-light: rgba(26,22,18,0.06);
+  --shopify: #96BF48;
+  --shopify-dim: rgba(150,191,72,0.10);
+  --shopify-border: rgba(150,191,72,0.20);
+  /* dark surfaces for mockups only */
+  --dark: #111009;
+  --dark-2: #181410;
+  --dark-3: #1E1A14;
+  --dark-border: rgba(245,240,232,0.08);
+  --dark-border-hi: rgba(245,240,232,0.12);
+  --ghost: rgba(245,240,232,0.55);
+  --ghost-dim: rgba(245,240,232,0.32);
+  --ghost-faint: rgba(245,240,232,0.15);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--warm-white);color:var(--ink);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.6;overflow-x:hidden;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(253,250,245,0.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:'Instrument Serif',serif;font-size:22px;letter-spacing:-0.02em;color:var(--ink);text-decoration:none;}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{font-size:13px;font-weight:400;color:var(--ink-60);text-decoration:none;transition:color .2s;}
+.nav-links a:hover{color:var(--ink);}
+.nav-cta{background:var(--ink)!important;color:var(--warm-white)!important;padding:9px 20px!important;border-radius:6px;transition:background .2s!important;}
+.nav-cta:hover{background:var(--accent)!important;}
+
+/* SECTION NAV */
+.section-nav{position:fixed;top:69px;left:0;right:0;z-index:99;background:var(--cream);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 48px;overflow-x:auto;}
+.sni{font-size:12px;font-weight:400;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-60);text-decoration:none;padding:14px 20px;border-bottom:2px solid transparent;white-space:nowrap;transition:color .2s,border-color .2s;}
+.sni:hover{color:var(--ink);}
+.sni.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:500;}
+
+/* SHARED */
+.eyebrow{font-family:'DM Mono',monospace;font-size:11px;font-weight:300;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:10px;margin-bottom:28px;}
+.eyebrow::before{content:'';display:block;width:24px;height:1px;background:var(--accent);}
+.mono-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+.mono-label-shopify{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--shopify);margin-bottom:12px;filter:saturate(0.8) brightness(0.75);}
+.detail-list{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.detail-list li{font-size:13px;font-weight:300;color:var(--ink-60);display:flex;align-items:flex-start;gap:8px;line-height:1.55;}
+.detail-list li::before{content:'—';color:var(--accent);flex-shrink:0;margin-top:1px;}
+.shopify-list{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.shopify-list li{font-size:13px;font-weight:300;color:var(--ink-60);display:flex;align-items:flex-start;gap:8px;line-height:1.55;}
+.shopify-list li::before{content:'—';color:rgba(110,165,40,0.6);flex-shrink:0;margin-top:1px;}
+.wd{width:10px;height:10px;border-radius:50%;}
+.wd.r{background:#FF5F57;}.wd.y{background:#FEBC2E;}.wd.g{background:#28C840;}
+/* light mock */
+.mock{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--warm-white);box-shadow:0 20px 64px rgba(26,22,18,0.07);}
+.topbar{display:flex;align-items:center;gap:8px;padding:11px 16px;background:var(--cream);border-bottom:1px solid var(--border);}
+.topbar-title{margin-left:8px;font-size:11px;font-weight:400;color:var(--ink-60);}
+/* dark mock — for AI/Shopify visuals */
+.mock-dark{border:1px solid var(--dark-border-hi);border-radius:14px;overflow:hidden;background:var(--dark-2);box-shadow:0 24px 80px rgba(0,0,0,0.35);}
+.dtopbar{display:flex;align-items:center;gap:8px;padding:11px 16px;background:var(--dark-3);border-bottom:1px solid var(--dark-border);}
+.dtopbar-title{margin-left:8px;font-size:11px;font-weight:400;color:var(--ghost-dim);}
+.divider{max-width:1400px;margin:0 auto;height:1px;background:var(--border);}
+.showcase{padding:80px 48px;max-width:1400px;margin:0 auto;}
+.showcase-row{display:grid;gap:72px;align-items:center;}
+.tl{grid-template-columns:400px 1fr;}
+.tr{grid-template-columns:1fr 400px;}
+.showcase-text h2{font-family:'Instrument Serif',serif;font-size:32px;letter-spacing:-0.025em;color:var(--ink);line-height:1.15;margin-bottom:14px;}
+.showcase-text h2 em{font-style:italic;color:var(--accent);}
+.showcase-text h2 em.shopify{font-style:italic;color:#6ea528;}
+.showcase-text p{font-size:15px;font-weight:300;line-height:1.8;color:var(--ink-60);margin-bottom:18px;}
+.showcase-text p strong{color:var(--ink);font-weight:500;}
+
+/* ── HERO ── */
+.hero{padding:168px 48px 0;max-width:1400px;margin:0 auto;}
+.hero-grid{display:grid;grid-template-columns:1fr 480px;gap:80px;align-items:end;padding-bottom:80px;border-bottom:1px solid var(--border);}
+.hero-hed{font-family:'Instrument Serif',serif;font-size:clamp(48px,5.6vw,80px);line-height:1.02;letter-spacing:-0.03em;color:var(--ink);}
+.hero-hed em{font-style:italic;color:#6ea528;}
+.hero-subhead{font-family:'Instrument Serif',serif;font-size:18px;letter-spacing:-0.01em;color:var(--ink);margin-bottom:14px;line-height:1.3;}
+.hero-desc{font-size:15px;font-weight:300;line-height:1.8;color:var(--ink-60);}
+.hero-desc strong{color:var(--ink);font-weight:500;}
+
+/* integration contrast pill */
+.integration-not{display:flex;align-items:center;gap:12px;margin-top:24px;flex-wrap:wrap;}
+.int-pill{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:400;}
+.int-pill.bad{background:var(--ink-06);border:1px solid var(--border);color:var(--ink-60);text-decoration:line-through;text-decoration-color:rgba(196,98,45,0.4);}
+.int-pill.good{background:rgba(110,165,40,0.08);border:1px solid rgba(110,165,40,0.2);color:#6ea528;}
+.int-arrow{color:var(--ink-40);font-size:16px;}
+
+/* ── SYNC DIAGRAM — dark contrast ── */
+.sync-wrap{padding-top:64px;}
+.sync-diagram{background:var(--dark-2);border:1px solid var(--dark-border-hi);border-radius:14px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.25);}
+.sync-header{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--dark-3);border-bottom:1px solid var(--dark-border);}
+.sync-title{font-size:11px;font-weight:400;color:var(--ghost-dim);}
+.sync-status{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--shopify);font-family:'DM Mono',monospace;}
+.sync-dot{width:5px;height:5px;border-radius:50%;background:var(--shopify);animation:spulse 1.8s ease-in-out infinite;}
+@keyframes spulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+.sync-pipeline{display:grid;grid-template-columns:1fr 56px 1fr;align-items:center;padding:20px 18px;gap:0;}
+.sync-source{border:1px solid var(--shopify-border);border-radius:10px;background:rgba(150,191,72,0.06);padding:14px 16px;}
+.sync-source-label{font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--shopify);margin-bottom:10px;display:flex;align-items:center;gap:5px;}
+.shopify-badge-icon{width:14px;height:14px;border-radius:3px;background:var(--shopify);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:8px;font-weight:700;color:white;}
+.sync-item{display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid rgba(150,191,72,0.08);font-size:10px;font-weight:300;color:rgba(150,191,72,0.6);}
+.sync-item:last-child{border-bottom:none;}
+.sync-item svg{width:10px;height:10px;stroke:rgba(150,191,72,0.45);stroke-width:1.5;fill:none;flex-shrink:0;}
+.sync-arrow-col{display:flex;flex-direction:column;align-items:center;gap:5px;}
+.sync-track{width:2px;height:56px;background:linear-gradient(to bottom,transparent,rgba(150,191,72,0.25),transparent);position:relative;overflow:hidden;}
+.sync-pulse{position:absolute;top:0;width:100%;height:35%;background:linear-gradient(to bottom,transparent,rgba(150,191,72,0.8),transparent);animation:flowdown 2s linear infinite;}
+.sync-pulse.d1{animation-delay:.7s;}
+@keyframes flowdown{from{top:-35%;}to{top:135%;}}
+.sync-arrow-lbl{font-family:'DM Mono',monospace;font-size:8px;color:var(--ghost-faint);letter-spacing:.05em;text-align:center;line-height:1.4;}
+.sync-dest{border:1px solid var(--dark-border-hi);border-radius:10px;background:rgba(245,240,232,0.03);padding:14px 16px;}
+.sync-dest-label{font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ghost);margin-bottom:10px;}
+.sync-dest-item{display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid var(--dark-border);font-size:10px;font-weight:300;color:var(--ghost-dim);}
+.sync-dest-item:last-child{border-bottom:none;}
+.sync-dest-item svg{width:10px;height:10px;stroke:var(--ghost-faint);stroke-width:1.5;fill:none;flex-shrink:0;}
+.sync-footer{display:flex;align-items:center;padding:9px 18px;border-top:1px solid var(--dark-border);font-size:10px;font-weight:300;color:var(--ghost-faint);font-family:'DM Mono',monospace;gap:6px;}
+.sync-updated{margin-left:auto;color:var(--shopify);font-size:9px;}
+
+/* ── PRODUCT BLOCK — light mock ── */
+.pb-canvas{padding:20px 24px;}
+.pb-page-title{font-family:'Instrument Serif',serif;font-size:19px;letter-spacing:-0.02em;color:var(--ink);margin-bottom:13px;}
+.pb-text{font-size:12.5px;font-weight:300;color:var(--ink-60);line-height:1.7;margin-bottom:12px;}
+.pb-text strong{color:var(--ink);font-weight:500;}
+.context-stub{border:1px solid var(--border);border-radius:7px;padding:8px 11px;margin-bottom:8px;font-size:11px;font-weight:300;color:var(--ink-60);}
+.context-stub-label{font-size:9px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-40);margin-bottom:4px;display:flex;align-items:center;gap:4px;}
+.context-stub-label svg{width:9px;height:9px;stroke:currentColor;stroke-width:2;fill:none;}
+/* product embed block */
+.product-embed{border:1px solid var(--border);border-radius:9px;overflow:hidden;margin-bottom:8px;}
+.pe-header{display:flex;align-items:center;gap:7px;padding:8px 12px;background:var(--cream);border-bottom:1px solid var(--border);}
+.pe-shopify-tag{display:flex;align-items:center;gap:4px;padding:2px 7px;border-radius:3px;background:rgba(110,165,40,0.08);border:1px solid rgba(110,165,40,0.18);font-size:9px;font-weight:500;color:#6ea528;font-family:'DM Mono',monospace;}
+.pe-shopify-tag .si{width:12px;height:12px;border-radius:2px;background:var(--shopify);display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:white;}
+.pe-product-name{font-size:11px;font-weight:500;color:var(--ink);flex:1;}
+.pe-sku{font-size:9px;font-weight:300;color:var(--ink-40);font-family:'DM Mono',monospace;}
+.pe-body{display:grid;grid-template-columns:96px 1fr;}
+.pe-img{background:linear-gradient(135deg,#F0DDD2,#E4C4AD);display:flex;align-items:center;justify-content:center;min-height:100px;}
+.pe-details{padding:10px 13px;display:flex;flex-direction:column;gap:5px;}
+.pe-row{display:flex;align-items:center;justify-content:space-between;font-size:11px;}
+.pe-lbl{font-weight:300;color:var(--ink-60);}
+.pe-val{font-weight:500;color:var(--ink);}
+.pe-val.green{color:#1a9e30;}
+.pe-variants{display:flex;gap:4px;margin-top:3px;flex-wrap:wrap;}
+.pe-variant{padding:2px 6px;border-radius:3px;font-size:9px;border:1px solid var(--border);color:var(--ink-60);background:var(--cream);}
+
+/* ── PROJECT FROM PRODUCT ── */
+.pfp-wrap{display:flex;flex-direction:column;gap:3px;}
+.shopify-card{background:rgba(110,165,40,0.06);border:1px solid rgba(110,165,40,0.18);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px;}
+.sc-img{width:44px;height:44px;border-radius:7px;background:linear-gradient(135deg,#F0DDD2,#E4C4AD);flex-shrink:0;}
+.sc-info{flex:1;}
+.sc-name{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:2px;}
+.sc-meta{font-size:10px;font-weight:300;color:var(--ink-60);}
+.sc-btn{padding:6px 12px;border-radius:5px;background:#6ea528;border:none;color:white;font-size:11px;font-weight:400;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:5px;white-space:nowrap;}
+.sc-btn svg{width:11px;height:11px;stroke:white;stroke-width:2;fill:none;}
+.pfp-arrow{display:flex;align-items:center;justify-content:center;gap:8px;padding:5px 0;font-size:10px;font-weight:300;color:var(--ink-40);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.pfp-arrow-line{flex:1;height:1px;background:var(--border);}
+.trak-born-card{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--warm-white);}
+.tbc-header{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--cream);border-bottom:1px solid var(--border);}
+.tbc-title{font-size:13px;font-weight:500;color:var(--ink);}
+.tbc-badge{font-size:9px;padding:2px 7px;border-radius:3px;background:rgba(110,165,40,0.08);border:1px solid rgba(110,165,40,0.18);color:#6ea528;font-family:'DM Mono',monospace;}
+.tbc-body{padding:12px 14px;display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.tbc-item{font-size:10px;font-weight:300;color:var(--ink-60);display:flex;align-items:flex-start;gap:5px;line-height:1.5;}
+.tbc-item svg{width:10px;height:10px;stroke:#6ea528;stroke-width:1.5;fill:none;flex-shrink:0;margin-top:1px;}
+.tbc-item.faint svg{stroke:var(--ink-40);}
+.tbc-item.faint{color:var(--ink-40);}
+.tbc-footer{padding:8px 14px;border-top:1px solid var(--border);display:flex;gap:5px;flex-wrap:wrap;}
+.tbc-tab{padding:4px 9px;border-radius:4px;background:var(--cream);border:1px solid var(--border);font-size:10px;font-weight:400;color:var(--ink-60);}
+
+/* ── SALES ANALYTICS — dark mock ── */
+.sales-header-area{padding:14px 16px;border-bottom:1px solid var(--dark-border);}
+.sales-prod-row{display:flex;align-items:center;gap:10px;}
+.sales-prod-thumb{width:36px;height:36px;border-radius:6px;background:linear-gradient(135deg,#F0DDD2,#E4C4AD);}
+.sales-prod-name{font-size:13px;font-weight:500;color:var(--ghost);}
+.sales-prod-sku{font-size:10px;font-weight:300;color:var(--ghost-dim);font-family:'DM Mono',monospace;}
+.sales-live{margin-left:auto;display:flex;align-items:center;gap:4px;font-size:9px;color:var(--shopify);font-family:'DM Mono',monospace;}
+.sales-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--dark-border);border-top:1px solid var(--dark-border);border-bottom:1px solid var(--dark-border);}
+.ss{background:var(--dark-2);padding:13px 14px;}
+.ss-val{font-family:'Instrument Serif',serif;font-size:24px;letter-spacing:-0.02em;color:var(--ghost);margin-bottom:2px;}
+.ss-lbl{font-size:9px;font-weight:300;color:var(--ghost-faint);letter-spacing:.04em;text-transform:uppercase;margin-bottom:3px;}
+.ss-delta{font-size:10px;font-weight:400;}
+.ss-delta.up{color:var(--shopify);}
+.ss-delta.down{color:var(--accent);}
+.sales-chart-area{padding:14px 16px;}
+.sales-chart-label{font-size:9px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--ghost-faint);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
+.drt-tabs{display:flex;gap:2px;}
+.drt{padding:2px 7px;border-radius:3px;font-size:9px;color:var(--ghost-faint);cursor:pointer;}
+.drt.active{background:rgba(245,240,232,0.07);color:var(--ghost);}
+.line-area{height:70px;margin-bottom:10px;}
+.variant-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--dark-border);}
+.variant-row:last-child{border-bottom:none;}
+.variant-name{font-size:11px;font-weight:300;color:var(--ghost-dim);flex:1;}
+.variant-track{width:90px;height:4px;background:rgba(245,240,232,0.06);border-radius:2px;overflow:hidden;}
+.variant-fill{height:100%;border-radius:2px;background:rgba(150,191,72,0.6);}
+.variant-units{font-size:11px;font-weight:400;color:var(--ghost);font-family:'DM Mono',monospace;text-align:right;min-width:36px;}
+
+/* ── AI CATALOG — dark mock ── */
+.ai-chat{padding:14px 16px;display:flex;flex-direction:column;gap:8px;}
+.ai-user{align-self:flex-end;background:rgba(245,240,232,0.07);border:1px solid var(--dark-border-hi);padding:8px 12px;border-radius:9px 9px 2px 9px;font-size:11px;font-weight:300;color:var(--ghost);font-family:'DM Mono',monospace;letter-spacing:.01em;max-width:88%;}
+.ai-user .q{color:rgba(150,191,72,0.55);margin-right:4px;}
+.ai-resp{display:flex;gap:8px;}
+.ai-av{width:22px;height:22px;border-radius:5px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;font-size:11px;color:white;flex-shrink:0;}
+.ai-resp-body{flex:1;}
+.ai-resp-text{font-size:11.5px;font-weight:300;color:var(--ghost-dim);line-height:1.65;margin-bottom:8px;}
+.ai-resp-text strong{color:var(--ghost);font-weight:500;}
+/* product table */
+.ai-table-block{border:1px solid var(--dark-border-hi);border-radius:7px;overflow:hidden;}
+.atb-head{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:rgba(245,240,232,0.04);border-bottom:1px solid var(--dark-border);}
+.atb-label{font-size:9px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--ghost-faint);}
+.atb-live{font-size:9px;color:var(--shopify);font-family:'DM Mono',monospace;display:flex;align-items:center;gap:4px;}
+.atb-live-dot{width:5px;height:5px;border-radius:50%;background:var(--shopify);animation:spulse 1.8s ease-in-out infinite;}
+table.apt{width:100%;border-collapse:collapse;}
+table.apt th{padding:6px 10px;font-size:8.5px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--ghost-faint);border-bottom:1px solid var(--dark-border);text-align:left;}
+table.apt td{padding:7px 10px;font-size:10px;font-weight:300;color:var(--ghost-dim);border-bottom:1px solid rgba(245,240,232,0.04);}
+table.apt tr:last-child td{border-bottom:none;}
+table.apt .tn{color:var(--ghost);font-weight:400;}
+table.apt .tu{color:var(--shopify);font-weight:400;}
+table.apt .td{color:var(--accent);font-weight:400;}
+.ai-input-row{display:flex;align-items:center;gap:7px;padding:10px 14px;border-top:1px solid var(--dark-border);}
+.ai-input{flex:1;background:rgba(245,240,232,0.05);border:1px solid var(--dark-border-hi);border-radius:6px;padding:7px 10px;font-size:11px;font-family:'DM Mono',monospace;color:var(--ghost-dim);outline:none;}
+.ai-send{padding:6px 12px;border-radius:5px;background:var(--accent);border:none;color:white;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+
+/* ── REST OF STACK — cream section ── */
+.stack-section{background:var(--cream);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 48px;}
+.stack-inner{max-width:1400px;margin:0 auto;}
+.stack-header{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:56px;}
+.stack-hed{font-family:'Instrument Serif',serif;font-size:40px;letter-spacing:-0.025em;color:var(--ink);line-height:1.1;}
+.stack-hed em{font-style:italic;color:var(--accent);}
+.stack-desc{font-size:15px;font-weight:300;line-height:1.8;color:var(--ink-60);}
+.stack-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.stack-card{background:var(--warm-white);border:1px solid var(--border);border-radius:12px;padding:22px 20px;transition:box-shadow .2s,transform .2s;cursor:default;}
+.stack-card:hover{box-shadow:0 8px 24px rgba(26,22,18,0.07);transform:translateY(-2px);}
+.stack-card-icon{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:19px;margin-bottom:14px;border:1px solid var(--border);background:var(--cream);}
+.stack-card-name{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:6px;}
+.stack-card-body{font-size:12.5px;font-weight:300;color:var(--ink-60);line-height:1.65;}
+.stack-card-body strong{color:var(--ink);font-weight:500;}
+
+/* ── FEATURE GRID ── */
+.features-section{padding:80px 48px;max-width:1400px;margin:0 auto;}
+.features-header{margin-bottom:48px;}
+.features-hed{font-family:'Instrument Serif',serif;font-size:36px;letter-spacing:-0.025em;color:var(--ink);margin-bottom:10px;}
+.features-hed em{font-style:italic;color:#6ea528;}
+.features-sub{font-size:15px;font-weight:300;color:var(--ink-60);max-width:520px;line-height:1.7;}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.feat-card{background:var(--warm-white);padding:32px 28px;position:relative;transition:background .2s;cursor:default;}
+.feat-card:hover{background:var(--cream);}
+.feat-card:hover .feat-icon{background:var(--accent);border-color:var(--accent);}
+.feat-card:hover .feat-icon svg{stroke:white;}
+.feat-card:hover .feat-icon.shopify-hover{background:rgba(110,165,40,0.15);border-color:rgba(110,165,40,0.25);}
+.feat-card:hover .feat-icon.shopify-hover svg{stroke:#6ea528;}
+.feat-icon{width:38px;height:38px;border-radius:8px;border:1px solid var(--border);background:var(--cream);display:flex;align-items:center;justify-content:center;margin-bottom:16px;transition:all .2s;}
+.feat-icon svg{width:16px;height:16px;stroke:var(--ink-60);stroke-width:1.5;fill:none;transition:stroke .2s;}
+.feat-tag{position:absolute;top:14px;right:14px;font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-40);}
+.feat-title{font-family:'Instrument Serif',serif;font-size:19px;letter-spacing:-0.02em;color:var(--ink);margin-bottom:9px;line-height:1.2;}
+.feat-body{font-size:13px;font-weight:300;line-height:1.7;color:var(--ink-60);}
+.feat-body strong{color:var(--ink);font-weight:500;}
+
+/* ── CLOSING CALLOUT ── */
+.closing{background:var(--ink);padding:120px 48px;position:relative;overflow:hidden;}
+.closing::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:900px;height:500px;border-radius:50%;background:radial-gradient(ellipse,rgba(150,191,72,0.05) 0%,transparent 65%);pointer-events:none;}
+.closing::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;border-radius:50%;background:radial-gradient(ellipse,rgba(196,98,45,0.04) 0%,transparent 65%);pointer-events:none;}
+.closing-inner{max-width:860px;margin:0 auto;text-align:center;position:relative;z-index:1;}
+.closing-label{font-family:'DM Mono',monospace;font-size:10px;font-weight:300;letter-spacing:.14em;text-transform:uppercase;color:rgba(245,240,232,0.3);margin-bottom:32px;}
+.closing-quote{font-family:'Instrument Serif',serif;font-size:clamp(28px,3.8vw,52px);line-height:1.25;letter-spacing:-0.025em;color:var(--cream);margin-bottom:48px;}
+.closing-quote em{font-style:italic;color:rgba(150,191,72,0.8);}
+.closing-rule{width:60px;height:1px;background:rgba(245,240,232,0.1);margin:0 auto 48px;}
+.closing-actions{display:flex;align-items:center;justify-content:center;gap:14px;}
+.btn-shopify{background:#6ea528;color:white;padding:14px 28px;border-radius:8px;font-size:15px;font-weight:400;text-decoration:none;transition:opacity .2s;display:flex;align-items:center;gap:7px;}
+.btn-shopify:hover{opacity:.88;}
+.btn-shopify svg{width:14px;height:14px;stroke:white;stroke-width:2;fill:none;}
+.btn-ghost-light{color:rgba(245,240,232,0.4);padding:14px 28px;border-radius:8px;font-size:15px;font-weight:400;text-decoration:none;display:flex;align-items:center;gap:6px;border:1px solid rgba(245,240,232,0.12);transition:color .2s,border-color .2s;}
+.btn-ghost-light:hover{color:var(--cream);border-color:rgba(245,240,232,0.3);}
+
+/* FOOTER */
+.footer-bar{border-top:1px solid var(--border);padding:28px 48px;background:var(--warm-white);}
+.footer-bar-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.footer-logo{font-family:'Instrument Serif',serif;font-size:18px;letter-spacing:-0.02em;color:var(--ink-60);}
+.footer-links{display:flex;gap:24px;}
+.footer-links a{font-size:12px;font-weight:300;color:var(--ink-40);text-decoration:none;transition:color .2s;}
+.footer-links a:hover{color:var(--ink-60);}
+
+/* animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.fu{animation:fadeUp .7s cubic-bezier(.16,1,.3,1) both;}
+.d1{animation-delay:.1s;}.d2{animation-delay:.22s;}.d3{animation-delay:.36s;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Trak</a>
+  <ul class="nav-links">
+    <li><a href="#">Product</a></li>
+    <li><a href="#">Templates</a></li>
+    <li><a href="#">Pricing</a></li>
+    <li><a href="#" class="nav-cta">Get started</a></li>
+  </ul>
+</nav>
+
+<div class="section-nav">
+  <a href="#" class="sni">01 — Organize</a>
+  <a href="#" class="sni">02 — Create</a>
+  <a href="#" class="sni">03 — Intelligent Action</a>
+  <a href="#" class="sni">04 — Collaborate</a>
+  <a href="#" class="sni active">05 — Connect</a>
+</div>
+
+<!-- ═══════════════════════ HERO ═══════════════════════ -->
+<div class="hero">
+  <div class="eyebrow fu d1">05 — Connect</div>
+  <div class="hero-grid">
+    <div class="fu d2">
+      <h1 class="hero-hed">Trak doesn't integrate<br>with Shopify.<br><em>It's built around it.</em></h1>
+    </div>
+    <div class="fu d3">
+      <p class="hero-subhead">Most tools bolt Shopify on as an afterthought.</p>
+      <p class="hero-desc">A widget in a sidebar, a one-way data sync you have to babysit. Trak treats your Shopify store as a <strong>first-class part of the workspace.</strong> Products, inventory, variants, sales data — all live inside Trak, updated in the background, queryable by AI, and connected to the projects and timelines where the actual work happens.</p>
+      <div class="integration-not">
+        <span class="int-pill bad">Shopify integration</span>
+        <span class="int-arrow">→</span>
+        <span class="int-pill good">
+          <span style="width:12px;height:12px;border-radius:2px;background:var(--shopify);display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:white;flex-shrink:0;">S</span>
+          Built around Shopify
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SYNC DIAGRAM — dark contrast element -->
+  <div class="sync-wrap">
+    <div class="sync-diagram">
+      <div class="sync-header">
+        <span class="sync-title">Background sync engine — Shopify → Trak</span>
+        <div class="sync-status"><span class="sync-dot"></span>Live · syncing now</div>
+      </div>
+      <div class="sync-pipeline">
+        <div class="sync-source">
+          <div class="sync-source-label"><span class="shopify-badge-icon">S</span> Shopify Store</div>
+          <div class="sync-item"><svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/></svg>Products &amp; variants</div>
+          <div class="sync-item"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Per-location inventory</div>
+          <div class="sync-item"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Orders &amp; sales data</div>
+          <div class="sync-item"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/></svg>Product media</div>
+        </div>
+        <div class="sync-arrow-col">
+          <div class="sync-track"><div class="sync-pulse"></div></div>
+          <div class="sync-arrow-lbl">continuous<br>sync</div>
+          <div class="sync-track"><div class="sync-pulse d1"></div></div>
+        </div>
+        <div class="sync-dest">
+          <div class="sync-dest-label">Trak Workspace</div>
+          <div class="sync-dest-item"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="3" x2="9" y2="21"/></svg>Product blocks in any project</div>
+          <div class="sync-dest-item"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Live sales analytics</div>
+          <div class="sync-dest-item"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>AI-queryable catalog</div>
+          <div class="sync-dest-item"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Project-attached context</div>
+        </div>
+      </div>
+      <div class="sync-footer">
+        <span>Not a snapshot.</span>
+        <span style="color:var(--dark-border-hi);">·</span>
+        <span>A living connection.</span>
+        <span class="sync-updated">Last sync: 4 seconds ago</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ PRODUCT BLOCKS ═══════════════════════ -->
+<section class="showcase" style="padding-top:80px;">
+  <div class="showcase-row tr">
+    <!-- VISUAL: light mock -->
+    <div class="mock">
+      <div class="topbar">
+        <span class="wd r"></span><span class="wd y"></span><span class="wd g"></span>
+        <span class="topbar-title">Glow Serum Launch — Brief</span>
+      </div>
+      <div class="pb-canvas">
+        <div class="pb-page-title">Glow Serum — Q2 Launch Brief</div>
+        <div class="pb-text">The positioning shifts from "skincare routine" to <strong>"morning ritual."</strong> Every creative decision should serve that frame.</div>
+        <div class="context-stub" style="margin-bottom:10px;">
+          <div class="context-stub-label"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/></svg>Timeline · Apr 21 ship date · 7 days out</div>
+        </div>
+        <div class="product-embed">
+          <div class="pe-header">
+            <span class="pe-shopify-tag"><span class="si">S</span>Shopify · Live</span>
+            <span class="pe-product-name">Glow Serum — 30ml</span>
+            <span class="pe-sku">GLOW-30ML</span>
+          </div>
+          <div class="pe-body">
+            <div class="pe-img">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(196,98,45,0.2)" stroke-width="1"><rect x="2" y="2" width="20" height="20" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </div>
+            <div class="pe-details">
+              <div class="pe-row"><span class="pe-lbl">Price</span><span class="pe-val">$48.00</span></div>
+              <div class="pe-row"><span class="pe-lbl">In stock</span><span class="pe-val green">1,240 units</span></div>
+              <div class="pe-row"><span class="pe-lbl">Units sold (MTD)</span><span class="pe-val">1,840</span></div>
+              <div class="pe-row"><span class="pe-lbl">Status</span><span class="pe-val" style="color:var(--sage);">Active</span></div>
+              <div class="pe-variants">
+                <span class="pe-variant">30ml</span><span class="pe-variant">50ml</span><span class="pe-variant" style="color:var(--ink-40);">+1</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="context-stub">
+          <div class="context-stub-label"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>Influencer Deliverables · 14 of 16 received</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="showcase-text">
+      <p class="mono-label-shopify">Shopify Product Blocks</p>
+      <h2>Product details, variants, units sold — right next to the <em class="shopify">launch timeline.</em></h2>
+      <p>Embed a Shopify product into any project. See product details, variant data, and units sold — right next to the creative brief, the influencer deliverables, and the launch timeline.</p>
+      <p><strong>The product and the work about the product — finally in the same place.</strong></p>
+      <ul class="shopify-list">
+        <li>Embed any Shopify product into any project tab</li>
+        <li>Live data — price, stock, variants, units sold</li>
+        <li>Product context updates in the background automatically</li>
+        <li>Link directly to Shopify admin if you need to go deeper</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════ PROJECT FROM PRODUCT ═══════════════════════ -->
+<section class="showcase" style="border-top:1px solid var(--border);padding-top:80px;">
+  <div class="showcase-row tl">
+    <div class="showcase-text">
+      <p class="mono-label-shopify">Project From Product</p>
+      <h2>Born with product context <em class="shopify">already attached.</em></h2>
+      <p>Create a Trak project directly from a Shopify product. The project is born with product context already attached — no copy-pasting SKUs, no linking spreadsheets, no setting up from scratch.</p>
+      <ul class="shopify-list">
+        <li>One click from any Shopify product to a Trak project</li>
+        <li>SKU, variants, inventory, and price pre-attached</li>
+        <li>Default tabs generated from a product launch template</li>
+        <li>Product block embedded on the overview tab automatically</li>
+      </ul>
+    </div>
+
+    <div class="pfp-wrap">
+      <div class="shopify-card">
+        <div class="sc-img"></div>
+        <div class="sc-info">
+          <div class="sc-name">Glow Serum — 30ml</div>
+          <div class="sc-meta">SKU: GLOW-30ML · Active · 1,240 in stock</div>
+        </div>
+        <button class="sc-btn">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+          Create Trak project
+        </button>
+      </div>
+
+      <div class="pfp-arrow">
+        <div class="pfp-arrow-line"></div>
+        <span style="white-space:nowrap;padding:0 10px;font-size:10px;font-weight:300;color:var(--ink-40);">Project created</span>
+        <div class="pfp-arrow-line"></div>
+      </div>
+
+      <div class="trak-born-card">
+        <div class="tbc-header">
+          <span class="tbc-title">Glow Serum — Launch</span>
+          <span class="tbc-badge">From Shopify</span>
+        </div>
+        <div class="tbc-body">
+          <div class="tbc-item"><svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/></svg>SKU: GLOW-30ML</div>
+          <div class="tbc-item"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>1,240 units · 2 variants</div>
+          <div class="tbc-item"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>$48.00 · Active</div>
+          <div class="tbc-item"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Sales synced</div>
+          <div class="tbc-item faint"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="3" x2="9" y2="21"/></svg>Overview tab ready</div>
+          <div class="tbc-item faint"><svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/></svg>Default tasks added</div>
+        </div>
+        <div class="tbc-footer">
+          <span class="tbc-tab">Overview</span>
+          <span class="tbc-tab">Brief</span>
+          <span class="tbc-tab">Tasks</span>
+          <span class="tbc-tab">Timeline</span>
+          <span class="tbc-tab" style="color:var(--ink-40);">+ Add tab</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════ SALES ANALYTICS ═══════════════════════ -->
+<section class="showcase" style="border-top:1px solid var(--border);padding-top:80px;">
+  <div class="showcase-row tr">
+    <!-- dark mock as contrast -->
+    <div class="mock-dark">
+      <div class="dtopbar">
+        <span class="wd r"></span><span class="wd y"></span><span class="wd g"></span>
+        <span class="dtopbar-title">Glow Serum — Sales Analytics</span>
+        <span style="margin-left:auto;display:flex;align-items:center;gap:4px;font-size:9px;color:var(--shopify);font-family:'DM Mono',monospace;"><span class="sync-dot"></span>Shopify · live</span>
+      </div>
+      <div class="sales-header-area">
+        <div class="sales-prod-row">
+          <div class="sales-prod-thumb"></div>
+          <div>
+            <div class="sales-prod-name">Glow Serum — 30ml</div>
+            <div class="sales-prod-sku">GLOW-30ML</div>
+          </div>
+        </div>
+      </div>
+      <div class="sales-stats">
+        <div class="ss"><div class="ss-lbl">Units sold</div><div class="ss-val">1,840</div><div class="ss-delta up">↑ 12%</div></div>
+        <div class="ss"><div class="ss-lbl">Revenue</div><div class="ss-val">$88K</div><div class="ss-delta up">↑ 9%</div></div>
+        <div class="ss"><div class="ss-lbl">Avg. order</div><div class="ss-val">$68</div><div class="ss-delta up">↑ 4%</div></div>
+        <div class="ss"><div class="ss-lbl">In stock</div><div class="ss-val">1,240</div><div class="ss-delta down">↓ 600</div></div>
+      </div>
+      <div class="sales-chart-area">
+        <div class="sales-chart-label">
+          Units sold — daily
+          <div class="drt-tabs"><span class="drt">7d</span><span class="drt active">30d</span><span class="drt">90d</span></div>
+        </div>
+        <div class="line-area">
+          <svg viewBox="0 0 500 70" preserveAspectRatio="none" style="width:100%;height:100%;">
+            <defs>
+              <linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="rgba(150,191,72,0.22)"/>
+                <stop offset="100%" stop-color="rgba(150,191,72,0)"/>
+              </linearGradient>
+            </defs>
+            <path d="M0,58 C40,55 70,48 100,44 S150,50 180,36 S230,26 260,22 S310,28 340,18 S400,12 440,15 S480,9 500,8 L500,70 L0,70 Z" fill="url(#sg)"/>
+            <path d="M0,58 C40,55 70,48 100,44 S150,50 180,36 S230,26 260,22 S310,28 340,18 S400,12 440,15 S480,9 500,8" fill="none" stroke="rgba(150,191,72,0.65)" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div style="border-top:1px solid var(--dark-border);padding-top:10px;">
+          <div style="font-size:9px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--ghost-faint);margin-bottom:7px;">By variant</div>
+          <div class="variant-row"><span class="variant-name">30ml</span><div class="variant-track"><div class="variant-fill" style="width:80%;"></div></div><span class="variant-units">1,472</span></div>
+          <div class="variant-row"><span class="variant-name">50ml</span><div class="variant-track"><div class="variant-fill" style="width:46%;"></div></div><span class="variant-units">368</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="showcase-text">
+      <p class="mono-label-shopify">Sales Analytics</p>
+      <h2>Know how a product is performing without <em class="shopify">leaving your workspace.</em></h2>
+      <p>Units sold computed from Shopify orders, cached hourly, with background processing for longer date ranges. Revenue, velocity, variant breakdown — all inside the project where the work is happening.</p>
+      <ul class="shopify-list">
+        <li>Units sold computed directly from Shopify orders</li>
+        <li>Cached hourly — always fresh, never slow</li>
+        <li>Revenue, AOV, and variant breakdown in one view</li>
+        <li>Daily, 30-day, and 90-day ranges on demand</li>
+        <li>No Shopify admin redirect needed</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════ AI CATALOG ═══════════════════════ -->
+<section class="showcase" style="border-top:1px solid var(--border);padding-top:80px;">
+  <div class="showcase-row tl">
+    <div class="showcase-text">
+      <p class="mono-label-shopify">AI That Knows Your Catalog</p>
+      <h2>Ask how a product did. Get an answer, not a <em class="shopify">redirect.</em></h2>
+      <p>Search products, look up details, pull sales data, and build product tables — all through the AI layer. Ask "how did Glow Serum do last month" and get an actual answer pulled from live Shopify data.</p>
+      <ul class="shopify-list">
+        <li>Natural language queries against your full product catalog</li>
+        <li>AI pulls live Shopify data directly in the response</li>
+        <li>Build product comparison tables from a question</li>
+        <li>Results land on the page as blocks — not just chat text</li>
+      </ul>
+    </div>
+
+    <!-- dark mock -->
+    <div class="mock-dark">
+      <div class="dtopbar">
+        <span class="wd r"></span><span class="wd y"></span><span class="wd g"></span>
+        <span class="dtopbar-title">AI — Workspace search</span>
+        <span style="margin-left:auto;font-size:9px;color:var(--shopify);font-family:'DM Mono',monospace;display:flex;align-items:center;gap:4px;"><span class="sync-dot"></span>Shopify connected</span>
+      </div>
+      <div class="ai-chat">
+        <div class="ai-user"><span class="q">›</span> how did Glow Serum do last month</div>
+        <div class="ai-resp">
+          <div class="ai-av">T</div>
+          <div class="ai-resp-body">
+            <div class="ai-resp-text"><strong>Glow Serum sold 1,840 units</strong> last month — up 12% vs prior month. Revenue was $88K, AOV $68. The 30ml drove 80% of volume. Stock is at 1,240 units as of this morning.</div>
+          </div>
+        </div>
+        <div class="ai-user"><span class="q">›</span> compare all active products by units sold this month</div>
+        <div class="ai-resp">
+          <div class="ai-av">T</div>
+          <div class="ai-resp-body">
+            <div class="ai-resp-text"><strong>Product table built from your Shopify catalog</strong> — live data, sorted by units.</div>
+            <div class="ai-table-block">
+              <div class="atb-head">
+                <span class="atb-label">Product comparison — April 2025</span>
+                <span class="atb-live"><span class="atb-live-dot"></span>Shopify · live</span>
+              </div>
+              <table class="apt">
+                <thead><tr><th>Product</th><th>Units</th><th>Revenue</th><th>vs. last mo.</th></tr></thead>
+                <tbody>
+                  <tr><td class="tn">Glow Serum 30ml</td><td>1,840</td><td>$88K</td><td class="tu">↑ 12%</td></tr>
+                  <tr><td class="tn">SPF Drops</td><td>1,204</td><td>$60K</td><td class="tu">↑ 4%</td></tr>
+                  <tr><td class="tn">Cleanser</td><td>986</td><td>$34K</td><td class="td">↓ 6%</td></tr>
+                  <tr><td class="tn">Eye Cream</td><td>442</td><td>$31K</td><td class="tu">↑ 22%</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ai-input-row">
+        <input class="ai-input" placeholder="Ask anything about your catalog…"/>
+        <button class="ai-send">Ask</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ REST OF STACK ═══════════════════════ -->
+<section class="stack-section">
+  <div class="stack-inner">
+    <div class="stack-header">
+      <div>
+        <p class="mono-label" style="margin-bottom:12px;">And the rest of your stack</p>
+        <h2 class="stack-hed">Shopify is first-class.<br><em>Everything else connects.</em></h2>
+      </div>
+      <p class="stack-desc">Google Drive stays your file source of truth. Google Calendar merges with your project timeline. Slack runs Trak commands from any channel. CSV data imports directly into tables.</p>
+    </div>
+    <div class="stack-grid">
+      <div class="stack-card">
+        <div class="stack-card-icon">📁</div>
+        <div class="stack-card-name">Google Drive</div>
+        <div class="stack-card-body">Stays your file source of truth. Link assets and preview them <strong>inline in Trak</strong> without duplicating storage.</div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-card-icon">📅</div>
+        <div class="stack-card-name">Google Calendar</div>
+        <div class="stack-card-body">Merges with your project timeline and calendar view. <strong>One place to see</strong> tasks, deadlines, and meetings.</div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-card-icon" style="font-size:16px;">#</div>
+        <div class="stack-card-name">Slack</div>
+        <div class="stack-card-body">Run Trak commands from any channel. <strong>Create tasks, check statuses,</strong> and get updates without leaving Slack.</div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-card-icon">📊</div>
+        <div class="stack-card-name">CSV Import</div>
+        <div class="stack-card-body">Import CSV data directly into Trak tables. <strong>Clean, map, and query</strong> your data inside the workspace immediately.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ FEATURE CARDS ═══════════════════════ -->
+<section class="features-section">
+  <div class="features-header">
+    <h2 class="features-hed">Six ways Shopify lives <em>inside your workspace.</em></h2>
+    <p class="features-sub">Not synced to a sidebar. Not linked in a doc. First-class, queryable, and connected to every project where the work actually happens.</p>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <span class="feat-tag">Sync</span>
+      <div class="feat-icon shopify-hover"><svg viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div>
+      <h3 class="feat-title">Deep Shopify Sync</h3>
+      <p class="feat-body">Products, variants, per-location inventory, and sales data — imported and <strong>continuously synced</strong> through a background engine. Not a snapshot. A living connection.</p>
+    </div>
+    <div class="feat-card">
+      <span class="feat-tag">Blocks</span>
+      <div class="feat-icon shopify-hover"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+      <h3 class="feat-title">Shopify Product Blocks</h3>
+      <p class="feat-body">Embed a Shopify product into any project. See <strong>product details, variant data, and units sold</strong> — right next to the launch timeline and the creative brief.</p>
+    </div>
+    <div class="feat-card">
+      <span class="feat-tag">Projects</span>
+      <div class="feat-icon shopify-hover"><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
+      <h3 class="feat-title">Project From Product</h3>
+      <p class="feat-body">Create a Trak project directly from a Shopify product. <strong>Born with product context already attached</strong> — no copy-pasting SKUs or linking spreadsheets.</p>
+    </div>
+    <div class="feat-card">
+      <span class="feat-tag">Analytics</span>
+      <div class="feat-icon shopify-hover"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg></div>
+      <h3 class="feat-title">Sales Analytics</h3>
+      <p class="feat-body">Units sold computed from Shopify orders, <strong>cached hourly</strong>, with background processing for longer date ranges. Know how a product is performing without leaving your workspace.</p>
+    </div>
+    <div class="feat-card">
+      <span class="feat-tag">AI</span>
+      <div class="feat-icon shopify-hover"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      <h3 class="feat-title">AI That Knows Your Catalog</h3>
+      <p class="feat-body">Search products, pull sales data, and build product tables through the AI layer. Ask <strong>"how did Glow Serum do last month"</strong> and get an answer — not a redirect to Shopify admin.</p>
+    </div>
+    <div class="feat-card">
+      <span class="feat-tag">Stack</span>
+      <div class="feat-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+      <h3 class="feat-title">And The Rest Of Your Stack</h3>
+      <p class="feat-body">Google Drive, Google Calendar, Slack, and CSV import. <strong>Your tools stay connected</strong> without becoming yet another tab to manage.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ CLOSING CALLOUT ═══════════════════════ -->
+<section class="closing">
+  <div class="closing-inner">
+    <p class="closing-label">05 — Connect</p>
+    <p class="closing-quote">
+      "Every D2C brand runs on Shopify.<br>
+      Every D2C team manages work<br>
+      <em>somewhere else.</em><br>
+      Trak is the first tool that treats<br>
+      those as the same problem."
+    </p>
+    <div class="closing-rule"></div>
+    <div class="closing-actions">
+      <a href="#" class="btn-shopify">
+        <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        Start with Shopify
+      </a>
+      <a href="#" class="btn-ghost-light">See all features</a>
+    </div>
+  </div>
+</section>
+
+<div class="footer-bar">
+  <div class="footer-bar-inner">
+    <span class="footer-logo">Trak</span>
+    <div class="footer-links">
+      <a href="#">Product</a>
+      <a href="#">Templates</a>
+      <a href="#">Pricing</a>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trak — Intelligent Action</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #F5F0E8;
+  --warm-white: #FDFAF5;
+  --ink: #1A1612;
+  --ink-80: rgba(26,22,18,0.80);
+  --ink-60: rgba(26,22,18,0.60);
+  --ink-40: rgba(26,22,18,0.40);
+  --ink-20: rgba(26,22,18,0.20);
+  --ink-10: rgba(26,22,18,0.10);
+  --ink-06: rgba(26,22,18,0.06);
+  --accent: #C4622D;
+  --accent-muted: rgba(196,98,45,0.10);
+  --accent-dim: rgba(196,98,45,0.06);
+  --sage: #7A8C7E;
+  --gold: #B8962E;
+  --slate: #7B9DC4;
+  --border: rgba(26,22,18,0.10);
+  --border-light: rgba(26,22,18,0.06);
+  /* Dark surface vars */
+  --dark: #111009;
+  --dark-2: #181410;
+  --dark-border: rgba(245,240,232,0.08);
+  --dark-border-dim: rgba(245,240,232,0.05);
+  --ghost: rgba(245,240,232,0.5);
+  --ghost-dim: rgba(245,240,232,0.3);
+  --ghost-faint: rgba(245,240,232,0.15);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--warm-white);color:var(--ink);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.6;overflow-x:hidden;}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(253,250,245,0.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:'Instrument Serif',serif;font-size:22px;letter-spacing:-0.02em;color:var(--ink);text-decoration:none;}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{font-size:13px;font-weight:400;color:var(--ink-60);text-decoration:none;transition:color .2s;}
+.nav-links a:hover{color:var(--ink);}
+.nav-cta{background:var(--ink)!important;color:var(--warm-white)!important;padding:9px 20px!important;border-radius:6px;transition:background .2s!important;}
+.nav-cta:hover{background:var(--accent)!important;}
+
+/* ── SECTION NAV ── */
+.section-nav{position:fixed;top:69px;left:0;right:0;z-index:99;background:var(--cream);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 48px;overflow-x:auto;}
+.sni{font-size:12px;font-weight:400;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-60);text-decoration:none;padding:14px 20px;border-bottom:2px solid transparent;white-space:nowrap;transition:color .2s,border-color .2s;}
+.sni:hover{color:var(--ink);}
+.sni.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:500;}
+
+/* ── SHARED ── */
+.mono{font-family:'DM Mono',monospace;}
+.eyebrow{font-family:'DM Mono',monospace;font-size:11px;font-weight:300;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:10px;margin-bottom:28px;}
+.eyebrow::before{content:'';display:block;width:24px;height:1px;background:var(--accent);}
+.mono-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+.detail-list{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.detail-list li{font-size:13px;font-weight:300;color:var(--ink-60);display:flex;align-items:flex-start;gap:8px;line-height:1.55;}
+.detail-list li::before{content:'—';color:var(--accent);flex-shrink:0;margin-top:1px;}
+.dark-list{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.dark-list li{font-size:13px;font-weight:300;color:var(--ghost-dim);display:flex;align-items:flex-start;gap:8px;line-height:1.55;}
+.dark-list li::before{content:'—';color:rgba(196,98,45,0.5);flex-shrink:0;margin-top:1px;}
+.wd{width:10px;height:10px;border-radius:50%;}
+.wd.r{background:#FF5F57;}.wd.y{background:#FEBC2E;}.wd.g{background:#28C840;}
+.topbar{display:flex;align-items:center;gap:8px;padding:11px 16px;background:var(--cream);border-bottom:1px solid var(--border);}
+.topbar-title{margin-left:8px;font-size:11px;font-weight:400;color:var(--ink-60);}
+.mock{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--warm-white);box-shadow:0 20px 64px rgba(26,22,18,0.07);}
+.divider{max-width:1400px;margin:0 auto;height:1px;background:var(--border);}
+
+/* ── HERO — full dark ── */
+.hero-dark{background:var(--dark);padding:168px 48px 100px;position:relative;overflow:hidden;}
+.hero-dark::before{
+  content:'';position:absolute;top:-200px;right:-100px;
+  width:700px;height:700px;border-radius:50%;
+  background:radial-gradient(circle,rgba(196,98,45,0.07) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-dark::after{
+  content:'';position:absolute;bottom:-100px;left:30%;
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(123,157,196,0.05) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-inner{max-width:1400px;margin:0 auto;position:relative;z-index:1;}
+.hero-grid{display:grid;grid-template-columns:1fr 520px;gap:80px;align-items:end;padding-bottom:80px;border-bottom:1px solid var(--dark-border);}
+.hero-hed{font-family:'Instrument Serif',serif;font-size:clamp(54px,6.2vw,88px);line-height:1.0;letter-spacing:-0.03em;color:var(--cream);}
+.hero-hed em{font-style:italic;color:var(--accent);}
+.hero-eyebrow{font-family:'DM Mono',monospace;font-size:11px;font-weight:300;letter-spacing:0.14em;text-transform:uppercase;color:rgba(196,98,45,0.7);display:flex;align-items:center;gap:10px;margin-bottom:28px;}
+.hero-eyebrow::before{content:'';display:block;width:24px;height:1px;background:rgba(196,98,45,0.5);}
+.hero-subhead{font-family:'Instrument Serif',serif;font-size:19px;letter-spacing:-0.01em;color:var(--cream);margin-bottom:14px;line-height:1.3;}
+.hero-desc{font-size:15px;font-weight:300;line-height:1.8;color:var(--ghost-dim);}
+.hero-desc strong{color:var(--cream);font-weight:500;}
+
+/* ── COMMAND PALETTE HERO VISUAL ── */
+.palette-wrap{position:relative;z-index:1;padding-top:60px;}
+.palette{background:var(--dark-2);border:1px solid var(--dark-border);border-radius:14px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(245,240,232,0.04);}
+.palette-bar{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--dark-border);}
+.palette-input{flex:1;background:transparent;border:none;outline:none;font-family:'DM Mono',monospace;font-size:13px;font-weight:300;color:var(--cream);letter-spacing:0.01em;}
+.palette-input::placeholder{color:var(--ghost-faint);}
+.palette-kb{display:flex;gap:3px;flex-shrink:0;}
+.kb{padding:2px 6px;border-radius:3px;background:rgba(245,240,232,0.06);border:1px solid rgba(245,240,232,0.1);font-family:'DM Mono',monospace;font-size:10px;color:var(--ghost-dim);}
+.palette-scope{display:flex;align-items:center;gap:6px;padding:7px 16px;border-bottom:1px solid var(--dark-border-dim);font-size:10px;color:var(--ghost-faint);}
+.scope-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:3px;background:rgba(196,98,45,0.1);border:1px solid rgba(196,98,45,0.15);color:rgba(196,98,45,0.8);font-size:10px;font-weight:400;}
+.palette-results{padding:6px;}
+.p-result{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:12px;font-weight:300;color:var(--ghost-dim);cursor:pointer;transition:background .15s;}
+.p-result:hover,.p-result.active{background:rgba(245,240,232,0.06);color:var(--cream);}
+.p-result.active{background:rgba(196,98,45,0.1);}
+.p-icon{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;}
+.p-icon.chart{background:rgba(196,98,45,0.12);color:var(--accent);}
+.p-icon.task{background:rgba(122,140,126,0.12);color:var(--sage);}
+.p-icon.table{background:rgba(184,150,46,0.12);color:var(--gold);}
+.p-icon.search{background:rgba(123,157,196,0.12);color:var(--slate);}
+.p-icon svg{width:12px;height:12px;stroke:currentColor;stroke-width:1.5;fill:none;}
+.p-result-label{flex:1;}
+.p-result-meta{font-size:10px;color:var(--ghost-faint);font-family:'DM Mono',monospace;}
+.palette-divider{height:1px;background:var(--dark-border-dim);margin:4px 10px;}
+/* typing cursor */
+.type-cursor{display:inline-block;width:1.5px;height:.85em;background:var(--accent);margin-left:1px;vertical-align:text-bottom;animation:blink 1.1s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+/* executing state */
+.exec-strip{display:flex;align-items:center;gap:8px;padding:10px 14px;border-top:1px solid var(--dark-border);background:rgba(196,98,45,0.05);}
+.exec-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 1.4s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(.85);}}
+.exec-text{font-size:11px;font-weight:400;color:rgba(196,98,45,0.8);font-family:'DM Mono',monospace;letter-spacing:0.03em;}
+
+/* artifact output block */
+.artifact-block{background:rgba(245,240,232,0.03);border:1px solid var(--dark-border);border-radius:8px;margin:8px;padding:12px 14px;}
+.artifact-label{font-size:9px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--ghost-faint);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;}
+.artifact-label span{color:var(--accent);font-size:9px;}
+
+/* mini bar chart inside dark palette */
+.mini-bars{display:flex;align-items:flex-end;gap:5px;height:48px;padding-bottom:2px;}
+.mbar{flex:1;border-radius:2px 2px 0 0;}
+.mbar-lbl{font-size:8px;font-weight:300;color:var(--ghost-faint);text-align:center;margin-top:3px;}
+.mini-bars-wrap{display:flex;flex-direction:column;}
+
+/* ── SECTION: SHOWCASE ROWS (light) ── */
+.showcase{padding:80px 48px;max-width:1400px;margin:0 auto;}
+.showcase-row{display:grid;gap:72px;align-items:center;}
+.tl{grid-template-columns:400px 1fr;}
+.tr{grid-template-columns:1fr 400px;}
+.showcase-text h2{font-family:'Instrument Serif',serif;font-size:32px;letter-spacing:-0.025em;color:var(--ink);line-height:1.15;margin-bottom:14px;}
+.showcase-text h2 em{font-style:italic;color:var(--accent);}
+.showcase-text p{font-size:15px;font-weight:300;line-height:1.8;color:var(--ink-60);margin-bottom:18px;}
+.showcase-text p strong{color:var(--ink);font-weight:500;}
+
+/* ── CHART FROM QUESTION ── */
+.chart-mock{background:var(--warm-white);}
+.chart-mock-inner{padding:16px;}
+/* chat bubble prompt */
+.chat-prompt{display:flex;justify-content:flex-end;margin-bottom:12px;}
+.chat-bubble-user{background:var(--ink);color:var(--cream);padding:9px 13px;border-radius:10px 10px 3px 10px;font-size:12px;font-weight:300;max-width:80%;font-family:'DM Mono',monospace;letter-spacing:0.01em;}
+.chat-bubble-user .q-mark{color:rgba(196,98,45,0.7);margin-right:4px;}
+/* ai response */
+.ai-response{display:flex;gap:8px;margin-bottom:8px;}
+.ai-av{width:22px;height:22px;border-radius:5px;background:var(--ink);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Instrument Serif',serif;font-size:11px;color:var(--cream);}
+.ai-body{flex:1;}
+.ai-text{font-size:11.5px;font-weight:300;color:var(--ink-60);line-height:1.65;margin-bottom:8px;}
+.ai-text strong{color:var(--ink);font-weight:500;}
+/* chart output */
+.chart-output{border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.chart-output-header{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--cream);border-bottom:1px solid var(--border);}
+.chart-output-title{font-size:11px;font-weight:500;color:var(--ink);letter-spacing:-0.01em;}
+.chart-output-actions{display:flex;gap:4px;}
+.chart-action-btn{padding:2px 7px;border-radius:3px;font-size:9px;font-weight:400;color:var(--ink-60);border:1px solid var(--border);background:var(--warm-white);cursor:pointer;}
+.chart-action-btn:hover{background:var(--ink);color:white;border-color:var(--ink);}
+.chart-area{padding:14px 16px 8px;}
+.bar-chart-display{display:flex;align-items:flex-end;gap:10px;height:90px;padding-bottom:4px;border-bottom:1px solid var(--border);}
+.bc-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:0;}
+.bc-bar{width:100%;border-radius:3px 3px 0 0;transition:opacity .2s;}
+.bc-bar:hover{opacity:.85;}
+.bc-val{font-size:9px;font-weight:500;color:var(--ink-60);margin-bottom:3px;font-family:'DM Mono',monospace;}
+.bc-label{font-size:9px;font-weight:300;color:var(--ink-40);margin-top:4px;text-align:center;}
+.chart-footer{display:flex;align-items:center;gap:8px;padding:7px 12px;font-size:9px;color:var(--ink-40);}
+.chart-live-badge{display:flex;align-items:center;gap:4px;color:#1a9e30;}
+.live-dot{width:5px;height:5px;border-radius:50%;background:#1a9e30;animation:livepulse 1.8s ease-in-out infinite;}
+@keyframes livepulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+
+/* ── WORKFLOW PAGE ── */
+.workflow-mock{background:var(--warm-white);}
+.wf-layout{display:grid;grid-template-columns:1fr 240px;}
+.wf-main{padding:20px 22px;}
+.wf-title{font-family:'Instrument Serif',serif;font-size:18px;letter-spacing:-0.02em;color:var(--ink);margin-bottom:6px;}
+.wf-sub{font-size:10px;font-weight:300;color:var(--ink-40);margin-bottom:16px;font-family:'DM Mono',monospace;letter-spacing:0.03em;}
+/* stat cards row */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.stat-card{border:1px solid var(--border);border-radius:7px;padding:10px 12px;background:var(--cream);}
+.stat-val{font-family:'Instrument Serif',serif;font-size:22px;letter-spacing:-0.02em;color:var(--ink);margin-bottom:2px;}
+.stat-label{font-size:9px;font-weight:400;color:var(--ink-60);letter-spacing:0.04em;text-transform:uppercase;}
+.stat-delta{font-size:10px;font-weight:400;margin-top:3px;}
+.stat-delta.up{color:#1a9e30;}
+.stat-delta.down{color:var(--accent);}
+/* table in workflow */
+.wf-table{width:100%;border-collapse:collapse;font-size:11px;}
+.wf-table th{padding:6px 10px;text-align:left;font-size:9px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-40);border-bottom:1px solid var(--border);}
+.wf-table td{padding:8px 10px;border-bottom:1px solid var(--border-light);color:var(--ink);font-weight:300;}
+.wf-table tr:last-child td{border-bottom:none;}
+.wf-table tr:hover td{background:var(--ink-06);}
+/* ai sidebar */
+.wf-sidebar{border-left:1px solid var(--border);background:var(--dark);display:flex;flex-direction:column;}
+.wf-sb-head{padding:12px 14px;border-bottom:1px solid var(--dark-border);display:flex;align-items:center;gap:6px;}
+.wf-sb-head-label{font-size:10px;font-weight:500;color:var(--ghost-dim);letter-spacing:0.04em;}
+.ai-badge{width:16px;height:16px;border-radius:4px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;font-size:9px;color:white;}
+.wf-sb-msgs{padding:10px 12px;display:flex;flex-direction:column;gap:8px;flex:1;}
+.wf-msg{font-size:11px;font-weight:300;line-height:1.6;}
+.wf-msg.user{color:var(--ghost-dim);background:rgba(245,240,232,0.04);border-radius:6px 6px 2px 6px;padding:7px 9px;align-self:flex-end;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.01em;}
+.wf-msg.ai{color:var(--ghost-dim);padding:0 2px;}
+.wf-msg.ai strong{color:var(--cream);}
+.wf-sb-input{margin:0 10px 10px;padding:6px 10px;border-radius:6px;background:rgba(245,240,232,0.05);border:1px solid var(--dark-border);font-size:11px;font-family:'DM Mono',monospace;color:var(--ghost-dim);outline:none;}
+
+/* ── FILE ANALYSIS ── */
+.analysis-mock{background:var(--dark);border:1px solid var(--dark-border);box-shadow:0 20px 64px rgba(0,0,0,0.3);}
+.analysis-topbar{display:flex;align-items:center;gap:8px;padding:11px 16px;background:rgba(245,240,232,0.03);border-bottom:1px solid var(--dark-border);}
+.analysis-topbar-title{margin-left:8px;font-size:11px;font-weight:400;color:var(--ghost-dim);}
+.analysis-layout{display:grid;grid-template-columns:200px 1fr;}
+.analysis-files{border-right:1px solid var(--dark-border);padding:12px;}
+.analysis-file-label{font-size:9px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--ghost-faint);margin-bottom:8px;}
+.file-item{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:5px;font-size:11px;font-weight:300;color:var(--ghost-dim);cursor:pointer;border:1px solid transparent;transition:all .15s;}
+.file-item.active{background:rgba(196,98,45,0.08);border-color:rgba(196,98,45,0.15);color:rgba(245,240,232,0.7);}
+.file-item svg{width:12px;height:12px;stroke:currentColor;stroke-width:1.5;fill:none;flex-shrink:0;}
+.analysis-main{padding:16px 18px;display:flex;flex-direction:column;gap:10px;}
+/* ai conversation blocks */
+.a-msg{display:flex;gap:8px;}
+.a-msg.user{justify-content:flex-end;}
+.a-bubble{padding:8px 11px;border-radius:8px;font-size:11px;font-weight:300;line-height:1.6;max-width:85%;}
+.a-bubble.user{background:rgba(245,240,232,0.08);color:var(--ghost-dim);border-radius:8px 8px 2px 8px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.01em;}
+.a-bubble.ai{background:rgba(245,240,232,0.04);border:1px solid var(--dark-border);color:var(--ghost-dim);border-radius:2px 8px 8px 8px;}
+.a-bubble.ai strong{color:var(--cream);}
+/* promote button */
+.promote-btn{display:flex;align-items:center;gap:6px;padding:8px 12px;border-radius:6px;background:var(--accent);border:none;color:white;font-size:11px;font-weight:400;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity .2s;margin-top:4px;align-self:flex-start;}
+.promote-btn:hover{opacity:.9;}
+.promote-btn svg{width:12px;height:12px;stroke:white;stroke-width:2;fill:none;}
+
+/* ── THREE MODES ── */
+.modes-section{background:var(--cream);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 48px;}
+.modes-inner{max-width:1400px;margin:0 auto;}
+.modes-header{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:56px;}
+.modes-hed{font-family:'Instrument Serif',serif;font-size:40px;letter-spacing:-0.025em;color:var(--ink);line-height:1.1;}
+.modes-hed em{font-style:italic;color:var(--accent);}
+.modes-desc{font-size:15px;font-weight:300;line-height:1.8;color:var(--ink-60);}
+/* mode tabs + panel */
+.modes-ui{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--warm-white);box-shadow:0 20px 64px rgba(26,22,18,0.07);}
+.mode-tabs{display:flex;border-bottom:1px solid var(--border);}
+.mode-tab{flex:1;padding:12px 14px;font-size:12px;font-weight:400;color:var(--ink-60);cursor:pointer;text-align:center;border-bottom:2px solid transparent;transition:all .15s;border-right:1px solid var(--border);}
+.mode-tab:last-child{border-right:none;}
+.mode-tab.active{color:var(--accent);border-bottom-color:var(--accent);background:var(--accent-dim);}
+.mode-tab:hover:not(.active){color:var(--ink);background:var(--ink-06);}
+.mode-panel{display:grid;grid-template-columns:1fr 1fr 1fr;}
+/* assistant mode */
+.mp-section{border-right:1px solid var(--border);padding:16px;}
+.mp-section:last-child{border-right:none;}
+.mp-label{font-size:9px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-40);margin-bottom:10px;}
+.assist-msgs{display:flex;flex-direction:column;gap:7px;}
+.am-user{background:var(--ink);color:var(--cream);padding:7px 10px;border-radius:7px 7px 2px 7px;font-size:11px;font-weight:300;align-self:flex-end;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.01em;}
+.am-ai{background:var(--cream);border:1px solid var(--border);padding:7px 10px;border-radius:2px 7px 7px 7px;font-size:11px;font-weight:300;color:var(--ink-60);line-height:1.5;}
+.am-ai strong{color:var(--ink);font-weight:500;}
+/* file analysis mode */
+.fa-drop{border:1px dashed var(--border);border-radius:7px;padding:16px;text-align:center;margin-bottom:8px;}
+.fa-drop-icon{font-size:18px;margin-bottom:4px;}
+.fa-drop-text{font-size:10px;font-weight:300;color:var(--ink-60);}
+.fa-file-pill{display:flex;align-items:center;gap:6px;padding:6px 8px;border-radius:5px;border:1px solid var(--border);background:var(--cream);font-size:10px;font-weight:400;color:var(--ink-60);margin-bottom:6px;}
+.fa-file-pill svg{width:10px;height:10px;stroke:var(--accent);stroke-width:1.5;fill:none;}
+.fa-result{font-size:11px;font-weight:300;color:var(--ink-60);line-height:1.6;}
+.fa-result strong{color:var(--ink);font-weight:500;}
+/* workspace search mode */
+.ws-input-row{display:flex;gap:6px;margin-bottom:10px;}
+.ws-input{flex:1;padding:6px 10px;border-radius:5px;border:1px solid var(--border);background:var(--warm-white);font-size:11px;font-family:'DM Sans',sans-serif;outline:none;color:var(--ink);}
+.ws-result-item{display:flex;align-items:flex-start;gap:7px;padding:6px 8px;border-radius:5px;border:1px solid var(--border);margin-bottom:4px;background:var(--cream);transition:background .15s;cursor:pointer;}
+.ws-result-item:hover{background:var(--accent-dim);}
+.ws-result-icon{width:18px;height:18px;border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.ws-result-icon svg{width:10px;height:10px;stroke:currentColor;stroke-width:1.5;fill:none;}
+.ws-result-text{font-size:10px;font-weight:300;color:var(--ink-60);line-height:1.5;}
+.ws-result-text strong{color:var(--ink);font-weight:500;}
+.ws-result-meta{font-size:9px;color:var(--ink-40);font-family:'DM Mono',monospace;margin-top:1px;}
+
+/* ── SEARCH + AGGREGATE + BUILD (dark) ── */
+.aggregate-section{background:var(--dark);padding:80px 48px;position:relative;overflow:hidden;}
+.aggregate-section::before{content:'';position:absolute;top:-50px;left:-100px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(184,150,46,0.04) 0%,transparent 65%);pointer-events:none;}
+.agg-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 480px;gap:80px;align-items:center;}
+.agg-text .mono-label{color:rgba(196,98,45,0.7);}
+.agg-text h2{font-family:'Instrument Serif',serif;font-size:36px;letter-spacing:-0.025em;color:var(--cream);line-height:1.1;margin-bottom:14px;}
+.agg-text h2 em{font-style:italic;color:var(--accent);}
+.agg-text p{font-size:15px;font-weight:300;line-height:1.8;color:var(--ghost-dim);margin-bottom:20px;}
+.agg-text p strong{color:var(--cream);font-weight:500;}
+/* pipeline visual */
+.pipeline{display:flex;flex-direction:column;gap:4px;}
+.pipe-step{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:8px;border:1px solid var(--dark-border);background:rgba(245,240,232,0.03);transition:background .2s;}
+.pipe-step:hover{background:rgba(245,240,232,0.05);}
+.pipe-num{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;color:var(--accent);width:18px;flex-shrink:0;margin-top:1px;}
+.pipe-content{flex:1;}
+.pipe-label{font-size:12px;font-weight:500;color:var(--cream);margin-bottom:3px;}
+.pipe-detail{font-size:11px;font-weight:300;color:var(--ghost-dim);line-height:1.5;}
+.pipe-connector{display:flex;align-items:center;justify-content:center;height:16px;margin-left:22px;}
+.pipe-connector::before{content:'';display:block;width:1px;height:100%;background:var(--dark-border);}
+/* output preview inside pipeline */
+.pipe-output{border:1px solid rgba(196,98,45,0.15);border-radius:7px;background:rgba(196,98,45,0.05);padding:10px 12px;margin-top:8px;}
+.pipe-output-label{font-size:9px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;color:rgba(196,98,45,0.6);margin-bottom:6px;}
+/* mini table output */
+.mini-table{width:100%;border-collapse:collapse;}
+.mini-table th{font-size:8.5px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--ghost-faint);padding:4px 6px;border-bottom:1px solid var(--dark-border-dim);text-align:left;}
+.mini-table td{font-size:10px;font-weight:300;color:var(--ghost-dim);padding:5px 6px;border-bottom:1px solid var(--dark-border-dim);}
+.mini-table tr:last-child td{border-bottom:none;}
+.t-up{color:#1a9e30;font-weight:500;}
+.t-down{color:var(--accent);font-weight:500;}
+
+/* ── FEATURE GRID (6 cards) ── */
+.features-section{padding:80px 48px;max-width:1400px;margin:0 auto;}
+.features-header{margin-bottom:48px;}
+.features-hed{font-family:'Instrument Serif',serif;font-size:36px;letter-spacing:-0.025em;color:var(--ink);margin-bottom:10px;}
+.features-hed em{font-style:italic;color:var(--accent);}
+.features-sub{font-size:15px;font-weight:300;color:var(--ink-60);max-width:520px;line-height:1.7;}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.feat-card{background:var(--warm-white);padding:32px 28px;position:relative;transition:background .2s;cursor:default;}
+.feat-card:hover{background:var(--cream);}
+.feat-card:hover .feat-icon{background:var(--accent);border-color:var(--accent);}
+.feat-card:hover .feat-icon svg{stroke:white;}
+.feat-icon{width:38px;height:38px;border-radius:8px;border:1px solid var(--border);background:var(--cream);display:flex;align-items:center;justify-content:center;margin-bottom:16px;transition:all .2s;}
+.feat-icon svg{width:16px;height:16px;stroke:var(--ink-60);stroke-width:1.5;fill:none;transition:stroke .2s;}
+.feat-tag{position:absolute;top:14px;right:14px;font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-40);}
+.feat-title{font-family:'Instrument Serif',serif;font-size:19px;letter-spacing:-0.02em;color:var(--ink);margin-bottom:9px;line-height:1.2;}
+.feat-body{font-size:13px;font-weight:300;line-height:1.7;color:var(--ink-60);}
+.feat-body strong{color:var(--ink);font-weight:500;}
+
+/* ── FOOTER CTA ── */
+.footer-cta{background:var(--cream);border-top:1px solid var(--border);padding:64px 48px;}
+.footer-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.footer-hed{font-family:'Instrument Serif',serif;font-size:28px;letter-spacing:-0.02em;color:var(--ink);}
+.footer-hed em{font-style:italic;color:var(--accent);}
+.footer-actions{display:flex;gap:12px;align-items:center;}
+.btn-primary{background:var(--ink);color:var(--warm-white);padding:12px 24px;border-radius:8px;font-size:14px;font-weight:400;text-decoration:none;transition:background .2s;}
+.btn-primary:hover{background:var(--accent);}
+.btn-ghost{color:var(--ink-60);padding:12px 24px;border-radius:8px;font-size:14px;font-weight:400;text-decoration:none;display:flex;align-items:center;gap:6px;border:1px solid var(--border);transition:color .2s,border-color .2s;}
+.btn-ghost:hover{color:var(--ink);border-color:var(--ink);}
+
+/* animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.fu{animation:fadeUp .7s cubic-bezier(.16,1,.3,1) both;}
+.d1{animation-delay:.1s;}.d2{animation-delay:.22s;}.d3{animation-delay:.36s;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Trak</a>
+  <ul class="nav-links">
+    <li><a href="#">Product</a></li>
+    <li><a href="#">Templates</a></li>
+    <li><a href="#">Pricing</a></li>
+    <li><a href="#" class="nav-cta">Get started</a></li>
+  </ul>
+</nav>
+
+<div class="section-nav">
+  <a href="#" class="sni">01 — Organize</a>
+  <a href="#" class="sni">02 — Create</a>
+  <a href="#" class="sni active">03 — Intelligent Action</a>
+  <a href="#" class="sni">04 — Collaborate</a>
+  <a href="#" class="sni">05 — Connect</a>
+</div>
+
+<!-- ═══════════════════════ DARK HERO ═══════════════════════ -->
+<section class="hero-dark">
+  <div class="hero-inner">
+    <div class="hero-grid">
+      <!-- LEFT: copy -->
+      <div>
+        <div class="hero-eyebrow fu d1">03 — Intelligent Action</div>
+        <h1 class="hero-hed fu d2">Ask anything.<br><em>Trak moves.</em></h1>
+      </div>
+      <!-- RIGHT: copy -->
+      <div class="fu d3">
+        <p class="hero-subhead">Intelligence that builds, not just answers.</p>
+        <p class="hero-desc">Trak's AI layer doesn't just search your workspace — <strong>it acts on it.</strong> Ask a question and get a chart. Describe what you need and get a page. Upload a file and get an analysis you can save, build on, and share. The AI follows your context, knows your project, and creates real artifacts — not just text responses.</p>
+      </div>
+    </div>
+
+    <!-- COMMAND PALETTE HERO VISUAL -->
+    <div class="palette-wrap">
+      <div class="palette">
+        <div class="palette-bar">
+          <div class="p-icon search" style="width:22px;height:22px;border-radius:4px;margin-right:2px;">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+          <input class="palette-input" value="show me task breakdown by status for Q2 Launch" readonly />
+          <div class="palette-kb">
+            <span class="kb">⌘</span><span class="kb">K</span>
+          </div>
+        </div>
+        <div class="palette-scope">
+          Scope: <span class="scope-pill">📁 Glow Serum Launch</span> <span style="color:rgba(245,240,232,0.15);">· All tabs</span>
+        </div>
+
+        <div class="palette-results">
+          <div class="p-result active">
+            <div class="p-icon chart">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
+            </div>
+            <span class="p-result-label">Generate chart — Task breakdown by status</span>
+            <span class="p-result-meta">Chart block</span>
+          </div>
+          <div class="p-result">
+            <div class="p-icon task">
+              <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            </div>
+            <span class="p-result-label">Create tasks from this description</span>
+            <span class="p-result-meta">Task block</span>
+          </div>
+          <div class="palette-divider"></div>
+          <div class="p-result">
+            <div class="p-icon table">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+            </div>
+            <span class="p-result-label">Build table from workspace data</span>
+            <span class="p-result-meta">Table block</span>
+          </div>
+          <div class="p-result">
+            <div class="p-icon search">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
+            <span class="p-result-label">Search across workspace for "Q2 Launch"</span>
+            <span class="p-result-meta">Search</span>
+          </div>
+        </div>
+
+        <div class="exec-strip">
+          <div class="exec-dot"></div>
+          <span class="exec-text">Building chart block — Task breakdown by status · Q2 Launch…</span>
+        </div>
+
+        <!-- artifact output -->
+        <div class="artifact-block">
+          <div class="artifact-label">
+            Chart block — inserted into current page
+            <span>Live · updates as tasks change</span>
+          </div>
+          <div style="display:flex;align-items:flex-end;gap:8px;height:56px;margin-bottom:6px;">
+            <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+              <div class="mbar-lbl" style="color:rgba(245,240,232,0.3);font-size:8px;margin-bottom:3px;">13</div>
+              <div class="mbar" style="height:72%;background:rgba(184,150,46,0.6);width:100%;"></div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+              <div class="mbar-lbl" style="color:rgba(245,240,232,0.3);font-size:8px;margin-bottom:3px;">9</div>
+              <div class="mbar" style="height:50%;background:rgba(196,98,45,0.5);width:100%;"></div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+              <div class="mbar-lbl" style="color:rgba(245,240,232,0.3);font-size:8px;margin-bottom:3px;">6</div>
+              <div class="mbar" style="height:33%;background:rgba(122,140,126,0.5);width:100%;"></div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+              <div class="mbar-lbl" style="color:rgba(245,240,232,0.3);font-size:8px;margin-bottom:3px;">18</div>
+              <div class="mbar" style="height:100%;background:rgba(40,200,64,0.4);width:100%;"></div>
+            </div>
+          </div>
+          <div style="display:flex;gap:14px;font-size:8.5px;color:rgba(245,240,232,0.25);">
+            <span style="display:flex;align-items:center;gap:4px;"><span style="width:7px;height:7px;border-radius:2px;background:rgba(184,150,46,0.6);display:inline-block;"></span>In Progress</span>
+            <span style="display:flex;align-items:center;gap:4px;"><span style="width:7px;height:7px;border-radius:2px;background:rgba(196,98,45,0.5);display:inline-block;"></span>Todo</span>
+            <span style="display:flex;align-items:center;gap:4px;"><span style="width:7px;height:7px;border-radius:2px;background:rgba(122,140,126,0.5);display:inline-block;"></span>Review</span>
+            <span style="display:flex;align-items:center;gap:4px;"><span style="width:7px;height:7px;border-radius:2px;background:rgba(40,200,64,0.4);display:inline-block;"></span>Done</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ CHARTS FROM QUESTIONS (light) ═══════════════════════ -->
+<section class="showcase" style="padding-top:80px;">
+  <div class="showcase-row tr">
+    <!-- VISUAL -->
+    <div class="mock chart-mock">
+      <div class="topbar">
+        <span class="wd r"></span><span class="wd y"></span><span class="wd g"></span>
+        <span class="topbar-title">Glow Serum Launch — Overview</span>
+      </div>
+      <div class="chart-mock-inner">
+        <div class="chat-prompt">
+          <div class="chat-bubble-user"><span class="q-mark">›</span> show me task breakdown by status for Q2 Launch</div>
+        </div>
+        <div class="ai-response">
+          <div class="ai-av">T</div>
+          <div class="ai-body">
+            <div class="ai-text">Here's the task breakdown across your Q2 Launch project. <strong>18 tasks are complete</strong>, 13 are in progress. You have a review backlog building — 6 items waiting.</div>
+            <div class="chart-output">
+              <div class="chart-output-header">
+                <span class="chart-output-title">Task breakdown by status — Q2 Launch</span>
+                <div class="chart-output-actions">
+                  <button class="chart-action-btn">Configure</button>
+                  <button class="chart-action-btn">Keep on page</button>
+                  <button class="chart-action-btn">Share</button>
+                </div>
+              </div>
+              <div class="chart-area">
+                <div class="bar-chart-display">
+                  <div class="bc-item" style="height:100%;justify-content:flex-end;">
+                    <div class="bc-val">18</div>
+                    <div class="bc-bar" style="height:100%;background:#28C840;opacity:.7;"></div>
+                    <div class="bc-label">Done</div>
+                  </div>
+                  <div class="bc-item" style="height:100%;justify-content:flex-end;">
+                    <div class="bc-val">13</div>
+                    <div class="bc-bar" style="height:72%;background:var(--gold);opacity:.8;"></div>
+                    <div class="bc-label">In Progress</div>
+                  </div>
+                  <div class="bc-item" style="height:100%;justify-content:flex-end;">
+                    <div class="bc-val">9</div>
+                    <div class="bc-bar" style="height:50%;background:var(--accent);opacity:.7;"></div>
+                    <div class="bc-label">Todo</div>
+                  </div>
+                  <div class="bc-item" style="height:100%;justify-content:flex-end;">
+                    <div class="bc-val">6</div>
+                    <div class="bc-bar" style="height:33%;background:var(--sage);opacity:.8;"></div>
+                    <div class="bc-label">Review</div>
+                  </div>
+                </div>
+              </div>
+              <div class="chart-footer">
+                <span>46 tasks total · Q2 Launch</span>
+                <div class="chart-live-badge" style="margin-left:auto;">
+                  <span class="live-dot"></span> Live — updates as tasks change
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="showcase-text">
+      <p class="mono-label">Charts From Questions</p>
+      <h2>Not a text description. An actual <em>interactive chart</em> you can keep.</h2>
+      <p>Ask "show me task breakdown by status for Q2 Launch" and Trak builds a real chart block — placed on the page, connected to live data, configurable, and shareable.</p>
+      <p>The AI doesn't describe the answer. <strong>It builds it.</strong></p>
+      <ul class="detail-list">
+        <li>Bar, line, pie, and doughnut charts from natural language</li>
+        <li>Charts are live blocks — they update as your data changes</li>
+        <li>Keep on page, freeze a snapshot, or share directly</li>
+        <li>Configure type, grouping, and filters after generation</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════ WORKFLOW PAGES ═══════════════════════ -->
+<section class="showcase" style="border-top:1px solid var(--border);padding-top:80px;">
+  <div class="showcase-row tl">
+    <div class="showcase-text">
+      <p class="mono-label">Workflow Pages</p>
+      <h2>A dedicated canvas with an AI that <em>never leaves.</em></h2>
+      <p>Persistent analysis canvases with an always-mounted AI sidebar. Triage data, explore patterns, and assemble operational views in a dedicated space that doesn't clutter your project structure.</p>
+      <ul class="detail-list">
+        <li>AI sidebar is always open — no launching a panel</li>
+        <li>Ask questions, get outputs inserted directly onto the canvas</li>
+        <li>Aggregate data from across your workspace into one view</li>
+        <li>Saved permanently — return to it any time</li>
+      </ul>
+    </div>
+
+    <!-- VISUAL: workflow page layout -->
+    <div class="mock workflow-mock">
+      <div class="topbar">
+        <span class="wd r"></span><span class="wd y"></span><span class="wd g"></span>
+        <span class="topbar-title">Q2 Operations — Workflow Page</span>
+        <span style="margin-left:auto;font-size:10px;color:var(--sage);font-weight:400;">AI always on</span>
+      </div>
+      <div class="wf-layout">
+        <div class="wf-main">
+          <div class="wf-title">Q2 Launch — Operations Triage</div>
+          <div class="wf-sub">Generated · Apr 14 · Updated 2 hours ago</div>
+          <div class="stat-row">
+            <div class="stat-card">
+              <div class="stat-val">46</div>
+              <div class="stat-label">Open Tasks</div>
+              <div class="stat-delta down">↑ 4 since Mon</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-val">89%</div>
+              <div class="stat-label">On Track</div>
+              <div class="stat-delta up">↑ 3% this week</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-val">Apr 21</div>
+              <div class="stat-label">Launch Date</div>
+              <div class="stat-delta up" style="color:var(--ink-40);">7 days away</div>
+            </div>
+          </div>
+          <table class="wf-table">
+            <thead>
+              <tr><th>Owner</th><th>Tasks</th><th>Done</th><th>Blocked</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Amna M.</td><td>14</td><td>9</td><td style="color:var(--accent);">2</td></tr>
+              <tr><td>Sara R.</td><td>11</td><td>8</td><td>0</td></tr>
+              <tr><td>Jamie K.</td><td>8</td><td>5</td><td style="color:var(--accent);">1</td></tr>
+              <tr><td>Kenji P.</td><td>13</td><td>7</td><td>0</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="wf-sidebar">
+          <div class="wf-sb-head">
+            <div class="ai-badge">T</div>
+            <span class="wf-sb-head-label">AI Sidebar</span>
+          </div>
+          <div class="wf-sb-msgs">
+            <div class="wf-msg user">who has the most blockers?</div>
+            <div class="wf-msg ai"><strong>Amna has 2 blocked tasks</strong> — "Ad copy sign-off" and "Meta campaign brief." Both are waiting on external review. Jamie has 1: "Influencer payment confirmation."</div>
+            <div class="wf-msg user">build me a table of blocked tasks</div>
+            <div class="wf-msg ai"><strong>Done</strong> — table block inserted above. 3 blocked tasks across 2 owners.</div>
+          </div>
+          <input class="wf-sb-input" placeholder="Ask anything about this page…" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════ FILE ANALYSIS → ARTIFACT ═══════════════════════ -->
+<section class="showcase" style="border-top:1px solid var(--border);padding-top:80px;">
+  <div class="showcase-row tr">
+    <!-- VISUAL: dark analysis UI -->
+    <div class="mock analysis-mock">
+      <div class="analysis-topbar">
+        <span class="wd r"></span><span class="wd y"></span><span class="wd g"></span>
+        <span class="analysis-topbar-title">File Analysis — Q2 Creative Audit.pdf</span>
+      </div>
+      <div class="analysis-layout">
+        <div class="analysis-files">
+          <div class="analysis-file-label">Uploaded files</div>
+          <div class="file-item active">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Q2 Creative Audit.pdf
+          </div>
+          <div class="file-item">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Influencer Brief v2.pdf
+          </div>
+          <div class="file-item" style="margin-top:12px;border-top:1px solid var(--dark-border);padding-top:10px;color:rgba(196,98,45,0.6);border-color:rgba(196,98,45,0.2);background:rgba(196,98,45,0.05);">
+            <svg viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/></svg>
+            Save as Workflow Page
+          </div>
+        </div>
+        <div class="analysis-main">
+          <div class="a-msg user">
+            <div class="a-bubble user">what are the top gaps in the Q2 creative brief?</div>
+          </div>
+          <div class="a-msg">
+            <div class="ai-badge" style="flex-shrink:0;margin-top:2px;">T</div>
+            <div class="a-bubble ai">The brief has <strong>three significant gaps:</strong> no defined success metrics for influencer posts, missing photography dimensions for Meta placements, and no copy approval workflow specified. The tone guidelines are also underspecified — "warm" is mentioned once but not operationalized.</div>
+          </div>
+          <div class="a-msg user">
+            <div class="a-bubble user">summarize the influencer requirements as a task list</div>
+          </div>
+          <div class="a-msg">
+            <div class="ai-badge" style="flex-shrink:0;margin-top:2px;">T</div>
+            <div class="a-bubble ai"><strong>Done — 7 tasks generated</strong> and added to the Q2 Launch project. Includes deliverable formats, deadlines extracted from the brief, and assignee suggestions based on your team's current load.</div>
+          </div>
+          <button class="promote-btn">
+            <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            Promote to Workflow Page
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="showcase-text">
+      <p class="mono-label">File Analysis → Saved Artifact</p>
+      <h2>One-off research becomes a <em>living operational reference.</em></h2>
+      <p>Upload a document, analyze it with AI, then promote the entire analysis thread into a saved workflow page. The conversation, the outputs, the generated tasks — all preserved and linkable.</p>
+      <ul class="detail-list">
+        <li>Upload PDFs, briefs, decks, and research docs</li>
+        <li>Ask questions, generate tasks, extract structured data</li>
+        <li>Promote the analysis thread into a persistent page</li>
+        <li>Generated tasks go directly into your project</li>
+        <li>Saved pages are searchable and shareable</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ THREE MODES ═══════════════════════ -->
+<section class="modes-section">
+  <div class="modes-inner">
+    <div class="modes-header">
+      <div>
+        <p class="mono-label" style="margin-bottom:12px;">Three Modes, One Surface</p>
+        <h2 class="modes-hed">Assistant. Analyst.<br><em>Search engine.</em></h2>
+      </div>
+      <p class="modes-desc">All from the same panel. Switch between conversation, file analysis, and workspace search without context-switching. The AI palette remembers where you are and what you were doing.</p>
+    </div>
+    <div class="modes-ui">
+      <div class="mode-tabs">
+        <div class="mode-tab active">Assistant</div>
+        <div class="mode-tab">File Analysis</div>
+        <div class="mode-tab">Workspace Search</div>
+      </div>
+      <div class="mode-panel">
+        <!-- ASSISTANT -->
+        <div class="mp-section">
+          <div class="mp-label">Conversation mode</div>
+          <div class="assist-msgs">
+            <div class="am-user">create 5 tasks for the influencer batch review</div>
+            <div class="am-ai"><strong>5 tasks added</strong> to Glow Serum Launch — Influencer Batch tab. Assigned to Sara based on current load.</div>
+            <div class="am-user">what's due this week?</div>
+            <div class="am-ai">4 items due by Friday: <strong>Ad copy sign-off</strong> (Apr 16), <strong>Photography brief</strong> (Apr 16), <strong>Packaging final</strong> (Apr 17), <strong>Influencer brief send</strong> (Apr 18).</div>
+          </div>
+        </div>
+        <!-- FILE ANALYSIS -->
+        <div class="mp-section">
+          <div class="mp-label">File analysis mode</div>
+          <div class="fa-drop">
+            <div class="fa-drop-icon">📄</div>
+            <div class="fa-drop-text">Drop a file or click to upload</div>
+          </div>
+          <div class="fa-file-pill">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Q2 Creative Audit.pdf — 14 pages
+          </div>
+          <div class="fa-result">Summary ready. <strong>3 gaps identified.</strong> 7 tasks generated from influencer requirements. <span style="color:var(--accent);">Promote to Workflow Page →</span></div>
+        </div>
+        <!-- WORKSPACE SEARCH -->
+        <div class="mp-section">
+          <div class="mp-label">Workspace search mode</div>
+          <div class="ws-input-row">
+            <input class="ws-input" value="influencer brief" readonly />
+          </div>
+          <div class="ws-result-item">
+            <div class="ws-result-icon" style="background:rgba(196,98,45,0.08);color:var(--accent);"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <div>
+              <div class="ws-result-text"><strong>Influencer Brief — Batch 3.pdf</strong></div>
+              <div class="ws-result-meta">File · Glow Serum Launch</div>
+            </div>
+          </div>
+          <div class="ws-result-item">
+            <div class="ws-result-icon" style="background:rgba(122,140,126,0.1);color:var(--sage);"><svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/></svg></div>
+            <div>
+              <div class="ws-result-text"><strong>Send influencer brief to batch 3</strong></div>
+              <div class="ws-result-meta">Task · Due Apr 18 · Jamie K.</div>
+            </div>
+          </div>
+          <div class="ws-result-item">
+            <div class="ws-result-icon" style="background:rgba(184,150,46,0.1);color:var(--gold);"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <div>
+              <div class="ws-result-text"><strong>Creator Campaign — Brief template</strong></div>
+              <div class="ws-result-meta">Document · Templates</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ SEARCH + AGGREGATE + BUILD (dark) ═══════════════════════ -->
+<section class="aggregate-section">
+  <div class="agg-inner">
+    <div class="agg-text">
+      <p class="mono-label" style="margin-bottom:12px;">Search + Aggregate + Build</p>
+      <h2>Search your workspace.<br>Turn results into <em>outputs.</em></h2>
+      <p>The AI can search structured and unstructured data across your workspace, then turn results into <strong>tables, charts, or written summaries</strong> — directly on the page. Analysis and output in one motion.</p>
+      <ul class="dark-list">
+        <li>Searches tasks, tables, docs, files, and Shopify data simultaneously</li>
+        <li>Aggregates results into any block type — table, chart, summary</li>
+        <li>Output lands on the page — not in a modal, not in a chat thread</li>
+        <li>Combine structured and unstructured data in a single query</li>
+      </ul>
+    </div>
+
+    <!-- Pipeline visual -->
+    <div class="pipeline">
+      <div class="pipe-step">
+        <div class="pipe-num">01</div>
+        <div class="pipe-content">
+          <div class="pipe-label">You ask</div>
+          <div class="pipe-detail">"How did the Glow Serum perform last month — units sold, campaign tasks done, influencer posts delivered"</div>
+        </div>
+      </div>
+      <div class="pipe-connector"></div>
+      <div class="pipe-step">
+        <div class="pipe-num">02</div>
+        <div class="pipe-content">
+          <div class="pipe-label">Trak searches across everything</div>
+          <div class="pipe-detail">Shopify sales data · Task completion · Influencer deliverable cards · Workspace files</div>
+        </div>
+      </div>
+      <div class="pipe-connector"></div>
+      <div class="pipe-step">
+        <div class="pipe-num">03</div>
+        <div class="pipe-content">
+          <div class="pipe-label">Output lands on the page</div>
+          <div class="pipe-output">
+            <div class="pipe-output-label">Generated — Table block</div>
+            <table class="mini-table">
+              <thead><tr><th>Metric</th><th>Result</th><th>vs. Target</th></tr></thead>
+              <tbody>
+                <tr><td>Units sold</td><td>1,840</td><td class="t-up">+12%</td></tr>
+                <tr><td>Tasks completed</td><td>34 / 37</td><td class="t-up">92%</td></tr>
+                <tr><td>Influencer posts</td><td>14 / 16</td><td class="t-down">−12%</td></tr>
+                <tr><td>Avg. order value</td><td>$68.40</td><td class="t-up">+4%</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ FEATURE CARDS ═══════════════════════ -->
+<section class="features-section">
+  <div class="features-header">
+    <h2 class="features-hed">Six ways Trak's AI <em>acts</em> on your workspace.</h2>
+    <p class="features-sub">Not a chatbot bolted on. Intelligence built into the structure of how the work flows.</p>
+  </div>
+  <div class="feat-grid">
+
+    <div class="feat-card">
+      <span class="feat-tag">Command</span>
+      <div class="feat-icon"><svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
+      <h3 class="feat-title">Context-Aware Command</h3>
+      <p class="feat-body">The AI palette follows where you are — project, tab, or block. It <strong>knows the scope before you ask.</strong> Describe what you want and it executes: create tasks, build tables, generate charts, search across everything.</p>
+    </div>
+
+    <div class="feat-card">
+      <span class="feat-tag">Charts</span>
+      <div class="feat-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg></div>
+      <h3 class="feat-title">Charts From Questions</h3>
+      <p class="feat-body">Ask "show me task breakdown by status for Q2 Launch" and Trak builds a <strong>real chart block</strong> — not a text description, an actual interactive chart you can keep, configure, and share.</p>
+    </div>
+
+    <div class="feat-card">
+      <span class="feat-tag">Canvas</span>
+      <div class="feat-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></div>
+      <h3 class="feat-title">Workflow Pages</h3>
+      <p class="feat-body">Persistent analysis canvases with an always-mounted AI sidebar. Triage data, explore patterns, and assemble operational views in a dedicated space that <strong>doesn't clutter your project structure.</strong></p>
+    </div>
+
+    <div class="feat-card">
+      <span class="feat-tag">Analysis</span>
+      <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M12 18v-6"/><path d="M9 15h6"/></svg></div>
+      <h3 class="feat-title">File Analysis → Saved Artifact</h3>
+      <p class="feat-body">Upload a document, analyze it with AI, then <strong>promote the entire analysis thread</strong> into a saved workflow page. One-off research becomes a living operational reference.</p>
+    </div>
+
+    <div class="feat-card">
+      <span class="feat-tag">Modes</span>
+      <div class="feat-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg></div>
+      <h3 class="feat-title">Three Modes, One Surface</h3>
+      <p class="feat-body">Assistant mode for conversation. File analysis mode for uploaded material. Workspace search mode for direct retrieval. <strong>All from the same panel.</strong> No switching, no context loss.</p>
+    </div>
+
+    <div class="feat-card">
+      <span class="feat-tag">Aggregate</span>
+      <div class="feat-icon"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+      <h3 class="feat-title">Search + Aggregate + Build</h3>
+      <p class="feat-body">Search structured and unstructured data across your workspace, then turn results into <strong>tables, charts, or written summaries</strong> — directly on the page. Analysis and output in one motion.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER CTA -->
+<div class="footer-cta">
+  <div class="footer-inner">
+    <p class="footer-hed">Ready to bring in<br><em>your collaborators?</em></p>
+    <div class="footer-actions">
+      <a href="#" class="btn-ghost">04 — Collaborate <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+      <a href="#" class="btn-primary">Start for free</a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

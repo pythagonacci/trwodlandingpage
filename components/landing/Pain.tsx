@@ -8,13 +8,13 @@ const PAIN_ITEMS = [
     number: "01",
     title: "Your attention is shattered.",
     body:
-      "Shopify for products. Notion for plans. Slack for updates. Dropbox for assets. Email for contractors. Six tabs, zero clarity. You spend more time tracking down information than acting on it."
+      "Shopify for products. Notion for plans. Slack for updates. Dropbox for assets. Email for contractors. Six tabs, zero context. You spend more time chasing information than making anything with it."
   },
   {
     number: "02",
     title: "Launch day is still chaos.",
     body:
-      "You have a hard deadline. Creative, ops, marketing, inventory, and external partners all need to move together. No existing tool holds all of that with live business context attached."
+      "You have a hard deadline. Creative, ops, marketing, inventory, and external partners all need to move in sync. No existing tool holds all of that — with live business context — in one place."
   },
   {
     number: "03",
@@ -24,9 +24,9 @@ const PAIN_ITEMS = [
   },
   {
     number: "04",
-    title: "Your Shopify data lives somewhere else.",
+    title: "Your work is visual. Your tools forgot that.",
     body:
-      "Planning a campaign in Notion, checking inventory in Shopify, writing a brief in Google Docs. Your business context is never where your work is."
+      "Mood boards. Asset libraries. Campaign galleries. Creative briefs with real references. This isn't nice-to-have — it's how brand work actually gets done. No PM tool was built to hold it."
   }
 ];
 
@@ -54,7 +54,7 @@ function PainItem({ index, number, title, body }: PainItemProps) {
           {number}
         </div>
         <div>
-          <h3 className="mb-[10px] font-display text-[20px] font-bold leading-[1.25] tracking-[-0.01em] text-ink">
+          <h3 className="mb-[10px] font-display text-[20px] font-semibold leading-[1.25] tracking-[-0.005em] text-ink">
             {title}
           </h3>
           <p className="text-[15px] leading-[1.8] text-ink-2">{body}</p>
@@ -71,14 +71,9 @@ export function Pain() {
         <div className="mb-7 text-[11px] font-medium uppercase tracking-[0.12em] text-stone">
           The Problem
         </div>
-        <h2 className="mb-6 font-display text-[clamp(36px,3.8vw,54px)] font-normal leading-[1.1] tracking-[-0.05em] text-ink">
-          Monday was built for engineers.
-          <br />
-          Asana for enterprise.
-          <br />
-          <span className="font-display font-bold text-accent">
-            Nothing was built for you.
-          </span>
+        <h2 className="mb-6 font-display text-[clamp(36px,3.8vw,54px)] font-normal leading-[1.1] tracking-[-0.04em] text-ink">
+          Brand work, team management, product launches — and not a single
+          tool built to hold all of it.
         </h2>
         <p className="max-w-[320px] text-[15px] leading-[1.8] text-ink-2">
           DTC brands have been duct-taping together five tools because nothing
@@ -100,4 +95,3 @@ export function Pain() {
     </section>
   );
 }
-

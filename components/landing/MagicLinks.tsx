@@ -18,9 +18,12 @@ export function MagicLinks() {
           <div className="mb-7 text-[11px] font-medium uppercase tracking-[0.12em] text-stone">
             Magic Links
           </div>
-          <h2 className="mb-6 font-display text-[clamp(36px,3.8vw,54px)] font-normal leading-[1.1] tracking-[-0.05em] text-ink">
+          <h2 className="mb-6 font-display text-[clamp(36px,3.8vw,54px)] font-normal leading-[1.1] tracking-[-0.04em] text-ink">
             Every person who touches your brand.{" "}
-            <span className="font-display font-bold text-accent">
+            <span
+              className="font-display font-semibold text-accent"
+              style={{ letterSpacing: "-0.02em" }}
+            >
               One link away.
             </span>
           </h2>
@@ -85,7 +88,7 @@ export function MagicLinks() {
               </div>
               <div className="relative flex items-center justify-center">
                 <span className="text-[12px] font-medium uppercase tracking-[0.1em] text-sand">
-                  Trak — real-time notification
+                  Saria — real-time notification
                 </span>
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full border border-cream-3 bg-cream px-3 py-1 text-[11px] font-medium uppercase tracking-[0.1em] text-stone">
                   Your view
@@ -101,4 +104,3 @@ export function MagicLinks() {
     </section>
   );
 }
-

@@ -143,6 +143,137 @@
     animation-duration: 0.8s;
   }
 
+  .hero-video-shell {
+    position: relative;
+    isolation: isolate;
+    padding: 18px 16px 0;
+  }
+
+  .hero-video-shell::before {
+    content: "";
+    position: absolute;
+    inset: 18px 10px 34px;
+    z-index: -2;
+    border-radius: 34px;
+    background:
+      radial-gradient(circle at top, rgba(219, 231, 255, 0.82), transparent 55%),
+      radial-gradient(circle at bottom, rgba(255, 255, 255, 0.95), transparent 60%);
+    filter: blur(26px);
+    opacity: 0.95;
+  }
+
+  .hero-video-shell::after {
+    content: "";
+    position: absolute;
+    inset: 8px 0 18px;
+    z-index: -3;
+    border-radius: 42px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(244, 242, 238, 0.28));
+    filter: blur(18px);
+    opacity: 0.9;
+  }
+
+  .hero-video-frame {
+    border: 1px solid rgba(222, 219, 212, 0.52);
+    border-radius: 30px 30px 0 0;
+    background: #f8f5ef;
+    box-shadow:
+      0 26px 56px rgba(28, 25, 23, 0.07),
+      inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  }
+
+  .hero-video-bar {
+    background: rgba(244, 242, 238, 0.92);
+    border-right: 1px solid rgba(222, 219, 212, 0.52);
+    border-bottom: 1px solid rgba(222, 219, 212, 0.52);
+    border-left: 1px solid rgba(222, 219, 212, 0.52);
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    box-shadow: 0 18px 36px rgba(28, 25, 23, 0.05);
+  }
+
+  .feature-demo-shell {
+    position: relative;
+    isolation: isolate;
+    padding: 16px;
+  }
+
+  .feature-demo-shell::before {
+    content: "";
+    position: absolute;
+    inset: 18px 10px;
+    z-index: -2;
+    border-radius: 30px;
+    background:
+      radial-gradient(circle at top, rgba(219, 231, 255, 0.68), transparent 56%),
+      radial-gradient(circle at bottom, rgba(255, 255, 255, 0.86), transparent 60%);
+    filter: blur(24px);
+    opacity: 0.9;
+  }
+
+  .feature-demo-shell::after {
+    content: "";
+    position: absolute;
+    inset: 8px 0;
+    z-index: -3;
+    border-radius: 36px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(244, 242, 238, 0.24));
+    filter: blur(18px);
+    opacity: 0.82;
+  }
+
+  .feature-demo-frame {
+    border: 1px solid rgba(222, 219, 212, 0.5);
+    border-radius: 24px;
+    background: #f7f3ec;
+    box-shadow:
+      0 24px 48px rgba(28, 25, 23, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+
+  @media (max-width: 880px) {
+    .hero-video-shell {
+      padding: 12px 0 0;
+    }
+
+    .hero-video-shell::before {
+      inset: 12px 0 24px;
+      border-radius: 28px;
+    }
+
+    .hero-video-shell::after {
+      inset: 4px 0 12px;
+      border-radius: 30px;
+    }
+
+    .hero-video-frame {
+      border-radius: 24px 24px 0 0;
+    }
+
+    .hero-video-bar {
+      border-bottom-left-radius: 24px;
+      border-bottom-right-radius: 24px;
+    }
+
+    .feature-demo-shell {
+      padding: 10px 0;
+    }
+
+    .feature-demo-shell::before {
+      inset: 10px 0;
+      border-radius: 24px;
+    }
+
+    .feature-demo-shell::after {
+      inset: 4px 0;
+      border-radius: 28px;
+    }
+
+    .feature-demo-frame {
+      border-radius: 20px;
+    }
+  }
+
   /* CTA decorative rings */
   .cta-shell::before,
   .cta-shell::after {
@@ -172,5 +303,3 @@
     z-index: 1;
   }
 }
-
-

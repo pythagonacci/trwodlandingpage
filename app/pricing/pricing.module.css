@@ -1,0 +1,525 @@
+.page {
+  position: relative;
+  min-height: 100vh;
+  padding-top: 60px;
+  font-family: var(--font-display), var(--font-sans), sans-serif;
+  overflow: hidden;
+}
+
+.page::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 460px;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at top, rgba(219, 234, 254, 0.7), transparent 48%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.28), transparent 72%);
+  opacity: 0.95;
+}
+
+.hero,
+.cardsSection,
+.enterpriseSection,
+.faqSection {
+  position: relative;
+  z-index: 1;
+}
+
+.hero {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 72px 24px 56px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(16px);
+  animation: fadeUp 0.6s ease forwards;
+}
+
+.eyebrow {
+  margin-bottom: 14px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.title {
+  margin-bottom: 14px;
+  font-family: var(--font-display), var(--font-sans), sans-serif;
+  font-size: clamp(40px, 5vw, 56px);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.045em;
+  color: var(--ink);
+}
+
+.subtitle {
+  max-width: 380px;
+  margin: 0 auto 36px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--ink-3);
+}
+
+.toggleWrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 16px;
+  border: 1px solid rgba(212, 203, 184, 0.74);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 16px 32px rgba(28, 25, 23, 0.05);
+  backdrop-filter: blur(14px);
+}
+
+.toggleLabel {
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--stone);
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.toggleLabelActive {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.toggleTrack {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(212, 203, 184, 0.9);
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+
+.toggleTrackOn {
+  background: var(--accent);
+}
+
+.toggleThumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.toggleTrackOn .toggleThumb {
+  transform: translateX(18px);
+}
+
+.savePill {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.cardsSection {
+  max-width: 1220px;
+  margin: 0 auto;
+  padding: 0 32px 72px;
+}
+
+.cardsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1.08fr 1fr;
+  gap: 14px;
+  align-items: start;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 32px 28px 28px;
+  border: 1px solid rgba(212, 203, 184, 0.9);
+  border-radius: 20px;
+  background: rgba(255, 253, 249, 0.84);
+  box-shadow:
+    0 24px 48px rgba(28, 25, 23, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.5s ease forwards;
+}
+
+.cardFeatured {
+  padding-top: 44px;
+  border-color: rgba(29, 78, 216, 0.26);
+  background:
+    linear-gradient(180deg, rgba(239, 246, 255, 0.96), rgba(255, 253, 249, 0.94));
+  box-shadow:
+    0 28px 60px rgba(29, 78, 216, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.cardMuted .cardTier,
+.cardMuted .cardName,
+.cardMuted .priceAmount {
+  opacity: 0.58;
+}
+
+.cardMuted .cardTagline,
+.cardMuted .pricePeriod,
+.cardMuted .featureItem,
+.cardMuted .sectionLabel {
+  color: var(--stone);
+}
+
+.popularBadge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cardTier {
+  margin-bottom: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.cardFeatured .cardTier {
+  color: var(--accent);
+}
+
+.cardName {
+  margin-bottom: 6px;
+  font-family: var(--font-display), var(--font-sans), sans-serif;
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+}
+
+.cardFeatured .cardName {
+  color: var(--ink);
+}
+
+.cardTagline {
+  min-height: 40px;
+  margin-bottom: 24px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--ink-3);
+}
+
+.cardFeatured .cardTagline {
+  color: var(--ink-3);
+}
+
+.priceBlock {
+  margin-bottom: 24px;
+}
+
+.priceAmount {
+  font-family: var(--font-display), var(--font-sans), sans-serif;
+  font-size: 48px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  color: var(--ink);
+}
+
+.cardFeatured .priceAmount {
+  color: var(--ink);
+}
+
+.priceAmount sup {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 20px;
+  vertical-align: top;
+}
+
+.pricePeriod {
+  margin-top: 5px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--stone);
+}
+
+.cardFeatured .pricePeriod {
+  color: var(--stone);
+}
+
+.billingPeriod {
+  color: inherit;
+}
+
+.divider {
+  height: 1px;
+  margin-bottom: 22px;
+  background: rgba(212, 203, 184, 0.9);
+}
+
+.cardFeatured .divider {
+  background: rgba(29, 78, 216, 0.12);
+}
+
+.sectionLabel {
+  margin: 18px 0 10px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--stone);
+}
+
+.featureList {
+  list-style: none;
+}
+
+.featureItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 4.5px 0;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+
+.cardFeatured .featureItem {
+  color: var(--ink-2);
+}
+
+.checkIcon {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  margin-top: 1px;
+}
+
+.checkAccent {
+  color: var(--accent);
+}
+
+.checkFeatured {
+  color: var(--accent);
+}
+
+.checkDim {
+  color: rgba(120, 113, 108, 0.82);
+}
+
+.ctaBtn {
+  display: block;
+  width: 100%;
+  margin-top: 26px;
+  padding: 13px 0;
+  border: 1.5px solid transparent;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-align: center;
+  text-decoration: none;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.ctaBtnGhost {
+  border-color: rgba(212, 203, 184, 0.94);
+  color: var(--stone);
+}
+
+.ctaBtnGhost:hover {
+  border-color: rgba(154, 145, 132, 0.95);
+  color: var(--ink-2);
+}
+
+.ctaBtnAccent {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+.ctaBtnAccent:hover {
+  border-color: #1e40af;
+  background: #1e40af;
+}
+
+.ctaBtnCream {
+  border-color: var(--cream);
+  background: var(--cream);
+  color: var(--ink);
+}
+
+.ctaBtnCream:hover {
+  border-color: var(--cream-2);
+  background: var(--cream-2);
+}
+
+.enterpriseSection {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 48px 72px;
+}
+
+.enterpriseBand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 36px 40px;
+  border: 1px solid rgba(212, 203, 184, 0.9);
+  border-radius: 20px;
+  background: rgba(255, 253, 249, 0.82);
+  box-shadow:
+    0 24px 48px rgba(28, 25, 23, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.56);
+}
+
+.enterpriseTitle {
+  margin-bottom: 6px;
+  font-family: var(--font-display), var(--font-sans), sans-serif;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+}
+
+.enterpriseCopy {
+  max-width: 460px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+
+.enterpriseButton {
+  display: inline-block;
+  padding: 12px 28px;
+  border: 1.5px solid var(--ink);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.enterpriseButton:hover {
+  background: var(--ink);
+  color: var(--cream);
+}
+
+.faqSection {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 48px 80px;
+}
+
+.faqGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px 56px;
+}
+
+.faqItem h4 {
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.faqItem p {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--ink-3);
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 900px) {
+  .hero {
+    padding: 64px 20px 48px;
+  }
+
+  .cardsSection,
+  .enterpriseSection,
+  .faqSection {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .cardsGrid {
+    max-width: 460px;
+    margin: 0 auto;
+    grid-template-columns: 1fr;
+  }
+
+  .enterpriseBand {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .faqGrid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 560px) {
+  .toggleWrapper {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .card {
+    padding: 28px 22px 24px;
+  }
+
+  .title {
+    font-size: 38px;
+  }
+}

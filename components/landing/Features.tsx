@@ -1,78 +1,80 @@
+import { FiEdit3, FiPlus } from "react-icons/fi";
+import { HiOutlineQuestionMarkCircle } from "react-icons/hi2";
+
 export function Features() {
+  const productDemoVideoSrc = "/media/frv2demo2-web.mp4";
+  const productDemoPosterSrc = "/media/frv2demo2-poster.jpg";
+  const aiDemoVideoSrc = "/media/v2demo3-web.mp4";
+  const aiDemoPosterSrc = "/media/v2demo3-poster.jpg";
+  const shopifyDemoVideoSrc = "/media/v2demo4-web.mp4";
+  const shopifyDemoPosterSrc = "/media/v2demo4-poster.jpg";
+
+  const aiPrompts = [
+    {
+      label: "Create",
+      prompt: "Create a table of all influencers by submission status.",
+      accentClassName: "text-[#147B69]",
+      chipClassName: "bg-[#E1F3EE] text-[#147B69]",
+      icon: FiPlus,
+    },
+    {
+      label: "Ask",
+      prompt: "What's blocking the Spring launch?",
+      accentClassName: "text-[#554EC7]",
+      chipClassName: "bg-[#ECE9FF] text-[#554EC7]",
+      icon: HiOutlineQuestionMarkCircle,
+    },
+    {
+      label: "Update",
+      prompt: "Update every campaign deadline to April 15th.",
+      accentClassName: "text-[#99601A]",
+      chipClassName: "bg-[#FAEFD9] text-[#99601A]",
+      icon: FiEdit3,
+    },
+  ];
+
   return (
     <section
       id="features"
       className="border-b border-cream-3 bg-cream"
     >
-      <div className="grid grid-cols-2 gap-[60px] border-b border-cream-3 px-[60px] pb-16 pt-[100px] max-[880px]:grid-cols-1 max-[880px]:gap-6 max-[880px]:px-6 max-[880px]:pb-10 max-[880px]:pt-[60px]">
+      <div className="grid grid-cols-2 gap-[60px] px-[60px] pb-16 pt-[72px] max-[880px]:grid-cols-1 max-[880px]:gap-6 max-[880px]:px-6 max-[880px]:pb-10 max-[880px]:pt-[48px]">
         <div>
           <div className="mb-7 text-[11px] font-medium uppercase tracking-[0.12em] text-stone">
             Built for Brand Ops
           </div>
-          <h2 className="font-display text-[clamp(36px,3.9vw,58px)] font-normal leading-[1.1] tracking-[-0.05em] text-ink">
+          <h2 className="font-display text-[clamp(36px,3.9vw,58px)] font-normal leading-[1.1] tracking-[-0.04em] text-ink">
             Infrastructure for how brands{" "}
-            <span className="font-display font-bold text-accent">
+            <span
+              className="font-display font-semibold text-accent"
+              style={{ letterSpacing: "-0.02em" }}
+            >
               actually work.
             </span>
           </h2>
         </div>
-        <p className="self-end text-[15px] leading-[1.8] text-ink-2">
-          Most tools manage tasks. Trak embeds your entire workflow in one place
-          — products, images, files, tasks, approvals, and live Shopify data —
-          so execution happens where the work actually lives.
+        <p className="self-start pt-[52px] text-[15px] leading-[1.8] text-ink-2 max-[880px]:pt-0">
+          Most tools manage tasks. Saria embeds your entire workflow —
+          products, files, approvals, and live Shopify data — so execution
+          happens where the work lives. Assets, briefs, moodboards.{" "}
+          <span className="font-semibold text-ink">One tab.</span>
         </p>
       </div>
 
-      <div className="border-b border-cream-3 bg-cream-2 px-[60px] py-12 max-[880px]:px-6 max-[880px]:py-10">
-        <div className="flex w-full items-center justify-center rounded-card border-[1.5px] border-dashed border-cream-3 bg-cream">
-          <span className="py-16 text-[12px] font-medium uppercase tracking-[0.1em] text-sand">
-            Product Demo
-          </span>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 border-b border-cream-3 max-[880px]:grid-cols-1">
-        <div className="border-r border-cream-3 px-[60px] py-[52px] transition-colors duration-200 hover:bg-cream max-[880px]:border-r-0 max-[880px]:px-6 max-[880px]:py-10">
-          <span className="mb-[18px] block text-[11px] font-medium uppercase tracking-[0.1em] text-accent">
-            Shopify Native
-          </span>
-          <h3 className="mb-[14px] font-display text-[clamp(26px,2.6vw,36px)] font-normal leading-[1.15] tracking-[-0.04em] text-ink">
-            Trak doesn&apos;t integrate with Shopify.{" "}
-            <span className="font-display font-bold text-accent">
-              It&apos;s built around it.
-            </span>
-          </h3>
-          <p className="mb-7 max-w-[440px] text-[15px] leading-[1.8] text-ink-2">
-            Live inventory, variants, pre-order counts, and fulfillment status —
-            attached to the projects they belong to. Your business context lives
-            next to your work.
-          </p>
-          <div className="group w-full overflow-hidden rounded-[10px] border border-cream-3">
-            <div className="flex aspect-[16/9] items-center justify-center border-[1.5px] border-dashed border-cream-3 bg-cream text-[12px] font-medium uppercase tracking-[0.1em] text-sand transition-transform duration-500 group-hover:scale-[1.02]">
-              Shopify + Trak view
-            </div>
-          </div>
-        </div>
-
-        <div className="px-[60px] py-[52px] transition-colors duration-200 hover:bg-cream max-[880px]:border-t max-[880px]:border-cream-3 max-[880px]:px-6 max-[880px]:py-10">
-          <span className="mb-[18px] block text-[11px] font-medium uppercase tracking-[0.1em] text-accent">
-            Creative Workspace
-          </span>
-          <h3 className="mb-[14px] font-display text-[clamp(26px,2.6vw,36px)] font-normal leading-[1.15] tracking-[-0.04em] text-ink">
-            Assets, briefs, moodboards.{" "}
-            <span className="font-display font-bold text-accent">
-              All in one tab.
-            </span>
-          </h3>
-          <p className="mb-7 max-w-[440px] text-[15px] leading-[1.8] text-ink-2">
-            Inspiration photos next to quality checklists. Campaign briefs next
-            to production timelines. Everything your team touches, in one
-            place.
-          </p>
-          <div className="group w-full overflow-hidden rounded-[10px] border border-cream-3">
-            <div className="flex aspect-[16/9] items-center justify-center border-[1.5px] border-dashed border-cream-3 bg-cream text-[12px] font-medium uppercase tracking-[0.1em] text-sand transition-transform duration-500 group-hover:scale-[1.02]">
-              Moodboard + quality tracker
-            </div>
+      <div className="border-b border-cream-3 bg-cream-2 px-[60px] pb-12 pt-6 max-[880px]:px-6 max-[880px]:pb-10 max-[880px]:pt-5">
+        <div className="feature-demo-shell mx-auto w-full max-w-[1120px]">
+          <div className="feature-demo-frame relative aspect-[16/8.6] w-full overflow-hidden max-[880px]:aspect-[16/10]">
+            <video
+              className="h-full w-full object-cover"
+              poster={productDemoPosterSrc}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+            >
+              <source src={productDemoVideoSrc} type="video/mp4" />
+            </video>
           </div>
         </div>
       </div>
@@ -81,48 +83,100 @@ export function Features() {
         <span className="mb-[18px] block text-[11px] font-medium uppercase tracking-[0.1em] text-accent">
           AI-Powered
         </span>
-        <h3 className="mb-[14px] font-display text-[clamp(26px,2.6vw,36px)] font-normal leading-[1.15] tracking-[-0.04em] text-ink">
+        <h3 className="mb-6 w-full max-w-none font-display text-[clamp(30px,3.8vw,52px)] font-normal leading-[1.06] tracking-[-0.038em] text-ink">
           Ask questions. Get answers.{" "}
-          <span className="font-display font-bold text-accent">Take action.</span>
+          <span
+            className="font-display font-semibold text-accent"
+            style={{ letterSpacing: "-0.018em" }}
+          >
+            Take action.
+          </span>
         </h3>
-        <p className="mb-7 max-w-[600px] text-[15px] leading-[1.8] text-ink-2">
+        <p className="max-w-[720px] text-[15px] leading-[1.8] text-ink-2">
           Your AI assistant operates inside your work — not on top of it. Ask it
           anything. Then tell it what to do.
-          <br />
-          <br />
-          <span className="font-medium text-ink">
-            &quot;Create a table of all influencers by submission status.&quot; ·
-            &nbsp;&quot;Update every campaign deadline to April 15th.&quot; ·
-            &nbsp;&quot;What&apos;s blocking the Spring launch?&quot;
-          </span>
         </p>
-        <div className="flex w-full items-center justify-center rounded-[10px] border-[1.5px] border-dashed border-cream-3 bg-cream-2">
-          <span className="py-10 text-[12px] font-medium uppercase tracking-[0.1em] text-sand">
-            AI assistant demo
-          </span>
+        <div className="mb-7 mt-7 overflow-x-auto pb-2">
+          <div className="flex min-w-[1040px] gap-6 max-[1100px]:min-w-[960px]">
+            {aiPrompts.map((item) => {
+              const Icon = item.icon;
+
+              return (
+                <div
+                  key={item.label}
+                  className="flex min-h-[180px] flex-1 flex-col rounded-[18px] border border-[#D9D3CA] bg-[#FFFEFC] px-5 py-4 shadow-[0_2px_12px_rgba(28,25,23,0.04)]"
+                >
+                  <div
+                    className={`mb-3 flex h-[42px] w-[42px] items-center justify-center rounded-full ${item.chipClassName}`}
+                  >
+                    <Icon className="h-4 w-4" />
+                  </div>
+                  <span
+                    className={`mb-2 text-[12px] font-semibold uppercase tracking-[0.08em] ${item.accentClassName}`}
+                  >
+                    {item.label}
+                  </span>
+                  <p className="max-w-[250px] text-[16px] leading-[1.4] tracking-[-0.03em] text-ink">
+                    &quot;{item.prompt}&quot;
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <div className="feature-demo-shell mt-7 w-full">
+          <div className="feature-demo-frame relative aspect-[16/8.6] w-full overflow-hidden max-[880px]:aspect-[16/10]">
+            <video
+              className="h-full w-full object-cover"
+              poster={aiDemoPosterSrc}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+            >
+              <source src={aiDemoVideoSrc} type="video/mp4" />
+            </video>
+          </div>
         </div>
       </div>
 
-      <div className="px-[60px] py-[52px] transition-colors duration-200 hover:bg-cream-2 max-[880px]:px-6 max-[880px]:py-10">
+      <div className="px-[60px] py-[52px] transition-colors duration-200 hover:bg-cream max-[880px]:px-6 max-[880px]:py-10">
         <span className="mb-[18px] block text-[11px] font-medium uppercase tracking-[0.1em] text-accent">
-          Brand Calendar
+          Shopify Native
         </span>
-        <h3 className="mb-[14px] font-display text-[clamp(26px,2.6vw,36px)] font-normal leading-[1.15] tracking-[-0.04em] text-ink">
-          Your brand&apos;s entire operating rhythm.{" "}
-          <span className="font-display font-bold text-accent">One view.</span>
-        </h3>
-        <p className="mb-7 max-w-[600px] text-[15px] leading-[1.8] text-ink-2">
-          Every launch, campaign, content drop, and influencer post date in a
-          single calendar. See the whole picture without assembling it from
-          five places.
-        </p>
-        <div className="flex w-full items-center justify-center rounded-[10px] border-[1.5px] border-dashed border-cream-3 bg-cream-2">
-          <span className="py-10 text-[12px] font-medium uppercase tracking-[0.1em] text-sand">
-            Brand calendar demo
+        <h3 className="mb-6 w-full max-w-none font-display text-[clamp(30px,3.8vw,52px)] font-normal leading-[1.06] tracking-[-0.038em] text-ink">
+          Shopify.{" "}
+          <span
+            className="font-display font-semibold text-accent"
+            style={{ letterSpacing: "-0.018em" }}
+          >
+            Built In.
           </span>
+        </h3>
+        <p className="mb-9 max-w-[760px] text-[15px] leading-[1.8] text-ink-2">
+          Saria doesn&apos;t integrate with Shopify. It&apos;s built around it.
+          Create a project for your Barrier Restore Cream restock, and Saria
+          automatically connects to that SKU. Real-time inventory levels.
+          Product variants. Sales Data. All the data you need, exactly when you
+          need it.
+        </p>
+        <div className="feature-demo-shell w-full">
+          <div className="feature-demo-frame relative aspect-[16/8.4] w-full overflow-hidden max-[880px]:aspect-[16/10]">
+            <video
+              className="h-full w-full object-cover"
+              poster={shopifyDemoPosterSrc}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+            >
+              <source src={shopifyDemoVideoSrc} type="video/mp4" />
+            </video>
+          </div>
         </div>
       </div>
     </section>
   );
 }
-

@@ -7,9 +7,17 @@ export function CTA() {
       <span className="mb-6 block text-[11px] font-medium uppercase tracking-[0.12em] text-accent">
         Create Boldly
       </span>
-      <h2 className="mx-auto mb-6 max-w-[700px] font-display text-[clamp(52px,6.5vw,88px)] font-normal leading-[1.05] tracking-[-0.09em] text-ink">
+      <h2
+        className="mx-auto mb-6 max-w-[700px] font-display text-[clamp(52px,6.5vw,88px)] font-normal leading-[1.08] text-ink"
+        style={{ letterSpacing: "-1.5px" }}
+      >
         Your tools should match your{" "}
-        <span className="font-display font-bold text-accent">ambition.</span>
+        <span
+          className="font-display font-semibold text-accent"
+          style={{ letterSpacing: "-1px" }}
+        >
+          ambition.
+        </span>
       </h2>
       <p className="mx-auto mb-11 max-w-[380px] text-[16px] leading-[1.8] text-ink-2">
         You built something people didn&apos;t know they needed. Your workspace
@@ -17,7 +25,7 @@ export function CTA() {
       </p>
       <a
         href="#top"
-        className="inline-block rounded-full bg-accent px-[44px] py-[15px] text-[15px] font-medium text-white transition-colors duration-200 hover:bg-[#1e40af]"
+        className="inline-block rounded-full bg-accent px-8 py-3 text-[13px] font-medium text-white transition-colors duration-200 hover:bg-[#1e40af]"
       >
         Start Free Trial
       </a>
@@ -27,4 +35,3 @@ export function CTA() {
     </section>
   );
 }
-

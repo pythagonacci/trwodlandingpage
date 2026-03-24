@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trak — Create</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #F5F0E8;
+  --warm-white: #FDFAF5;
+  --ink: #1A1612;
+  --ink-60: rgba(26,22,18,0.60);
+  --ink-40: rgba(26,22,18,0.40);
+  --ink-20: rgba(26,22,18,0.20);
+  --ink-10: rgba(26,22,18,0.10);
+  --ink-06: rgba(26,22,18,0.06);
+  --accent: #C4622D;
+  --accent-muted: rgba(196,98,45,0.10);
+  --sage: #7A8C7E;
+  --gold: #B8962E;
+  --slate: #7B9DC4;
+  --border: rgba(26,22,18,0.10);
+  --border-light: rgba(26,22,18,0.06);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--warm-white);color:var(--ink);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.6;overflow-x:hidden;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(253,250,245,0.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:'Instrument Serif',serif;font-size:22px;letter-spacing:-0.02em;color:var(--ink);text-decoration:none;}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{font-size:13px;font-weight:400;color:var(--ink-60);text-decoration:none;transition:color .2s;}
+.nav-links a:hover{color:var(--ink);}
+.nav-cta{background:var(--ink)!important;color:var(--warm-white)!important;padding:9px 20px!important;border-radius:6px;}
+.nav-cta:hover{background:var(--accent)!important;}
+
+.section-nav{position:fixed;top:69px;left:0;right:0;z-index:99;background:var(--cream);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 48px;overflow-x:auto;}
+.sni{font-size:12px;font-weight:400;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-60);text-decoration:none;padding:14px 20px;border-bottom:2px solid transparent;white-space:nowrap;transition:color .2s,border-color .2s;}
+.sni:hover{color:var(--ink);}
+.sni.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:500;}
+
+.eyebrow{font-family:'DM Mono',monospace;font-size:11px;font-weight:300;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:10px;margin-bottom:28px;}
+.eyebrow::before{content:'';display:block;width:24px;height:1px;background:var(--accent);}
+.mono-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+
+/* HERO */
+.hero{padding:168px 48px 0;max-width:1400px;margin:0 auto;}
+.hero-inner{display:grid;grid-template-columns:1fr 480px;gap:80px;align-items:end;padding-bottom:80px;border-bottom:1px solid var(--border);}
+.hero-hed{font-family:'Instrument Serif',serif;font-size:clamp(54px,6.2vw,86px);line-height:1.0;letter-spacing:-0.03em;}
+.hero-hed em{font-style:italic;color:var(--accent);}
+.hero-subhead{font-family:'Instrument Serif',serif;font-size:19px;letter-spacing:-0.01em;color:var(--ink);margin-bottom:14px;line-height:1.3;}
+.hero-desc{font-size:15px;font-weight:300;line-height:1.8;color:var(--ink-60);}
+.hero-desc strong{color:var(--ink);font-weight:500;}
+
+/* SHOWCASE ROWS */
+.showcase{padding:80px 48px;max-width:1400px;margin:0 auto;}
+.showcase-row{display:grid;gap:72px;align-items:center;}
+.showcase-row.tl{grid-template-columns:400px 1fr;}
+.showcase-row.tr{grid-template-columns:1fr 400px;}
+.showcase-text .mono-label{margin-bottom:12px;}
+.showcase-text h2{font-family:'Instrument Serif',serif;font-size:32px;letter-spacing:-0.025em;color:var(--ink);line-height:1.15;margin-bottom:14px;}
+.showcase-text h2 em{font-style:italic;color:var(--accent);}
+.showcase-text p{font-size:15px;font-weight:300;line-height:1.8;color:var(--ink-60);margin-bottom:18px;}
+.showcase-text p strong{color:var(--ink);font-weight:500;}
+.detail-list{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.detail-list li{font-size:13px;font-weight:300;color:var(--ink-60);display:flex;align-items:flex-start;gap:8px;line-height:1.55;}
+.detail-list li::before{content:'—';color:var(--accent);flex-shrink:0;margin-top:1px;}
+
+/* MOCK SHELL */
+.mock{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--warm-white);box-shadow:0 20px 64px rgba(26,22,18,0.07);}
+.topbar{display:flex;align-items:center;gap:8px;padding:11px 16px;background:var(--cream);border-bottom:1px solid var(--border);}
+.wd{width:10px;height:10px;border-radius:50%;}
+.wd.r{background:#FF5F57;}.wd.y{background:#FEBC2E;}.wd.g{background:#28C840;}
+.topbar-title{margin-left:8px;font-size:11px;font-weight:400;color:var(--ink-60);}
+
+/* STATUS */
+.s-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:3px;font-size:10px;font-weight:400;}
+.s-pill.progress{background:rgba(184,150,46,0.12);color:var(--gold);}
+.s-pill.review{background:rgba(122,140,126,0.12);color:var(--sage);}
+.s-pill.done{background:rgba(40,200,64,0.08);color:#1a9e30;}
+
+/* SECTION 1: FULL PROJECT */
+.canvas-body{display:grid;grid-template-columns:176px 1fr;}
+.cs{border-right:1px solid var(--border);padding:12px 0;}
+.cs-section{font-size:9px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-40);padding:10px 14px 4px;}
+.cs-item{display:flex;align-items:center;gap:7px;padding:6px 14px;font-size:11px;font-weight:400;color:var(--ink-60);border-left:2px solid transparent;transition:all .15s;cursor:default;}
+.cs-item:hover{background:var(--ink-06);color:var(--ink);}
+.cs-item.active{color:var(--accent);border-left-color:var(--accent);background:var(--accent-muted);}
+.cs-item svg{width:11px;height:11px;stroke:currentColor;stroke-width:1.5;fill:none;flex-shrink:0;}
+.cm{padding:20px 24px 24px;}
+.page-title{font-family:'Instrument Serif',serif;font-size:21px;letter-spacing:-0.02em;color:var(--ink);margin-bottom:14px;}
+.b-text{font-size:12.5px;font-weight:300;line-height:1.7;color:var(--ink-60);margin-bottom:12px;}
+.b-text strong{color:var(--ink);font-weight:500;}
+.b-label{font-size:9px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-40);margin-bottom:5px;display:flex;align-items:center;gap:4px;}
+.b-label svg{width:9px;height:9px;stroke:currentColor;stroke-width:2;fill:none;}
+
+/* mini collage */
+.mini-col{display:grid;grid-template-columns:2fr 1fr 1fr;gap:3px;border-radius:7px;overflow:hidden;border:1px solid var(--border);margin-bottom:12px;}
+.mc{position:relative;}
+.mc.tall{grid-row:span 2;}
+.mc-in{width:100%;height:56px;display:flex;align-items:center;justify-content:center;}
+.mc-in.tall{height:116px;}
+.p1{background:linear-gradient(135deg,#F0DDD2,#E4C4AD);}
+.p2{background:linear-gradient(135deg,#EAF0EB,#C9DCCB);}
+.p3{background:linear-gradient(135deg,#F5EDDA,#E8D5B2);}
+.p4{background:linear-gradient(135deg,#E8EDF5,#CFDAEA);}
+.p5{background:linear-gradient(135deg,#F0E8F3,#DDD0E8);}
+.mc-cap{position:absolute;bottom:3px;left:4px;font-size:7.5px;color:rgba(26,22,18,0.6);background:rgba(253,250,245,0.88);padding:1px 4px;border-radius:2px;backdrop-filter:blur(3px);}
+
+/* asset cards mini row */
+.ac-row{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;}
+.ac{border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+.ac-img{height:44px;}
+.ac-foot{padding:4px 6px;font-size:9px;font-weight:400;color:var(--ink-60);border-top:1px solid var(--border-light);display:flex;align-items:center;justify-content:space-between;}
+.cc{display:flex;align-items:center;gap:2px;font-size:8px;color:var(--ink-40);}
+.cc svg{width:8px;height:8px;stroke:currentColor;stroke-width:2;fill:none;}
+
+/* SECTION 2: GALLERY */
+.g-toolbar{display:flex;align-items:center;gap:6px;padding:8px 12px;border-bottom:1px solid var(--border);}
+.g-tb-btn{padding:3px 8px;border-radius:4px;font-size:10px;font-weight:400;color:var(--ink-60);border:1px solid var(--border);background:var(--warm-white);cursor:pointer;}
+.g-tb-btn.active{background:var(--ink);color:white;border-color:var(--ink);}
+.gallery-collage{display:grid;grid-template-columns:1.5fr 1fr;grid-template-rows:auto auto;gap:5px;padding:10px;}
+.g-cell{border-radius:8px;overflow:hidden;position:relative;cursor:pointer;}
+.g-cell.tall{grid-row:span 2;}
+.g-in{width:100%;display:flex;align-items:center;justify-content:center;}
+.g-in.tall{min-height:148px;}
+.g-in.half{min-height:70px;}
+.g-lbl{position:absolute;bottom:6px;left:6px;font-size:8.5px;color:white;background:rgba(26,22,18,0.48);padding:2px 5px;border-radius:3px;backdrop-filter:blur(4px);}
+.g-badge{position:absolute;top:6px;right:6px;width:18px;height:18px;border-radius:50%;background:var(--accent);color:white;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:600;box-shadow:0 2px 6px rgba(196,98,45,.4);}
+.flagged-cell{border:2px solid var(--accent)!important;border-radius:8px;}
+
+/* comment panel */
+.c-panel{background:var(--cream);padding:11px 13px;border-top:1px solid var(--border);}
+.c-panel-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;}
+.c-panel-title{font-size:10px;font-weight:500;color:var(--ink-60);display:flex;align-items:center;gap:5px;}
+.c-panel-thumb{width:16px;height:16px;border-radius:3px;background:linear-gradient(135deg,#F5EDDA,#E8D5B2);flex-shrink:0;}
+.c-item{display:flex;gap:6px;margin-bottom:7px;}
+.c-av{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:600;color:white;flex-shrink:0;}
+.c-bd{flex:1;}
+.c-name{font-size:10px;font-weight:500;color:var(--ink);display:flex;gap:6px;align-items:baseline;}
+.c-time{font-weight:300;color:var(--ink-40);font-size:9px;}
+.c-txt{font-size:11px;font-weight:300;color:var(--ink-60);line-height:1.5;}
+.c-mention{color:var(--accent);font-weight:400;}
+.c-input-row{display:flex;align-items:center;gap:6px;margin-top:7px;padding-top:7px;border-top:1px solid var(--border);}
+.c-input{flex:1;padding:5px 9px;border-radius:5px;border:1px solid var(--border);background:var(--warm-white);font-size:11px;font-weight:300;font-family:'DM Sans',sans-serif;outline:none;}
+
+/* SECTION 3: CARDS */
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding:12px;}
+.cgc{border:1px solid var(--border);border-radius:9px;overflow:hidden;transition:box-shadow .2s;cursor:pointer;}
+.cgc:hover{box-shadow:0 5px 18px rgba(26,22,18,0.08);}
+.cgc-media{height:76px;display:flex;align-items:center;justify-content:center;}
+.cgc-body{padding:7px 9px;border-top:1px solid var(--border-light);}
+.cgc-name{font-size:11px;font-weight:500;color:var(--ink);margin-bottom:3px;}
+.cgc-note{font-size:10px;font-weight:300;color:var(--ink-60);line-height:1.5;margin-bottom:5px;}
+.cgc-meta{display:flex;align-items:center;gap:5px;}
+.cgc-cc{display:flex;align-items:center;gap:2px;font-size:9px;color:var(--ink-40);}
+.cgc-cc svg{width:8px;height:8px;stroke:currentColor;stroke-width:2;fill:none;}
+
+/* SECTION 4: FILES */
+.pdf-preview{border:1px solid var(--border);border-radius:8px;overflow:hidden;margin:11px 13px 0;}
+.pdf-tb{display:flex;align-items:center;gap:7px;padding:7px 11px;background:var(--cream);border-bottom:1px solid var(--border);}
+.pdf-title-t{font-size:10px;font-weight:400;color:var(--ink-60);flex:1;}
+.pdf-pg{font-size:9px;color:var(--ink-40);}
+.pdf-arr{width:18px;height:18px;border-radius:3px;border:1px solid var(--border);background:var(--warm-white);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--ink-60);cursor:pointer;}
+.pdf-body{padding:9px 11px;display:flex;flex-direction:column;gap:4px;}
+.pdf-ln{height:7px;border-radius:2px;background:var(--ink-10);}
+.files-list{display:flex;flex-direction:column;gap:1px;background:var(--border);margin-top:9px;border-radius:0 0 13px 13px;overflow:hidden;}
+.f-row{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--warm-white);cursor:pointer;transition:background .15s;}
+.f-row:hover{background:var(--cream);}
+.f-icon{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;}
+.f-info{flex:1;}
+.f-name{font-size:12px;font-weight:400;color:var(--ink);margin-bottom:1px;}
+.f-meta{font-size:10px;font-weight:300;color:var(--ink-40);}
+.f-badge{font-size:9px;padding:2px 6px;border-radius:3px;border:1px solid var(--border);white-space:nowrap;}
+.f-badge.pdf{background:rgba(196,98,45,0.06);color:var(--accent);border-color:rgba(196,98,45,0.15);}
+.f-badge.vid{background:var(--ink-06);color:var(--ink-60);}
+.f-badge.drv{background:rgba(123,157,196,0.1);color:var(--slate);border-color:rgba(123,157,196,0.2);}
+
+/* SECTION 5: EMBEDS */
+.embed-full{border:1px solid var(--border);border-radius:8px;overflow:hidden;margin:10px 12px 0;}
+.embed-hd{display:flex;align-items:center;gap:6px;padding:7px 10px;background:var(--cream);border-bottom:1px solid var(--border);font-size:10px;font-weight:400;color:var(--ink-60);}
+.embed-full-body{height:100px;background:linear-gradient(135deg,#F5F0E8,#EDE6D8);display:grid;grid-template-columns:1fr 2fr 1fr;gap:7px;padding:10px;}
+.ef{border-radius:5px;border:1px solid var(--border);background:var(--warm-white);display:flex;align-items:center;justify-content:center;}
+.ef.main{background:linear-gradient(135deg,#F0DDD2,#E4C4AD);}
+.ef.side1{background:linear-gradient(135deg,#EAF0EB,#C9DCCB);}
+.ef.side2{background:linear-gradient(135deg,#F5EDDA,#E8D5B2);}
+.embed-caption{padding:6px 10px;font-size:9.5px;font-weight:300;color:var(--ink-60);border-top:1px solid var(--border);background:var(--cream);}
+.embeds-2col{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 12px 12px;}
+.embed-card{border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.loom-thumb{width:100%;aspect-ratio:16/9;background:var(--ink);display:flex;align-items:center;justify-content:center;position:relative;}
+.loom-play{width:26px;height:26px;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;}
+.loom-play::after{content:'';border-left:8px solid var(--ink);border-top:5px solid transparent;border-bottom:5px solid transparent;margin-left:2px;}
+.loom-bar{position:absolute;bottom:6px;left:6px;right:6px;height:2px;background:rgba(255,255,255,0.15);border-radius:2px;}
+.loom-prog{width:38%;height:100%;background:var(--accent);border-radius:2px;}
+.gs-preview{width:100%;display:flex;flex-direction:column;border-radius:4px;overflow:hidden;border:1px solid var(--border);}
+.gs-row{display:grid;grid-template-columns:80px 1fr 1fr 1fr;border-bottom:1px solid var(--border-light);}
+.gs-row:last-child{border-bottom:none;}
+.gs-cell{padding:3px 6px;font-size:8.5px;font-weight:300;color:var(--ink-60);border-right:1px solid var(--border-light);}
+.gs-cell:last-child{border-right:none;}
+.gs-cell.hd{background:var(--cream);font-weight:500;font-size:8px;letter-spacing:0.04em;color:var(--ink-40);}
+.gs-cell.g{color:#1a9e30;}.gs-cell.r{color:#c0392b;}
+
+/* SECTION 6: FEEDBACK */
+.feedback-img{height:150px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#F0DDD2,#E4C4AD);position:relative;}
+.feedback-img-lbl{position:absolute;bottom:7px;left:8px;font-size:8.5px;color:rgba(26,22,18,0.6);background:rgba(253,250,245,0.88);padding:2px 5px;border-radius:3px;backdrop-filter:blur(4px);}
+.pin{position:absolute;width:17px;height:17px;border-radius:50%;background:var(--accent);border:2px solid white;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:600;color:white;box-shadow:0 2px 8px rgba(196,98,45,.4);cursor:pointer;}
+.notif-strip{display:flex;align-items:center;gap:7px;background:var(--warm-white);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin-top:8px;}
+.notif-text{font-size:11px;font-weight:300;color:var(--ink-60);}
+.notif-text strong{color:var(--ink);font-weight:500;}
+.notif-link{margin-left:auto;font-size:10px;font-weight:400;color:var(--accent);text-decoration:none;white-space:nowrap;}
+
+/* SECTION 7: DOC / MENTIONS */
+.doc-split{display:grid;grid-template-columns:1fr 240px;}
+.doc-main{padding:18px 22px;}
+.doc-title{font-family:'Instrument Serif',serif;font-size:17px;letter-spacing:-0.02em;color:var(--ink);margin-bottom:11px;}
+.doc-body{font-size:12px;font-weight:300;line-height:1.8;color:var(--ink-60);}
+.doc-body strong{color:var(--ink);font-weight:500;}
+.m-chip{display:inline-flex;align-items:center;gap:3px;padding:1px 5px;border-radius:3px;font-size:11px;font-weight:400;cursor:pointer;}
+.m-chip.doc{background:var(--accent-muted);color:var(--accent);}
+.m-chip.task{background:rgba(122,140,126,0.1);color:var(--sage);}
+.m-chip.tl{background:rgba(184,150,46,0.1);color:var(--gold);}
+.m-chip.shop{background:rgba(123,157,196,0.1);color:var(--slate);}
+.doc-sidebar{border-left:1px solid var(--border);background:var(--cream);padding:14px;}
+.ds-title{font-size:9px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-40);margin-bottom:10px;}
+.ds-text{font-size:11px;font-weight:300;line-height:1.7;color:var(--ink-60);}
+.ds-text strong{color:var(--ink);font-weight:500;}
+.cursor{display:inline-block;width:1.5px;height:.9em;background:var(--accent);margin-left:1px;vertical-align:text-bottom;animation:blink 1.1s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.linked-section{margin-top:12px;}
+.linked-label{font-size:9px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-40);margin-bottom:5px;}
+.linked-ref{display:flex;align-items:center;gap:5px;padding:4px 7px;border-radius:4px;border:1px solid var(--border);background:var(--warm-white);font-size:10px;font-weight:400;color:var(--ink-60);margin-bottom:3px;}
+.linked-ref svg{width:9px;height:9px;stroke:currentColor;stroke-width:1.5;fill:none;flex-shrink:0;}
+
+/* SECTION 8: DARK REUSE */
+.reuse-dark{background:var(--ink);padding:80px 48px;}
+.reuse-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:400px 1fr;gap:80px;align-items:center;}
+.reuse-text .mono-label{color:rgba(196,98,45,.7);}
+.reuse-text h2{font-family:'Instrument Serif',serif;font-size:36px;letter-spacing:-0.025em;color:var(--cream);line-height:1.1;margin-bottom:14px;}
+.reuse-text h2 em{font-style:italic;color:var(--accent);}
+.reuse-text p{font-size:15px;font-weight:300;line-height:1.8;color:rgba(245,240,232,.45);margin-bottom:20px;}
+.dark-list{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.dark-list li{font-size:13px;font-weight:300;color:rgba(245,240,232,.4);display:flex;align-items:flex-start;gap:8px;}
+.dark-list li::before{content:'—';color:rgba(196,98,45,.5);flex-shrink:0;}
+.reuse-visual{display:flex;flex-direction:column;gap:8px;}
+.ref-block{border:1px solid rgba(245,240,232,.08);border-radius:9px;padding:13px 15px;background:rgba(245,240,232,.03);}
+.ref-hd{display:flex;align-items:center;gap:7px;margin-bottom:6px;}
+.ref-icon{width:20px;height:20px;border-radius:4px;background:rgba(196,98,45,.15);display:flex;align-items:center;justify-content:center;}
+.ref-icon svg{width:10px;height:10px;stroke:var(--accent);stroke-width:1.5;fill:none;}
+.ref-name{font-size:11px;font-weight:500;color:var(--cream);}
+.synced{margin-left:auto;font-size:9px;font-weight:400;letter-spacing:.04em;text-transform:uppercase;color:#1a9e30;display:flex;align-items:center;gap:4px;background:rgba(40,200,64,.08);padding:2px 7px;border-radius:3px;border:1px solid rgba(40,200,64,.15);}
+.sync-dot{width:4px;height:4px;border-radius:50%;background:#1a9e30;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.ref-body{font-size:11px;font-weight:300;color:rgba(245,240,232,.35);line-height:1.6;margin-bottom:6px;}
+.ref-used{display:flex;flex-wrap:wrap;gap:3px;}
+.uc{font-size:9px;padding:2px 6px;border-radius:3px;background:rgba(245,240,232,.04);border:1px solid rgba(245,240,232,.08);color:rgba(245,240,232,.3);}
+.locked-block{border:1px solid rgba(40,200,64,.2);border-radius:8px;overflow:hidden;}
+.locked-bar{display:flex;align-items:center;gap:5px;padding:7px 12px;background:rgba(40,200,64,.07);border-bottom:1px solid rgba(40,200,64,.15);font-size:10px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:#1a9e30;}
+.locked-bar svg{width:9px;height:9px;stroke:#1a9e30;stroke-width:2;fill:none;}
+.locked-body{padding:10px 12px;font-size:11px;font-weight:300;color:rgba(245,240,232,.3);line-height:1.6;}
+
+/* FOOTER */
+.footer-cta{background:var(--cream);border-top:1px solid var(--border);padding:64px 48px;}
+.footer-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.footer-hed{font-family:'Instrument Serif',serif;font-size:28px;letter-spacing:-0.02em;color:var(--ink);}
+.footer-hed em{font-style:italic;color:var(--accent);}
+.footer-actions{display:flex;gap:12px;align-items:center;}
+.btn-primary{background:var(--ink);color:var(--warm-white);padding:12px 24px;border-radius:8px;font-size:14px;font-weight:400;text-decoration:none;transition:background .2s;}
+.btn-primary:hover{background:var(--accent);}
+.btn-ghost{color:var(--ink-60);padding:12px 24px;border-radius:8px;font-size:14px;font-weight:400;text-decoration:none;display:flex;align-items:center;gap:6px;border:1px solid var(--border);transition:color .2s,border-color .2s;}
+.btn-ghost:hover{color:var(--ink);border-color:var(--ink);}
+
+.divider{max-width:1400px;margin:0 auto;height:1px;background:var(--border);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.fu{animation:fadeUp .7s cubic-bezier(.16,1,.3,1) both;}
+.d1{animation-delay:.1s;}.d2{animation-delay:.22s;}.d3{animation-delay:.36s;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Trak</a>
+  <ul class="nav-links">
+    <li><a href="#">Product</a></li>
+    <li><a href="#">Templates</a></li>
+    <li><a href="#">Pricing</a></li>
+    <li><a href="#" class="nav-cta">Get started</a></li>
+  </ul>
+</nav>
+
+<div class="section-nav">
+  <a href="#" class="sni">01 — Organize</a>
+  <a href="#" class="sni active">02 — Create</a>
+  <a href="#" class="sni">03 — Intelligent Action</a>
+  <a href="#" class="sni">04 — Collaborate</a>
+  <a href="#" class="sni">05 — Connect</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="eyebrow fu d1">02 — Create</div>
+  <div class="hero-inner">
+    <div class="fu d2">
+      <h1 class="hero-hed">This is where<br>the work gets <em>made.</em></h1>
+    </div>
+    <div class="fu d3">
+      <p class="hero-subhead">Briefs, moodboards, campaigns, copy — not tracked in Trak. Made in Trak.</p>
+      <p class="hero-desc">Your team doesn't just need a place to manage tasks. They need a place to <strong>write the brief,</strong> assemble the moodboard, review the influencer batch, and draft the launch copy — all without scattering the work across five different apps. Trak gives every project a creative surface as rich as the work itself.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 1: YOUR PROJECT IS YOUR WORKSPACE ═══ -->
+<section class="showcase">
+  <div class="showcase-row tr">
+    <div class="mock">
+      <div class="topbar">
+        <span class="wd r"></span><span class="wd y"></span><span class="wd g"></span>
+        <span class="topbar-title">Glow Serum Launch — Overview</span>
+        <span class="s-pill review" style="margin-left:auto;">In Review</span>
+      </div>
+      <div class="canvas-body">
+        <div class="cs">
+          <p class="cs-section">Project</p>
+          <div class="cs-item active"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="3" x2="9" y2="21"/></svg>Overview</div>
+          <div class="cs-item"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Brief</div>
+          <div class="cs-item"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Moodboard</div>
+          <div class="cs-item"><svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Tasks</div>
+          <div class="cs-item"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/></svg>Timeline</div>
+          <p class="cs-section">Assets</p>
+          <div class="cs-item"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>Creative Batch</div>
+        </div>
+        <div class="cm">
+          <div class="page-title">Glow Serum — Q2 Launch</div>
+          <div class="b-text">The goal for this launch is to move positioning from <strong>"skincare routine"</strong> to <strong>"morning ritual."</strong> Aspirational, minimal, earned.</div>
+          <div style="margin-bottom:12px;">
+            <div class="b-label"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>Moodboard — 3 directions</div>
+            <div class="mini-col">
+              <div class="mc tall"><div class="mc-in p1 tall"></div><div class="mc-cap">Direction A</div></div>
+              <div class="mc"><div class="mc-in p2"></div><div class="mc-cap">Direction B</div></div>
+              <div class="mc"><div class="mc-in p3"></div><div class="mc-cap">Direction C</div></div>
+              <div class="mc"><div class="mc-in p4"></div></div>
+              <div class="mc"><div class="mc-in p5"></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="b-label"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>Packaging Concepts</div>
+            <div class="ac-row">
+              <div class="ac"><div class="ac-img p1"></div><div class="ac-foot">v2<div class="cc"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>3</div></div></div>
+              <div class="ac"><div class="ac-img p2"></div><div class="ac-foot">v3<div class="cc"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>1</div></div></div>
+              <div class="ac"><div class="ac-img p3"></div><div class="ac-foot">Final<span class="s-pill review" style="font-size:8px;padding:1px 4px;">→</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="showcase-text">
+      <p class="mono-label">Your project is your workspace</p>
+      <h2>A brief at the top. A moodboard in the middle. Packaging concepts <em>pinned below.</em></h2>
+      <p>Most tools give you a task list and call it done. In Trak, a product launch looks like a brief at the top, a moodboard in the middle, packaging concepts pinned as cards, and an influencer gallery at the bottom.</p>
+      <p><strong>One surface. All the work.</strong></p>
+      <ul class="detail-list">
+        <li>Mix text, galleries, cards, tasks, timelines, and files on a single page</li>
+        <li>Every block type is purpose-built — not a generic note</li>
+        <li>The project structure reflects how the work actually flows</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ 2: GALLERIES ═══ -->
+<section class="showcase" style="border-top:1px solid var(--border);padding-top:80px;">
+  <div class="showcase-row tl">
+    <div class="showcase-text">
+      <p class="mono-label">Galleries built for visual review</p>
+      <h2>Not the whole folder. The <em>exact frame</em> your art director flagged.</h2>
+      <p>Drop a photoshoot batch into a gallery. Arrange it as a collage or a grid. Leave a comment thread on a single image — pinned to that image, not floating somewhere in Slack.</p>
+      <ul class="detail-list">
+        <li>Collage and array layout options per gallery</li>
+        <li>Comment threads pinned to individual images</li>
+        <li>Per-image captions, fit and crop controls</li>
+        <li>Drag to reorder, lightbox for full view</li>
+        <li>Deep-link directly to the flagged frame</li>
+      </ul>
+    </div>
+    <div class="mock">
+      <div class="topbar">
+        <span class="wd r"></span><span class="wd y"></span><span class="wd g"></span>
+        <span class="topbar-title">Spring Campaign — Photo Batch</span>
+        <span style="margin-left:auto;font-size:10px;color:var(--ink-40);">14 images</span>
+      </div>
+      <div class="g-toolbar">
+        <button class="g-tb-btn active">Collage</button>
+        <button class="g-tb-btn">Grid</button>
+        <button class="g-tb-btn" style="margin-left:auto;">+ Add images</button>
+      </div>
+      <div class="gallery-collage">
+        <div class="g-cell tall">
+          <div class="g-in p1 tall"></div>
+          <div class="g-lbl">Hero — Option A</div>
+          <div class="g-badge">2</div>
+        </div>
+        <div class="g-cell">
+          <div class="g-in p2 half"></div>
+          <div class="g-lbl">Texture ref</div>
+        </div>
+        <div class="g-cell flagged-cell">
+          <div class="g-in p3 half"></div>
+          <div class="g-lbl" style="color:var(--accent);background:rgba(196,98,45,0.1);">Flagged ↓</div>
+          <div class="g-badge">4</div>
+        </div>
+      </div>
+      <div class="c-panel">
+        <div class="c-panel-hd">
+          <div class="c-panel-title"><div class="c-panel-thumb"></div>Thread on "Texture — Option C"</div>
+          <span style="font-size:9px;color:var(--ink-40);">4 comments</span>
+        </div>
+        <div class="c-item">
+          <div class="c-av" style="background:#7B9DC4;">SR</div>
+          <div class="c-bd"><div class="c-name">Sara <span class="c-time">2h ago</span></div><div class="c-txt">The warmth is exactly right — <span class="c-mention">@Amna</span> can we get a tighter crop on the center?</div></div>
+        </div>
+        <div class="c-item">
+          <div class="c-av" style="background:#C4622D;">AM</div>
+          <div class="c-bd"><div class="c-name">Amna <span class="c-time">1h ago</span></div><div class="c-txt">Adding to the retouching brief now. This is the one.</div></div>
+        </div>
+        <div class="c-input-row">
+          <div class="c-av" style="background:#B8962E;">KP</div>
+          <input class="c-input" placeholder="Reply to this thread…" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ 3: CARDS ═══ -->
+<section class="showcase" style="border-top:1px solid var(--border);padding-top:80px;">
+  <div class="showcase-row tr">
+    <div class="mock">
+      <div class="topbar">
+        <span class="wd r"></span><span class="wd y"></span><span class="wd g"></span>
+        <span class="topbar-title">Campaign Assets — Review</span>
+        <span style="margin-left:auto;display:flex;gap:3px;">
+          <span style="padding:2px 7px;background:var(--ink);color:white;border-radius:3px;font-size:9px;">Grid</span>
+          <span style="padding:2px 7px;border:1px solid var(--border);border-radius:3px;font-size:9px;color:var(--ink-60);">List</span>
+        </span>
+      </div>
+      <div class="cards-grid">
+        <div class="cgc">
+          <div class="cgc-media p1"><span style="font-size:9px;color:rgba(196,98,45,0.35);">Hero Banner</span></div>
+          <div class="cgc-body">
+            <div class="cgc-name">Hero — Static 1200×628</div>
+            <div class="cgc-meta"><div class="cgc-cc"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>2</div><span class="s-pill review" style="font-size:8px;padding:1px 5px;margin-left:auto;">Review</span></div>
+          </div>
+        </div>
+        <div class="cgc" style="border-color:var(--accent);">
+          <div class="cgc-media p2"><span style="font-size:9px;color:rgba(122,140,126,0.4);">Video Cut</span></div>
+          <div class="cgc-body">
+            <div class="cgc-name">Hero Video — 15s cut</div>
+            <div class="cgc-note">"The opening 3 frames feel slow — tighten the cut before the product reveal?"</div>
+            <div class="cgc-meta">
+              <div class="cgc-cc"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>5</div>
+              <div style="display:flex;gap:2px;margin-left:auto;">
+                <div class="c-av" style="width:15px;height:15px;font-size:7px;background:#C4622D;">AM</div>
+                <div class="c-av" style="width:15px;height:15px;font-size:7px;background:#7B9DC4;">SR</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cgc">
+          <div class="cgc-media p3"><span style="font-size:9px;color:rgba(184,150,46,0.35);">Story Deck</span></div>
+          <div class="cgc-body">
+            <div class="cgc-name">IG Stories — 9 slides</div>
+            <div class="cgc-meta"><div class="cgc-cc"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>1</div><span class="s-pill progress" style="font-size:8px;padding:1px 5px;margin-left:auto;">In progress</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="showcase-text">
+      <p class="mono-label">Pin assets as cards</p>
+      <h2>A creative review board that <em>lives inside</em> your project.</h2>
+      <p>Campaign hero images, video cuts, slideshow decks — pinned as visual cards with notes and their own comment threads. Grid view for the review, list view for density.</p>
+      <ul class="detail-list">
+        <li>Image, video, and slideshow support per card</li>
+        <li>Attach notes and leave threaded comments on each card</li>
+        <li>Grid for visual scanning, list for density</li>
+        <li>Status badges per card — review, approved, in progress</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ 4: FILES ═══ -->
+<section class="showcase" style="border-top:1px solid var(--border);padding-top:80px;">
+  <div class="showcase-row tl">
+    <div class="showcase-text">
+      <p class="mono-label">Files that live in the project</p>
+      <h2>PDFs render. Videos play. Drive stays the <em>source of truth.</em></h2>
+      <p>PDFs render in-place with pagination. Videos play with generated thumbnails. Link assets from Google Drive without duplicating storage — Drive stays the source of truth, Trak stays the surface where your team actually discusses the work.</p>
+      <ul class="detail-list">
+        <li>PDFs render inline with page-by-page navigation</li>
+        <li>Video files play with auto-generated thumbnails</li>
+        <li>Link Google Drive assets — no storage duplication</li>
+        <li>Comment threads on every file, not just the folder</li>
+      </ul>
+    </div>
+    <div class="mock">
+      <div class="topbar">
+        <span class="wd r"></span><span class="wd y"></span><span class="wd g"></span>
+        <span class="topbar-title">Glow Serum — Files</span>
+      </div>
+      <div class="pdf-preview">
+        <div class="pdf-tb">
+          <span>📄</span>
+          <span class="pdf-title-t">Creative Brief v4 — Final.pdf</span>
+          <span class="pdf-pg">Page 1 of 6</span>
+          <button class="pdf-arr">‹</button>
+          <button class="pdf-arr">›</button>
+        </div>
+        <div class="pdf-body">
+          <div class="pdf-ln" style="width:100%;"></div>
+          <div class="pdf-ln" style="width:88%;"></div>
+          <div class="pdf-ln" style="width:74%;"></div>
+          <div style="height:3px;"></div>
+          <div class="pdf-ln" style="width:96%;"></div>
+          <div class="pdf-ln" style="width:79%;"></div>
+          <div class="pdf-ln" style="width:58%;background:rgba(196,98,45,0.2);"></div>
+        </div>
+      </div>
+      <div class="files-list">
+        <div class="f-row">
+          <div class="f-icon" style="background:rgba(26,22,18,0.06);">🎬</div>
+          <div class="f-info"><div class="f-name">Hero_Video_15s_v3.mp4</div><div class="f-meta">42 MB · Apr 11 · 2 comments</div></div>
+          <span class="f-badge vid">Plays inline</span>
+        </div>
+        <div class="f-row">
+          <div class="f-icon" style="background:rgba(123,157,196,0.12);">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--slate)" stroke-width="1.5"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+          </div>
+          <div class="f-info"><div class="f-name">Photography Spec Sheet.gdoc</div><div class="f-meta">Google Drive · source of truth · 1 comment</div></div>
+          <span class="f-badge drv">Drive linked</span>
+        </div>
+        <div class="f-row">
+          <div class="f-icon" style="background:rgba(196,98,45,0.08);">📄</div>
+          <div class="f-info"><div class="f-name">Influencer Brief — Batch 3.pdf</div><div class="f-meta">1.2 MB · Apr 9 · 4 comments</div></div>
+          <span class="f-badge pdf">Renders inline</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ 5: EMBEDS ═══ -->
+<section class="showcase" style="border-top:1px solid var(--border);padding-top:80px;">
+  <div class="showcase-row tr">
+    <div class="mock">
+      <div class="topbar">
+        <span class="wd r"></span><span class="wd y"></span><span class="wd g"></span>
+        <span class="topbar-title">Packaging Brief — Embedded tools</span>
+      </div>
+      <div class="embed-full">
+        <div class="embed-hd">🎨 Figma — Packaging v3 <span style="margin-left:auto;font-size:9px;color:var(--ink-30);">4 frames · auto-synced</span></div>
+        <div class="embed-full-body">
+          <div class="ef side1"></div>
+          <div class="ef main"></div>
+          <div class="ef side2"></div>
+        </div>
+        <div class="embed-caption">Packaging v3 — final direction for production. Do not edit without sign-off.</div>
+      </div>
+      <div class="embeds-2col">
+        <div class="embed-card">
+          <div class="embed-hd">🎬 Loom — Creative Walkthrough <span style="margin-left:auto;font-size:9px;color:var(--ink-30);">8:42</span></div>
+          <div style="padding:8px;">
+            <div class="loom-thumb">
+              <div class="loom-play"></div>
+              <div class="loom-bar"><div class="loom-prog"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="embed-card">
+          <div class="embed-hd">📊 Google Sheets — SKU Tracker</div>
+          <div style="padding:8px;">
+            <div class="gs-preview">
+              <div class="gs-row"><div class="gs-cell hd">SKU</div><div class="gs-cell hd">Stock</div><div class="gs-cell hd">Status</div><div class="gs-cell hd">Launch</div></div>
+              <div class="gs-row"><div class="gs-cell">GLOW-30ML</div><div class="gs-cell">1,240</div><div class="gs-cell g">Ready</div><div class="gs-cell">Apr 21</div></div>
+              <div class="gs-row"><div class="gs-cell">GLOW-50ML</div><div class="gs-cell">880</div><div class="gs-cell g">Ready</div><div class="gs-cell">Apr 21</div></div>
+              <div class="gs-row"><div class="gs-cell">SPF-DROP</div><div class="gs-cell">340</div><div class="gs-cell r">Low stock</div><div class="gs-cell">May 10</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="showcase-text">
+      <p class="mono-label">Your tools, inside the project</p>
+      <h2>Your designer's mockup lives right below the brief <em>it's based on.</em></h2>
+      <p>Figma mockups, Google Docs, Loom walkthroughs, YouTube — embedded inline with resizable previews. Not linked in a sidebar. In the project.</p>
+      <ul class="detail-list">
+        <li>Figma designs embed at full width with captions</li>
+        <li>Loom walkthroughs play inline — no new tab</li>
+        <li>Google Docs, Sheets, Slides render live</li>
+        <li>YouTube, Calendly, and more supported</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ 6: FEEDBACK ═══ -->
+<section class="showcase" style="border-top:1px solid var(--border);padding-top:80px;">
+  <div class="showcase-row tl">
+    <div class="showcase-text">
+      <p class="mono-label">Feedback on the work, not about it</p>
+      <h2>The conversation happens <em>on the work</em> — not in a channel about it.</h2>
+      <p>Every block has threaded comments. Every gallery image, every card, every file. Mention a teammate and they land on the exact thing you're talking about.</p>
+      <ul class="detail-list">
+        <li>Threaded comments on every block, image, card, and file</li>
+        <li>@mention drops collaborators onto the exact frame</li>
+        <li>Deep-link notifications point to the specific thing</li>
+        <li>No more "see my note in Slack about the third image"</li>
+      </ul>
+    </div>
+    <div class="mock">
+      <div class="topbar">
+        <span class="wd r"></span><span class="wd y"></span><span class="wd g"></span>
+        <span class="topbar-title">Influencer Batch — Review</span>
+      </div>
+      <div class="feedback-img">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="rgba(196,98,45,0.18)" stroke-width="1"><rect x="2" y="2" width="20" height="20" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <div class="feedback-img-lbl">Hero image — Option C</div>
+        <div class="pin" style="top:30%;left:54%;">1</div>
+        <div class="pin" style="top:56%;left:27%;">2</div>
+      </div>
+      <div class="c-panel">
+        <div class="c-panel-hd">
+          <div class="c-panel-title"><div class="c-panel-thumb"></div>Thread on Pin 2 — "Hero image, Option C"</div>
+          <span style="font-size:9px;color:var(--ink-40);">3 comments</span>
+        </div>
+        <div class="c-item">
+          <div class="c-av" style="background:#7A8C7E;">JS</div>
+          <div class="c-bd"><div class="c-name">Jamie <span class="c-time">45 min ago</span></div><div class="c-txt">The lighting is slightly warm — <span class="c-mention">@Sara</span> does this match the retouching spec?</div></div>
+        </div>
+        <div class="c-item">
+          <div class="c-av" style="background:#7B9DC4;">SR</div>
+          <div class="c-bd"><div class="c-name">Sara <span class="c-time">30 min ago</span></div><div class="c-txt">Yes — within spec. Approved on my end.</div></div>
+        </div>
+        <div class="c-input-row">
+          <div class="c-av" style="background:#C4622D;">AM</div>
+          <input class="c-input" placeholder="Reply…" />
+        </div>
+        <div class="notif-strip">
+          <div class="c-av" style="background:#7A8C7E;width:20px;height:20px;">JS</div>
+          <div class="notif-text"><strong>Jamie</strong> mentioned you on Pin 2 of "Hero image, Option C"</div>
+          <a href="#" class="notif-link">View →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ 7: WRITE TOGETHER / MENTIONS ═══ -->
+<section class="showcase" style="border-top:1px solid var(--border);padding-top:80px;">
+  <div class="showcase-row tr">
+    <div class="mock">
+      <div class="topbar">
+        <span class="wd r"></span><span class="wd y"></span><span class="wd g"></span>
+        <span class="topbar-title">Glow Serum Launch — Brief</span>
+        <span style="margin-left:auto;font-size:10px;color:var(--sage);font-weight:400;">Sidebar open</span>
+      </div>
+      <div class="doc-split">
+        <div class="doc-main">
+          <div class="doc-title">Glow Serum — Creative Brief</div>
+          <div class="doc-body">
+            The positioning shift is from "skincare routine" to <strong>"morning ritual."</strong> Every creative decision should serve that frame.<br><br>
+            See <span class="m-chip doc">📋 Moodboard</span> for visual direction. <span class="m-chip task">✓ Photography brief</span> is due Apr 12 per <span class="m-chip tl">⟶ Timeline</span>.<br><br>
+            Launch confirmed against <span class="m-chip shop">⬛ Glow Serum SKU</span> in Shopify — inventory is clear for Apr 21.
+          </div>
+        </div>
+        <div class="doc-sidebar">
+          <div class="ds-title">Launch Copy Draft</div>
+          <div class="ds-text">
+            <strong>Headline:</strong> A ritual, not a routine.<br><br>
+            The Glow Serum was built for the five minutes that are yours.<span class="cursor"></span>
+          </div>
+          <div class="linked-section">
+            <div class="linked-label">Linked from this doc</div>
+            <div class="linked-ref"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Moodboard — 3 directions</div>
+            <div class="linked-ref"><svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/></svg>Photography brief</div>
+            <div class="linked-ref"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/></svg>Timeline — Q2 Launch</div>
+            <div class="linked-ref"><svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/></svg>Glow Serum SKU</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="showcase-text">
+      <p class="mono-label">Write together. Reference everything.</p>
+      <h2>The brief links to the moodboard links to the timeline links to the <em>Shopify product.</em></h2>
+      <p>Native documents with rich formatting and autosave. Open in a sidebar without leaving the canvas. Mention a person, a task, a file, or another block from anywhere — everything in Trak is linkable.</p>
+      <ul class="detail-list">
+        <li>Open any doc in a sidebar — main canvas stays in view</li>
+        <li>Inline @mentions for people, tasks, files, blocks, products</li>
+        <li>"Linked from this doc" panel surfaces every reference</li>
+        <li>Autosave — nothing gets lost mid-draft</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 8: DARK — REUSE + LOCK ═══ -->
+<section class="reuse-dark" style="margin-top:80px;">
+  <div class="reuse-inner">
+    <div class="reuse-text">
+      <p class="mono-label" style="margin-bottom:12px;">Reuse what's built. Lock what's done.</p>
+      <h2>Write it once.<br><em>Reference it everywhere.</em></h2>
+      <p>Save any block as reusable and reference it across projects — brand guidelines, creative specs, packaging dimensions. When something is signed off, lock it. Reviewed means reviewed.</p>
+      <ul class="dark-list">
+        <li>Save any block as a synced reference</li>
+        <li>Update the source — all instances update</li>
+        <li>Lock blocks after sign-off — no accidental edits</li>
+        <li>See every project a block appears in</li>
+      </ul>
+    </div>
+    <div class="reuse-visual">
+      <div class="ref-block">
+        <div class="ref-hd">
+          <div class="ref-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <span class="ref-name">Brand Voice Guidelines</span>
+          <span class="synced"><span class="sync-dot"></span>Synced</span>
+        </div>
+        <div class="ref-body">Tone: warm but precise. Never casual, never clinical. Write like a trusted friend who knows everything about skincare…</div>
+        <div class="ref-used"><span class="uc">Glow Serum Launch</span><span class="uc">Q2 Campaigns</span><span class="uc">Influencer Briefs</span><span class="uc">+4 more</span></div>
+      </div>
+      <div class="ref-block">
+        <div class="ref-hd">
+          <div class="ref-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+          <span class="ref-name">Photography Spec Sheet</span>
+          <span class="synced"><span class="sync-dot"></span>Synced</span>
+        </div>
+        <div class="ref-body">Ratio: 4:5 primary, 1:1 secondary. Background: warm white. No drop shadows. Natural light only…</div>
+        <div class="ref-used"><span class="uc">All Creative Briefs</span><span class="uc">Agency Onboarding</span></div>
+      </div>
+      <div class="locked-block">
+        <div class="locked-bar">
+          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Approved &amp; locked — Apr 10, 2025
+        </div>
+        <div class="locked-body">Packaging direction C is approved for production. Dimensions, colorways, and finish are final. No further edits without a new sign-off cycle.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER CTA -->
+<div class="footer-cta">
+  <div class="footer-inner">
+    <p class="footer-hed">Ready to see the<br><em>intelligence layer?</em></p>
+    <div class="footer-actions">
+      <a href="#" class="btn-ghost">03 — Intelligent Action <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+      <a href="#" class="btn-primary">Start for free</a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

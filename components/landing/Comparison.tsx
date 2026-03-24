@@ -1,23 +1,9 @@
 export function Comparison() {
   return (
     <section
-      id="why-trak"
+      id="why-saria"
       className="border-b border-cream-3 bg-cream-2 px-[60px] py-[100px] max-[880px]:px-6 max-[880px]:py-[60px]"
     >
-      <div className="mb-13 grid grid-cols-2 gap-[60px] max-[880px]:grid-cols-1 max-[880px]:gap-6">
-        <h2 className="font-display text-[clamp(36px,3.9vw,58px)] font-normal leading-[1.1] tracking-[-0.05em] text-ink">
-          Built for brands.{" "}
-          <span className="font-display font-bold text-accent">
-            Not borrowed from enterprise.
-          </span>
-        </h2>
-        <p className="border-t border-cream-3 pt-5 text-[15px] leading-[1.8] text-ink-2">
-          Every other PM tool was built for someone else and adapted for brands.
-          Trak was designed from day one for DTC teams — with the integrations,
-          templates, and workflows that actually matter.
-        </p>
-      </div>
-
       <div className="overflow-hidden rounded-card border border-cream-3 bg-cream">
         <div className="overflow-x-auto">
           <table className="min-w-full border-collapse text-left">
@@ -36,7 +22,7 @@ export function Comparison() {
                   Notion
                 </th>
                 <th className="border-b border-l border-cream-3 bg-accent px-6 py-4 text-white">
-                  Trak
+                  Saria
                 </th>
               </tr>
             </thead>
@@ -83,4 +69,3 @@ export function Comparison() {
     </section>
   );
 }
-
