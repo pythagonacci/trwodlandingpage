@@ -10,7 +10,7 @@ export function Hero() {
       className="border-b pt-[60px]"
       style={{ backgroundColor: "#F4F2EE", borderColor: "#DEDBD4" }}
     >
-      <div className="mx-auto flex max-w-[1400px] flex-col items-center px-8 pb-16">
+      <div className="mx-auto flex max-w-[1320px] flex-col items-center px-8 pb-16">
         {/* Badge pill */}
         <div
           className="hero-anim hero-anim-badge mt-6 mb-4 inline-flex items-center gap-2 rounded-full px-4 py-1.5 pl-2.5 text-[12.5px] font-medium tracking-[0.02em] md:mt-8 md:mb-5"
@@ -69,8 +69,8 @@ export function Hero() {
 
         {/* Hero visual + logo bar wrapper — visual and logo bar connect seamlessly */}
         <div
-          className="hero-anim hero-anim-visual hero-video-shell w-full max-w-[1440px]"
-          style={{ width: "100%", maxWidth: "1440px" }}
+          className="hero-anim hero-anim-visual hero-video-shell w-full max-w-[1320px]"
+          style={{ width: "100%", maxWidth: "1320px" }}
         >
           <div
             className="hero-video-frame relative flex aspect-[16/8.2] items-center justify-center overflow-hidden max-[880px]:aspect-[4/3]"

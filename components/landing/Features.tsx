@@ -62,7 +62,7 @@ export function Features() {
       </div>
 
       <div className="border-b border-cream-3 bg-cream-2 px-[60px] pb-12 pt-6 max-[880px]:px-6 max-[880px]:pb-10 max-[880px]:pt-5">
-        <div className="feature-demo-shell mx-auto w-full max-w-[1120px]">
+        <div className="feature-demo-shell mx-auto w-full max-w-[1040px]">
           <div className="feature-demo-frame relative aspect-[16/8.6] w-full overflow-hidden max-[880px]:aspect-[16/10]">
             <video
               className="h-full w-full object-cover"
@@ -124,7 +124,7 @@ export function Features() {
             })}
           </div>
         </div>
-        <div className="feature-demo-shell mt-7 w-full">
+        <div className="feature-demo-shell mx-auto mt-7 w-full max-w-[1040px]">
           <div className="feature-demo-frame relative aspect-[16/8.6] w-full overflow-hidden max-[880px]:aspect-[16/10]">
             <video
               className="h-full w-full object-cover"
@@ -161,7 +161,7 @@ export function Features() {
           Product variants. Sales Data. All the data you need, exactly when you
           need it.
         </p>
-        <div className="feature-demo-shell w-full">
+        <div className="feature-demo-shell mx-auto w-full max-w-[1040px]">
           <div className="feature-demo-frame relative aspect-[16/8.4] w-full overflow-hidden max-[880px]:aspect-[16/10]">
             <video
               className="h-full w-full object-cover"

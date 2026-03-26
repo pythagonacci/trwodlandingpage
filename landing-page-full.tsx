@@ -525,7 +525,7 @@ function MagicLinks() {
 
   return (
     <section id="collaboration" className="border-b border-cream-3 bg-cream">
-      <div className="grid grid-cols-2 max-[880px]:grid-cols-1">
+      <div className="grid grid-cols-[minmax(0,0.86fr)_minmax(0,1.14fr)] max-[880px]:grid-cols-1">
         <div className="sticky top-[60px] flex flex-col justify-center self-start border-r border-cream-3 px-[60px] py-[100px] max-[880px]:static max-[880px]:border-b max-[880px]:border-r-0 max-[880px]:px-6 max-[880px]:pt-[60px] max-[880px]:pb-10">
           <div className="mb-7 text-[11px] font-medium uppercase tracking-[0.12em] text-stone">
             Magic Links
@@ -581,32 +581,16 @@ function MagicLinks() {
           <div className="px-[52px] py-[48px] max-[880px]:border-t max-[880px]:border-cream-3 max-[880px]:px-6 max-[880px]:py-9">
             <div className="mb-5 flex items-center gap-3">
               <span className="rounded-full border border-[#BFDBFE] bg-accent-bg px-[10px] py-[3px] text-[11px] font-semibold uppercase tracking-[0.12em] text-accent">
-                02 — 03
+                02
               </span>
               <span className="text-[13px] font-medium tracking-[0.01em] text-ink-2">
                 Collaborator uploads · You&apos;re notified instantly
               </span>
             </div>
-            <div className="relative grid aspect-[16/7] grid-cols-2 overflow-hidden rounded-card border-[1.5px] border-dashed border-cream-3 bg-cream max-[880px]:aspect-auto max-[880px]:grid-cols-1 max-[880px]:h-80">
-              <div className="relative flex items-center justify-center border-r-[1.5px] border-cream-3 max-[880px]:border-b-[1.5px] max-[880px]:border-r-0">
-                <span className="text-[12px] font-medium uppercase tracking-[0.1em] text-sand">
-                  Collaborator view — uploading
-                </span>
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full border border-cream-3 bg-cream px-3 py-1 text-[11px] font-medium uppercase tracking-[0.1em] text-stone">
-                  Their view
-                </div>
-              </div>
-              <div className="relative flex items-center justify-center">
-                <span className="text-[12px] font-medium uppercase tracking-[0.1em] text-sand">
-                  Saria — real-time notification
-                </span>
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full border border-cream-3 bg-cream px-3 py-1 text-[11px] font-medium uppercase tracking-[0.1em] text-stone">
-                  Your view
-                </div>
-              </div>
-              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-cream-3 bg-cream px-[14px] py-[6px] text-[11px] font-semibold uppercase tracking-[0.08em] text-stone max-[880px]:top-1/2">
-                Simultaneously
-              </div>
+            <div className="flex aspect-[16/7] items-center justify-center overflow-hidden rounded-card border-[1.5px] border-dashed border-cream-3 bg-cream max-[880px]:aspect-auto max-[880px]:h-80">
+              <span className="text-[12px] font-medium uppercase tracking-[0.1em] text-sand">
+                Visual - collaborator upload flow
+              </span>
             </div>
           </div>
         </div>
