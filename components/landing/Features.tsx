@@ -71,7 +71,7 @@ export function Features() {
               muted
               loop
               playsInline
-              preload="auto"
+              preload="metadata"
             >
               <source src={productDemoVideoSrc} type="video/mp4" />
             </video>
@@ -133,7 +133,7 @@ export function Features() {
               muted
               loop
               playsInline
-              preload="auto"
+              preload="metadata"
             >
               <source src={aiDemoVideoSrc} type="video/mp4" />
             </video>
@@ -170,7 +170,7 @@ export function Features() {
               muted
               loop
               playsInline
-              preload="auto"
+              preload="metadata"
             >
               <source src={shopifyDemoVideoSrc} type="video/mp4" />
             </video>

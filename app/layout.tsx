@@ -20,8 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
-        <link rel="preload" href="/media/demo1-web.mp4" as="video" type="video/mp4" />
-        <link rel="preload" href="/media/frv2demo2-web.mp4" as="video" type="video/mp4" />
+        <link rel="preload" href="/media/demo1-poster.jpg" as="image" />
       </head>
       <body className="bg-cream text-ink font-sans antialiased overflow-x-hidden">
         <div className="relative z-[1]">{children}</div>

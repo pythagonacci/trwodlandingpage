@@ -1,8 +1,12 @@
 "use client";
 
+import Image from "next/image";
+import { useState } from "react";
+
 export function Hero() {
   const heroVideoSrc = "/media/demo1-web.mp4";
   const heroPosterSrc = "/media/demo1-poster.jpg";
+  const [isVideoReady, setIsVideoReady] = useState(false);
 
   return (
     <section
@@ -70,23 +74,29 @@ export function Hero() {
         </div>
 
         {/* Hero visual + logo bar wrapper — visual and logo bar connect seamlessly */}
-        <div
-          className="hero-anim hero-anim-visual hero-video-shell w-full max-w-[1320px]"
-          style={{ width: "100%", maxWidth: "1320px" }}
-        >
+        <div className="hero-video-shell w-full max-w-[1320px]" style={{ width: "100%", maxWidth: "1320px" }}>
           <div
             className="hero-video-frame relative flex aspect-[16/8.2] items-center justify-center overflow-hidden max-[880px]:aspect-[4/3]"
             style={{ position: "relative", width: "100%", aspectRatio: "16 / 8.2", overflow: "hidden" }}
           >
+            <Image
+              src={heroPosterSrc}
+              alt="Saria workspace preview"
+              fill
+              priority
+              sizes="(max-width: 880px) 100vw, 1320px"
+              className={`object-cover transition-opacity duration-300 ${isVideoReady ? "opacity-0" : "opacity-100"}`}
+            />
             <video
-              className="h-full w-full object-cover"
+              className={`h-full w-full object-cover transition-opacity duration-300 ${isVideoReady ? "opacity-100" : "opacity-0"}`}
               style={{ width: "100%", height: "100%", objectFit: "cover" }}
               poster={heroPosterSrc}
               autoPlay
               muted
               loop
               playsInline
-              preload="auto"
+              preload="metadata"
+              onLoadedData={() => setIsVideoReady(true)}
             >
               <source src={heroVideoSrc} type="video/mp4" />
             </video>
