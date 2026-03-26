@@ -1,7 +1,15 @@
 import type { CSSProperties, ReactNode } from "react";
 import Link from "next/link";
+import { createPageMetadata } from "@/app/seo";
 import { Nav } from "@/components/landing/Nav";
 import styles from "./collaborate.module.css";
+
+export const metadata = createPageMetadata({
+  title: "Collaborate with Teams, Partners, and Creators | Saria",
+  description:
+    "Run a connected D2C collaboration workflow with Saria. Keep your team, partners, creators, and client approvals in one project without exposing your full workspace.",
+  path: "/product/collaborate"
+});
 
 const SECTION_LINKS = [
   { href: "/product/organize", label: "01 - Organize", active: false, route: true },
@@ -367,11 +375,11 @@ export default function Page() {
         <div className={styles.heroGrid}>
           <div>
             <h1 className={styles.heroHeading}>
-              Bring people in without
+              Collaborate with teams,
               <br />
-              giving away
+              partners, and
               <br />
-              <em>the keys.</em>
+              <em>creators.</em>
             </h1>
           </div>
           <div>
@@ -1030,7 +1038,12 @@ export default function Page() {
               05 - Connect
               <ArrowIcon className={styles.ctaArrow} />
             </Link>
-            <a href="#" className={styles.primaryButton}>
+            <a
+              href="https://app.sariasoftware.com/start-free-trial"
+              className={styles.primaryButton}
+              target="_blank"
+              rel="noreferrer"
+            >
               Start for free
             </a>
           </div>

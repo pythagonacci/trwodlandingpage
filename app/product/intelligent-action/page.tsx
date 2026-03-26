@@ -1,7 +1,15 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
+import { createPageMetadata } from "@/app/seo";
 import { Nav } from "@/components/landing/Nav";
 import styles from "./intelligent-action.module.css";
+
+export const metadata = createPageMetadata({
+  title: "AI-Powered Workflows for D2C Teams | Saria",
+  description:
+    "Run AI-powered workflows built for D2C teams with Saria. Help your team search projects, generate deliverables, and turn workspace and Shopify context into action.",
+  path: "/product/intelligent-action"
+});
 
 const SECTION_LINKS = [
   { href: "/product/organize", label: "01 - Organize", active: false, route: true },
@@ -314,9 +322,9 @@ export default function Page() {
             <div>
               <div className={styles.heroEyebrow}>03 - Intelligent Action</div>
               <h1 className={styles.heroHeading}>
-                Ask anything.
+                AI-powered workflows
                 <br />
-                <em>Saria moves.</em>
+                for <em>D2C teams.</em>
               </h1>
             </div>
 
@@ -972,7 +980,12 @@ export default function Page() {
                 <polyline points="12 5 19 12 12 19" />
               </svg>
             </Link>
-            <a href="#" className={styles.primaryButton}>
+            <a
+              href="https://app.sariasoftware.com/start-free-trial"
+              className={styles.primaryButton}
+              target="_blank"
+              rel="noreferrer"
+            >
               Start for free
             </a>
           </div>

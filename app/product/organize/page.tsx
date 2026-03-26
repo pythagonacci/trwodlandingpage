@@ -1,7 +1,15 @@
 import type { CSSProperties, ReactNode } from "react";
 import Link from "next/link";
+import { createPageMetadata } from "@/app/seo";
 import { Nav } from "@/components/landing/Nav";
 import styles from "./organize.module.css";
+
+export const metadata = createPageMetadata({
+  title: "Organize Your Entire Brand Workflow | Saria",
+  description:
+    "Organize every D2C workflow in one place with Saria. Give your team a unified project view for tasks, timelines, calendars, and reporting across launches and campaigns.",
+  path: "/product/organize"
+});
 
 const SECTION_LINKS = [
   { href: "/product/organize", label: "01 - Organize", active: true, route: true },
@@ -435,9 +443,9 @@ export default function Page() {
         <div>
           <div className={styles.heroLabel}>01 - Organize</div>
           <h1 className={styles.heroTitle}>
-            See everything.
+            Organize your entire
             <br />
-            <span className={styles.heroTitleAccent}>Miss nothing.</span>
+            <span className={styles.heroTitleAccent}>workflow in one place.</span>
           </h1>
         </div>
         <div className={styles.heroCopy}>
@@ -934,7 +942,12 @@ export default function Page() {
                 <polyline points="12 5 19 12 12 19" />
               </svg>
             </Link>
-            <a href="#" className={styles.primaryButton}>
+            <a
+              href="https://app.sariasoftware.com/start-free-trial"
+              className={styles.primaryButton}
+              target="_blank"
+              rel="noreferrer"
+            >
               Start for free
             </a>
           </div>

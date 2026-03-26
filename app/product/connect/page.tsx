@@ -1,7 +1,15 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
+import { createPageMetadata } from "@/app/seo";
 import { Nav } from "@/components/landing/Nav";
 import styles from "./connect.module.css";
+
+export const metadata = createPageMetadata({
+  title: "Shopify-Native Project Management | Saria",
+  description:
+    "Manage Shopify-native D2C projects in one workflow with Saria. Give your team live Shopify products, inventory, sales data, and launch context inside every project.",
+  path: "/product/connect"
+});
 
 const SECTION_LINKS = [
   { href: "/product/organize", label: "01 - Organize", active: false, route: true },
@@ -265,11 +273,11 @@ export default function Page() {
         <div className={styles.heroGrid}>
           <div>
             <h1 className={styles.heroHeading}>
-              Saria doesn't integrate
+              Shopify-native project
               <br />
-              with Shopify.
+              management for
               <br />
-              <em>It's built around it.</em>
+              <em>D2C brands.</em>
             </h1>
           </div>
           <div>
@@ -936,14 +944,19 @@ export default function Page() {
           </p>
           <div className={styles.closingRule} />
           <div className={styles.closingActions}>
-            <a href="#" className={styles.shopifyButton}>
+            <a
+              href="https://app.sariasoftware.com/start-free-trial"
+              className={styles.shopifyButton}
+              target="_blank"
+              rel="noreferrer"
+            >
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M5 12h14" />
                 <path d="M12 5l7 7-7 7" />
               </svg>
               Start with Shopify
             </a>
-            <a href="#" className={styles.ghostLightButton}>
+            <a href="/" className={styles.ghostLightButton}>
               See all features
             </a>
           </div>
@@ -954,11 +967,11 @@ export default function Page() {
         <div className={styles.footerBarInner}>
           <span className={styles.footerLogo}>Saria</span>
           <div className={styles.footerLinks}>
-            <a href="#">Product</a>
-            <a href="#">Templates</a>
+            <a href="/">Product</a>
+            <a href="/pricing">Templates</a>
             <Link href="/pricing">Pricing</Link>
-            <a href="#">Privacy</a>
-            <a href="#">Terms</a>
+            <a href="/">Privacy</a>
+            <a href="/">Terms</a>
           </div>
         </div>
       </footer>

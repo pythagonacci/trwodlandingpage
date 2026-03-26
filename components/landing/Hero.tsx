@@ -36,7 +36,7 @@ export function Hero() {
             color: "#0F0E0C"
           }}
         >
-          The Operating System for D2C Brands
+          Project Management for Modern D2C Brands
         </h1>
 
         {/* Subheadline */}

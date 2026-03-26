@@ -1,6 +1,14 @@
 import Link from "next/link";
+import { createPageMetadata } from "@/app/seo";
 import { Nav } from "@/components/landing/Nav";
 import styles from "./create.module.css";
+
+export const metadata = createPageMetadata({
+  title: "Create and Manage Creative Workflows | Saria",
+  description:
+    "Create and manage creative workflows in one D2C project workspace. Saria helps your team turn briefs, moodboards, assets, and approvals into a connected workflow.",
+  path: "/product/create"
+});
 
 const SECTION_LINKS = [
   { href: "/product/organize", label: "01 - Organize", active: false, route: true },
@@ -66,9 +74,9 @@ export default function Page() {
         <div className={styles.heroInner}>
           <div>
             <h1 className={styles.heroHeading}>
-              This is where
+              Create and manage
               <br />
-              the work gets <em>made.</em>
+              creative <em>workflows.</em>
             </h1>
           </div>
           <div>
@@ -784,7 +792,7 @@ export default function Page() {
                   <div className={styles.notifText}>
                     <strong>Jamie</strong> mentioned you on Pin 2 of &quot;Hero image, Option C&quot;
                   </div>
-                  <a href="#" className={styles.notifLink}>
+                  <a href="/" className={styles.notifLink}>
                     View →
                   </a>
                 </div>
@@ -1016,7 +1024,12 @@ export default function Page() {
                 <polyline points="12 5 19 12 12 19" />
               </svg>
             </Link>
-            <a href="#" className={styles.primaryButton}>
+            <a
+              href="https://app.sariasoftware.com/start-free-trial"
+              className={styles.primaryButton}
+              target="_blank"
+              rel="noreferrer"
+            >
               Start for free
             </a>
           </div>
