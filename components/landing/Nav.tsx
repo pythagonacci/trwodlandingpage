@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
@@ -65,10 +66,18 @@ export function Nav() {
       <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between px-4 md:px-8 lg:px-12">
         <Link
           href="/"
-          className="font-display text-[20px] font-semibold tracking-[-0.015em] text-ink"
+          className="flex items-center gap-2 font-display text-[20px] font-semibold tracking-[-0.015em] text-ink"
           onClick={() => setProductMenuOpen(false)}
         >
-          Saria
+          <Image
+            src="/logo-copy.png"
+            alt="Saria logo"
+            width={28}
+            height={28}
+            className="h-7 w-7 object-contain"
+            priority
+          />
+          <span>Saria</span>
         </Link>
         <ul className="flex items-center gap-8 text-[13px] font-normal text-ink-3">
           <li
@@ -125,9 +134,11 @@ export function Nav() {
           ))}
           <li>
             <Link
-              href="/#cta"
+              href="https://app.sariasoftware.com/start-free-trial"
               className="rounded-full px-4 py-2 text-[12px] font-medium text-white transition-colors duration-200"
               onClick={() => setProductMenuOpen(false)}
+              target="_blank"
+              rel="noreferrer"
               style={{ backgroundColor: "#1D4ED8" }}
             >
               Start Free Trial

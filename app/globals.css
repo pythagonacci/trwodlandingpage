@@ -18,6 +18,9 @@
     --ink-3: #78716C;
     --accent: #1D4ED8;
     --accent-bg: #EFF6FF;
+    --font-display: "Avenir Next", "Segoe UI", sans-serif;
+    --font-sans: "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+    --font-hero-display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
   }
 
   html {

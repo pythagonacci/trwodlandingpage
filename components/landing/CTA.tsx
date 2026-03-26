@@ -24,8 +24,10 @@ export function CTA() {
         should be built the same way.
       </p>
       <a
-        href="#top"
+        href="https://app.sariasoftware.com/start-free-trial"
         className="inline-block rounded-full bg-accent px-8 py-3 text-[13px] font-medium text-white transition-colors duration-200 hover:bg-[#1e40af]"
+        target="_blank"
+        rel="noreferrer"
       >
         Start Free Trial
       </a>

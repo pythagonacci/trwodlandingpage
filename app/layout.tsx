@@ -1,28 +1,15 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { DM_Sans, Inter, Playfair_Display } from "next/font/google";
-
-const display = Inter({
-  subsets: ["latin"],
-  variable: "--font-display"
-});
-
-const sans = DM_Sans({
-  subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  variable: "--font-sans"
-});
-
-const heroDisplay = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-hero-display"
-});
 
 export const metadata: Metadata = {
   title: "Saria — The Brand Operating System",
   description:
-    "Saria is the brand operating system for modern D2C teams — launches, campaigns, and collaborators in one workspace, built around Shopify."
+    "Saria is the brand operating system for modern D2C teams — launches, campaigns, and collaborators in one workspace, built around Shopify.",
+  icons: {
+    icon: "/logo-copy.png",
+    shortcut: "/logo-copy.png",
+    apple: "/logo-copy.png"
+  }
 };
 
 export default function RootLayout({
@@ -31,10 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className={`${display.variable} ${sans.variable} ${heroDisplay.variable} scroll-smooth`}
-    >
+    <html lang="en" className="scroll-smooth">
       <head>
         <link rel="preload" href="/media/demo1-web.mp4" as="video" type="video/mp4" />
         <link rel="preload" href="/media/frv2demo2-web.mp4" as="video" type="video/mp4" />

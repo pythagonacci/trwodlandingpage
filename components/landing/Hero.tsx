@@ -49,8 +49,10 @@ export function Hero() {
         <div className="hero-anim hero-anim-ctas mb-6 flex flex-col items-center gap-2">
           <div className="flex flex-row flex-wrap items-center justify-center gap-6">
             <a
-              href="#cta"
+              href="https://app.sariasoftware.com/start-free-trial"
               className="rounded-full px-3 py-1.5 text-[11px] font-medium text-white transition-colors duration-200 hover:opacity-90"
+              target="_blank"
+              rel="noreferrer"
               style={{ backgroundColor: "#2B52EE" }}
             >
               Start Free Trial
