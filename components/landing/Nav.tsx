@@ -132,7 +132,16 @@ export function Nav() {
               </Link>
             </li>
           ))}
-          <li>
+          <li className="flex items-center gap-3">
+            <Link
+              href="https://app.sariasoftware.com/login"
+              className="rounded-full border border-cream-3 px-4 py-2 text-[12px] font-medium text-ink transition-colors duration-200 hover:border-stone hover:bg-cream-2"
+              onClick={() => setProductMenuOpen(false)}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Log In
+            </Link>
             <Link
               href="https://app.sariasoftware.com/start-free-trial"
               className="rounded-full px-4 py-2 text-[12px] font-medium text-white transition-colors duration-200"
