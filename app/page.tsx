@@ -8,7 +8,7 @@ import { CTA } from "@/components/landing/CTA";
 import { Footer } from "@/components/landing/Footer";
 
 export const metadata = createPageMetadata({
-  title: "Project Management for Modern D2C Brands | Saria",
+  title: "The Operating System for Modern D2C Brands | Saria",
   description:
     "Saria is the project management platform built for modern D2C brands. Plan product launches, manage content, and collaborate with your team in one workspace.",
   path: "/"

@@ -24,7 +24,7 @@ export function Hero() {
             className="h-1.5 w-1.5 shrink-0 rounded-full"
             style={{ backgroundColor: "#2B52EE" }}
           />
-          Built for D2C Brands
+          Trusted by 1k+ Brands on Shopify
         </div>
 
         {/* Headline */}
@@ -36,7 +36,7 @@ export function Hero() {
             color: "#0F0E0C"
           }}
         >
-          Project Management for Modern D2C Brands
+          The Operating System for Modern D2C Brands
         </h1>
 
         {/* Subheadline */}
@@ -102,24 +102,6 @@ export function Hero() {
             </video>
           </div>
 
-          <div
-            className="hero-video-bar flex items-center justify-center gap-4 px-6 py-4"
-            style={{ width: "100%" }}
-          >
-            <span
-              className="text-[11px] font-normal uppercase tracking-[0.06em]"
-              style={{ color: "#78716C" }}
-            >
-              Trusted by teams at
-            </span>
-            <div className="h-4 w-px" style={{ backgroundColor: "#DEDBD4" }} />
-            <div className="flex items-center gap-5 text-[13px] font-medium tracking-[0.04em]" style={{ color: "#6B6760" }}>
-              <span>RHODE</span>
-              <span>GISOU</span>
-              <span>RIDGE</span>
-              <span>DAIRY BOY</span>
-            </div>
-          </div>
         </div>
       </div>
     </section>
