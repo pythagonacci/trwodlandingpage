@@ -133,7 +133,7 @@ const SHARED_FILES = [
     title: "Hero Video - 15s v3.mp4",
     meta: "Shared - 42 MB - Plays inline",
     action: "Download",
-    tone: "neutral",
+    tone: "download",
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <rect x="3" y="5" width="15" height="14" rx="2" />
@@ -190,6 +190,113 @@ const RETURNED_FILES = [
   }
 ] as const;
 
+type ActivityItem = {
+  avatar: string;
+  avatarTone: string;
+  meta: string;
+  text: ReactNode;
+  unread?: boolean;
+  snippet?: ReactNode;
+  actionTone?: string;
+  actionIcon?: ReactNode;
+};
+
+const ACTIVITY_ITEMS: ActivityItem[] = [
+  {
+    avatar: "S",
+    avatarTone: "var(--page-sage)",
+    unread: true,
+    actionTone: "var(--page-accent)",
+    actionIcon: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+      </svg>
+    ),
+    text: (
+      <>
+        <strong>Sara R.</strong> mentioned <span className={styles.mentionText}>@you</span> in a
+        comment on <strong>Hero Banner v4</strong>
+      </>
+    ),
+    snippet: (
+      <>
+        Revised crop is up - <span className={styles.mentionText}>@Amna</span> can you confirm
+        this works before we send to client?
+      </>
+    ),
+    meta: "Glow Serum Launch - 12 min ago"
+  },
+  {
+    avatar: "J",
+    avatarTone: "var(--page-slate)",
+    unread: true,
+    actionTone: "var(--page-accent)",
+    actionIcon: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+      </svg>
+    ),
+    text: (
+      <>
+        <strong>Jamie K.</strong> mentioned <span className={styles.mentionText}>@you</span> on{" "}
+        <strong>Hero Video - 15s</strong>
+      </>
+    ),
+    snippet: (
+      <>
+        Upload is done - <span className={styles.mentionText}>@Amna</span> heads up the last 2s
+        need a re-cut, flagged on pin 3.
+      </>
+    ),
+    meta: "Glow Serum Launch - 34 min ago"
+  },
+  {
+    avatar: "✓",
+    avatarTone: "#1a9e30",
+    text: (
+      <>
+        <strong>Client</strong> approved <strong>Packaging - Direction C</strong>
+      </>
+    ),
+    meta: "Glow Serum Launch - 1h ago"
+  },
+  {
+    avatar: "M",
+    avatarTone: "var(--page-gold)",
+    actionTone: "var(--page-ink-soft)",
+    actionIcon: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+      </svg>
+    ),
+    text: (
+      <>
+        <strong>Marcus</strong> commented on <strong>IG Stories - slide 4</strong>
+      </>
+    ),
+    snippet:
+      "Font feels too heavy at this size - matches the brand guide but not the vibe we're going for.",
+    meta: "Glow Serum Launch - 2h ago"
+  },
+  {
+    avatar: "S",
+    avatarTone: "var(--page-sage)",
+    actionTone: "var(--page-slate)",
+    actionIcon: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <polyline points="8 17 12 21 16 17" />
+        <line x1="12" y1="12" x2="12" y2="21" />
+      </svg>
+    ),
+    text: (
+      <>
+        <strong>Sara R.</strong> uploaded <strong>Hero Banner v4.png</strong> to Deliverables
+      </>
+    ),
+    meta: "Glow Serum Launch - 2h ago"
+  }
+];
+
 type FeatureCard = {
   tag: string;
   title: string;
@@ -199,12 +306,49 @@ type FeatureCard = {
 
 const FEATURE_CARDS: FeatureCard[] = [
   {
+    tag: "Internal",
+    title: "Asset Comments",
+    body: (
+      <>
+        Drop comment pins directly on images, videos, or files.{" "}
+        <strong>Feedback lives on the asset</strong> instead of in Slack. Threads resolve
+        independently, with reactions for fast takes.
+      </>
+    ),
+    icon: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+      </svg>
+    )
+  },
+  {
+    tag: "Internal",
+    title: "@Mentions & Activity",
+    body: (
+      <>
+        Mention anyone anywhere in Saria. A unified feed surfaces{" "}
+        <strong>comments, approvals, uploads, and edits</strong> so nothing slips, while live
+        presence shows who is in the workspace.
+      </>
+    ),
+    icon: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="18" cy="5" r="3" />
+        <circle cx="6" cy="12" r="3" />
+        <circle cx="18" cy="19" r="3" />
+        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+      </svg>
+    )
+  },
+  {
     tag: "Sharing",
     title: "Magic Links",
     body: (
       <>
         Generate a shareable link to any project. <strong>No login required.</strong> External
-        collaborators see a clean view of exactly the tabs you choose to share, and nothing else.
+        collaborators see a clean, branded view of exactly the tabs you choose to share and
+        nothing more.
       </>
     ),
     icon: (
@@ -232,11 +376,12 @@ const FEATURE_CARDS: FeatureCard[] = [
   },
   {
     tag: "Feedback",
-    title: "Client Comments and Review",
+    title: "Client Comments & Review",
     body: (
       <>
-        External reviewers leave comments directly on shared blocks with <strong>no account
-        needed.</strong> Feedback syncs back to your workspace and triggers internal notifications.
+        External reviewers leave comments directly on shared blocks with{" "}
+        <strong>no account needed,</strong> just a name. Feedback syncs to your workspace and
+        triggers internal notifications.
       </>
     ),
     icon: (
@@ -247,7 +392,7 @@ const FEATURE_CARDS: FeatureCard[] = [
   },
   {
     tag: "Sign-Off",
-    title: "Approvals and Sign-Off",
+    title: "Approvals & Sign-Off",
     body: (
       <>
         Clients mark deliverables as approved. The approval state flows back into your project so
@@ -262,11 +407,11 @@ const FEATURE_CARDS: FeatureCard[] = [
   },
   {
     tag: "Delivery",
-    title: "File Delivery and Collection",
+    title: "File Delivery & Collection",
     body: (
       <>
         Share files and galleries through the public page. Clients download what they need and{" "}
-        <strong>upload deliverables back</strong>, all tracked within the project.
+        <strong>upload deliverables back</strong> - all tracked within the project.
       </>
     ),
     icon: (
@@ -274,22 +419,6 @@ const FEATURE_CARDS: FeatureCard[] = [
         <polyline points="8 17 12 21 16 17" />
         <line x1="12" y1="12" x2="12" y2="21" />
         <path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29" />
-      </svg>
-    )
-  },
-  {
-    tag: "Security",
-    title: "Anonymized and Safe",
-    body: (
-      <>
-        Client comments show as "Client" while internal identities stay private.{" "}
-        <strong>Rate limiting, scoped access, and signed URLs</strong> keep shared pages secure,
-        with analytics tracking who is viewing.
-      </>
-    ),
-    icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
       </svg>
     )
   }
@@ -375,24 +504,22 @@ export default function Page() {
         <div className={styles.heroGrid}>
           <div>
             <h1 className={styles.heroHeading}>
-              Collaborate with teams,
+              One place for teams
               <br />
-              partners, and
-              <br />
-              <em>creators.</em>
+              to work together.
             </h1>
           </div>
           <div>
-            <p className={styles.heroSubhead}>Share the work. Keep the workspace.</p>
             <p className={styles.heroDescription}>
-              D2C brands work with everyone: <strong>creators, agencies, freelancers, vendors,
-              clients.</strong> Saria lets you share exactly what external collaborators need to
-              see, collect their feedback and approvals, and receive their deliverables without
-              handing over workspace access or spinning up another tool.
+              Saria keeps collaboration tied to the work itself, so feedback, decisions, updates,
+              and execution all stay connected. Your internal team stays aligned in one shared
+              workspace, and external collaborators can be brought in where needed without breaking
+              the flow.
             </p>
           </div>
         </div>
 
+        <p className={styles.heroVisualSubhead}>Share the work. Keep the workspace.</p>
         <div className={styles.mockViewport}>
           <div className={cx(styles.mock, styles.heroMock)}>
             <div className={styles.topbar}>
@@ -516,7 +643,257 @@ export default function Page() {
         </div>
       </section>
 
-      <section className={cx(styles.showcase, styles.showcaseTop)}>
+      <div className={styles.sectionBreak}>
+        <div className={styles.sectionBreakLine} />
+        <div className={styles.sectionBreakLabel}>Internal Team Collaboration</div>
+        <div className={styles.sectionBreakLine} />
+      </div>
+
+      <section className={styles.showcase}>
+        <div className={cx(styles.showcaseRow, styles.showcaseRowTl)}>
+          <div className={styles.showcaseText}>
+            <p className={styles.monoLabel}>Asset Comments</p>
+            <h2>
+              Comment directly
+              <br />
+              on the <em>work itself.</em>
+            </h2>
+            <p>
+              Drop a comment pin anywhere on an image, video, or file. Your team discusses the
+              work right where it lives - not in Slack, not in a sidebar, <strong>on the
+              asset.</strong> Pins stay anchored to their position so feedback is always in
+              context.
+            </p>
+            <ul className={styles.detailList}>
+              <li>Click anywhere on an asset to start a thread</li>
+              <li>Numbered pins track each comment to its exact position</li>
+              <li>Threads resolve independently and keep the canvas clean</li>
+              <li>Works on images, videos, PDFs, and design files</li>
+              <li>Reactions so quick feedback does not need a reply</li>
+            </ul>
+          </div>
+
+          <div className={styles.mockViewport}>
+            <div className={cx(styles.mock, styles.assetCommentMock)}>
+              <div className={styles.topbar}>
+                <WindowDots />
+                <span className={styles.topbarTitle}>Moodboard - Hero Direction C</span>
+                <span className={styles.topbarMeta}>3 threads</span>
+              </div>
+
+              <div className={styles.assetCanvas}>
+                <div className={styles.assetCanvasLabel}>
+                  Hero Banner - 1200x628 - Final direction
+                </div>
+                <div className={styles.assetShapeGlow} />
+                <div className={styles.assetShapeBottle} />
+                <div className={styles.assetPinPrimary}>
+                  1
+                  <div className={styles.assetPinTooltip}>Crop feels tight here</div>
+                </div>
+                <div className={styles.assetPinSecondary}>2</div>
+                <div className={styles.assetPinResolved}>✓</div>
+              </div>
+
+              <div className={styles.assetThreadPanel}>
+                <div className={styles.assetThreadHeader}>
+                  <span className={styles.assetThreadTitle}>Thread on pin 1</span>
+                  <span className={styles.threadCountBadge}>2 replies</span>
+                </div>
+
+                <div className={styles.assetThread}>
+                  <div className={styles.assetThreadItem}>
+                    <div
+                      className={styles.assetThreadAvatar}
+                      style={{ background: "var(--page-accent)" } satisfies CSSProperties}
+                    >
+                      A
+                    </div>
+                    <div className={styles.assetThreadBody}>
+                      <div className={styles.assetThreadMeta}>
+                        <span className={styles.assetThreadName}>Amna</span>
+                        <span className={styles.assetThreadRole}>You</span>
+                        <span className={styles.assetThreadTime}>2h ago</span>
+                      </div>
+                      <div className={styles.assetThreadText}>
+                        This crop feels tight on the right edge - can we pull out 40px?{" "}
+                        <span className={styles.mentionText}>@Sara</span> can you revise?
+                      </div>
+                      <div className={styles.assetReactionRow}>
+                        <span className={cx(styles.assetReaction, styles.assetReactionActive)}>
+                          Eyes 2
+                        </span>
+                        <span className={styles.assetReaction}>Agree</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className={styles.assetThreadItem}>
+                    <div
+                      className={styles.assetThreadAvatar}
+                      style={{ background: "var(--page-sage)" } satisfies CSSProperties}
+                    >
+                      S
+                    </div>
+                    <div className={styles.assetThreadBody}>
+                      <div className={styles.assetThreadMeta}>
+                        <span className={styles.assetThreadName}>Sara R.</span>
+                        <span className={styles.assetThreadRole}>Designer</span>
+                        <span className={styles.assetThreadTime}>1h ago</span>
+                      </div>
+                      <div className={styles.assetThreadText}>
+                        On it - pushing a revised version shortly. Will be v4.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className={styles.assetCompose}>
+                  <div className={styles.assetComposeAvatar}>A</div>
+                  <input
+                    className={styles.assetComposeInput}
+                    placeholder="Reply or type @ to mention..."
+                  />
+                  <button type="button" className={styles.commentInputButton}>
+                    Send
+                  </button>
+                </div>
+                <div className={styles.assetComposeHint}>@ to mention - Esc to close thread</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className={styles.divider} />
+
+      <section className={cx(styles.showcase, styles.showcaseBorder)}>
+        <div className={cx(styles.showcaseRow, styles.showcaseRowTr)}>
+          <div className={styles.mockViewport}>
+            <div className={cx(styles.mock, styles.mentionsMock)}>
+              <div className={styles.topbar}>
+                <WindowDots />
+                <span className={styles.topbarTitle}>Activity - Glow Serum Launch</span>
+              </div>
+
+              <div className={styles.presenceStrip}>
+                <span className={styles.presenceLabel}>Now viewing</span>
+                <div className={styles.presenceAvatars}>
+                  <div
+                    className={styles.presenceAvatar}
+                    style={{ background: "var(--page-accent)" } satisfies CSSProperties}
+                  >
+                    A
+                    <div className={styles.presenceOnline} />
+                  </div>
+                  <div
+                    className={styles.presenceAvatar}
+                    style={{ background: "var(--page-sage)" } satisfies CSSProperties}
+                  >
+                    S
+                    <div className={styles.presenceOnline} />
+                  </div>
+                  <div
+                    className={styles.presenceAvatar}
+                    style={{ background: "var(--page-slate)" } satisfies CSSProperties}
+                  >
+                    J
+                  </div>
+                  <div
+                    className={styles.presenceAvatar}
+                    style={{ background: "var(--page-gold)" } satisfies CSSProperties}
+                  >
+                    M
+                  </div>
+                </div>
+                <span className={styles.presenceCount}>3 active - 1 away</span>
+                <div className={styles.viewerStatus}>
+                  <span className={styles.liveDot} />
+                  Live
+                </div>
+              </div>
+
+              <div className={styles.activityHeaderStrip}>
+                <span>Updates</span>
+                <div className={styles.activityFilterPills}>
+                  <span className={cx(styles.activityFilterPill, styles.activityFilterPillActive)}>
+                    All
+                  </span>
+                  <span className={styles.activityFilterPill}>@Mentions</span>
+                  <span className={styles.activityFilterPill}>Comments</span>
+                  <span className={styles.activityFilterPill}>Approvals</span>
+                </div>
+              </div>
+
+              <div className={styles.activityFeed}>
+                {ACTIVITY_ITEMS.map((item, index) => (
+                  <div
+                    key={`${item.meta}-${index}`}
+                    className={cx(
+                      styles.activityItem,
+                      item.unread && styles.activityItemUnread
+                    )}
+                  >
+                    <div className={styles.activityDot} />
+                    <div className={styles.activityAvatarWrap}>
+                      <div
+                        className={styles.activityAvatar}
+                        style={{ background: item.avatarTone } satisfies CSSProperties}
+                      >
+                        {item.avatar}
+                      </div>
+                      {item.actionIcon && (
+                        <div
+                          className={styles.activityActionIcon}
+                          style={{ background: item.actionTone } satisfies CSSProperties}
+                        >
+                          {item.actionIcon}
+                        </div>
+                      )}
+                    </div>
+                    <div className={styles.activityContent}>
+                      <div className={styles.activityText}>{item.text}</div>
+                      {item.snippet && <div className={styles.activitySnippet}>{item.snippet}</div>}
+                      <div className={styles.activityMeta}>{item.meta}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.showcaseText}>
+            <p className={styles.monoLabel}>@Mentions & Activity Feed</p>
+            <h2>
+              Loop people in.
+              <br />
+              Nothing falls through <em>the cracks.</em>
+            </h2>
+            <p>
+              Type <strong>@name</strong> anywhere in Saria - in a comment, a brief, a task - and
+              they get pulled in immediately. Every action in a project surfaces in a unified
+              activity feed so the whole team stays aware without a daily standup.
+            </p>
+            <ul className={styles.detailList}>
+              <li>@ anyone in comments, briefs, task descriptions, or anywhere text lives</li>
+              <li>Mentions trigger instant in-app notifications</li>
+              <li>Activity feed consolidates comments, approvals, uploads, and edits</li>
+              <li>See who is viewing the workspace in real time with live presence</li>
+              <li>Filter feed by @mentions, comments, approvals, or file events</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <div className={styles.divider} />
+
+      <div className={cx(styles.sectionBreak, styles.sectionBreakCompact)}>
+        <div className={styles.sectionBreakLine} />
+        <div className={styles.sectionBreakLabel}>External Collaboration</div>
+        <div className={styles.sectionBreakLine} />
+      </div>
+
+      <section className={styles.showcase}>
         <div className={cx(styles.showcaseRow, styles.showcaseRowTl)}>
           <div className={styles.showcaseText}>
             <p className={styles.monoLabel}>Per-Tab Visibility</p>
@@ -527,14 +904,14 @@ export default function Page() {
             </h2>
             <p>
               Choose which tabs are public and which stay internal. Give each shared tab a
-              client-facing title. Your operational tabs, budget, internal ops, team notes, stay
+              client-facing title. Your operational tabs - budget, internal ops, team notes - stay
               hidden while the deliverable tabs go out.
             </p>
             <ul className={styles.detailList}>
-              <li>Toggle visibility per tab with no complex permissions</li>
+              <li>Toggle visibility per tab - no complex permissions</li>
               <li>Rename tabs for the client-facing view</li>
               <li>Internal tabs are invisible, not just locked</li>
-              <li>Update visibility any time while the link stays the same</li>
+              <li>Update visibility any time - link stays the same</li>
             </ul>
           </div>
 
@@ -668,16 +1045,16 @@ export default function Page() {
           </div>
 
           <div className={styles.showcaseText}>
-            <p className={styles.monoLabel}>Client Comments and Review</p>
+            <p className={styles.monoLabel}>Client Comments & Review</p>
             <h2>
               Feedback on the work. No account.
               <br />
               <em>No Slack thread.</em>
             </h2>
             <p>
-              External reviewers can leave comments directly on shared blocks with no account
-              needed, just a name. Their feedback syncs back to your workspace and triggers
-              internal notifications. Review happens where the work lives.
+              External reviewers can leave comments directly on shared blocks - no account needed,
+              just a name. Their feedback syncs back to your workspace and triggers internal
+              notifications. Review happens where the work lives.
             </p>
             <ul className={styles.detailList}>
               <li>No login required for external commenters</li>
@@ -695,7 +1072,7 @@ export default function Page() {
       <section className={cx(styles.showcase, styles.showcaseBorder)}>
         <div className={cx(styles.showcaseRow, styles.showcaseRowTl)}>
           <div className={styles.showcaseText}>
-            <p className={styles.monoLabel}>Approvals and Sign-Off</p>
+            <p className={styles.monoLabel}>Approvals & Sign-Off</p>
             <h2>
               Approved means approved.
               <br />
@@ -719,7 +1096,7 @@ export default function Page() {
               <div className={styles.topbar}>
                 <WindowDots />
                 <span className={styles.topbarTitle}>Deliverables - Awaiting approval</span>
-                <span className={styles.topbarMeta}>3 of 5 approved</span>
+                <span className={styles.topbarMeta}>2 of 4 approved</span>
               </div>
 
               <div className={styles.approvalItems}>
@@ -853,7 +1230,7 @@ export default function Page() {
           </div>
 
           <div className={styles.showcaseText}>
-            <p className={styles.monoLabel}>File Delivery and Collection</p>
+            <p className={styles.monoLabel}>File Delivery & Collection</p>
             <h2>
               Share files out. Collect deliverables
               <br />
@@ -861,144 +1238,15 @@ export default function Page() {
             </h2>
             <p>
               Share files, galleries, PDFs, and videos through the public page. Clients download
-              what they need and upload deliverables back, all tracked within the project rather
-              than buried in email attachments.
+              what they need and upload deliverables back - all tracked within the project, not
+              buried in email attachments.
             </p>
             <ul className={styles.detailList}>
               <li>Share any file type through the public project page</li>
               <li>Clients upload revisions directly back to the project</li>
               <li>Uploads are tracked and timestamped inside the project</li>
-              <li>No email attachments and no permission chaos</li>
+              <li>No email attachments, no Google Drive permissions chaos</li>
             </ul>
-          </div>
-        </div>
-      </section>
-
-      <section className={styles.securitySection}>
-        <div className={styles.securityInner}>
-          <div className={styles.securityText}>
-            <p className={styles.monoLabel}>Anonymized and Safe</p>
-            <h2>
-              Scoped. Signed.
-              <br />
-              <em>Secure by design.</em>
-            </h2>
-            <p>
-              Client-facing comments show as "Client" while internal author identities stay
-              private. Rate limiting, scoped access, and signed URLs keep shared pages{" "}
-              <strong>secure and performant.</strong> Analytics track who is viewing what.
-            </p>
-            <ul className={styles.detailList}>
-              <li>Client identities anonymized and internal names never exposed</li>
-              <li>Rate limiting prevents abuse of public links</li>
-              <li>Signed URLs expire and can be revoked at any time</li>
-              <li>Scoped access means viewers only see what you share</li>
-              <li>Analytics show views, time on page, and files downloaded</li>
-            </ul>
-          </div>
-
-          <div className={styles.securityVisual}>
-            <div className={styles.securityCard}>
-              <div className={styles.securityCardHead}>
-                <div
-                  className={styles.securityIcon}
-                  style={{ background: "rgba(123, 157, 196, 0.12)", color: "var(--page-slate)" }}
-                >
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                    <circle cx="12" cy="7" r="4" />
-                  </svg>
-                </div>
-                <span className={styles.securityCardTitle}>Identity anonymization</span>
-              </div>
-              <div className={styles.securityCardBody}>
-                External commenters appear as "Client" to the outside world. Your team names and
-                roles are never exposed.
-              </div>
-              <div className={styles.anonThread}>
-                <div className={styles.anonComment}>
-                  <div className={styles.anonAvatarBlue}>C</div>
-                  <div className={styles.anonBody}>
-                    <div className={styles.anonName}>
-                      Client <span className={styles.anonMeta}>External view</span>
-                    </div>
-                    <div className={styles.anonText}>
-                      The hero image is approved. Send the final file.
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.anonComment}>
-                  <div className={styles.anonAvatarAccent}>C</div>
-                  <div className={styles.anonBody}>
-                    <div className={styles.anonName}>
-                      Client <span className={styles.anonMeta}>External view</span>
-                    </div>
-                    <div className={styles.anonText}>
-                      One more revision needed on the 9:16 crop.
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.securityCard}>
-              <div className={styles.securityCardHead}>
-                <div
-                  className={styles.securityIcon}
-                  style={{ background: "rgba(29, 78, 216, 0.12)", color: "var(--page-accent)" }}
-                >
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <rect x="3" y="11" width="18" height="11" rx="2" />
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                  </svg>
-                </div>
-                <span className={styles.securityCardTitle}>Scoped access and signed URLs</span>
-              </div>
-              <div className={styles.securityCardBody}>
-                Links are signed, scoped to exactly what you shared, and revocable in one click.
-                Rate limiting prevents abuse.
-              </div>
-              <div className={styles.securityPillRow}>
-                <span className={styles.securityPill}>Signed URL</span>
-                <span className={styles.securityPill}>Rate limited</span>
-                <span className={styles.securityPill}>Revocable</span>
-                <span className={styles.securityPill}>Scoped to tabs</span>
-              </div>
-            </div>
-
-            <div className={styles.securityCard}>
-              <div className={styles.securityCardHead}>
-                <div
-                  className={styles.securityIcon}
-                  style={{ background: "rgba(184, 150, 46, 0.12)", color: "var(--page-gold)" }}
-                >
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <line x1="18" y1="20" x2="18" y2="10" />
-                    <line x1="12" y1="20" x2="12" y2="4" />
-                    <line x1="6" y1="20" x2="6" y2="14" />
-                    <line x1="2" y1="20" x2="22" y2="20" />
-                  </svg>
-                </div>
-                <span className={styles.securityCardTitle}>Viewer analytics</span>
-              </div>
-              <div className={styles.securityCardBody}>
-                See who is viewing, how long they spend, and what they download.
-              </div>
-              <div className={styles.analyticsRow}>
-                <div className={styles.analyticsStat}>
-                  <div className={styles.analyticsNumber}>14</div>
-                  <div className={styles.analyticsLabel}>Page views</div>
-                </div>
-                <div className={styles.analyticsStat}>
-                  <div className={styles.analyticsNumber}>3</div>
-                  <div className={styles.analyticsLabel}>Unique visitors</div>
-                </div>
-                <div className={styles.analyticsStat}>
-                  <div className={styles.analyticsNumber}>4:32</div>
-                  <div className={styles.analyticsLabel}>Avg. time</div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -1006,11 +1254,11 @@ export default function Page() {
       <section className={styles.featuresSection}>
         <div className={styles.featuresHeader}>
           <h2 className={styles.featuresHeading}>
-            Six ways to work with <em>anyone</em> without the risk.
+            Seven ways to move <em>together</em> - without the chaos.
           </h2>
           <p className={styles.featuresSubhead}>
-            Agencies, freelancers, creators, vendors, clients. Collaborate with all of them from a
-            single workspace without handing over access.
+            Keep the team aligned internally while staying on top of every external review,
+            approval, and delivery. All from one workspace.
           </p>
         </div>
 
