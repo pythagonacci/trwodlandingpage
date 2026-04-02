@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team & Task Management — Trak</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#FDFAF6;--cream-dark:#F5F0E8;--cream-darker:#EDE6D8;
+  --blue:#2A537A;--blue-light:#3D6E9E;--blue-pale:#EBF2F9;
+  --terra:#C4603A;--terra-pale:#FBF0EC;
+  --text:#1A1A18;--text-mid:#4A4A45;--text-muted:#8A8A82;
+  --border:#E2DBD0;--border-light:#EDE8E0;
+  --app-bg:#F8F5F0;--app-sidebar:#F0ECE5;--app-block:#FFFFFF;
+  --shadow-sm:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:0 4px 16px rgba(0,0,0,0.08),0 2px 6px rgba(0,0,0,0.04);
+  --shadow-lg:0 12px 40px rgba(0,0,0,0.10),0 4px 12px rgba(0,0,0,0.06);
+  --r:10px;--r-lg:16px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--text);line-height:1.6;overflow-x:hidden}
+nav{position:sticky;top:0;z-index:100;background:rgba(253,250,246,0.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-light);padding:0 48px;display:flex;align-items:center;justify-content:space-between;height:56px}
+.nav-logo{font-family:'Instrument Serif',serif;font-size:20px;color:var(--blue)}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{font-size:13.5px;color:var(--text-mid);text-decoration:none}
+.nav-cta{background:var(--blue);color:#fff;font-size:13px;font-weight:500;padding:7px 16px;border-radius:7px;text-decoration:none}
+.hero{padding:80px 48px 56px;max-width:680px;margin:0 auto;text-align:center}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;background:var(--terra-pale);border:1px solid rgba(196,96,58,0.18);color:var(--terra);font-size:11.5px;font-weight:500;padding:5px 12px;border-radius:100px;margin-bottom:22px}
+.eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--terra)}
+h1{font-family:'Instrument Serif',serif;font-size:clamp(34px,5vw,52px);line-height:1.08;letter-spacing:-1px;color:var(--text);margin-bottom:16px;font-weight:400}
+h1 em{color:var(--blue);font-style:italic}
+.hero-sub{font-size:16px;color:var(--text-mid);max-width:500px;margin:0 auto 28px;font-weight:300;line-height:1.7}
+.hero-actions{display:flex;align-items:center;justify-content:center;gap:10px}
+.btn-primary{background:var(--blue);color:#fff;font-size:13.5px;font-weight:500;padding:11px 22px;border-radius:8px;text-decoration:none;transition:all 0.2s}
+.btn-primary:hover{background:var(--blue-light);transform:translateY(-1px)}
+.btn-secondary{color:var(--blue);font-size:13.5px;font-weight:500;padding:11px 22px;border-radius:8px;text-decoration:none;border:1.5px solid var(--blue)}
+.intro-strip{border-top:1px solid var(--border-light);border-bottom:1px solid var(--border-light);padding:28px 48px;background:var(--cream-dark)}
+.intro-strip-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:40px}
+.intro-label{font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--terra);white-space:nowrap}
+.intro-text{font-size:14.5px;color:var(--text-mid);font-weight:300;line-height:1.7}
+.intro-text strong{color:var(--text);font-weight:500}
+.section{padding:72px 48px;border-top:1px solid var(--border-light)}
+.section-inner{max-width:1080px;margin:0 auto}
+.section-split{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.section-split.rev{direction:rtl}.section-split.rev>*{direction:ltr}
+.section-label{font-size:10.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--terra);margin-bottom:10px}
+h2{font-family:'Instrument Serif',serif;font-size:clamp(22px,2.8vw,32px);line-height:1.18;letter-spacing:-0.3px;color:var(--text);margin-bottom:22px;font-weight:400}
+h2 em{color:var(--blue);font-style:italic}
+.body-text{font-size:14.5px;color:var(--text-mid);font-weight:300;line-height:1.8;margin-bottom:16px}
+.body-text strong{color:var(--text);font-weight:500}
+.feature-list{display:flex;flex-direction:column;gap:12px;margin-top:4px}
+.feature-item{display:flex;align-items:flex-start;gap:11px}
+.feature-icon{width:28px;height:28px;border-radius:7px;background:var(--blue-pale);color:var(--blue);font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.feature-body{}
+.feature-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:3px}
+.feature-text{font-size:13.5px;color:var(--text-mid);font-weight:300;line-height:1.7}
+.feature-text strong{color:var(--text);font-weight:500}
+.callout{background:var(--blue-pale);border:1px solid rgba(42,83,122,0.12);border-radius:8px;padding:12px 14px;margin-top:20px;font-size:13.5px;color:var(--blue);line-height:1.65}
+.callout strong{font-weight:600}
+.callout-terra{background:var(--terra-pale);border:1px solid rgba(196,96,58,0.14);border-radius:8px;padding:12px 14px;margin-top:20px;font-size:13.5px;color:var(--terra);line-height:1.65}
+.callout-terra strong{font-weight:600}
+
+/* MOCKUP */
+.mockup{background:var(--app-bg);border-radius:var(--r-lg);border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow-lg)}
+.chrome{background:var(--app-sidebar);border-bottom:1px solid var(--border);padding:9px 12px;display:flex;align-items:center;gap:7px}
+.dot{width:9px;height:9px;border-radius:50%}
+.dot.r{background:#FF6057}.dot.y{background:#FFBD2E}.dot.g{background:#28CA41}
+.mbody{display:flex}
+.msidebar{width:158px;background:var(--app-sidebar);border-right:1px solid var(--border);padding:14px 0;flex-shrink:0}
+.s-section{padding:0 10px;margin-bottom:16px}
+.s-label{font-size:9.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:7px;padding:0 4px}
+.s-item{padding:5px 7px;border-radius:5px;font-size:11.5px;color:var(--text-mid);cursor:pointer;display:flex;align-items:center;gap:6px}
+.s-item.active{background:var(--cream-dark);color:var(--text);font-weight:500}
+.s-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.mcanvas{flex:1;padding:16px;background:var(--cream);overflow:hidden}
+.badge{font-size:10px;font-weight:500;padding:3px 8px;border-radius:100px;display:inline-flex;align-items:center;white-space:nowrap}
+.b-blue{background:var(--blue-pale);color:var(--blue)}
+.b-terra{background:var(--terra-pale);color:var(--terra)}
+.b-green{background:#EBF5EE;color:#2D7A47}
+.b-orange{background:#FEF3EC;color:#C4600A}
+.b-gray{background:#F2F0EC;color:var(--text-mid)}
+.b-purple{background:#F0EEFB;color:#5B4AC4}
+.b-red{background:#FEF0F0;color:#C43A3A}
+.block{background:var(--app-block);border:1px solid var(--border-light);border-radius:var(--r);padding:11px 13px;margin-bottom:7px;box-shadow:var(--shadow-sm)}
+.block:last-child{margin-bottom:0}
+.bhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.btype{font-size:9px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-muted)}
+.avatar{width:18px;height:18px;border-radius:50%;font-size:8px;font-weight:600;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.avatar-lg{width:26px;height:26px;border-radius:50%;font-size:10px;font-weight:600;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.task{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid var(--border-light);font-size:11px}
+.task:last-child{border-bottom:none;padding-bottom:0}
+.task-name{flex:1;color:var(--text);line-height:1.3}
+.task-due{font-size:10px;color:var(--text-muted);white-space:nowrap}
+.task-due.late{color:#C4600A;font-weight:500}
+.prio{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.pu{background:#E24B4A}.ph{background:#E8856A}.pm{background:#EFC227}.pl{background:#85C1A0}
+.checkbox{width:12px;height:12px;border-radius:3px;border:1.5px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.checkbox.done{background:var(--blue);border-color:var(--blue)}
+.checkbox.done::after{content:'✓';font-size:8px;color:#fff;font-weight:700}
+.ai-card{background:linear-gradient(135deg,var(--blue-pale),#F0EDF9);border:1px solid rgba(42,83,122,0.14);border-radius:var(--r);padding:13px;margin-bottom:7px}
+.ai-card-header{display:flex;align-items:center;gap:7px;margin-bottom:9px}
+.ai-icon{width:20px;height:20px;background:var(--blue);border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ai-card-title{font-size:11px;font-weight:600;color:var(--blue)}
+.ai-card-body{font-size:11px;color:var(--text-mid);line-height:1.65}
+.ai-card-body strong{color:var(--text);font-weight:500}
+.ai-highlight{display:inline-flex;background:rgba(42,83,122,0.08);border-radius:4px;padding:1px 5px;font-size:10px;color:var(--blue);font-weight:500;margin:0 1px}
+
+/* MEMBERS */
+.member-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border-light)}
+.member-row:last-child{border-bottom:none;padding-bottom:0}
+.member-info{flex:1}
+.member-name{font-size:11.5px;font-weight:500;color:var(--text)}
+.member-role{font-size:10px;color:var(--text-muted)}
+.member-tasks{font-size:10px;color:var(--text-muted);white-space:nowrap}
+
+/* TEAM GROUP */
+.team-group{background:var(--app-block);border:1px solid var(--border-light);border-radius:var(--r);padding:10px 12px;margin-bottom:7px;box-shadow:var(--shadow-sm)}
+.team-group-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.team-name{font-size:12px;font-weight:600;color:var(--text)}
+.avatar-stack{display:flex;align-items:center}
+.avatar-stack .avatar{border:2px solid var(--app-block);margin-left:-5px}
+.avatar-stack .avatar:first-child{margin-left:0}
+
+/* TIMELINE */
+.tl-event{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border-light);font-size:10.5px}
+.tl-event:last-child{border-bottom:none;padding-bottom:0}
+.tl-bar{height:8px;border-radius:4px;flex-shrink:0}
+.tl-name{flex:1;color:var(--text);font-weight:500}
+.tl-dates{font-size:9.5px;color:var(--text-muted);white-space:nowrap}
+
+/* COMMENT */
+.comment-item{display:flex;align-items:flex-start;gap:7px;padding:6px 0;border-bottom:1px solid var(--border-light)}
+.comment-item:last-child{border-bottom:none;padding-bottom:0}
+.comment-body{}
+.comment-author{font-size:10.5px;font-weight:500;color:var(--text)}
+.comment-ref{font-size:10px;color:var(--text-muted);font-weight:400}
+.comment-text{font-size:10.5px;color:var(--text-mid);margin-top:2px;line-height:1.5}
+.mention{display:inline;color:var(--blue);font-weight:500;font-size:10.5px}
+
+/* SLACK PILL */
+.slack-card{background:#1A1D21;border-radius:var(--r);padding:13px;margin-bottom:7px}
+.slack-header{display:flex;align-items:center;gap:7px;margin-bottom:10px}
+.slack-hash{font-size:13px;color:#72767D;font-weight:600}
+.slack-channel{font-size:11px;font-weight:600;color:#D1D2D3}
+.slack-msg{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px}
+.slack-avatar{width:22px;height:22px;border-radius:4px;font-size:9px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.slack-name{font-size:10.5px;font-weight:600;color:#D1D2D3;margin-bottom:2px}
+.slack-text{font-size:10.5px;color:#A8A9AA;line-height:1.55}
+.slack-text strong{color:#D1D2D3;font-weight:500}
+.slack-text .trak-ref{background:rgba(42,83,122,0.3);color:#7AB3D4;border-radius:3px;padding:0 4px;font-size:10px;font-weight:500}
+.slack-reply{background:#222529;border-left:3px solid #3D6E9E;border-radius:0 5px 5px 0;padding:7px 9px;margin-top:5px}
+.slack-reply-from{font-size:10px;font-weight:600;color:#7AB3D4;margin-bottom:2px}
+.slack-reply-text{font-size:10px;color:#A8A9AA;line-height:1.5}
+.slack-time{font-size:9.5px;color:#555;margin-left:auto;white-space:nowrap}
+
+/* PERM TABLE */
+.perm-row{display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid var(--border-light);font-size:10.5px}
+.perm-row:last-child{border-bottom:none;padding-bottom:0}
+.perm-name{flex:1;color:var(--text);font-weight:500}
+.perm-toggle{width:28px;height:15px;border-radius:100px;display:flex;align-items:center;padding:2px;flex-shrink:0}
+.perm-toggle.on{background:var(--blue);justify-content:flex-end}
+.perm-toggle.off{background:var(--border);justify-content:flex-start}
+.perm-thumb{width:11px;height:11px;border-radius:50%;background:#fff}
+
+/* FILTER BAR */
+.filter-bar{display:flex;align-items:center;gap:5px;margin-bottom:8px;flex-wrap:wrap}
+.filter-chip{font-size:10px;font-weight:500;padding:3px 9px;border-radius:100px;border:1px solid var(--border);background:var(--app-block);color:var(--text-mid)}
+.filter-chip.active{background:var(--blue-pale);border-color:rgba(42,83,122,0.3);color:var(--blue)}
+
+.cta-section{background:var(--blue);padding:72px 48px;text-align:center}
+.cta-inner{max-width:500px;margin:0 auto}
+.cta-label{font-size:10.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:14px}
+.cta-h{font-family:'Instrument Serif',serif;font-size:clamp(24px,3.5vw,38px);color:#fff;line-height:1.18;letter-spacing:-0.4px;margin-bottom:12px;font-weight:400}
+.cta-sub{font-size:15px;color:rgba(255,255,255,0.65);margin-bottom:26px;font-weight:300}
+.cta-actions{display:flex;align-items:center;justify-content:center;gap:10px}
+.btn-white{background:#fff;color:var(--blue);font-size:13.5px;font-weight:500;padding:11px 22px;border-radius:8px;text-decoration:none}
+.btn-ghost{color:#fff;font-size:13.5px;padding:11px 22px;border-radius:8px;text-decoration:none;border:1.5px solid rgba(255,255,255,0.35)}
+.fade-up{opacity:0;transform:translateY(18px);transition:opacity 0.5s ease,transform 0.5s ease}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+@media(max-width:860px){.section-split{grid-template-columns:1fr}.section-split.rev{direction:ltr}.msidebar{display:none}nav .nav-links{display:none}.intro-strip-inner{flex-direction:column;gap:10px}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Trak</div>
+  <div class="nav-links"><a href="#">Product</a><a href="#">Use Cases</a><a href="#">Templates</a><a href="#">Pricing</a></div>
+  <a href="#" class="nav-cta">Start free →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero fade-up">
+  <div class="eyebrow"><span class="eyebrow-dot"></span>Team & Task Management</div>
+  <h1>One place for your team, your work, and <em>what needs to happen next</em></h1>
+  <p class="hero-sub">How Trak keeps brand teams aligned — who's doing what, what's overdue, and how to move work forward without the back-and-forth.</p>
+  <div class="hero-actions">
+    <a href="#" class="btn-primary">Start free</a>
+    <a href="#" class="btn-secondary">Book a walkthrough</a>
+  </div>
+</section>
+
+<!-- INTRO STRIP -->
+<div class="intro-strip fade-up">
+  <div class="intro-strip-inner">
+    <div class="intro-label">What's covered</div>
+    <div class="intro-text">Trak's team layer has four parts: <strong>your people</strong> (a dedicated members page, workspace roles, and named teams), <strong>task ownership</strong> (assignees, priorities, due dates, and deadlines that surface everywhere), <strong>structured work</strong> (task blocks, timelines, and project canvases that make work visible), and <strong>how the team communicates</strong> (inline comments, mentions, and a Slack bot connected to the same data).</div>
+  </div>
+</div>
+
+<!-- S1: PEOPLE — MEMBERS, ROLES & TEAMS -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split">
+      <div>
+        <div class="section-label">Your people</div>
+        <h2>Set up your workspace once — <em>everyone knows what they can touch</em></h2>
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="feature-icon">👥</div>
+            <div class="feature-body">
+              <div class="feature-title">A dedicated members page</div>
+              <div class="feature-text">Every workspace has a Members page where you can see everyone on the team, their role, and manage access in one place. No digging through settings — it's always a click away.</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🔑</div>
+            <div class="feature-body">
+              <div class="feature-title">Workspace roles and project-level permissions</div>
+              <div class="feature-text">Assign roles at the workspace level (owner, admin, member). Then go further — <strong>configure access per project</strong> so that, say, your creative agency can only see the Campaign project and nothing else. Permissions are both broad and surgical.</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🏷️</div>
+            <div class="feature-body">
+              <div class="feature-title">Teams — groups you assign and configure together</div>
+              <div class="feature-text">Create named teams (Creative, Growth, Ops) and add members to them. You can assign tasks, configure project access, and manage permissions at the team level — so adding a new designer to the Creative team gives them the right access immediately.</div>
+            </div>
+          </div>
+        </div>
+        <div class="callout"><strong>Why it matters:</strong> D2C brand teams wear a lot of hats. Someone might be creative lead on one project and a reviewer on another. Teams + project permissions means the right people see the right work without anyone getting lost in someone else's backlog.</div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="msidebar">
+            <div class="s-section">
+              <div class="s-label">Workspace</div>
+              <div class="s-item">Dashboard</div>
+              <div class="s-item">Projects</div>
+              <div class="s-item active">Members</div>
+              <div class="s-item">Settings</div>
+            </div>
+          </div>
+          <div class="mcanvas" style="padding:13px">
+            <div style="font-size:12.5px;font-weight:600;color:var(--text);margin-bottom:10px">Members</div>
+
+            <!-- Teams -->
+            <div class="team-group" style="margin-bottom:9px">
+              <div class="team-group-header">
+                <div class="team-name">🎨 Creative</div>
+                <div class="avatar-stack">
+                  <div class="avatar" style="background:#5B4AC4">MP</div>
+                  <div class="avatar" style="background:#C4603A">SL</div>
+                  <div class="avatar" style="background:var(--blue)">JK</div>
+                </div>
+              </div>
+              <div style="font-size:9.5px;color:var(--text-muted)">3 members · access to Campaign, Brand Refresh</div>
+            </div>
+            <div class="team-group">
+              <div class="team-group-header">
+                <div class="team-name">🚀 Growth</div>
+                <div class="avatar-stack">
+                  <div class="avatar" style="background:#2D7A47">RN</div>
+                  <div class="avatar" style="background:#E8856A">AK</div>
+                </div>
+              </div>
+              <div style="font-size:9.5px;color:var(--text-muted)">2 members · access to all projects</div>
+            </div>
+
+            <div style="height:1px;background:var(--border-light);margin:10px 0"></div>
+
+            <div style="font-size:9.5px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-muted);margin-bottom:7px">All Members</div>
+            <div class="block" style="padding:8px 10px">
+              <div class="member-row">
+                <div class="avatar-lg" style="background:#5B4AC4">MP</div>
+                <div class="member-info"><div class="member-name">Mia P.</div><div class="member-role">Admin · Creative</div></div>
+                <span class="badge b-gray" style="font-size:9px">5 tasks</span>
+              </div>
+              <div class="member-row">
+                <div class="avatar-lg" style="background:var(--blue)">JK</div>
+                <div class="member-info"><div class="member-name">Jade K.</div><div class="member-role">Member · Creative</div></div>
+                <span class="badge b-gray" style="font-size:9px">3 tasks</span>
+              </div>
+              <div class="member-row">
+                <div class="avatar-lg" style="background:#2D7A47">RN</div>
+                <div class="member-info"><div class="member-name">Rosa N.</div><div class="member-role">Member · Growth</div></div>
+                <span class="badge b-gray" style="font-size:9px">7 tasks</span>
+              </div>
+              <div class="member-row">
+                <div class="avatar-lg" style="background:#C4603A">SL</div>
+                <div class="member-info"><div class="member-name">Sam L.</div><div class="member-role">Member · Creative</div></div>
+                <span class="badge b-orange" style="font-size:9px">2 overdue</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S2: OWNERSHIP — UNIVERSAL ASSIGNEES -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split rev">
+      <div>
+        <div class="section-label">Ownership</div>
+        <h2>Assign ownership to <em>anything — not just tasks</em></h2>
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="feature-icon">👤</div>
+            <div class="feature-body">
+              <div class="feature-title">Assignees are a universal property</div>
+              <div class="feature-text">In most tools, only tasks have owners. In Trak, <strong>any block can have an assignee</strong> — a task, a timeline milestone, a file review, a gallery, a section of work. If something needs to get done, someone can own it, regardless of what kind of block it is.</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">✅</div>
+            <div class="feature-body">
+              <div class="feature-title">Priority and due dates travel with ownership</div>
+              <div class="feature-text">Assignees come paired with due dates and priority levels — urgent, high, medium, low — on every block that supports them. These aren't decorative. They're what the dashboard uses to surface what's overdue, due today, and due soon across your whole workspace.</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🔍</div>
+            <div class="feature-body">
+              <div class="feature-title">Nothing without an owner falls through the cracks</div>
+              <div class="feature-text">Because ownership isn't limited to a task list, your team can assign the shoot brief, the asset gallery, the timeline event, and the launch checklist — and have all of it surface in the right dashboards and overviews automatically.</div>
+            </div>
+          </div>
+        </div>
+        <div class="callout"><strong>Think of it this way:</strong> a task is one type of work. But a shoot block, a mood board, a copy doc, a timeline event — those are work too. In Trak, any of them can have an owner, a deadline, and a priority. Your team's accountability layer isn't confined to a checklist.</div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="mcanvas" style="padding:13px">
+            <div style="font-size:10.5px;font-weight:600;color:var(--text);margin-bottom:2px">Summer Drop — Campaign Tab</div>
+            <div style="font-size:9.5px;color:var(--text-muted);margin-bottom:10px">Creative · 8 tasks</div>
+
+            <div class="filter-bar">
+              <span class="filter-chip active">All</span>
+              <span class="filter-chip">Mia P.</span>
+              <span class="filter-chip">Jade K.</span>
+              <span class="filter-chip">Urgent</span>
+            </div>
+
+            <div class="block">
+              <div class="bhead"><div class="btype">Campaign Tasks</div><span class="badge b-orange">2 overdue</span></div>
+
+              <div class="task">
+                <div class="prio pu"></div>
+                <div class="checkbox done"></div>
+                <div class="task-name" style="text-decoration:line-through;color:var(--text-muted)">Brief to creative team</div>
+                <div class="avatar" style="background:#5B4AC4">MP</div>
+                <div class="task-due">Done</div>
+              </div>
+
+              <div class="task">
+                <div class="prio pu"></div>
+                <div class="checkbox"></div>
+                <div class="task-name">Hero shot final selects</div>
+                <div class="avatar" style="background:#C4603A">SL</div>
+                <div class="task-due late">2 days late</div>
+              </div>
+
+              <div class="task">
+                <div class="prio ph"></div>
+                <div class="checkbox"></div>
+                <div class="task-name">Copy review — PDP + emails</div>
+                <div class="avatar" style="background:var(--blue)">JK</div>
+                <div class="task-due late">Yesterday</div>
+              </div>
+
+              <div class="task">
+                <div class="prio ph"></div>
+                <div class="checkbox"></div>
+                <div class="task-name">Approve colour grading</div>
+                <div class="avatar" style="background:#5B4AC4">MP</div>
+                <div class="task-due">Today · 3 pm</div>
+              </div>
+
+              <div class="task">
+                <div class="prio pm"></div>
+                <div class="checkbox"></div>
+                <div class="task-name">Upload assets to Drive</div>
+                <div class="avatar" style="background:#2D7A47">RN</div>
+                <div class="task-due">Tomorrow</div>
+              </div>
+
+              <div class="task">
+                <div class="prio pl"></div>
+                <div class="checkbox"></div>
+                <div class="task-name">Archive v1 mood board</div>
+                <div class="avatar" style="background:var(--blue)">JK</div>
+                <div class="task-due">Jun 14</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S3: SEE WHO'S CARRYING WHAT -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split rev">
+      <div>
+        <div class="section-label">Team visibility</div>
+        <h2>Ask Trak who's carrying what — <em>scoped exactly to what you need to know</em></h2>
+        <p class="body-text">Once your team has ownership across work, you can ask Trak to surface it as a chart — by person, by project, by priority, by status. No setup, no exports. Just describe the question and the answer appears.</p>
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="feature-icon">💬</div>
+            <div class="feature-body">
+              <div class="feature-title">Ask in plain language</div>
+              <div class="feature-text">Type <em>"who has overdue work on Summer Drop?"</em> or <em>"show me the task load across the Creative team this week"</em> and Trak generates the chart from your live workspace data. No filters to configure, no spreadsheet to export to.</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🎯</div>
+            <div class="feature-body">
+              <div class="feature-title">Infinite scope — one project or the whole workspace</div>
+              <div class="feature-text">Narrow to a single project, a specific team, a priority level, a date range, or any combination. <strong>Who on Growth has urgent tasks right now? How is work distributed across everyone on Brand Refresh?</strong> The conditions are yours — Trak handles the rest.</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">📌</div>
+            <div class="feature-body">
+              <div class="feature-title">Pin it wherever it's most useful</div>
+              <div class="feature-text">The chart drops in as a block — keep it on the dashboard for a persistent team view, or put it inside a project tab so workload visibility lives right next to the work itself.</div>
+            </div>
+          </div>
+        </div>
+        <div class="callout"><strong>This is what ownership data is for.</strong> Assigning work across your team is only half of it — being able to instantly see where things are piling up, who's overloaded, and what's slipping is what actually lets you manage people well.</div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="mcanvas" style="padding:13px">
+
+            <div class="ai-card" style="margin-bottom:9px">
+              <div class="ai-card-header">
+                <div class="ai-icon">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="white" stroke-width="1.5"/><path d="M4 6h4M6 4v4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </div>
+                <div class="ai-card-title">Trak AI</div>
+              </div>
+              <div class="ai-card-body" style="font-style:italic;color:var(--blue)">"Who has overdue work on Summer Drop, broken down by person?"</div>
+            </div>
+
+            <div class="block" style="margin-bottom:7px">
+              <div class="bhead"><div class="btype">Overdue · Summer Drop</div><span class="badge b-red" style="font-size:9px">by assignee</span></div>
+              <div style="display:flex;flex-direction:column;gap:6px;margin-top:4px">
+                <div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px">
+                    <div style="display:flex;align-items:center;gap:5px">
+                      <div class="avatar" style="background:#C4603A;width:16px;height:16px;font-size:7px">SL</div>
+                      <span style="font-size:10.5px;color:var(--text);font-weight:500">Sam L.</span>
+                    </div>
+                    <span style="font-size:10px;color:#C4600A;font-weight:600">3</span>
+                  </div>
+                  <div style="height:10px;background:var(--cream-dark);border-radius:4px;overflow:hidden"><div style="width:75%;height:100%;background:#C4600A;border-radius:4px"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px">
+                    <div style="display:flex;align-items:center;gap:5px">
+                      <div class="avatar" style="background:var(--blue);width:16px;height:16px;font-size:7px">JK</div>
+                      <span style="font-size:10.5px;color:var(--text);font-weight:500">Jade K.</span>
+                    </div>
+                    <span style="font-size:10px;color:#C4600A;font-weight:600">2</span>
+                  </div>
+                  <div style="height:10px;background:var(--cream-dark);border-radius:4px;overflow:hidden"><div style="width:50%;height:100%;background:#E8856A;border-radius:4px"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px">
+                    <div style="display:flex;align-items:center;gap:5px">
+                      <div class="avatar" style="background:#5B4AC4;width:16px;height:16px;font-size:7px">MP</div>
+                      <span style="font-size:10.5px;color:var(--text);font-weight:500">Mia P.</span>
+                    </div>
+                    <span style="font-size:10px;color:var(--text-muted);font-weight:600">0</span>
+                  </div>
+                  <div style="height:10px;background:var(--cream-dark);border-radius:4px;overflow:hidden"><div style="width:0%;height:100%;background:#2D7A47;border-radius:4px"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px">
+                    <div style="display:flex;align-items:center;gap:5px">
+                      <div class="avatar" style="background:#2D7A47;width:16px;height:16px;font-size:7px">RN</div>
+                      <span style="font-size:10.5px;color:var(--text);font-weight:500">Rosa N.</span>
+                    </div>
+                    <span style="font-size:10px;color:#C4600A;font-weight:600">1</span>
+                  </div>
+                  <div style="height:10px;background:var(--cream-dark);border-radius:4px;overflow:hidden"><div style="width:25%;height:100%;background:#EFC227;border-radius:4px"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="block" style="margin-bottom:0">
+              <div class="bhead"><div class="btype">Work Load · All Projects</div><span class="badge b-blue" style="font-size:9px">by team</span></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:4px">
+                <div style="text-align:center;padding:7px;background:var(--blue-pale);border-radius:7px">
+                  <div style="font-size:18px;font-weight:700;color:var(--blue);letter-spacing:-0.5px">11</div>
+                  <div style="font-size:9px;color:var(--text-muted);margin-top:1px">Creative</div>
+                  <div style="font-size:9px;color:#C4600A;margin-top:2px;font-weight:500">3 overdue</div>
+                </div>
+                <div style="text-align:center;padding:7px;background:#EBF5EE;border-radius:7px">
+                  <div style="font-size:18px;font-weight:700;color:#2D7A47;letter-spacing:-0.5px">7</div>
+                  <div style="font-size:9px;color:var(--text-muted);margin-top:1px">Growth</div>
+                  <div style="font-size:9px;color:var(--text-muted);margin-top:2px">0 overdue</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S4: PROJECT CANVAS AS STRUCTURE -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split">
+      <div>
+        <div class="section-label">Structured work</div>
+        <h2>Tabs and timelines that give every piece of work <em>a place to live</em></h2>
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="feature-icon">📑</div>
+            <div class="feature-body">
+              <div class="feature-title">Tabs organize work into areas, not lists</div>
+              <div class="feature-text">A project can have a Strategy tab, a Campaign tab, a Shopify tab, a Shoot tab — each with its own blocks, tasks, and files. Subtabs let you go deeper. The structure matches how your team actually thinks about the work, not how a generic PM tool wants you to.</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">📅</div>
+            <div class="feature-body">
+              <div class="feature-title">Timeline blocks for sequences and milestones</div>
+              <div class="feature-text">Add a Timeline block to any tab to map out work over time — with start and end dates, assignees, and priority. Timeline events sync to the workspace calendar so nothing lives only in one place.</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🤖</div>
+            <div class="feature-body">
+              <div class="feature-title">AI can build the structure for you</div>
+              <div class="feature-text">Open a Workflow page, describe what you're working on, and the AI panel can generate a block layout — tabs, task lists, timelines, and sections — based on what your project needs. Start from scratch in seconds rather than building it out manually.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="msidebar">
+            <div class="s-section">
+              <div class="s-label">Summer Drop</div>
+              <div class="s-item active">Overview</div>
+              <div class="s-item">Strategy</div>
+              <div class="s-item">Campaign</div>
+              <div class="s-item" style="padding-left:18px;font-size:11px">↳ Copy</div>
+              <div class="s-item" style="padding-left:18px;font-size:11px">↳ Shoot</div>
+              <div class="s-item">Shopify</div>
+              <div class="s-item">Launch Day</div>
+            </div>
+          </div>
+          <div class="mcanvas" style="padding:13px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+              <div>
+                <div style="font-size:12px;font-weight:600;color:var(--text)">Summer Drop</div>
+                <div style="font-size:9.5px;color:var(--text-muted);margin-top:1px">16 open tasks · 4 tabs</div>
+              </div>
+              <span class="badge b-orange">In Progress</span>
+            </div>
+
+            <!-- Timeline block -->
+            <div class="block" style="margin-bottom:7px">
+              <div class="bhead"><div class="btype">Timeline</div><span class="badge b-gray" style="font-size:9px">Jun – Jul</span></div>
+              <div class="tl-event">
+                <div class="tl-bar" style="width:50px;background:var(--blue)"></div>
+                <div class="tl-name">Creative brief + kickoff</div>
+                <div class="avatar" style="background:#5B4AC4">MP</div>
+                <div class="tl-dates">Jun 3 – 6</div>
+              </div>
+              <div class="tl-event">
+                <div class="tl-bar" style="width:68px;background:#C4603A"></div>
+                <div class="tl-name">Shoot production</div>
+                <div class="avatar" style="background:#C4603A">SL</div>
+                <div class="tl-dates">Jun 10 – 17</div>
+              </div>
+              <div class="tl-event">
+                <div class="tl-bar" style="width:40px;background:#EFC227"></div>
+                <div class="tl-name">Copy + PDP review</div>
+                <div class="avatar" style="background:var(--blue)">JK</div>
+                <div class="tl-dates">Jun 18 – 21</div>
+              </div>
+              <div class="tl-event">
+                <div class="tl-bar" style="width:28px;background:#2D7A47"></div>
+                <div class="tl-name">Go live</div>
+                <div class="avatar" style="background:#2D7A47">RN</div>
+                <div class="tl-dates">Jul 1</div>
+              </div>
+            </div>
+
+            <!-- AI callout -->
+            <div class="ai-card">
+              <div class="ai-card-header">
+                <div class="ai-icon">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="white" stroke-width="1.5"/><path d="M4 6h4M6 4v4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </div>
+                <div class="ai-card-title">Trak AI</div>
+              </div>
+              <div class="ai-card-body">Shoot production is <strong>3 days behind</strong>. Copy review depends on final selects — if shoot slips further, <span class="ai-highlight">go-live is at risk</span>. Consider pulling in a second reviewer.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S4: COMMENTS, MENTIONS & ASYNC COMMUNICATION -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split rev">
+      <div>
+        <div class="section-label">How the team communicates</div>
+        <h2>Comments and mentions that <em>keep feedback attached to the work</em></h2>
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="feature-icon">💬</div>
+            <div class="feature-body">
+              <div class="feature-title">Comment on any block, not the project in general</div>
+              <div class="feature-text">Every block in Trak has its own comment thread — so feedback on a hero image lives on the hero image block, not in a general channel or a comment buried in a doc. Threaded replies keep conversations focused.</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">@</div>
+            <div class="feature-body">
+              <div class="feature-title">@ mentions that link to specific items</div>
+              <div class="feature-text">While commenting, use @ to mention a teammate or reference another task or block directly. The mention appears inline in the comment — one click takes you there. No more "which file are you referring to?"</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">📬</div>
+            <div class="feature-body">
+              <div class="feature-title">Comment feeds on the dashboard and project overview</div>
+              <div class="feature-text">Recent team comments appear both on the workspace dashboard and in every project's Overview tab. Before a standup, open the project overview — you're caught up in 20 seconds without opening a single tab.</div>
+            </div>
+          </div>
+        </div>
+        <div class="callout-terra"><strong>Client comments are separate.</strong> If you've shared a Magic Link with a client, their feedback comes in labeled as external — your team always knows what's internal discussion and what's client feedback, in the same view.</div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="mcanvas" style="padding:13px">
+            <div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:8px">Hero Campaign Shot — Comments</div>
+            <div class="block" style="margin-bottom:7px">
+              <div class="bhead"><div class="btype">Comments</div><span class="badge b-blue">3</span></div>
+
+              <div class="comment-item">
+                <div class="avatar" style="background:#C4603A">SL</div>
+                <div class="comment-body">
+                  <div><span class="comment-author">Sam L.</span> <span class="comment-ref">· 10 min ago</span></div>
+                  <div class="comment-text">v3 uploaded — crop is fixed and background is warmer. Ready for review.</div>
+                </div>
+              </div>
+              <div class="comment-item">
+                <div class="avatar" style="background:#5B4AC4">MP</div>
+                <div class="comment-body">
+                  <div><span class="comment-author">Mia P.</span> <span class="comment-ref">· 5 min ago</span></div>
+                  <div class="comment-text">Looks great. <span class="mention">@Jade K.</span> can you check the colour grading against the brand board before we send to client?</div>
+                </div>
+              </div>
+              <div class="comment-item" style="padding-bottom:0">
+                <div class="avatar" style="background:var(--blue)">JK</div>
+                <div class="comment-body">
+                  <div><span class="comment-author">Jade K.</span> <span class="comment-ref">· 2 min ago</span></div>
+                  <div class="comment-text">On it — checking now against <span class="mention">@Brand Board tab</span>.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Project overview comment feed -->
+            <div class="block" style="margin-bottom:0">
+              <div class="bhead"><div class="btype">Project Overview · Team Comments</div></div>
+              <div class="comment-item">
+                <div class="avatar" style="background:#2D7A47">RN</div>
+                <div class="comment-body">
+                  <div><span class="comment-author">Rosa N.</span> <span class="comment-ref">· Shopify Setup · 1 hr</span></div>
+                  <div class="comment-text">Collection page staged — need final inventory before publishing.</div>
+                </div>
+              </div>
+              <div class="comment-item" style="padding-bottom:0">
+                <div class="avatar" style="background:#E8856A;font-size:8px;font-weight:700">CL</div>
+                <div class="comment-body">
+                  <div><span class="comment-author">Client</span> <span class="comment-ref" style="color:var(--terra)">· external · Campaign Tab</span></div>
+                  <div class="comment-text">Colour direction approved. Love the warmer tone.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S5: SLACK BOT -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split">
+      <div>
+        <div class="section-label">Where your team already lives</div>
+        <h2>The Trak Slack bot — <em>update work without opening a new tab</em></h2>
+        <p class="body-text">Your team is already in Slack. The Trak bot connects directly to your workspace data — tasks, projects, and AI — so the team can act on work without breaking their flow.</p>
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="feature-icon" style="font-size:16px;background:#1A1D21;color:#7AB3D4">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1.5" fill="#7AB3D4"/><rect x="8" y="1" width="5" height="5" rx="1.5" fill="#7AB3D4"/><rect x="1" y="8" width="5" height="5" rx="1.5" fill="#7AB3D4"/><rect x="8" y="8" width="5" height="5" rx="1.5" fill="#7AB3D4"/></svg>
+            </div>
+            <div class="feature-body">
+              <div class="feature-title">Ask it anything about your workspace</div>
+              <div class="feature-text">Ping the bot with a question — <em>"what's overdue on the Summer Drop?"</em> or <em>"who owns the Shopify setup task?"</em> — and it pulls the answer directly from Trak. No context switching.</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon" style="font-size:16px;background:#1A1D21;color:#7AB3D4">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2v10" stroke="#7AB3D4" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <div class="feature-body">
+              <div class="feature-title">Create and update tasks from Slack</div>
+              <div class="feature-text">The bot can create new tasks, mark tasks complete, reassign them, and update priorities — all from a message. When someone says "can you take that off my plate" in a thread, act on it immediately.</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon" style="font-size:16px;background:#1A1D21;color:#7AB3D4">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L8.5 5h4L9.5 8l1.5 4L7 10l-4 2 1.5-4L1.5 5h4L7 1z" stroke="#7AB3D4" stroke-width="1.5" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="feature-body">
+              <div class="feature-title">AI-powered, not just a slash command</div>
+              <div class="feature-text">The bot is connected to Trak's AI — so it understands context. Ask it to <em>"summarize what's happening on the brand refresh"</em> and it gives you a narrative answer, not a raw data dump.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="mcanvas" style="padding:0;background:#1A1D21;border-radius:0 0 var(--r-lg) 0">
+            <div style="padding:12px 13px">
+              <div class="slack-header">
+                <div class="slack-hash">#</div>
+                <div class="slack-channel">brand-team</div>
+              </div>
+
+              <!-- Message 1 -->
+              <div class="slack-msg">
+                <div class="slack-avatar" style="background:#5B4AC4">MP</div>
+                <div style="flex:1">
+                  <div style="display:flex;align-items:center;gap:6px">
+                    <div class="slack-name">Mia P.</div>
+                    <div class="slack-time">11:03 AM</div>
+                  </div>
+                  <div class="slack-text">@trak what's overdue on Summer Drop right now?</div>
+                </div>
+              </div>
+
+              <!-- Bot reply -->
+              <div class="slack-msg">
+                <div class="slack-avatar" style="background:var(--blue);border-radius:8px">T</div>
+                <div style="flex:1">
+                  <div style="display:flex;align-items:center;gap:6px">
+                    <div class="slack-name">Trak</div>
+                    <div style="font-size:9px;background:rgba(42,83,122,0.4);color:#7AB3D4;padding:1px 6px;border-radius:3px;font-weight:600">APP</div>
+                    <div class="slack-time">11:03 AM</div>
+                  </div>
+                  <div class="slack-text">2 tasks overdue on <span class="trak-ref">Summer Drop</span>:<br>• <strong>Hero shot final selects</strong> — Sam L. · 2 days late<br>• <strong>Copy review — PDP + emails</strong> — Jade K. · due yesterday</div>
+                </div>
+              </div>
+
+              <!-- Message 2 -->
+              <div class="slack-msg">
+                <div class="slack-avatar" style="background:#C4603A">SL</div>
+                <div style="flex:1">
+                  <div style="display:flex;align-items:center;gap:6px">
+                    <div class="slack-name">Sam L.</div>
+                    <div class="slack-time">11:05 AM</div>
+                  </div>
+                  <div class="slack-text">sorry — uploading now, should be done today. @trak mark "Hero shot final selects" as high priority and move due date to today.</div>
+                </div>
+              </div>
+
+              <!-- Bot reply 2 -->
+              <div class="slack-msg" style="margin-bottom:0">
+                <div class="slack-avatar" style="background:var(--blue);border-radius:8px">T</div>
+                <div style="flex:1">
+                  <div style="display:flex;align-items:center;gap:6px">
+                    <div class="slack-name">Trak</div>
+                    <div style="font-size:9px;background:rgba(42,83,122,0.4);color:#7AB3D4;padding:1px 6px;border-radius:3px;font-weight:600">APP</div>
+                    <div class="slack-time">11:05 AM</div>
+                  </div>
+                  <div class="slack-text">Done — <span class="trak-ref">Hero shot final selects</span> updated to <strong>High priority</strong>, due date moved to today.</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S6: PROJECT PERMISSIONS -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split rev">
+      <div>
+        <div class="section-label">Access control</div>
+        <h2>The right people see the right projects — <em>and nothing they shouldn't</em></h2>
+        <p class="body-text">As your brand team grows — freelancers, agency partners, seasonal hires — you need access control that's both easy to set up and precise enough to matter.</p>
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="feature-icon">🔒</div>
+            <div class="feature-body">
+              <div class="feature-title">Per-project permissions for individuals or teams</div>
+              <div class="feature-text">Lock down specific projects so only certain members — or entire teams — can view or edit them. Your agency creative team sees the Campaign project. Your ops lead sees everything. Freelancers see only what they're working on.</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">⚡</div>
+            <div class="feature-body">
+              <div class="feature-title">Add a team, not a list of people</div>
+              <div class="feature-text">Because teams are groups, granting the Creative team access to a project means everyone in that group gets it — and anyone you add to that team later gets it automatically. One configuration, no maintenance.</div>
+            </div>
+          </div>
+        </div>
+        <div class="callout"><strong>Magic Links work alongside permissions.</strong> If you need a client or external stakeholder to see specific project tabs, share a Magic Link — they see only what you expose, without needing a workspace account at all.</div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="mcanvas" style="padding:13px">
+            <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px">Summer Drop — Permissions</div>
+            <div style="font-size:9.5px;color:var(--text-muted);margin-bottom:10px">Configure who can access this project</div>
+
+            <div class="block" style="margin-bottom:7px">
+              <div class="bhead"><div class="btype">Teams</div></div>
+              <div class="perm-row">
+                <div class="avatar" style="background:#5B4AC4;border-radius:5px;font-size:9px">CR</div>
+                <div class="perm-name">Creative</div>
+                <span class="badge b-blue" style="font-size:9px">View + Edit</span>
+                <div class="perm-toggle on"><div class="perm-thumb"></div></div>
+              </div>
+              <div class="perm-row">
+                <div class="avatar" style="background:#2D7A47;border-radius:5px;font-size:9px">GR</div>
+                <div class="perm-name">Growth</div>
+                <span class="badge b-green" style="font-size:9px">View only</span>
+                <div class="perm-toggle on"><div class="perm-thumb"></div></div>
+              </div>
+              <div class="perm-row">
+                <div class="avatar" style="background:#E8856A;border-radius:5px;font-size:9px">OP</div>
+                <div class="perm-name">Ops</div>
+                <span class="badge b-gray" style="font-size:9px">No access</span>
+                <div class="perm-toggle off"><div class="perm-thumb"></div></div>
+              </div>
+            </div>
+
+            <div class="block" style="margin-bottom:7px">
+              <div class="bhead"><div class="btype">Individuals</div></div>
+              <div class="perm-row">
+                <div class="avatar" style="background:#C4603A">SL</div>
+                <div class="perm-name">Sam L. <span style="color:var(--text-muted);font-weight:400;font-size:9.5px">· Freelancer</span></div>
+                <span class="badge b-orange" style="font-size:9px">Campaign tab only</span>
+                <div class="perm-toggle on"><div class="perm-thumb"></div></div>
+              </div>
+            </div>
+
+            <div class="block" style="margin-bottom:0">
+              <div class="bhead"><div class="btype">Magic Link</div><span class="badge b-terra" style="font-size:9px">Active</span></div>
+              <div style="font-size:10.5px;color:var(--text-mid)">Client-facing view · Campaign tab visible · Comments enabled</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section fade-up">
+  <div class="cta-inner">
+    <div class="cta-label">Get started</div>
+    <h2 class="cta-h">Your team, your projects, and your work — all in one place.</h2>
+    <p class="cta-sub">Set up your workspace, add your team, and start working. Everything from task ownership to Slack updates is ready from day one.</p>
+    <div class="cta-actions">
+      <a href="#" class="btn-white">Start free</a>
+      <a href="#" class="btn-ghost">Book a walkthrough →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible')})},{threshold:0.08})
+document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el))
+</script>
+</body>
+</html>

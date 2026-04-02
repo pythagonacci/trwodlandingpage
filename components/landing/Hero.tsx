@@ -44,9 +44,9 @@ export function Hero() {
           className="hero-anim hero-anim-sub mb-6 max-w-[720px] text-center text-[16px] font-light leading-[1.7]"
           style={{ color: "#555" }}
         >
-          Your brand runs on five tabs, three apps, and a group chat. Saria puts
-          your products, people, and launches in one place — so you can stop
-          managing tools and start managing your brand.
+          One workspace for your products, people, and launches. Spend{" "}
+          <strong>less time managing work</strong> and more time creating{" "}
+          <strong>products customers love</strong>.
         </p>
 
         {/* CTA row + no credit card */}

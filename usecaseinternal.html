@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Internal Docs & Resources — Trak</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#FDFAF6;--cream-dark:#F5F0E8;--cream-darker:#EDE6D8;
+  --blue:#2A537A;--blue-light:#3D6E9E;--blue-pale:#EBF2F9;
+  --terra:#C4603A;--terra-pale:#FBF0EC;
+  --text:#1A1A18;--text-mid:#4A4A45;--text-muted:#8A8A82;
+  --border:#E2DBD0;--border-light:#EDE8E0;
+  --app-bg:#F8F5F0;--app-sidebar:#F0ECE5;--app-block:#FFFFFF;
+  --shadow-sm:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:0 4px 16px rgba(0,0,0,0.08),0 2px 6px rgba(0,0,0,0.04);
+  --shadow-lg:0 12px 40px rgba(0,0,0,0.10),0 4px 12px rgba(0,0,0,0.06);
+  --r:10px;--r-lg:16px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--text);line-height:1.6;overflow-x:hidden}
+nav{position:sticky;top:0;z-index:100;background:rgba(253,250,246,0.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-light);padding:0 48px;display:flex;align-items:center;justify-content:space-between;height:56px}
+.nav-logo{font-family:'Instrument Serif',serif;font-size:20px;color:var(--blue)}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{font-size:13.5px;color:var(--text-mid);text-decoration:none}
+.nav-cta{background:var(--blue);color:#fff;font-size:13px;font-weight:500;padding:7px 16px;border-radius:7px;text-decoration:none}
+.hero{padding:80px 48px 56px;max-width:680px;margin:0 auto;text-align:center}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;background:var(--terra-pale);border:1px solid rgba(196,96,58,0.18);color:var(--terra);font-size:11.5px;font-weight:500;padding:5px 12px;border-radius:100px;margin-bottom:22px}
+.eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--terra)}
+h1{font-family:'Instrument Serif',serif;font-size:clamp(34px,5vw,52px);line-height:1.08;letter-spacing:-1px;color:var(--text);margin-bottom:16px;font-weight:400}
+h1 em{color:var(--blue);font-style:italic}
+.hero-sub{font-size:16px;color:var(--text-mid);max-width:500px;margin:0 auto 28px;font-weight:300;line-height:1.7}
+.hero-actions{display:flex;align-items:center;justify-content:center;gap:10px}
+.btn-primary{background:var(--blue);color:#fff;font-size:13.5px;font-weight:500;padding:11px 22px;border-radius:8px;text-decoration:none;transition:all 0.2s}
+.btn-primary:hover{background:var(--blue-light);transform:translateY(-1px)}
+.btn-secondary{color:var(--blue);font-size:13.5px;font-weight:500;padding:11px 22px;border-radius:8px;text-decoration:none;border:1.5px solid var(--blue)}
+.intro-strip{border-top:1px solid var(--border-light);border-bottom:1px solid var(--border-light);padding:28px 48px;background:var(--cream-dark)}
+.intro-strip-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:40px}
+.intro-label{font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--terra);white-space:nowrap}
+.intro-text{font-size:14.5px;color:var(--text-mid);font-weight:300;line-height:1.7}
+.intro-text strong{color:var(--text);font-weight:500}
+.section{padding:72px 48px;border-top:1px solid var(--border-light)}
+.section-inner{max-width:1080px;margin:0 auto}
+.section-split{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.section-split.rev{direction:rtl}.section-split.rev>*{direction:ltr}
+.section-label{font-size:10.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--terra);margin-bottom:10px}
+h2{font-family:'Instrument Serif',serif;font-size:clamp(22px,2.8vw,32px);line-height:1.18;letter-spacing:-0.3px;color:var(--text);margin-bottom:22px;font-weight:400}
+h2 em{color:var(--blue);font-style:italic}
+.body-text{font-size:14.5px;color:var(--text-mid);font-weight:300;line-height:1.8;margin-bottom:16px}
+.body-text strong{color:var(--text);font-weight:500}
+.feature-list{display:flex;flex-direction:column;gap:14px;margin-top:4px}
+.feature-item{display:flex;align-items:flex-start;gap:11px}
+.feature-icon{width:28px;height:28px;border-radius:7px;background:var(--blue-pale);font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.feature-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:3px}
+.feature-text{font-size:13.5px;color:var(--text-mid);font-weight:300;line-height:1.7}
+.feature-text strong{color:var(--text);font-weight:500}
+.feature-text em{color:var(--blue);font-style:italic}
+.callout{background:var(--blue-pale);border:1px solid rgba(42,83,122,0.12);border-radius:8px;padding:12px 14px;margin-top:20px;font-size:13.5px;color:var(--blue);line-height:1.65}
+.callout strong{font-weight:600}
+.callout-terra{background:var(--terra-pale);border:1px solid rgba(196,96,58,0.14);border-radius:8px;padding:12px 14px;margin-top:20px;font-size:13.5px;color:var(--terra);line-height:1.65}
+.callout-terra strong{font-weight:600}
+
+/* MOCKUP */
+.mockup{background:var(--app-bg);border-radius:var(--r-lg);border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow-lg)}
+.chrome{background:var(--app-sidebar);border-bottom:1px solid var(--border);padding:9px 12px;display:flex;align-items:center;gap:7px}
+.dot{width:9px;height:9px;border-radius:50%}
+.dot.r{background:#FF6057}.dot.y{background:#FFBD2E}.dot.g{background:#28CA41}
+.mbody{display:flex}
+.msidebar{width:148px;background:var(--app-sidebar);border-right:1px solid var(--border);padding:14px 0;flex-shrink:0}
+.s-section{padding:0 10px;margin-bottom:16px}
+.s-label{font-size:9.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:7px;padding:0 4px}
+.s-item{padding:5px 7px;border-radius:5px;font-size:11px;color:var(--text-mid);display:flex;align-items:center;gap:6px}
+.s-item.active{background:var(--cream-dark);color:var(--text);font-weight:500}
+.s-indent{padding-left:18px;font-size:10.5px}
+.mcanvas{flex:1;padding:14px;background:var(--cream);overflow:hidden}
+.badge{font-size:10px;font-weight:500;padding:3px 8px;border-radius:100px;display:inline-flex;align-items:center;white-space:nowrap}
+.b-blue{background:var(--blue-pale);color:var(--blue)}
+.b-terra{background:var(--terra-pale);color:var(--terra)}
+.b-green{background:#EBF5EE;color:#2D7A47}
+.b-orange{background:#FEF3EC;color:#C4600A}
+.b-gray{background:#F2F0EC;color:var(--text-mid)}
+.b-purple{background:#F0EEFB;color:#5B4AC4}
+.block{background:var(--app-block);border:1px solid var(--border-light);border-radius:var(--r);padding:11px 13px;margin-bottom:7px;box-shadow:var(--shadow-sm)}
+.block:last-child{margin-bottom:0}
+.bhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.btype{font-size:9px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-muted)}
+.avatar{width:18px;height:18px;border-radius:50%;font-size:8px;font-weight:600;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.prio{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.pu{background:#E24B4A}.ph{background:#E8856A}.pm{background:#EFC227}.pl{background:#85C1A0}
+.task{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid var(--border-light);font-size:11px}
+.task:last-child{border-bottom:none;padding-bottom:0}
+.task-name{flex:1;color:var(--text);line-height:1.3}
+.checkbox{width:12px;height:12px;border-radius:3px;border:1.5px solid var(--border);flex-shrink:0}
+.checkbox.done{background:var(--blue);border-color:var(--blue);display:flex;align-items:center;justify-content:center}
+.checkbox.done::after{content:'✓';font-size:8px;color:#fff;font-weight:700}
+
+/* DOC EDITOR */
+.doc-editor{background:var(--app-block);border-radius:var(--r);box-shadow:var(--shadow-sm)}
+.doc-toolbar{border-bottom:1px solid var(--border-light);padding:7px 11px;display:flex;align-items:center;gap:8px}
+.doc-tool{font-size:10px;font-weight:600;color:var(--text-mid);padding:2px 5px;border-radius:3px;cursor:pointer}
+.doc-tool.active{background:var(--blue-pale);color:var(--blue)}
+.doc-divider{width:1px;height:14px;background:var(--border-light)}
+.doc-body{padding:13px 14px}
+.doc-h1{font-family:'Instrument Serif',serif;font-size:16px;color:var(--text);font-weight:400;margin-bottom:8px;letter-spacing:-0.2px}
+.doc-h2{font-size:11px;font-weight:700;color:var(--text);margin-bottom:5px;margin-top:10px;text-transform:uppercase;letter-spacing:0.5px}
+.doc-p{font-size:10.5px;color:var(--text-mid);line-height:1.75;margin-bottom:6px;font-weight:300}
+.doc-p strong{color:var(--text);font-weight:500}
+.doc-mention{display:inline-flex;align-items:center;gap:3px;background:var(--blue-pale);color:var(--blue);border-radius:4px;padding:1px 6px;font-size:10px;font-weight:500}
+.doc-img-placeholder{background:var(--cream-dark);border:1px solid var(--border-light);border-radius:6px;height:44px;display:flex;align-items:center;justify-content:center;margin:7px 0;gap:5px}
+.doc-img-label{font-size:9.5px;color:var(--text-muted)}
+.doc-list-item{display:flex;align-items:flex-start;gap:6px;font-size:10.5px;color:var(--text-mid);line-height:1.6;margin-bottom:3px;font-weight:300}
+.doc-bullet{width:4px;height:4px;border-radius:50%;background:var(--text-muted);flex-shrink:0;margin-top:6px}
+
+/* CLIENT CARD */
+.client-card{background:var(--app-block);border:1px solid var(--border-light);border-radius:var(--r);padding:10px 12px;margin-bottom:7px;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:10px}
+.client-card:last-child{margin-bottom:0}
+.client-logo{width:28px;height:28px;border-radius:7px;font-size:10px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.client-info{flex:1}
+.client-name{font-size:11.5px;font-weight:600;color:var(--text)}
+.client-meta{font-size:9.5px;color:var(--text-muted);margin-top:1px}
+.client-projects{font-size:9.5px;color:var(--text-muted)}
+
+/* CLIENT DETAIL */
+.detail-field{padding:5px 0;border-bottom:1px solid var(--border-light);display:flex;align-items:flex-start;gap:8px}
+.detail-field:last-child{border-bottom:none;padding-bottom:0}
+.detail-label{font-size:9.5px;color:var(--text-muted);width:64px;flex-shrink:0;padding-top:1px}
+.detail-value{font-size:10.5px;color:var(--text);font-weight:400;flex:1;line-height:1.5}
+
+/* INTERNAL SPACE */
+.space-card{background:var(--app-block);border:1px solid var(--border-light);border-radius:var(--r);padding:9px 12px;margin-bottom:6px;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:9px}
+.space-icon{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.space-title{font-size:11.5px;font-weight:500;color:var(--text)}
+.space-sub{font-size:9.5px;color:var(--text-muted);margin-top:1px}
+
+.cta-section{background:var(--blue);padding:72px 48px;text-align:center}
+.cta-inner{max-width:500px;margin:0 auto}
+.cta-label{font-size:10.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:14px}
+.cta-h{font-family:'Instrument Serif',serif;font-size:clamp(24px,3.5vw,38px);color:#fff;line-height:1.18;letter-spacing:-0.4px;margin-bottom:12px;font-weight:400}
+.cta-sub{font-size:15px;color:rgba(255,255,255,0.65);margin-bottom:26px;font-weight:300}
+.cta-actions{display:flex;align-items:center;justify-content:center;gap:10px}
+.btn-white{background:#fff;color:var(--blue);font-size:13.5px;font-weight:500;padding:11px 22px;border-radius:8px;text-decoration:none}
+.btn-ghost{color:#fff;font-size:13.5px;padding:11px 22px;border-radius:8px;text-decoration:none;border:1.5px solid rgba(255,255,255,0.35)}
+.js-loaded .fade-up{opacity:0;transform:translateY(18px);transition:opacity 0.5s ease,transform 0.5s ease}
+.js-loaded .fade-up.visible{opacity:1;transform:translateY(0)}
+@media(max-width:860px){.section-split{grid-template-columns:1fr}.section-split.rev{direction:ltr}.msidebar{display:none}nav .nav-links{display:none}.intro-strip-inner{flex-direction:column;gap:10px}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Trak</div>
+  <div class="nav-links"><a href="#">Product</a><a href="#">Use Cases</a><a href="#">Templates</a><a href="#">Pricing</a></div>
+  <a href="#" class="nav-cta">Start free →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero fade-up">
+  <div class="eyebrow"><span class="eyebrow-dot"></span>Internal Docs & Resources</div>
+  <h1>Your SOPs, resources, and client records — <em>all inside Trak</em></h1>
+  <p class="hero-sub">Keep your internal operations organized in the same place your work lives. No separate wiki, no scattered docs, no context switching.</p>
+  <div class="hero-actions">
+    <a href="#" class="btn-primary">Start free</a>
+    <a href="#" class="btn-secondary">Book a walkthrough</a>
+  </div>
+</section>
+
+<!-- INTRO STRIP -->
+<div class="intro-strip fade-up">
+  <div class="intro-strip-inner">
+    <div class="intro-label">What's covered</div>
+    <div class="intro-text">Trak's internal layer has three parts: <strong>Internal spaces</strong> — projects built exactly like any other project, but scoped to your team's ops work; <strong>Docs</strong> — a dedicated rich-text editor for SOPs, guides, and resources, with block references and images; and <strong>Clients</strong> — a database of every external partner and brand relationship, each with their own detail page.</div>
+  </div>
+</div>
+
+<!-- S1: INTERNAL SPACES -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split">
+      <div>
+        <div class="section-label">Internal spaces</div>
+        <h2>A dedicated space for how your team operates — <em>built like any other project</em></h2>
+        <p class="body-text">Internal spaces are projects scoped to your team's own operations rather than an external campaign. They work exactly the same way — tabs, blocks, tasks, timelines, files — just pointed inward.</p>
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="feature-icon">📁</div>
+            <div class="feature-body">
+              <div class="feature-title">Organize ops work the same way you organize everything else</div>
+              <div class="feature-text">Create an internal space for Onboarding, one for Brand Guidelines, one for Seasonal Planning — each with its own tabs and blocks. The same structure you use for active projects works just as well for how your team runs itself.</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">✅</div>
+            <div class="feature-body">
+              <div class="feature-title">Tasks, timelines, and files — the full block system</div>
+              <div class="feature-text">Internal spaces have access to every block type. Add a task list for recurring housekeeping, a timeline for quarterly planning cycles, a file block for brand assets, a gallery for approved visual references. Anything you'd put in a project, you can put here.</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🔒</div>
+            <div class="feature-body">
+              <div class="feature-title">Visible only to your team</div>
+              <div class="feature-text">Internal spaces are exactly that — internal. They're never exposed externally and don't show up in Magic Link views. Your SOPs and internal planning stay separate from what anyone outside your team ever sees.</div>
+            </div>
+          </div>
+        </div>
+        <div class="callout"><strong>One fewer tool.</strong> Most brand ops teams keep their internal processes in a separate Notion or Confluence. In Trak, your ops infrastructure lives in the same workspace as your active work — same interface, same search, same AI.</div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="msidebar">
+            <div class="s-section">
+              <div class="s-label">Internal</div>
+              <div class="s-item active">Brand Guidelines</div>
+              <div class="s-item">Team Onboarding</div>
+              <div class="s-item">Seasonal Ops</div>
+              <div class="s-item">SOPs</div>
+            </div>
+            <div class="s-section">
+              <div class="s-label">Brand Guidelines</div>
+              <div class="s-item s-indent active">↳ Visual Identity</div>
+              <div class="s-item s-indent">↳ Voice & Tone</div>
+              <div class="s-item s-indent">↳ Asset Library</div>
+            </div>
+          </div>
+          <div class="mcanvas" style="padding:13px">
+            <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px">Brand Guidelines</div>
+            <div style="font-size:9.5px;color:var(--text-muted);margin-bottom:10px">Internal · 3 tabs · last updated 2 days ago</div>
+
+            <!-- Image block -->
+            <div class="block" style="margin-bottom:7px">
+              <div class="bhead"><div class="btype">Visual Identity</div></div>
+              <div style="background:var(--cream-dark);border-radius:6px;height:42px;display:flex;align-items:center;justify-content:center;margin-bottom:8px">
+                <div style="display:flex;gap:8px;align-items:center">
+                  <div style="width:20px;height:20px;border-radius:50%;background:var(--blue)"></div>
+                  <div style="width:20px;height:20px;border-radius:50%;background:var(--terra)"></div>
+                  <div style="width:20px;height:20px;border-radius:50%;background:#2D7A47"></div>
+                  <div style="font-size:9px;color:var(--text-muted);margin-left:4px">Approved palette</div>
+                </div>
+              </div>
+              <div style="font-size:10.5px;color:var(--text-mid);line-height:1.65;font-weight:300">Primary font is DM Sans. Use Instrument Serif for headlines only. Minimum logo clear space is 24px on all sides.</div>
+            </div>
+
+            <!-- Task block -->
+            <div class="block">
+              <div class="bhead"><div class="btype">Quarterly Housekeeping</div><span class="badge b-gray" style="font-size:9px">Recurring</span></div>
+              <div class="task">
+                <div class="prio ph"></div>
+                <div class="checkbox done"></div>
+                <div class="task-name" style="text-decoration:line-through;color:var(--text-muted)">Audit asset library</div>
+              </div>
+              <div class="task">
+                <div class="prio pm"></div>
+                <div class="checkbox"></div>
+                <div class="task-name">Update approved vendor list</div>
+              </div>
+              <div class="task">
+                <div class="prio pm"></div>
+                <div class="checkbox"></div>
+                <div class="task-name">Review onboarding doc</div>
+              </div>
+              <div class="task">
+                <div class="prio pl"></div>
+                <div class="checkbox"></div>
+                <div class="task-name">Archive Q1 campaign files</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S2: DOCS -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split rev">
+      <div>
+        <div class="section-label">Docs</div>
+        <h2>A dedicated doc editor for everything your team needs to <em>write down and reference</em></h2>
+        <p class="body-text">Docs are separate from project tabs — they have their own dedicated rich-text editor, built for the kind of content that lives outside of tasks and blocks. SOPs, brand guidelines, onboarding guides, process write-ups.</p>
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="feature-icon">✍️</div>
+            <div class="feature-body">
+              <div class="feature-title">Rich text that actually feels like a doc</div>
+              <div class="feature-text">Headings, body text, bold, lists, images — a proper writing environment, not a notes field. Write your launch SOP the same way you'd write it anywhere, and it stays readable and well-structured for whoever references it later.</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🔗</div>
+            <div class="feature-body">
+              <div class="feature-title">Mention blocks directly inside a doc</div>
+              <div class="feature-text">Reference a specific block — a task list, a timeline, an asset — directly inside your doc text. Your launch SOP can mention the <em>@Shoot Checklist block</em> or the <em>@Shopify Setup tab</em> so that the written process and the actual work are always one click apart.</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🖼️</div>
+            <div class="feature-body">
+              <div class="feature-title">Add images inline</div>
+              <div class="feature-text">Drop images directly into the doc — annotated screenshots, visual references, approved mockups. Useful for anything that needs a visual to make sense: brand guidelines, packaging specs, layout references.</div>
+            </div>
+          </div>
+        </div>
+        <div class="callout-terra"><strong>Docs and projects stay connected.</strong> A doc can live inside an internal space or alongside a project. Either way, it's in the same workspace — findable by AI search, accessible to your team, and never buried in a Drive folder nobody opens.</div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="msidebar">
+            <div class="s-section">
+              <div class="s-label">Docs</div>
+              <div class="s-item active">Campaign Launch SOP</div>
+              <div class="s-item">Shoot Day Checklist</div>
+              <div class="s-item">Influencer Brief Template</div>
+              <div class="s-item">Approval Process</div>
+            </div>
+          </div>
+          <div class="mcanvas" style="padding:12px;background:var(--cream)">
+            <div class="doc-editor">
+              <div class="doc-toolbar">
+                <span class="doc-tool active">B</span>
+                <span class="doc-tool active" style="font-style:italic">I</span>
+                <span class="doc-tool">H1</span>
+                <span class="doc-tool active">H2</span>
+                <div class="doc-divider"></div>
+                <span class="doc-tool">≡</span>
+                <span class="doc-tool">@</span>
+                <div class="doc-divider"></div>
+                <span class="doc-tool">🖼</span>
+              </div>
+              <div class="doc-body">
+                <div class="doc-h1">Campaign Launch SOP</div>
+
+                <div class="doc-h2">Pre-Launch</div>
+                <div class="doc-p">All creative assets must be approved at least <strong>5 days before go-live</strong>. Reference the <span class="doc-mention">@ Shoot Checklist block</span> and confirm all deliverables are marked complete before briefing the Shopify team.</div>
+
+                <div class="doc-img-placeholder">
+                  <span style="font-size:11px">🖼</span>
+                  <div class="doc-img-label">Pre-launch timeline — Q2 2024.png</div>
+                </div>
+
+                <div class="doc-h2">Go-Live Checklist</div>
+                <div class="doc-list-item"><div class="doc-bullet"></div>PDPs live and linked to collection page</div>
+                <div class="doc-list-item"><div class="doc-bullet"></div>Email scheduled and tested across all segments</div>
+                <div class="doc-list-item"><div class="doc-bullet"></div>Social assets exported and queued</div>
+                <div class="doc-list-item"><div class="doc-bullet"></div>Confirm <span class="doc-mention">@ Shopify Setup tab</span> tasks are complete</div>
+
+                <div class="doc-h2">Post-Launch</div>
+                <div class="doc-p">Performance review at <strong>48 hours and 7 days</strong>. Archive campaign files within 2 weeks. Update this doc with any process changes.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S3: CLIENTS -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split">
+      <div>
+        <div class="section-label">Clients</div>
+        <h2>Every external relationship in one place — <em>with their own page in Trak</em></h2>
+        <p class="body-text">Clients in Trak aren't just a name attached to a project. Each client has their own dedicated page — a single place to hold everything about that relationship.</p>
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="feature-icon">🗃️</div>
+            <div class="feature-body">
+              <div class="feature-title">A database of every external actor</div>
+              <div class="feature-text">Everyone you work with externally lives in the Clients section — agencies, retail partners, PR contacts, brand collaborators. Browse them as a list, search by name or company, and open any record in seconds.</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">📋</div>
+            <div class="feature-body">
+              <div class="feature-title">Each client has their own detail page</div>
+              <div class="feature-text">Open any client and you get their full record — contact details, company, notes, and every project they're linked to. Add context that doesn't fit anywhere else: how they prefer to communicate, what they've approved, what's still outstanding.</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">↗️</div>
+            <div class="feature-body">
+              <div class="feature-title">Linked to every project they're part of</div>
+              <div class="feature-text">When you attach a client to a project, that project shows up on their page. You can see every active and past engagement for that client from one place — no searching, no cross-referencing.</div>
+            </div>
+          </div>
+        </div>
+        <div class="callout"><strong>Connected to Magic Links.</strong> Once a client exists in Trak, sharing a project view with them is one step — generate a Magic Link, choose what they see, and send it. Their feedback comes back into the same record.</div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="msidebar">
+            <div class="s-section">
+              <div class="s-label">Clients</div>
+              <div class="s-item active">All clients</div>
+              <div class="s-item">Active only</div>
+            </div>
+            <div class="s-section">
+              <div class="s-label">Recent</div>
+              <div class="s-item">Maison Éclat</div>
+              <div class="s-item">Verdure Studio</div>
+              <div class="s-item">Lune Collective</div>
+            </div>
+          </div>
+          <div class="mcanvas" style="padding:12px">
+
+            <!-- Client list -->
+            <div style="font-size:10.5px;font-weight:600;color:var(--text-muted);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:7px">All Clients · 6</div>
+
+            <div class="client-card">
+              <div class="client-logo" style="background:var(--blue)">ME</div>
+              <div class="client-info">
+                <div class="client-name">Maison Éclat</div>
+                <div class="client-meta">Luxury skincare · Paris</div>
+              </div>
+              <span class="badge b-blue" style="font-size:9px">2 active</span>
+            </div>
+
+            <div class="client-card">
+              <div class="client-logo" style="background:#2D7A47">VS</div>
+              <div class="client-info">
+                <div class="client-name">Verdure Studio</div>
+                <div class="client-meta">Clean beauty · London</div>
+              </div>
+              <span class="badge b-green" style="font-size:9px">1 active</span>
+            </div>
+
+            <div class="client-card" style="border-color:rgba(42,83,122,0.2);background:var(--blue-pale)">
+              <div class="client-logo" style="background:#5B4AC4">LC</div>
+              <div class="client-info">
+                <div class="client-name">Lune Collective</div>
+                <div class="client-meta">Fragrance · NYC</div>
+              </div>
+              <span class="badge b-purple" style="font-size:9px">Open ↗</span>
+            </div>
+
+            <!-- Client detail -->
+            <div class="block" style="margin-top:8px;padding:10px 12px">
+              <div class="bhead" style="margin-bottom:9px">
+                <div style="display:flex;align-items:center;gap:7px">
+                  <div class="client-logo" style="background:#5B4AC4;width:22px;height:22px;border-radius:5px;font-size:8px">LC</div>
+                  <div style="font-size:11.5px;font-weight:600;color:var(--text)">Lune Collective</div>
+                </div>
+                <span class="badge b-orange" style="font-size:9px">In progress</span>
+              </div>
+              <div class="detail-field">
+                <div class="detail-label">Company</div>
+                <div class="detail-value">Lune Collective LLC</div>
+              </div>
+              <div class="detail-field">
+                <div class="detail-label">Contact</div>
+                <div class="detail-value">Camille Roset · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4724262a2e2b2b22072b322922692428">[email&#160;protected]</a></div>
+              </div>
+              <div class="detail-field">
+                <div class="detail-label">Notes</div>
+                <div class="detail-value" style="color:var(--text-mid);font-weight:300">Prefers async feedback via Magic Link. Final approvals need CEO sign-off.</div>
+              </div>
+              <div class="detail-field">
+                <div class="detail-label">Projects</div>
+                <div class="detail-value" style="display:flex;gap:5px;flex-wrap:wrap">
+                  <span class="badge b-purple" style="font-size:9px">Summer Drop</span>
+                  <span class="badge b-gray" style="font-size:9px">Brand Refresh '23</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section fade-up">
+  <div class="cta-inner">
+    <div class="cta-label">Get started</div>
+    <h2 class="cta-h">Your operations, your docs, your clients — all in the same workspace.</h2>
+    <p class="cta-sub">Stop splitting your internal work across tools. Everything your team needs to run well lives inside Trak.</p>
+    <div class="cta-actions">
+      <a href="#" class="btn-white">Start free</a>
+      <a href="#" class="btn-ghost">Book a walkthrough →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+document.body.classList.add('js-loaded');
+const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible')})},{threshold:0.08})
+document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el))
+</script>
+</body>
+</html>

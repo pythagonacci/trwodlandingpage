@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multi-Project Management — Trak</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#FDFAF6;--cream-dark:#F5F0E8;--cream-darker:#EDE6D8;
+  --blue:#2A537A;--blue-light:#3D6E9E;--blue-pale:#EBF2F9;
+  --terra:#C4603A;--terra-pale:#FBF0EC;
+  --text:#1A1A18;--text-mid:#4A4A45;--text-muted:#8A8A82;
+  --border:#E2DBD0;--border-light:#EDE8E0;
+  --app-bg:#F8F5F0;--app-sidebar:#F0ECE5;--app-block:#FFFFFF;
+  --shadow-sm:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:0 4px 16px rgba(0,0,0,0.08),0 2px 6px rgba(0,0,0,0.04);
+  --shadow-lg:0 12px 40px rgba(0,0,0,0.10),0 4px 12px rgba(0,0,0,0.06);
+  --r:10px;--r-lg:16px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--text);line-height:1.6;overflow-x:hidden}
+nav{position:sticky;top:0;z-index:100;background:rgba(253,250,246,0.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-light);padding:0 48px;display:flex;align-items:center;justify-content:space-between;height:56px}
+.nav-logo{font-family:'Instrument Serif',serif;font-size:20px;color:var(--blue)}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{font-size:13.5px;color:var(--text-mid);text-decoration:none}
+.nav-cta{background:var(--blue);color:#fff;font-size:13px;font-weight:500;padding:7px 16px;border-radius:7px;text-decoration:none}
+.hero{padding:80px 48px 56px;max-width:680px;margin:0 auto;text-align:center}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;background:var(--terra-pale);border:1px solid rgba(196,96,58,0.18);color:var(--terra);font-size:11.5px;font-weight:500;padding:5px 12px;border-radius:100px;margin-bottom:22px}
+.eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--terra)}
+h1{font-family:'Instrument Serif',serif;font-size:clamp(34px,5vw,52px);line-height:1.08;letter-spacing:-1px;color:var(--text);margin-bottom:16px;font-weight:400}
+h1 em{color:var(--blue);font-style:italic}
+.hero-sub{font-size:16px;color:var(--text-mid);max-width:500px;margin:0 auto 28px;font-weight:300;line-height:1.7}
+.hero-actions{display:flex;align-items:center;justify-content:center;gap:10px}
+.btn-primary{background:var(--blue);color:#fff;font-size:13.5px;font-weight:500;padding:11px 22px;border-radius:8px;text-decoration:none;transition:all 0.2s}
+.btn-primary:hover{background:var(--blue-light);transform:translateY(-1px)}
+.btn-secondary{color:var(--blue);font-size:13.5px;font-weight:500;padding:11px 22px;border-radius:8px;text-decoration:none;border:1.5px solid var(--blue)}
+.intro-strip{border-top:1px solid var(--border-light);border-bottom:1px solid var(--border-light);padding:28px 48px;background:var(--cream-dark)}
+.intro-strip-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:40px}
+.intro-label{font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--terra);white-space:nowrap}
+.intro-text{font-size:14.5px;color:var(--text-mid);font-weight:300;line-height:1.7}
+.intro-text strong{color:var(--text);font-weight:500}
+.section{padding:72px 48px;border-top:1px solid var(--border-light)}
+.section-inner{max-width:1080px;margin:0 auto}
+.section-split{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.section-split.rev{direction:rtl}.section-split.rev>*{direction:ltr}
+.section-label{font-size:10.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--terra);margin-bottom:10px}
+h2{font-family:'Instrument Serif',serif;font-size:clamp(22px,2.8vw,32px);line-height:1.18;letter-spacing:-0.3px;color:var(--text);margin-bottom:22px;font-weight:400}
+h2 em{color:var(--blue);font-style:italic}
+.body-text{font-size:14.5px;color:var(--text-mid);font-weight:300;line-height:1.8;margin-bottom:16px}
+.body-text strong{color:var(--text);font-weight:500}
+.feature-list{display:flex;flex-direction:column;gap:14px;margin-top:4px}
+.feature-item{display:flex;align-items:flex-start;gap:11px}
+.feature-icon{width:28px;height:28px;border-radius:7px;background:var(--blue-pale);color:var(--blue);font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.feature-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:3px}
+.feature-text{font-size:13.5px;color:var(--text-mid);font-weight:300;line-height:1.7}
+.feature-text strong{color:var(--text);font-weight:500}
+.feature-text em{color:var(--blue);font-style:italic}
+.callout{background:var(--blue-pale);border:1px solid rgba(42,83,122,0.12);border-radius:8px;padding:12px 14px;margin-top:20px;font-size:13.5px;color:var(--blue);line-height:1.65}
+.callout strong{font-weight:600}
+.callout-terra{background:var(--terra-pale);border:1px solid rgba(196,96,58,0.14);border-radius:8px;padding:12px 14px;margin-top:20px;font-size:13.5px;color:var(--terra);line-height:1.65}
+.callout-terra strong{font-weight:600}
+
+/* MOCKUP */
+.mockup{background:var(--app-bg);border-radius:var(--r-lg);border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow-lg)}
+.chrome{background:var(--app-sidebar);border-bottom:1px solid var(--border);padding:9px 12px;display:flex;align-items:center;gap:7px}
+.dot{width:9px;height:9px;border-radius:50%}
+.dot.r{background:#FF6057}.dot.y{background:#FFBD2E}.dot.g{background:#28CA41}
+.mbody{display:flex}
+.msidebar{width:148px;background:var(--app-sidebar);border-right:1px solid var(--border);padding:14px 0;flex-shrink:0}
+.s-section{padding:0 10px;margin-bottom:16px}
+.s-label{font-size:9.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:7px;padding:0 4px}
+.s-item{padding:5px 7px;border-radius:5px;font-size:11px;color:var(--text-mid);display:flex;align-items:center;gap:6px}
+.s-item.active{background:var(--cream-dark);color:var(--text);font-weight:500}
+.mcanvas{flex:1;padding:14px;background:var(--cream);overflow:hidden}
+.badge{font-size:10px;font-weight:500;padding:3px 8px;border-radius:100px;display:inline-flex;align-items:center;white-space:nowrap}
+.b-blue{background:var(--blue-pale);color:var(--blue)}
+.b-terra{background:var(--terra-pale);color:var(--terra)}
+.b-green{background:#EBF5EE;color:#2D7A47}
+.b-orange{background:#FEF3EC;color:#C4600A}
+.b-gray{background:#F2F0EC;color:var(--text-mid)}
+.b-purple{background:#F0EEFB;color:#5B4AC4}
+.b-red{background:#FEF0F0;color:#C43A3A}
+.block{background:var(--app-block);border:1px solid var(--border-light);border-radius:var(--r);padding:11px 13px;margin-bottom:7px;box-shadow:var(--shadow-sm)}
+.block:last-child{margin-bottom:0}
+.bhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.btype{font-size:9px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-muted)}
+.avatar{width:18px;height:18px;border-radius:50%;font-size:8px;font-weight:600;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.prio{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.pu{background:#E24B4A}.ph{background:#E8856A}.pm{background:#EFC227}.pl{background:#85C1A0}
+
+/* WORKFLOW LAYOUT */
+.wf-layout{display:flex;height:280px}
+.wf-chat{width:140px;background:#F0ECE5;border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
+.wf-chat-header{padding:8px 10px;border-bottom:1px solid var(--border);font-size:9.5px;font-weight:600;color:var(--text-muted);letter-spacing:0.5px;text-transform:uppercase}
+.wf-messages{flex:1;overflow:hidden;padding:8px 8px 0;display:flex;flex-direction:column;gap:6px}
+.wf-msg-user{background:var(--blue);color:#fff;border-radius:8px 8px 2px 8px;padding:5px 8px;font-size:9.5px;line-height:1.5;align-self:flex-end;max-width:110px}
+.wf-msg-ai{background:var(--app-block);border:1px solid var(--border-light);border-radius:8px 8px 8px 2px;padding:5px 8px;font-size:9.5px;color:var(--text-mid);line-height:1.5;align-self:flex-start;max-width:118px}
+.wf-msg-ai strong{color:var(--text);font-weight:500}
+.wf-input{padding:7px 8px;border-top:1px solid var(--border);display:flex;gap:5px;align-items:center}
+.wf-input-box{flex:1;background:var(--app-block);border:1px solid var(--border);border-radius:5px;padding:4px 7px;font-size:9.5px;color:var(--text-muted)}
+.wf-send{width:18px;height:18px;background:var(--blue);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.wf-canvas{flex:1;background:var(--cream);padding:10px;overflow:hidden;display:flex;flex-direction:column;gap:6px}
+
+/* EVERYTHING TABLE */
+.etable{width:100%;border-collapse:collapse;font-size:10px}
+.etable th{font-size:8.5px;font-weight:600;letter-spacing:0.7px;text-transform:uppercase;color:var(--text-muted);padding:4px 7px;border-bottom:1.5px solid var(--border-light);text-align:left;white-space:nowrap;background:var(--cream)}
+.etable td{padding:5px 7px;border-bottom:1px solid var(--border-light);vertical-align:middle}
+.etable tr:last-child td{border-bottom:none}
+.et-name{font-weight:500;color:var(--text);max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10.5px}
+.et-project{font-size:9px;color:var(--text-muted);white-space:nowrap}
+.filter-bar{display:flex;align-items:center;gap:4px;margin-bottom:7px;flex-wrap:wrap}
+.filter-chip{font-size:9.5px;font-weight:500;padding:2px 8px;border-radius:100px;border:1px solid var(--border);background:var(--app-block);color:var(--text-mid)}
+.filter-chip.active{background:var(--blue-pale);border-color:rgba(42,83,122,0.3);color:var(--blue)}
+
+/* AI CARD */
+.ai-card{background:linear-gradient(135deg,var(--blue-pale),#F0EDF9);border:1px solid rgba(42,83,122,0.14);border-radius:var(--r);padding:11px 13px;margin-bottom:7px}
+.ai-card-header{display:flex;align-items:center;gap:7px;margin-bottom:8px}
+.ai-icon{width:18px;height:18px;background:var(--blue);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ai-card-title{font-size:10.5px;font-weight:600;color:var(--blue)}
+.ai-card-body{font-size:10.5px;color:var(--text-mid);line-height:1.6}
+.ai-card-body strong{color:var(--text);font-weight:500}
+.ai-prompt{font-style:italic;color:var(--blue);font-size:10.5px}
+
+/* CHART BARS */
+.mini-bar-row{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.mini-bar-label{font-size:9px;color:var(--text-mid);width:70px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0}
+.mini-bar-track{flex:1;height:9px;background:var(--cream-dark);border-radius:3px;overflow:hidden}
+.mini-bar-fill{height:100%;border-radius:3px}
+.mini-bar-val{font-size:9px;font-weight:500;color:var(--text-muted);width:16px;text-align:right;flex-shrink:0}
+
+.cta-section{background:var(--blue);padding:72px 48px;text-align:center}
+.cta-inner{max-width:500px;margin:0 auto}
+.cta-label{font-size:10.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:14px}
+.cta-h{font-family:'Instrument Serif',serif;font-size:clamp(24px,3.5vw,38px);color:#fff;line-height:1.18;letter-spacing:-0.4px;margin-bottom:12px;font-weight:400}
+.cta-sub{font-size:15px;color:rgba(255,255,255,0.65);margin-bottom:26px;font-weight:300}
+.cta-actions{display:flex;align-items:center;justify-content:center;gap:10px}
+.btn-white{background:#fff;color:var(--blue);font-size:13.5px;font-weight:500;padding:11px 22px;border-radius:8px;text-decoration:none}
+.btn-ghost{color:#fff;font-size:13.5px;padding:11px 22px;border-radius:8px;text-decoration:none;border:1.5px solid rgba(255,255,255,0.35)}
+.fade-up{opacity:0;transform:translateY(18px);transition:opacity 0.5s ease,transform 0.5s ease}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+@media(max-width:860px){.section-split{grid-template-columns:1fr}.section-split.rev{direction:ltr}.msidebar{display:none}nav .nav-links{display:none}.intro-strip-inner{flex-direction:column;gap:10px}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Trak</div>
+  <div class="nav-links"><a href="#">Product</a><a href="#">Use Cases</a><a href="#">Templates</a><a href="#">Pricing</a></div>
+  <a href="#" class="nav-cta">Start free →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero fade-up">
+  <div class="eyebrow"><span class="eyebrow-dot"></span>Multi-Project Management</div>
+  <h1>Run multiple projects without losing the <em>thread across any of them</em></h1>
+  <p class="hero-sub">Ask anything about your workspace, filter across every project at once, and build the view you need — on the fly, in seconds.</p>
+  <div class="hero-actions">
+    <a href="#" class="btn-primary">Start free</a>
+    <a href="#" class="btn-secondary">Book a walkthrough</a>
+  </div>
+</section>
+
+<!-- INTRO STRIP -->
+<div class="intro-strip fade-up">
+  <div class="intro-strip-inner">
+    <div class="intro-label">How it works</div>
+    <div class="intro-text">Trak gives you three ways to work across projects: <strong>Workflow pages</strong> — an open-ended AI you talk to, that knows everything in your workspace and can build, update, and analyze anything; <strong>the Everything Table</strong> — every item across all projects, filterable any way you want; and <strong>on-the-fly charts and boards</strong> built from whatever combination of project data you need.</div>
+  </div>
+</div>
+
+<!-- S1: WORKFLOW PAGES -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split">
+      <div>
+        <div class="section-label">Workflow pages</div>
+        <h2>An AI that knows your entire workspace — <em>ask it anything, tell it to do anything</em></h2>
+        <p class="body-text">A Workflow page is a canvas with an AI panel on the side. It's not a chatbot with preset commands — it's an open-ended analyst and operator that has full context of everything in your workspace.</p>
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="feature-icon">🔎</div>
+            <div class="feature-body">
+              <div class="feature-title">Ask any question across any project</div>
+              <div class="feature-text">Ask <em>"what's behind across all active projects right now?"</em> or <em>"which project has the most open urgent tasks?"</em> or <em>"compare the timeline on Summer Drop vs Brand Refresh"</em> — and get a real answer drawn from your live workspace data, not a template.</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">⚡</div>
+            <div class="feature-body">
+              <div class="feature-title">Tell it to build what you need</div>
+              <div class="feature-text">It's not just answers — the AI can take action. Ask it to create a table of all overdue tasks across every project, generate a status chart, build a tracker, or draft a new block layout. <strong>Whatever you can do in the UI, it can do from a message.</strong></div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">✏️</div>
+            <div class="feature-body">
+              <div class="feature-title">Update information without digging through tabs</div>
+              <div class="feature-text">Tell it to mark a task complete, reassign something, update a project status, or change a priority — across any project — without navigating there yourself. One instruction, done.</div>
+            </div>
+          </div>
+        </div>
+        <div class="callout"><strong>This is the difference between a search tool and an operator.</strong> You're not looking things up — you're talking to something that understands the full picture and can act on it.</div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="wf-layout">
+
+            <!-- Chat panel -->
+            <div class="wf-chat">
+              <div class="wf-chat-header">Trak AI</div>
+              <div class="wf-messages">
+
+                <div class="wf-msg-user">What's behind across all active projects?</div>
+                <div class="wf-msg-ai"><strong>3 projects</strong> have overdue work. Summer Drop is most at risk — shoot is 3 days late and blocks copy. Brand Refresh has 1 overdue, low priority. Hydration Q2 is clear.</div>
+
+                <div class="wf-msg-user">Build a table of all overdue tasks, sorted by project</div>
+                <div class="wf-msg-ai">Done — added an overdue task table to the canvas, sorted by project and priority.</div>
+
+                <div class="wf-msg-user">Mark the Hydration Q2 project as complete</div>
+                <div class="wf-msg-ai">Updated — <strong>Hydration Q2</strong> is now marked complete.</div>
+
+              </div>
+              <div class="wf-input">
+                <div class="wf-input-box">Ask anything...</div>
+                <div class="wf-send">
+                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1 4h6M4 1l3 3-3 3" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Canvas -->
+            <div class="wf-canvas">
+              <div style="font-size:10px;font-weight:600;color:var(--text-muted);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:6px">Generated by Trak AI</div>
+
+              <!-- Overdue table -->
+              <div class="block" style="padding:8px 10px;margin-bottom:6px">
+                <div class="bhead" style="margin-bottom:6px"><div class="btype">Overdue Tasks · All Projects</div><span class="badge b-red" style="font-size:8.5px">5 items</span></div>
+                <table class="etable">
+                  <thead>
+                    <tr><th>Task</th><th>Project</th><th>Owner</th><th>Due</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><div class="et-name">Hero shot selects</div></td>
+                      <td><span class="badge b-orange" style="font-size:8px">Summer Drop</span></td>
+                      <td><div class="avatar" style="background:#C4603A">SL</div></td>
+                      <td><span style="font-size:9px;color:#C4600A;font-weight:500">3d late</span></td>
+                    </tr>
+                    <tr>
+                      <td><div class="et-name">Copy review — PDP</div></td>
+                      <td><span class="badge b-orange" style="font-size:8px">Summer Drop</span></td>
+                      <td><div class="avatar" style="background:var(--blue)">JK</div></td>
+                      <td><span style="font-size:9px;color:#C4600A;font-weight:500">1d late</span></td>
+                    </tr>
+                    <tr>
+                      <td><div class="et-name">Shoot moodboard v2</div></td>
+                      <td><span class="badge b-orange" style="font-size:8px">Summer Drop</span></td>
+                      <td><div class="avatar" style="background:#5B4AC4">MP</div></td>
+                      <td><span style="font-size:9px;color:#C4600A;font-weight:500">2d late</span></td>
+                    </tr>
+                    <tr>
+                      <td><div class="et-name">Font approval</div></td>
+                      <td><span class="badge b-blue" style="font-size:8px">Brand Refresh</span></td>
+                      <td><div class="avatar" style="background:#2D7A47">RN</div></td>
+                      <td><span style="font-size:9px;color:#C4600A;font-weight:500">Yesterday</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Status summary -->
+              <div class="block" style="padding:8px 10px">
+                <div class="bhead" style="margin-bottom:6px"><div class="btype">Project Status</div></div>
+                <div style="display:flex;flex-direction:column;gap:4px">
+                  <div style="display:flex;align-items:center;gap:6px">
+                    <div style="flex:1;font-size:10px;font-weight:500;color:var(--text)">Summer Drop</div>
+                    <span class="badge b-red" style="font-size:8px">At risk</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:6px">
+                    <div style="flex:1;font-size:10px;font-weight:500;color:var(--text)">Brand Refresh</div>
+                    <span class="badge b-orange" style="font-size:8px">In progress</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:6px">
+                    <div style="flex:1;font-size:10px;font-weight:500;color:var(--text)">Hydration Q2</div>
+                    <span class="badge b-green" style="font-size:8px">Complete ✓</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S2: EVERYTHING TABLE -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split rev">
+      <div>
+        <div class="section-label">The Everything Table</div>
+        <h2>Every asset across every project — <em>filtered down to exactly what you want</em></h2>
+        <p class="body-text">The Everything Table is its own page in Trak — every task, file, block, and item from every project in one place. The point isn't to show you everything at once. It's to let you slice it until you're looking at only what matters.</p>
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="feature-icon">🗂️</div>
+            <div class="feature-body">
+              <div class="feature-title">Filter by any combination of conditions</div>
+              <div class="feature-text">Filter by project, type, status, assignee, priority, due date, or tag — stack as many filters as you need. Show only urgent tasks assigned to the Creative team across the two projects launching this month. Two clicks.</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">📂</div>
+            <div class="feature-body">
+              <div class="feature-title">See assets from multiple projects side by side</div>
+              <div class="feature-text">Running two campaigns at once? Filter to show assets from both projects together. Compare what's in flight, what's overdue, and who owns what — without switching between project tabs.</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">↗️</div>
+            <div class="feature-body">
+              <div class="feature-title">Click through directly to the item in context</div>
+              <div class="feature-text">Every row in the Everything Table links back to where it lives — its tab, its block, its project. The table is a navigation layer. You're always one click from the actual work.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="msidebar">
+            <div class="s-section">
+              <div class="s-label">Workspace</div>
+              <div class="s-item">Dashboard</div>
+              <div class="s-item">Projects</div>
+              <div class="s-item active">Everything</div>
+              <div class="s-item">Calendar</div>
+              <div class="s-item">Members</div>
+            </div>
+            <div class="s-section">
+              <div class="s-label">Projects</div>
+              <div class="s-item"><span style="width:6px;height:6px;border-radius:50%;background:var(--terra);flex-shrink:0"></span>Summer Drop</div>
+              <div class="s-item"><span style="width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0"></span>Brand Refresh</div>
+              <div class="s-item"><span style="width:6px;height:6px;border-radius:50%;background:#2D7A47;flex-shrink:0"></span>Hydration Q2</div>
+            </div>
+          </div>
+          <div class="mcanvas" style="padding:12px">
+            <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px">Everything Table</div>
+            <div class="filter-bar">
+              <span class="filter-chip active">Tasks</span>
+              <span class="filter-chip active">Summer Drop</span>
+              <span class="filter-chip active">Brand Refresh</span>
+              <span class="filter-chip active">Urgent + High</span>
+              <span class="filter-chip">+ Filter</span>
+            </div>
+            <div class="block" style="padding:0;overflow:hidden">
+              <table class="etable">
+                <thead>
+                  <tr><th>Name</th><th>Project</th><th>Priority</th><th>Assignee</th><th>Due</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><div class="et-name">Hero shot selects</div></td>
+                    <td><div class="et-project">Summer Drop</div></td>
+                    <td><span class="badge b-red" style="font-size:8px">Urgent</span></td>
+                    <td><div class="avatar" style="background:#C4603A">SL</div></td>
+                    <td><span style="font-size:9px;color:#C4600A;font-weight:500">Overdue</span></td>
+                  </tr>
+                  <tr>
+                    <td><div class="et-name">Approve colour grade</div></td>
+                    <td><div class="et-project">Summer Drop</div></td>
+                    <td><span class="badge b-orange" style="font-size:8px">High</span></td>
+                    <td><div class="avatar" style="background:#5B4AC4">MP</div></td>
+                    <td><span style="font-size:9px;color:var(--text-muted)">Today</span></td>
+                  </tr>
+                  <tr>
+                    <td><div class="et-name">Logo lockup finals</div></td>
+                    <td><div class="et-project">Brand Refresh</div></td>
+                    <td><span class="badge b-red" style="font-size:8px">Urgent</span></td>
+                    <td><div class="avatar" style="background:var(--blue)">JK</div></td>
+                    <td><span style="font-size:9px;color:var(--text-muted)">Tomorrow</span></td>
+                  </tr>
+                  <tr>
+                    <td><div class="et-name">Typography system</div></td>
+                    <td><div class="et-project">Brand Refresh</div></td>
+                    <td><span class="badge b-orange" style="font-size:8px">High</span></td>
+                    <td><div class="avatar" style="background:#2D7A47">RN</div></td>
+                    <td><span style="font-size:9px;color:var(--text-muted)">Jun 20</span></td>
+                  </tr>
+                  <tr>
+                    <td><div class="et-name">Copy review — PDP</div></td>
+                    <td><div class="et-project">Summer Drop</div></td>
+                    <td><span class="badge b-red" style="font-size:8px">Urgent</span></td>
+                    <td><div class="avatar" style="background:var(--blue)">JK</div></td>
+                    <td><span style="font-size:9px;color:#C4600A;font-weight:500">Overdue</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S3: ON-THE-FLY CHARTS -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split">
+      <div>
+        <div class="section-label">On-the-fly charts and boards</div>
+        <h2>Build any view across any projects — <em>from a single prompt</em></h2>
+        <p class="body-text">Tell Trak's AI what you want to see across your projects and it generates it as a chart, board, or table — immediately, from your real data. Not a template. Not a preset. Exactly what you asked for.</p>
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="feature-icon">📊</div>
+            <div class="feature-body">
+              <div class="feature-title">Cross-project charts from a single prompt</div>
+              <div class="feature-text">Ask for a bar chart of open tasks across all projects, a breakdown of work by status across your Q2 launches, a timeline comparing deadlines across three projects — and it's built on the spot. No configuration, no data export.</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🔀</div>
+            <div class="feature-body">
+              <div class="feature-title">Combine any data, any way you want</div>
+              <div class="feature-text"><em>"Show me everything due in the next two weeks across Summer Drop and Brand Refresh, grouped by assignee."</em> The conditions are yours. You're not limited to what a dashboard widget was designed to show — you're describing exactly what you need to know.</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">📌</div>
+            <div class="feature-body">
+              <div class="feature-title">Keep it or throw it away</div>
+              <div class="feature-text">Generated views drop in as blocks on your Workflow canvas. Pin the ones that are useful to your dashboard for a persistent cross-project view, or use them once for a meeting and move on. No cleanup required.</div>
+            </div>
+          </div>
+        </div>
+        <div class="callout-terra"><strong>There's no "reporting" feature to configure.</strong> The AI is the reporting feature. You describe what you want to see and it builds it. The only limit is how specific you can be with your question.</div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="mcanvas" style="padding:13px">
+
+            <div class="ai-card" style="margin-bottom:8px">
+              <div class="ai-card-header">
+                <div class="ai-icon">
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4" stroke="white" stroke-width="1.4"/><path d="M3 5h4M5 3v4" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+                </div>
+                <div class="ai-card-title">Trak AI</div>
+              </div>
+              <div class="ai-prompt">"Compare open task counts across all active projects, broken down by priority"</div>
+            </div>
+
+            <!-- Chart: tasks by project x priority -->
+            <div class="block" style="margin-bottom:7px">
+              <div class="bhead"><div class="btype">Open Tasks by Project & Priority</div></div>
+              <div style="margin-top:2px">
+                <div style="font-size:9px;color:var(--text-muted);margin-bottom:5px;font-weight:500">Summer Drop</div>
+                <div class="mini-bar-row"><div class="mini-bar-label">Urgent</div><div class="mini-bar-track"><div class="mini-bar-fill" style="width:80%;background:#E24B4A"></div></div><div class="mini-bar-val">4</div></div>
+                <div class="mini-bar-row"><div class="mini-bar-label">High</div><div class="mini-bar-track"><div class="mini-bar-fill" style="width:60%;background:#E8856A"></div></div><div class="mini-bar-val">3</div></div>
+                <div class="mini-bar-row" style="margin-bottom:8px"><div class="mini-bar-label">Medium</div><div class="mini-bar-track"><div class="mini-bar-fill" style="width:40%;background:#EFC227"></div></div><div class="mini-bar-val">2</div></div>
+
+                <div style="font-size:9px;color:var(--text-muted);margin-bottom:5px;font-weight:500">Brand Refresh</div>
+                <div class="mini-bar-row"><div class="mini-bar-label">Urgent</div><div class="mini-bar-track"><div class="mini-bar-fill" style="width:20%;background:#E24B4A"></div></div><div class="mini-bar-val">1</div></div>
+                <div class="mini-bar-row"><div class="mini-bar-label">High</div><div class="mini-bar-track"><div class="mini-bar-fill" style="width:40%;background:#E8856A"></div></div><div class="mini-bar-val">2</div></div>
+                <div class="mini-bar-row" style="margin-bottom:8px"><div class="mini-bar-label">Medium</div><div class="mini-bar-track"><div class="mini-bar-fill" style="width:60%;background:#EFC227"></div></div><div class="mini-bar-val">3</div></div>
+
+                <div style="font-size:9px;color:var(--text-muted);margin-bottom:5px;font-weight:500">Hydration Q2</div>
+                <div class="mini-bar-row"><div class="mini-bar-label">Urgent</div><div class="mini-bar-track"><div class="mini-bar-fill" style="width:0%;background:#E24B4A"></div></div><div class="mini-bar-val">0</div></div>
+                <div class="mini-bar-row"><div class="mini-bar-label">High</div><div class="mini-bar-track"><div class="mini-bar-fill" style="width:20%;background:#E8856A"></div></div><div class="mini-bar-val">1</div></div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:5px">
+              <div style="flex:1;background:var(--app-block);border:1px solid var(--border-light);border-radius:7px;padding:8px;text-align:center;box-shadow:var(--shadow-sm)">
+                <div style="font-size:16px;font-weight:700;color:#E24B4A;letter-spacing:-0.5px">5</div>
+                <div style="font-size:9px;color:var(--text-muted)">Urgent total</div>
+              </div>
+              <div style="flex:1;background:var(--app-block);border:1px solid var(--border-light);border-radius:7px;padding:8px;text-align:center;box-shadow:var(--shadow-sm)">
+                <div style="font-size:16px;font-weight:700;color:var(--blue);letter-spacing:-0.5px">16</div>
+                <div style="font-size:9px;color:var(--text-muted)">Open total</div>
+              </div>
+              <div style="flex:1;background:var(--app-block);border:1px solid var(--border-light);border-radius:7px;padding:8px;text-align:center;box-shadow:var(--shadow-sm)">
+                <div style="font-size:16px;font-weight:700;color:#C4600A;letter-spacing:-0.5px">5</div>
+                <div style="font-size:9px;color:var(--text-muted)">Overdue</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section fade-up">
+  <div class="cta-inner">
+    <div class="cta-label">Get started</div>
+    <h2 class="cta-h">Every project, one workspace. Ask anything, see everything.</h2>
+    <p class="cta-sub">Workflow pages, the Everything Table, and on-the-fly charts are ready from day one — no configuration, no setup.</p>
+    <div class="cta-actions">
+      <a href="#" class="btn-white">Start free</a>
+      <a href="#" class="btn-ghost">Book a walkthrough →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible')})},{threshold:0.08})
+document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el))
+</script>
+</body>
+</html>

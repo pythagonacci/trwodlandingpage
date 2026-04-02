@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#FDFAF6;--cream-dark:#F5F0E8;--cream-darker:#EDE6D8;
+  --blue:#2A537A;--blue-light:#3D6E9E;--blue-pale:#EBF2F9;
+  --terra:#C4603A;--terra-pale:#FBF0EC;
+  --text:#1A1A18;--text-mid:#4A4A45;--text-muted:#8A8A82;
+  --border:#E2DBD0;--border-light:#EDE8E0;
+  --app-bg:#F8F5F0;--app-sidebar:#F0ECE5;--app-block:#FFFFFF;
+  --shadow-sm:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:0 4px 16px rgba(0,0,0,0.08),0 2px 6px rgba(0,0,0,0.04);
+  --shadow-lg:0 12px 40px rgba(0,0,0,0.10),0 4px 12px rgba(0,0,0,0.06);
+  --r:10px;--r-lg:16px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--text);line-height:1.6;overflow-x:hidden}
+
+nav{position:sticky;top:0;z-index:100;background:rgba(253,250,246,0.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-light);padding:0 48px;display:flex;align-items:center;justify-content:space-between;height:56px}
+.nav-logo{font-family:'Instrument Serif',serif;font-size:20px;color:var(--blue)}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{font-size:13.5px;color:var(--text-mid);text-decoration:none;transition:color 0.2s}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{background:var(--blue);color:#fff;font-size:13px;font-weight:500;padding:7px 16px;border-radius:7px;text-decoration:none}
+
+.hero{padding:80px 48px 56px;max-width:680px;margin:0 auto;text-align:center}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;background:var(--terra-pale);border:1px solid rgba(196,96,58,0.18);color:var(--terra);font-size:11.5px;font-weight:500;padding:5px 12px;border-radius:100px;margin-bottom:22px}
+.eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--terra)}
+h1{font-family:'Instrument Serif',serif;font-size:clamp(34px,5vw,52px);line-height:1.08;letter-spacing:-1px;color:var(--text);margin-bottom:16px;font-weight:400}
+h1 em{color:var(--blue);font-style:italic}
+.hero-sub{font-size:16px;color:var(--text-mid);max-width:500px;margin:0 auto 28px;font-weight:300;line-height:1.7}
+.hero-actions{display:flex;align-items:center;justify-content:center;gap:10px}
+.btn-primary{background:var(--blue);color:#fff;font-size:13.5px;font-weight:500;padding:11px 22px;border-radius:8px;text-decoration:none;transition:all 0.2s}
+.btn-primary:hover{background:var(--blue-light);transform:translateY(-1px)}
+.btn-secondary{color:var(--blue);font-size:13.5px;font-weight:500;padding:11px 22px;border-radius:8px;text-decoration:none;border:1.5px solid var(--blue);transition:all 0.2s}
+.btn-secondary:hover{background:var(--blue-pale)}
+
+.intro-strip{border-top:1px solid var(--border-light);border-bottom:1px solid var(--border-light);padding:28px 48px;background:var(--cream-dark)}
+.intro-strip-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:40px}
+.intro-label{font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--terra);white-space:nowrap}
+.intro-text{font-size:14.5px;color:var(--text-mid);font-weight:300;line-height:1.7}
+.intro-text strong{color:var(--text);font-weight:500}
+
+.section{padding:72px 48px;border-top:1px solid var(--border-light)}
+.section-inner{max-width:1080px;margin:0 auto}
+.section-split{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.section-split.rev{direction:rtl}.section-split.rev>*{direction:ltr}
+
+.section-label{font-size:10.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--terra);margin-bottom:10px}
+h2{font-family:'Instrument Serif',serif;font-size:clamp(22px,2.8vw,32px);line-height:1.18;letter-spacing:-0.3px;color:var(--text);margin-bottom:22px;font-weight:400}
+h2 em{color:var(--blue);font-style:italic}
+
+.steps{display:flex;flex-direction:column;gap:0}
+.step{display:grid;grid-template-columns:28px 1fr;gap:14px;padding-bottom:20px;position:relative}
+.step:last-child{padding-bottom:0}
+.step:not(:last-child)::before{content:'';position:absolute;left:13px;top:28px;bottom:0;width:1px;background:var(--border)}
+.step-num{width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1}
+.step-body{}
+.step-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:5px;padding-top:4px}
+.step-text{font-size:14px;color:var(--text-mid);line-height:1.75;font-weight:300}
+.step-text strong{color:var(--text);font-weight:500}
+.step-text code{font-family:monospace;font-size:12.5px;background:var(--blue-pale);color:var(--blue);padding:2px 6px;border-radius:4px}
+
+.callout{background:var(--blue-pale);border:1px solid rgba(42,83,122,0.12);border-radius:8px;padding:12px 14px;margin-top:20px;font-size:13.5px;color:var(--blue);line-height:1.65}
+.callout strong{font-weight:600}
+
+/* MOCKUP */
+.mockup{background:var(--app-bg);border-radius:var(--r-lg);border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow-lg)}
+.chrome{background:var(--app-sidebar);border-bottom:1px solid var(--border);padding:9px 12px;display:flex;align-items:center;gap:7px}
+.dot{width:9px;height:9px;border-radius:50%}
+.dot.r{background:#FF6057}.dot.y{background:#FFBD2E}.dot.g{background:#28CA41}
+.mbody{display:flex}
+.msidebar{width:158px;background:var(--app-sidebar);border-right:1px solid var(--border);padding:14px 0;flex-shrink:0}
+.s-section{padding:0 10px;margin-bottom:16px}
+.s-label{font-size:9.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:7px;padding:0 4px}
+.s-item{padding:5px 7px;border-radius:5px;font-size:11.5px;color:var(--text-mid);cursor:pointer;display:flex;align-items:center;gap:6px}
+.s-item.active{background:var(--cream-dark);color:var(--text);font-weight:500}
+.s-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.mcanvas{flex:1;padding:18px;background:var(--cream);overflow:hidden}
+
+.proj-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:6px;letter-spacing:-0.2px}
+.meta{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+.badge{font-size:10px;font-weight:500;padding:3px 8px;border-radius:100px;display:inline-flex;align-items:center;white-space:nowrap}
+.b-blue{background:var(--blue-pale);color:var(--blue)}
+.b-terra{background:var(--terra-pale);color:var(--terra)}
+.b-green{background:#EBF5EE;color:#2D7A47}
+.b-orange{background:#FEF3EC;color:#C4600A}
+.b-gray{background:#F2F0EC;color:var(--text-mid)}
+.b-purple{background:#F0EEFB;color:#5B4AC4}
+.b-pink{background:#FDF0F5;color:#B0407A}
+
+.tabs{display:flex;gap:1px;border-bottom:1px solid var(--border-light);margin-bottom:14px;overflow-x:auto}
+.tab{font-size:11px;color:var(--text-muted);padding:6px 11px;border-radius:5px 5px 0 0;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;flex-shrink:0}
+.tab.active{color:var(--blue);font-weight:500;border-bottom-color:var(--blue)}
+
+.block{background:var(--app-block);border:1px solid var(--border-light);border-radius:var(--r);padding:11px 13px;margin-bottom:7px;box-shadow:var(--shadow-sm)}
+.block:last-child{margin-bottom:0}
+.bhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.btype{font-size:9px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-muted)}
+.ai-tag{font-size:9px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;background:var(--blue-pale);color:var(--blue);padding:2px 7px;border-radius:100px}
+
+.task{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid var(--border-light);font-size:11px}
+.task:last-child{border-bottom:none;padding-bottom:0}
+.check{width:13px;height:13px;border-radius:3px;border:1.5px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.check.done{background:var(--blue);border-color:var(--blue)}
+.check.done::after{content:'';width:6px;height:3.5px;border-left:1.5px solid #fff;border-bottom:1.5px solid #fff;transform:rotate(-45deg) translateY(-1px);display:block}
+.task-name{flex:1;color:var(--text)}
+.task-name.done{color:var(--text-muted);text-decoration:line-through}
+.task-due{font-size:10px;color:var(--text-muted);white-space:nowrap}
+.task-due.late{color:#C4600A;font-weight:500}
+.prio{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.pu{background:#E24B4A}.ph{background:#E8856A}.pm{background:#EFC227}.pl{background:#85C1A0}
+
+.tl-months{display:flex;font-size:9px;color:var(--text-muted);font-weight:500;border-bottom:1px solid var(--border-light);padding-bottom:4px;margin-bottom:6px}
+.tl-m{flex:1;text-align:center}
+.tl-row{display:grid;grid-template-columns:90px 1fr;align-items:center;gap:6px;margin-bottom:4px}
+.tl-label{font-size:10px;color:var(--text-mid);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tl-track{position:relative;height:16px;border-radius:3px;background:var(--cream-dark)}
+.tl-bar{position:absolute;height:100%;border-radius:3px;display:flex;align-items:center;padding:0 6px}
+.tl-text{font-size:9px;color:#fff;font-weight:500;white-space:nowrap}
+.tb{background:var(--blue)}.tt{background:var(--terra)}.tg{background:#2D7A47}.tp{background:#5B4AC4}.ta{background:#C48A1A}.tpk{background:#B0407A}
+
+.file-item{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:5px;background:var(--cream);border:1px solid var(--border-light);margin-bottom:4px;font-size:11px}
+.file-item:last-child{margin-bottom:0}
+.ficon{width:24px;height:24px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:8.5px;font-weight:700;flex-shrink:0}
+.ficon.pdf{background:#FEF0EE;color:var(--terra)}
+.ficon.fig{background:#EEF2FF;color:#5B4AC4}
+.ficon.doc{background:#EBF5EE;color:#2D7A47}
+.file-name{flex:1;color:var(--text)}
+.file-size{font-size:10px;color:var(--text-muted)}
+
+.product-row{display:grid;grid-template-columns:36px 1fr auto;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border-light);font-size:11.5px}
+.product-row:last-child{border-bottom:none;padding-bottom:0}
+.product-thumb{width:36px;height:36px;border-radius:5px;background:var(--cream-darker);border:1px solid var(--border-light);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.product-info{}
+.product-name{font-size:11.5px;font-weight:500;color:var(--text);margin-bottom:2px}
+.product-meta{font-size:10px;color:var(--text-muted)}
+.product-status{font-size:10px;font-weight:500;padding:2px 8px;border-radius:100px}
+
+.board{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.bcol-h{font-size:9px;font-weight:600;color:var(--text-muted);letter-spacing:0.7px;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
+.bcol-count{font-size:9px;background:var(--cream-dark);color:var(--text-muted);width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.bcard{background:var(--app-block);border:1px solid var(--border-light);border-radius:5px;padding:7px 8px;margin-bottom:4px;box-shadow:var(--shadow-sm)}
+.bcard-title{font-size:11px;font-weight:500;color:var(--text);margin-bottom:4px}
+.bcard-meta{display:flex;gap:3px;flex-wrap:wrap}
+
+.agg-board{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.agg-h{font-size:9px;font-weight:600;color:var(--text-muted);letter-spacing:0.7px;text-transform:uppercase;margin-bottom:6px;padding-bottom:5px;border-bottom:1px solid var(--border-light)}
+.agg-card{background:var(--app-block);border:1px solid var(--border-light);border-radius:6px;padding:8px;margin-bottom:4px;box-shadow:var(--shadow-sm)}
+.agg-name{font-size:11px;font-weight:500;color:var(--text);margin-bottom:3px}
+.agg-from{font-size:9.5px;color:var(--text-muted);margin-bottom:3px;display:flex;align-items:center;gap:3px}
+.agg-dot{width:4px;height:4px;border-radius:50%;background:var(--blue-light);flex-shrink:0}
+
+.cpanel{width:185px;border-left:1px solid var(--border-light);padding:11px;background:var(--cream);flex-shrink:0}
+.cpanel-title{font-size:9px;font-weight:600;color:var(--text-muted);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:9px}
+.comment{margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid var(--border-light)}
+.comment:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.c-author{display:flex;align-items:center;gap:5px;margin-bottom:3px}
+.c-avatar{width:17px;height:17px;border-radius:50%;font-size:8px;font-weight:600;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.c-name{font-size:10px;font-weight:500;color:var(--text)}
+.c-time{font-size:9px;color:var(--text-muted);margin-left:auto}
+.c-text{font-size:10.5px;color:var(--text-mid);line-height:1.5}
+.c-mention{color:var(--blue);font-weight:500}
+
+.influencer-row{display:grid;grid-template-columns:28px 1fr auto;align-items:center;gap:9px;padding:6px 0;border-bottom:1px solid var(--border-light);font-size:11px}
+.influencer-row:last-child{border-bottom:none;padding-bottom:0}
+.inf-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0}
+.inf-name{font-weight:500;color:var(--text);font-size:11px}
+.inf-meta{font-size:9.5px;color:var(--text-muted)}
+.inf-status{font-size:9.5px;font-weight:500;padding:2px 7px;border-radius:100px;white-space:nowrap}
+
+.cta-section{background:var(--blue);padding:72px 48px;text-align:center}
+.cta-inner{max-width:500px;margin:0 auto}
+.cta-label{font-size:10.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:14px}
+.cta-h{font-family:'Instrument Serif',serif;font-size:clamp(24px,3.5vw,38px);color:#fff;line-height:1.18;letter-spacing:-0.4px;margin-bottom:12px;font-weight:400}
+.cta-sub{font-size:15px;color:rgba(255,255,255,0.65);margin-bottom:26px;font-weight:300}
+.cta-actions{display:flex;align-items:center;justify-content:center;gap:10px}
+.btn-white{background:#fff;color:var(--blue);font-size:13.5px;font-weight:500;padding:11px 22px;border-radius:8px;text-decoration:none}
+.btn-ghost{color:#fff;font-size:13.5px;padding:11px 22px;border-radius:8px;text-decoration:none;border:1.5px solid rgba(255,255,255,0.35)}
+
+.fade-up{opacity:0;transform:translateY(18px);transition:opacity 0.5s ease,transform 0.5s ease}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+@media(max-width:860px){
+  .section-split{grid-template-columns:1fr}
+  .section-split.rev{direction:ltr}
+  .msidebar{display:none}
+  nav .nav-links{display:none}
+  .intro-strip-inner{flex-direction:column;gap:10px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Trak</div>
+  <div class="nav-links">
+    <a href="#">Product</a><a href="#">Use Cases</a><a href="#">Templates</a><a href="#">Pricing</a>
+  </div>
+  <a href="#" class="nav-cta">Start free →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero fade-up">
+  <div class="eyebrow"><span class="eyebrow-dot"></span>Product Drop & Launch</div>
+  <h1>How to run a <em>multi-SKU launch</em> in Trak</h1>
+  <p class="hero-sub">A step-by-step walkthrough of how teams coordinate a new line drop — from Shopify setup to campaign execution to influencer sends — in one project.</p>
+  <div class="hero-actions">
+    <a href="#" class="btn-primary">Start free</a>
+    <a href="#" class="btn-secondary">Book a walkthrough</a>
+  </div>
+</section>
+
+<!-- INTRO STRIP -->
+<div class="intro-strip fade-up">
+  <div class="intro-strip-inner">
+    <div class="intro-label">How it works</div>
+    <div class="intro-text">You create <strong>one project for the entire launch</strong> — every product in the line connected from Shopify, every workstream organized into its own tab. Your ops lead, creative director, and marketing team all work in the same project, in the parts that belong to them, with one shared launch date keeping everything aligned.</div>
+  </div>
+</div>
+
+<!-- S1: CREATE THE LAUNCH PROJECT -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split">
+      <div>
+        <div class="section-label">Step 1</div>
+        <h2>Create one project for the <em>entire line launch</em></h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Go to Projects and create a new project</div>
+              <div class="step-text">Name it after the collection — <strong>Summer Line Launch</strong> or <strong>Hydration Collection — Q2</strong>. Set the launch date as the due date. Tag it with the collection name so it's searchable across your workspace. Set priority to <strong>Urgent</strong> — this is your most time-sensitive project.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Add every product in the line from Shopify</div>
+              <div class="step-text">Instead of one Shopify block, you'll add a <strong>Shopify product block for each SKU</strong> in the collection. Go to your Products page, find each product in the line, and add it to the project. Each one gets its own block showing live inventory, variant count, and status — so you can see the full line at a glance without leaving the project.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Pin your launch date visibly on the first tab</div>
+              <div class="step-text">Add a <strong>text block</strong> at the top of the overview tab with the launch date, collection name, and any hard constraints — retailer deadlines, PR embargo dates, paid campaign go-live. This becomes the single reference your whole team checks when they're not sure what "on time" means for this drop.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="msidebar">
+            <div class="s-section">
+              <div class="s-label">Projects</div>
+              <div class="s-item active"><div class="s-dot" style="background:var(--terra)"></div>Hydration Collection Q2</div>
+              <div class="s-item"><div class="s-dot" style="background:var(--blue)"></div>Summer Campaign</div>
+              <div class="s-item"><div class="s-dot" style="background:#2D7A47"></div>Influencer Program</div>
+            </div>
+          </div>
+          <div class="mcanvas">
+            <div class="proj-title">Hydration Collection — Q2 Launch</div>
+            <div class="meta">
+              <span class="badge b-orange">⬤ In Progress</span>
+              <span class="badge b-blue">Launch May 14</span>
+              <span class="badge b-terra">Urgent</span>
+              <span class="badge b-gray">hydration · Q2</span>
+            </div>
+            <div class="block">
+              <div class="bhead"><div class="btype">Collection — Shopify Products</div><span class="badge b-gray">4 SKUs</span></div>
+              <div class="product-row">
+                <div class="product-thumb"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" fill="#EDE6D8"/><circle cx="12" cy="12" r="4" fill="#8A8A82"/></svg></div>
+                <div class="product-info"><div class="product-name">Hydra-Burst Serum 30ml</div><div class="product-meta">3 variants · beautyco.myshopify.com</div></div>
+                <span class="product-status b-green">Active</span>
+              </div>
+              <div class="product-row">
+                <div class="product-thumb"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="6" y="4" width="12" height="16" rx="3" fill="#EDE6D8"/><rect x="9" y="8" width="6" height="2" rx="1" fill="#8A8A82"/></svg></div>
+                <div class="product-info"><div class="product-name">Moisture Barrier Cream 50ml</div><div class="product-meta">2 variants · beautyco.myshopify.com</div></div>
+                <span class="product-status b-orange">Draft</span>
+              </div>
+              <div class="product-row">
+                <div class="product-thumb"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="12" rx="6" ry="8" fill="#EDE6D8"/><ellipse cx="12" cy="12" rx="3" ry="4" fill="#8A8A82"/></svg></div>
+                <div class="product-info"><div class="product-name">Lip Hydration Balm</div><div class="product-meta">4 variants · beautyco.myshopify.com</div></div>
+                <span class="product-status b-orange">Draft</span>
+              </div>
+              <div class="product-row">
+                <div class="product-thumb"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="7" y="3" width="10" height="18" rx="2" fill="#EDE6D8"/><rect x="10" y="7" width="4" height="1.5" rx="0.5" fill="#8A8A82"/></svg></div>
+                <div class="product-info"><div class="product-name">Hydra-Mist Toner 100ml</div><div class="product-meta">1 variant · beautyco.myshopify.com</div></div>
+                <span class="product-status b-purple">Scheduled</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S2: STRUCTURE TABS BY WORKSTREAM -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split rev">
+      <div>
+        <div class="section-label">Step 2</div>
+        <h2>Structure your tabs around <em>launch workstreams</em>, not departments</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Create a tab for each workstream in the launch</div>
+              <div class="step-text">A new line launch typically runs across several parallel tracks. Create a tab for each one — <strong>Campaign & Creative, Shopify Setup, Influencer & PR, Copy & Messaging, Launch Day</strong>. Each runs independently but shares the same project, the same launch date, and the same overview.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Assign ownership at the tab level</div>
+              <div class="step-text">Your creative lead owns Campaign & Creative. Your ops lead owns Shopify Setup. Your marketing lead owns Influencer & PR. They each work in their own tab — building their blocks, managing their tasks — without stepping on each other. Everyone still sees the same project overview.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Add a Launch Day tab as the final checklist</div>
+              <div class="step-text">Create a dedicated <strong>Launch Day</strong> tab with a single task block — every action that needs to happen on drop day, assigned and time-stamped. Shopify collections go live at 9am. Email sends at 9:05. Stories go up at 9:15. This tab becomes the coordination layer when everyone is moving at once.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="mcanvas" style="padding:16px 14px 0">
+            <div class="proj-title" style="margin-bottom:7px">Hydration Collection — Q2 Launch</div>
+            <div class="tabs">
+              <div class="tab">Overview</div>
+              <div class="tab active">Campaign & Creative</div>
+              <div class="tab">Shopify Setup</div>
+              <div class="tab">Influencer & PR</div>
+              <div class="tab">Launch Day</div>
+            </div>
+            <div style="padding-bottom:14px">
+              <div class="block">
+                <div class="bhead"><div class="btype">Text — Campaign Direction</div></div>
+                <div style="font-size:11.5px;color:var(--text-mid);line-height:1.7">
+                  <strong style="color:var(--text);display:block;margin-bottom:4px">Hydration Collection — Q2 Launch Brief</strong>
+                  Hero theme: "Skin that drinks." Primary palette: soft aqua, warm cream, matte terracotta. Launch May 14. All creative assets locked by May 7.
+                </div>
+              </div>
+              <div class="block" style="margin-top:7px">
+                <div class="bhead"><div class="btype">Tasks — Creative Workstream</div><span class="badge b-blue">6 open</span></div>
+                <div class="task"><div class="check done"></div><div class="prio pl"></div><div class="task-name done">Lock campaign direction with founder</div><div class="task-due">Apr 21</div></div>
+                <div class="task"><div class="check"></div><div class="prio pu"></div><div class="task-name">Deliver hero campaign images</div><div class="task-due late">May 1 ↑</div></div>
+                <div class="task"><div class="check"></div><div class="prio ph"></div><div class="task-name">Produce all PDP assets per SKU</div><div class="task-due">May 5</div></div>
+                <div class="task"><div class="check"></div><div class="prio pm"></div><div class="task-name">Final email creative sign-off</div><div class="task-due">May 7</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S3: SHOPIFY SETUP TAB -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split">
+      <div>
+        <div class="section-label">Step 3</div>
+        <h2>Use the Shopify Setup tab to <em>track every product's readiness</em> for launch</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Add a Shopify product block for each SKU on this tab</div>
+              <div class="step-text">Pull in each product in the collection — Hydra-Burst Serum, Moisture Barrier Cream, Lip Balm, Hydra-Mist Toner. Each block shows its current Shopify status: <strong>Draft, Scheduled,</strong> or <strong>Active</strong>. You can see at a glance which products are ready and which still need work before the drop date.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Tag each product block with its readiness status</div>
+              <div class="step-text">Use universal properties to tag each product block — <strong>copy ready, images uploaded, pricing confirmed, collection added</strong>. As your ops lead works through each SKU, they update the status. The whole team can see which products are launch-ready without asking.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Add a task block for Shopify-specific launch actions</div>
+              <div class="step-text">Below the product blocks, add a task block for setup actions: create the collection page, add all SKUs to the drop collection, set inventory levels, schedule the Shopify launch time, test the checkout flow. Assign each to your ops lead with the day-before launch as the deadline.</div>
+            </div>
+          </div>
+        </div>
+        <div class="callout"><strong>On launch day</strong>, your ops lead refreshes the Shopify blocks and sees live inventory and status update in real time — right inside Trak, without leaving the project.</div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="mcanvas">
+            <div class="tabs" style="margin-bottom:12px">
+              <div class="tab">Campaign & Creative</div>
+              <div class="tab active">Shopify Setup</div>
+              <div class="tab">Influencer & PR</div>
+            </div>
+            <div class="block">
+              <div class="bhead"><div class="btype">Shopify Products — Launch Readiness</div></div>
+              <div class="product-row">
+                <div class="product-thumb"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" fill="#EDE6D8"/><circle cx="12" cy="12" r="4" fill="#8A8A82"/></svg></div>
+                <div class="product-info"><div class="product-name">Hydra-Burst Serum</div><div class="product-meta">copy ✓ · images ✓ · pricing ✓</div></div>
+                <span class="product-status b-green">Ready</span>
+              </div>
+              <div class="product-row">
+                <div class="product-thumb"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="6" y="4" width="12" height="16" rx="3" fill="#EDE6D8"/></svg></div>
+                <div class="product-info"><div class="product-name">Moisture Barrier Cream</div><div class="product-meta">copy ✓ · images pending · pricing ✓</div></div>
+                <span class="product-status b-orange">In Progress</span>
+              </div>
+              <div class="product-row">
+                <div class="product-thumb"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="12" rx="6" ry="8" fill="#EDE6D8"/></svg></div>
+                <div class="product-info"><div class="product-name">Lip Hydration Balm</div><div class="product-meta">copy pending · images pending</div></div>
+                <span class="product-status b-terra">Not Started</span>
+              </div>
+              <div class="product-row">
+                <div class="product-thumb"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="7" y="3" width="10" height="18" rx="2" fill="#EDE6D8"/></svg></div>
+                <div class="product-info"><div class="product-name">Hydra-Mist Toner</div><div class="product-meta">copy ✓ · images ✓ · pricing ✓</div></div>
+                <span class="product-status b-purple">Scheduled</span>
+              </div>
+            </div>
+            <div class="block" style="margin-top:7px">
+              <div class="bhead"><div class="btype">Tasks — Shopify Setup</div></div>
+              <div class="task"><div class="check done"></div><div class="prio pl"></div><div class="task-name done">Create drop collection page</div><div class="task-due">May 8</div></div>
+              <div class="task"><div class="check"></div><div class="prio pu"></div><div class="task-name">Add all SKUs to collection</div><div class="task-due late">May 10 ↑</div></div>
+              <div class="task"><div class="check"></div><div class="prio ph"></div><div class="task-name">Schedule launch time — 9:00am</div><div class="task-due">May 13</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S4: CAMPAIGN & CREATIVE -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split rev">
+      <div>
+        <div class="section-label">Step 4</div>
+        <h2>Build the Campaign & Creative tab as your <em>creative production hub</em></h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Add a text block for the campaign brief</div>
+              <div class="step-text">Write the campaign direction at the top — theme, visual references, tone, hero message, channel breakdown. This is the brief your creative team, copywriter, and photographer are all working from. Having it in the tab means no one is working off a stale version emailed two weeks ago.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Add a gallery block for the campaign's visual direction</div>
+              <div class="step-text">Upload your mood board, reference images, and approved campaign visuals as they come in. Tag each image block with its status — <strong>reference, approved, final</strong>. As your creative lead signs off on assets, the status updates and your whole team can see what's locked.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Embed the campaign Figma file</div>
+              <div class="step-text">Use an <strong>embed block</strong> to pull in the Figma file with all channel-specific creative — email header, PDP banners, paid social, story templates. Your team reviews and comments on the live file in Trak. When your designer updates it in Figma, it's reflected instantly — no re-sharing links.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <div class="step-title">Add a timeline block for creative deadlines</div>
+              <div class="step-text">Map every creative deadline — photography delivery, first design pass, revision window, final lock. Assign each milestone to the right person. The timeline is visible on the tab so your creative lead can see the full production schedule without opening a separate doc.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="mcanvas">
+            <div class="tabs" style="margin-bottom:12px">
+              <div class="tab active">Campaign & Creative</div>
+              <div class="tab">Shopify Setup</div>
+              <div class="tab">Influencer & PR</div>
+            </div>
+            <div class="block">
+              <div class="bhead"><div class="btype">Timeline — Creative Production</div></div>
+              <div class="tl-months"><div class="tl-m">Apr 21</div><div class="tl-m">Apr 28</div><div class="tl-m">May 5</div><div class="tl-m">May 14</div></div>
+              <div class="tl-row"><div class="tl-label">Photography</div><div class="tl-track"><div class="tl-bar tt" style="left:0;width:28%"><div class="tl-text">Studio</div></div></div></div>
+              <div class="tl-row"><div class="tl-label">Design pass 1</div><div class="tl-track"><div class="tl-bar tp" style="left:26%;width:22%"><div class="tl-text">M. Park</div></div></div></div>
+              <div class="tl-row"><div class="tl-label">Revisions</div><div class="tl-track"><div class="tl-bar ta" style="left:46%;width:18%"><div class="tl-text">Team</div></div></div></div>
+              <div class="tl-row"><div class="tl-label">Assets locked</div><div class="tl-track"><div class="tl-bar tg" style="left:62%;width:14%"><div class="tl-text">May 7</div></div></div></div>
+              <div class="tl-row"><div class="tl-label">Launch</div><div class="tl-track"><div class="tl-bar tb" style="left:78%;width:8%"><div class="tl-text">May 14</div></div></div></div>
+            </div>
+            <div class="block" style="margin-top:7px">
+              <div class="bhead"><div class="btype">Files — Campaign Assets</div></div>
+              <div class="file-item"><div class="ficon fig">Fig</div><div class="file-name">Campaign Creative — All Channels</div><div class="file-size">Live</div></div>
+              <div class="file-item"><div class="ficon pdf">PDF</div><div class="file-name">Campaign Brief v2 — Final.pdf</div><div class="file-size">1.2 MB</div></div>
+              <div class="file-item"><div class="ficon doc">DOC</div><div class="file-name">Copy Deck — All SKUs.docx</div><div class="file-size">340 KB</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S5: INFLUENCER & PR -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split">
+      <div>
+        <div class="section-label">Step 5</div>
+        <h2>Manage your influencer and PR sends <em>from a single tab</em></h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Build a table block for your influencer list</div>
+              <div class="step-text">Add a <strong>table block</strong> to the Influencer & PR tab. Each row is a contact — influencer name, handle, tier, products they're receiving, send date, tracking status. You can filter by tier or status inline, so your marketing lead can see at a glance who's been sent product and who's still pending.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Attach the PR brief and gifting notes as file blocks</div>
+              <div class="step-text">Upload the PR brief, the gifting messaging guide, and the unboxing notes as file blocks next to the table. When your team is pulling together packages, everything they need — who's getting what, what to include in the note, which products to prioritize — is in one tab.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Use Magic Links to share send details with your PR partner</div>
+              <div class="step-text">If you're working with an external PR agency or a freelance gifting coordinator, toggle the Influencer & PR tab as public and send a Magic Link. They see the send list, the brief, the timeline — nothing else in the project. They leave notes and updates directly in Trak.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="mcanvas">
+            <div class="tabs" style="margin-bottom:12px">
+              <div class="tab">Campaign & Creative</div>
+              <div class="tab">Shopify Setup</div>
+              <div class="tab active">Influencer & PR</div>
+            </div>
+            <div class="block">
+              <div class="bhead"><div class="btype">Influencer Send List</div><span class="badge b-gray">8 contacts</span></div>
+              <div class="influencer-row">
+                <div class="inf-avatar" style="background:var(--terra)">SL</div>
+                <div><div class="inf-name">@skincarebysara</div><div class="inf-meta">Tier 1 · Serum + Cream + Toner</div></div>
+                <span class="inf-status b-green">Sent</span>
+              </div>
+              <div class="influencer-row">
+                <div class="inf-avatar" style="background:var(--blue)">MK</div>
+                <div><div class="inf-name">@minkbeauty</div><div class="inf-meta">Tier 1 · Full collection</div></div>
+                <span class="inf-status b-green">Sent</span>
+              </div>
+              <div class="influencer-row">
+                <div class="inf-avatar" style="background:#5B4AC4">JP</div>
+                <div><div class="inf-name">@jadeandpetal</div><div class="inf-meta">Tier 2 · Serum + Lip Balm</div></div>
+                <span class="inf-status b-orange">Packaging</span>
+              </div>
+              <div class="influencer-row">
+                <div class="inf-avatar" style="background:#B0407A">RV</div>
+                <div><div class="inf-name">@rosavibes</div><div class="inf-meta">Tier 2 · Serum + Toner</div></div>
+                <span class="inf-status b-terra">Pending</span>
+              </div>
+            </div>
+            <div class="block" style="margin-top:7px">
+              <div class="bhead"><div class="btype">Files — PR Kit</div></div>
+              <div class="file-item"><div class="ficon pdf">PDF</div><div class="file-name">PR Brief — Hydration Collection.pdf</div><div class="file-size">980 KB</div></div>
+              <div class="file-item"><div class="ficon doc">DOC</div><div class="file-name">Gifting Messaging Guide.docx</div><div class="file-size">220 KB</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S6: TIMELINE ACROSS THE WHOLE LAUNCH -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split rev">
+      <div>
+        <div class="section-label">Step 6</div>
+        <h2>Add a master launch timeline that spans <em>every workstream</em></h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Add a timeline block to the Overview tab</div>
+              <div class="step-text">This is the master launch timeline — one view that shows every workstream's critical path. Creative production, Shopify readiness, influencer sends, campaign go-live. Each one as a bar on the same timeline, all anchored to the same May 14 launch date.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Assign each milestone to the right owner</div>
+              <div class="step-text">Click each bar to assign it. Your creative lead owns the creative production track. Your ops lead owns Shopify setup. Your marketing lead owns influencer sends and campaign go-live. Ownership is visible on the timeline so there's no ambiguity about who's responsible when a milestone slips.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">The timeline syncs to the workspace calendar</div>
+              <div class="step-text">Every milestone appears in the shared calendar the moment it's created. When a deadline moves — creative delivery pushed by two days, influencer send delayed — update it in the timeline and the calendar reflects it across the whole team immediately.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="mcanvas">
+            <div class="block">
+              <div class="bhead"><div class="btype">Master Launch Timeline — May 14</div></div>
+              <div class="tl-months"><div class="tl-m">Apr 21</div><div class="tl-m">Apr 28</div><div class="tl-m">May 5</div><div class="tl-m">May 14</div></div>
+              <div class="tl-row"><div class="tl-label">Campaign creative</div><div class="tl-track"><div class="tl-bar tt" style="left:0;width:62%"><div class="tl-text">M. Park</div></div></div></div>
+              <div class="tl-row"><div class="tl-label">Shopify setup</div><div class="tl-track"><div class="tl-bar tb" style="left:20%;width:55%"><div class="tl-text">Ops</div></div></div></div>
+              <div class="tl-row"><div class="tl-label">Copy & messaging</div><div class="tl-track"><div class="tl-bar tp" style="left:0;width:50%"><div class="tl-text">Copy team</div></div></div></div>
+              <div class="tl-row"><div class="tl-label">Influencer sends</div><div class="tl-track"><div class="tl-bar tpk" style="left:30%;width:38%"><div class="tl-text">Marketing</div></div></div></div>
+              <div class="tl-row"><div class="tl-label">Campaign live</div><div class="tl-track"><div class="tl-bar tg" style="left:76%;width:10%"><div class="tl-text">May 14</div></div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S7: COMMENTS & REVIEW -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split">
+      <div>
+        <div class="section-label">Step 7</div>
+        <h2>Review campaign assets and give feedback <em>directly on the block</em></h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Open the comment panel on any creative block</div>
+              <div class="step-text">When your designer uploads a campaign image or an email header, hover over the block and open the comment panel. Leave feedback pinned to exactly what you're looking at — the hero image crop, the font choice on the PDP banner, the color balance on the product shot. No Slack thread, no "which version did you mean."</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Use @ to loop in whoever needs to weigh in</div>
+              <div class="step-text">Type <code>@name</code> to tag your founder on the final campaign direction, your copywriter on a headline call, your ops lead on a product detail. They land directly on the block — not in a thread trying to figure out what you're referring to.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Resolve comments as assets get locked</div>
+              <div class="step-text">When a round of feedback is addressed, resolve the comment thread. As launch day approaches, you can see at a glance which assets still have open feedback and which are fully signed off. Nothing accidentally ships with unresolved notes.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="mcanvas" style="padding:12px">
+            <div class="block">
+              <div class="bhead"><div class="btype">Image — Hero Campaign Shot</div><span class="badge b-orange">2 open</span></div>
+              <div style="height:100px;background:linear-gradient(135deg,#E8F0F8,#C8D8EC,#A8C0E0);border-radius:6px;display:flex;align-items:center;justify-content:center;position:relative;margin-bottom:4px">
+                <div style="width:60px;height:70px;background:rgba(255,255,255,0.4);border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px">
+                  <div style="width:30px;height:40px;background:rgba(255,255,255,0.7);border-radius:3px"></div>
+                  <div style="width:20px;height:3px;background:var(--terra);border-radius:2px"></div>
+                </div>
+                <div style="position:absolute;width:17px;height:17px;border-radius:50%;background:var(--terra);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;top:15%;right:25%;box-shadow:0 2px 5px rgba(0,0,0,0.2)">1</div>
+                <div style="position:absolute;width:17px;height:17px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;bottom:20%;left:20%;box-shadow:0 2px 5px rgba(0,0,0,0.2)">2</div>
+              </div>
+            </div>
+          </div>
+          <div class="cpanel">
+            <div class="cpanel-title">Comments</div>
+            <div class="comment">
+              <div class="c-author"><div class="c-avatar" style="background:var(--terra)">AF</div><div class="c-name">Amara F.</div><div class="c-time">3h</div></div>
+              <div class="c-text">Crop is too tight on the right — product feels cramped. Give it more air.</div>
+            </div>
+            <div class="comment">
+              <div class="c-author"><div class="c-avatar" style="background:var(--blue)">MP</div><div class="c-name">Mia P.</div><div class="c-time">2h</div></div>
+              <div class="c-text"><span class="c-mention">@Amara</span> fixed in v3 — also pulled the background color warmer to match the collection palette.</div>
+            </div>
+            <div class="comment">
+              <div class="c-author"><div class="c-avatar" style="background:#5B4AC4">JS</div><div class="c-name">Jade S.</div><div class="c-time">1h</div></div>
+              <div class="c-text">Logo lockup needs to move — it's competing with the product. <span class="c-mention">@Mia</span> can you shift it bottom left?</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S8: AI -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split rev">
+      <div>
+        <div class="section-label">Step 8</div>
+        <h2>Use AI to <em>build launch infrastructure</em> and search across every workstream</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Generate a full tab setup with ⌘K</div>
+              <div class="step-text">Hit <code>⌘K</code> and ask Trak to set up a workstream tab — <strong>"Create a Launch Day tab with a timed task checklist for a 9am drop — Shopify, email, social, paid."</strong> It builds the task block with pre-populated items, times, and suggested owners. You fill in the specifics; Trak handles the structure.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Ask AI to draft copy blocks from your brief</div>
+              <div class="step-text">With your campaign brief in the canvas, ask AI to generate a first draft of your collection page headline, your launch email subject line, or your Instagram caption set. It reads the brief in context and writes from it — not from scratch. Every draft is editable and undoable.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Search across all workstreams with a single prompt</div>
+              <div class="step-text">When you're days out from launch and moving fast, use <code>⌘K</code> to find anything instantly — <strong>"which influencers haven't been sent product yet"</strong>, <strong>"what's the status of the email creative"</strong>, <strong>"show me all overdue tasks across the project."</strong> Trak finds it across every tab.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="mcanvas" style="padding:12px">
+            <div style="background:var(--blue-pale);border:1px solid rgba(42,83,122,0.15);border-radius:6px;padding:8px 10px;margin-bottom:9px;font-size:11px;color:var(--blue)">
+              <span style="font-weight:600">⌘K</span>&nbsp; "Create a Launch Day tab with a timed task checklist for a 9am drop"
+            </div>
+            <div style="font-size:10px;color:var(--text-muted);margin-bottom:8px;display:flex;align-items:center;gap:5px">
+              <div style="width:13px;height:13px;background:var(--blue);border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="6" height="6" viewBox="0 0 10 10" fill="none"><path d="M5 1L6.5 4H9.5L7 6L8 9L5 7.5L2 9L3 6L0.5 4H3.5L5 1Z" fill="white"/></svg></div>
+              Launch Day tab created — 1 task block added
+            </div>
+            <div class="block" style="border-left:2px solid var(--blue)">
+              <div class="bhead"><div class="btype">Tasks — Launch Day · May 14</div><div class="ai-tag">AI</div></div>
+              <div class="task" style="padding:4px 0"><div class="check"></div><div class="prio pu"></div><div class="task-name" style="font-size:11px">9:00am — Shopify collection goes live</div><div class="task-due">9:00</div></div>
+              <div class="task" style="padding:4px 0"><div class="check"></div><div class="prio pu"></div><div class="task-name" style="font-size:11px">9:05am — Launch email sends</div><div class="task-due">9:05</div></div>
+              <div class="task" style="padding:4px 0"><div class="check"></div><div class="prio ph"></div><div class="task-name" style="font-size:11px">9:15am — Instagram stories go live</div><div class="task-due">9:15</div></div>
+              <div class="task" style="padding:4px 0"><div class="check"></div><div class="prio ph"></div><div class="task-name" style="font-size:11px">9:30am — Paid campaign activates</div><div class="task-due">9:30</div></div>
+              <div class="task" style="padding:4px 0;border-bottom:none"><div class="check"></div><div class="prio pm"></div><div class="task-name" style="font-size:11px">12:00pm — Check inventory levels</div><div class="task-due">12:00</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S9: TAGGING & AGGREGATION -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split">
+      <div>
+        <div class="section-label">Step 9</div>
+        <h2>Tag assets across workstreams — then pull a <em>launch-readiness view</em> instantly</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Tag every deliverable block with its SKU and status</div>
+              <div class="step-text">As your team uploads assets and completes work across tabs, tag each block with the product it belongs to — <strong>hydra-serum, moisture-cream, lip-balm, hydra-toner</strong> — and a status: <strong>in progress, review, approved, final</strong>. A campaign image in Creative gets tagged. A copy doc in Messaging gets tagged. A Shopify block in Setup gets tagged.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Ask AI for a readiness view per SKU</div>
+              <div class="step-text">Hit <code>⌘K</code> and ask <strong>"Show me all assets for the Hydra-Burst Serum and their status."</strong> Trak pulls every tagged block across every tab — the campaign image, the copy doc, the PDP asset, the Shopify block — into a single board grouped by status. You see instantly what's done and what's still open for that product, without opening five tabs.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Run a full launch readiness check the day before</div>
+              <div class="step-text">Ask <strong>"Show me everything tagged as pending or in review across the whole project."</strong> Every outstanding item — across Creative, Shopify Setup, Influencer, Copy — surfaces in one view. You know exactly what still needs to close before 9am tomorrow.</div>
+            </div>
+          </div>
+        </div>
+        <div class="callout"><strong>No status spreadsheet.</strong> No "can you send me a list of what's still outstanding." The tags you set while building the launch become your pre-launch audit — pulled on demand, always current.</div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="mcanvas" style="padding:12px">
+            <div style="background:var(--blue-pale);border:1px solid rgba(42,83,122,0.15);border-radius:6px;padding:8px 10px;margin-bottom:9px;font-size:11px;color:var(--blue)">
+              <span style="font-weight:600">AI</span>&nbsp; "Show me everything pending or in review across the project"
+            </div>
+            <div style="font-size:10px;color:var(--text-muted);margin-bottom:9px">7 items across 4 tabs</div>
+            <div class="agg-board">
+              <div>
+                <div class="agg-h">In Review</div>
+                <div class="agg-card"><div class="agg-name">Hero campaign image</div><div class="agg-from"><div class="agg-dot"></div>Campaign & Creative</div><div style="display:flex;gap:3px"><span class="badge b-terra">hydra-serum</span></div></div>
+                <div class="agg-card"><div class="agg-name">PDP banner set</div><div class="agg-from"><div class="agg-dot"></div>Campaign & Creative</div><div style="display:flex;gap:3px"><span class="badge b-blue">all SKUs</span></div></div>
+              </div>
+              <div>
+                <div class="agg-h">Pending</div>
+                <div class="agg-card"><div class="agg-name">Lip Balm copy</div><div class="agg-from"><div class="agg-dot"></div>Copy & Messaging</div><div style="display:flex;gap:3px"><span class="badge b-purple">lip-balm</span></div></div>
+                <div class="agg-card"><div class="agg-name">Shopify images</div><div class="agg-from"><div class="agg-dot"></div>Shopify Setup</div><div style="display:flex;gap:3px"><span class="badge b-orange">moisture-cream</span></div></div>
+              </div>
+              <div>
+                <div class="agg-h">Not Sent</div>
+                <div class="agg-card"><div class="agg-name">@rosavibes package</div><div class="agg-from"><div class="agg-dot"></div>Influencer & PR</div><div style="display:flex;gap:3px"><span class="badge b-pink">tier-2</span></div></div>
+                <div class="agg-card"><div class="agg-name">@jadeandpetal package</div><div class="agg-from"><div class="agg-dot"></div>Influencer & PR</div><div style="display:flex;gap:3px"><span class="badge b-pink">tier-2</span></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section fade-up">
+  <div class="cta-inner">
+    <div class="cta-label">Get started</div>
+    <h2 class="cta-h">Set up your next launch in Trak.</h2>
+    <p class="cta-sub">One project. Every workstream. One launch date. Ready in minutes.</p>
+    <div class="cta-actions">
+      <a href="#" class="btn-white">Start free</a>
+      <a href="#" class="btn-ghost">Book a walkthrough →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible')})},{threshold:0.08})
+document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el))
+</script>
+</body>
+</html>

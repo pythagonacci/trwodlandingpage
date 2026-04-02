@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { USE_CASE_ITEMS } from "@/app/use-cases/links";
 
 const PRODUCT_LINKS = [
   { href: "/product/organize", label: "01 - Organize" },
@@ -13,13 +14,20 @@ const PRODUCT_LINKS = [
 ];
 
 const LINKS = [
-  { href: "/pricing", label: "Pricing" }
+  { href: "/pricing", label: "Pricing", hideOnMobile: true }
 ];
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [productMenuOpen, setProductMenuOpen] = useState(false);
+  const [useCaseMenuOpen, setUseCaseMenuOpen] = useState(false);
   const productMenuRef = useRef<HTMLLIElement>(null);
+  const useCaseMenuRef = useRef<HTMLLIElement>(null);
+
+  const closeMenus = () => {
+    setProductMenuOpen(false);
+    setUseCaseMenuOpen(false);
+  };
 
   useEffect(() => {
     const onScroll = () => {
@@ -32,19 +40,24 @@ export function Nav() {
   }, []);
 
   useEffect(() => {
-    if (!productMenuOpen) {
+    if (!productMenuOpen && !useCaseMenuOpen) {
       return;
     }
 
     const onPointerDown = (event: PointerEvent) => {
-      if (!productMenuRef.current?.contains(event.target as Node)) {
-        setProductMenuOpen(false);
+      const target = event.target as Node;
+
+      if (
+        !productMenuRef.current?.contains(target) &&
+        !useCaseMenuRef.current?.contains(target)
+      ) {
+        closeMenus();
       }
     };
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setProductMenuOpen(false);
+        closeMenus();
       }
     };
 
@@ -55,7 +68,7 @@ export function Nav() {
       window.removeEventListener("pointerdown", onPointerDown);
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [productMenuOpen]);
+  }, [productMenuOpen, useCaseMenuOpen]);
 
   return (
     <nav
@@ -67,7 +80,7 @@ export function Nav() {
         <Link
           href="/"
           className="flex items-center gap-2 font-display text-[20px] font-semibold tracking-[-0.015em] text-ink"
-          onClick={() => setProductMenuOpen(false)}
+          onClick={closeMenus}
         >
           <Image
             src="/logo-copy.png"
@@ -83,20 +96,26 @@ export function Nav() {
           <li
             ref={productMenuRef}
             className="relative"
-            onMouseEnter={() => setProductMenuOpen(true)}
+            onMouseEnter={() => {
+              setProductMenuOpen(true);
+              setUseCaseMenuOpen(false);
+            }}
             onMouseLeave={() => setProductMenuOpen(false)}
           >
-            <button
-              type="button"
+            <Link
+              href={PRODUCT_LINKS[0].href}
               aria-expanded={productMenuOpen}
               aria-haspopup="menu"
               className="inline-flex items-center gap-1 transition-colors duration-150 hover:text-ink"
-              onClick={() => setProductMenuOpen((open) => !open)}
-              onFocus={() => setProductMenuOpen(true)}
+              onClick={() => setProductMenuOpen(false)}
+              onFocus={() => {
+                setProductMenuOpen(true);
+                setUseCaseMenuOpen(false);
+              }}
             >
               Product
               <span className="text-[10px] text-stone">v</span>
-            </button>
+            </Link>
             <div
               className={`absolute left-1/2 top-full z-50 w-[250px] -translate-x-1/2 pt-3 transition-all duration-150 ${
                 productMenuOpen
@@ -110,7 +129,7 @@ export function Nav() {
                     key={item.href}
                     href={item.href}
                     className="block rounded-lg px-3 py-2 text-[12px] text-ink-3 transition-colors duration-150 hover:bg-cream-2 hover:text-ink"
-                    onClick={() => setProductMenuOpen(false)}
+                    onClick={closeMenus}
                   >
                     {item.label}
                   </Link>
@@ -118,15 +137,59 @@ export function Nav() {
               </div>
             </div>
           </li>
-          {LINKS.map((item, index) => (
+          <li
+            ref={useCaseMenuRef}
+            className="relative"
+            onMouseEnter={() => {
+              setUseCaseMenuOpen(true);
+              setProductMenuOpen(false);
+            }}
+            onMouseLeave={() => setUseCaseMenuOpen(false)}
+          >
+            <Link
+              href={USE_CASE_ITEMS[0].href}
+              aria-expanded={useCaseMenuOpen}
+              aria-haspopup="menu"
+              className="inline-flex items-center gap-1 transition-colors duration-150 hover:text-ink"
+              onClick={() => setUseCaseMenuOpen(false)}
+              onFocus={() => {
+                setUseCaseMenuOpen(true);
+                setProductMenuOpen(false);
+              }}
+            >
+              Use Cases
+              <span className="text-[10px] text-stone">v</span>
+            </Link>
+            <div
+              className={`absolute left-1/2 top-full z-50 w-[288px] -translate-x-1/2 pt-3 transition-all duration-150 ${
+                useCaseMenuOpen
+                  ? "pointer-events-auto visible opacity-100"
+                  : "pointer-events-none invisible opacity-0"
+              }`}
+            >
+              <div className="rounded-xl border border-cream-3 bg-[rgba(250,248,244,0.98)] p-2 shadow-[0_18px_42px_rgba(28,25,23,0.12)] backdrop-blur-md">
+                {USE_CASE_ITEMS.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="block rounded-lg px-3 py-2 text-[12px] text-ink-3 transition-colors duration-150 hover:bg-cream-2 hover:text-ink"
+                    onClick={closeMenus}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </li>
+          {LINKS.map((item) => (
             <li
               key={item.href}
-              className={index < LINKS.length - 1 ? "max-[880px]:hidden" : undefined}
+              className={item.hideOnMobile ? "max-[880px]:hidden" : undefined}
             >
               <Link
                 href={item.href}
                 className="transition-colors duration-150 hover:text-ink"
-                onClick={() => setProductMenuOpen(false)}
+                onClick={closeMenus}
               >
                 {item.label}
               </Link>
@@ -136,7 +199,7 @@ export function Nav() {
             <Link
               href="https://app.sariasoftware.com/login"
               className="rounded-full border border-cream-3 px-4 py-2 text-[12px] font-medium text-ink transition-colors duration-200 hover:border-stone hover:bg-cream-2"
-              onClick={() => setProductMenuOpen(false)}
+              onClick={closeMenus}
               target="_blank"
               rel="noreferrer"
             >
@@ -145,7 +208,7 @@ export function Nav() {
             <Link
               href="https://app.sariasoftware.com/start-free-trial"
               className="rounded-full px-4 py-2 text-[12px] font-medium text-white transition-colors duration-200"
-              onClick={() => setProductMenuOpen(false)}
+              onClick={closeMenus}
               target="_blank"
               rel="noreferrer"
               style={{ backgroundColor: "#1D4ED8" }}

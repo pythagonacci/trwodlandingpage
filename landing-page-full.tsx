@@ -187,9 +187,10 @@ function Hero() {
           className="hero-anim hero-anim-sub mb-6 max-w-[720px] text-center text-[16px] font-light leading-[1.7]"
           style={{ color: "#555" }}
         >
-          Your brand runs on five tabs, three apps, and a group chat. Saria puts
-          your products, people, and launches in one place — so you can stop
-          managing tools and start managing your brand.
+          Your brand runs on five tabs, three apps, and a group chat. Saria
+          brings your products, people, and launches into one place — so your
+          team can spend less time managing work and more time creating
+          products customers love.
         </p>
 
         <div className="hero-anim hero-anim-ctas mb-6 flex flex-col items-center gap-2">

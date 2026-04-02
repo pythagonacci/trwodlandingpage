@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#FDFAF6;--cream-dark:#F5F0E8;--cream-darker:#EDE6D8;
+  --blue:#2A537A;--blue-light:#3D6E9E;--blue-pale:#EBF2F9;
+  --terra:#C4603A;--terra-pale:#FBF0EC;
+  --text:#1A1A18;--text-mid:#4A4A45;--text-muted:#8A8A82;
+  --border:#E2DBD0;--border-light:#EDE8E0;
+  --app-bg:#F8F5F0;--app-sidebar:#F0ECE5;--app-block:#FFFFFF;
+  --shadow-sm:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:0 4px 16px rgba(0,0,0,0.08),0 2px 6px rgba(0,0,0,0.04);
+  --shadow-lg:0 12px 40px rgba(0,0,0,0.10),0 4px 12px rgba(0,0,0,0.06);
+  --r:10px;--r-lg:16px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--text);line-height:1.6;overflow-x:hidden}
+nav{position:sticky;top:0;z-index:100;background:rgba(253,250,246,0.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-light);padding:0 48px;display:flex;align-items:center;justify-content:space-between;height:56px}
+.nav-logo{font-family:'Instrument Serif',serif;font-size:20px;color:var(--blue)}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{font-size:13.5px;color:var(--text-mid);text-decoration:none}
+.nav-cta{background:var(--blue);color:#fff;font-size:13px;font-weight:500;padding:7px 16px;border-radius:7px;text-decoration:none}
+.hero{padding:80px 48px 56px;max-width:680px;margin:0 auto;text-align:center}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;background:var(--terra-pale);border:1px solid rgba(196,96,58,0.18);color:var(--terra);font-size:11.5px;font-weight:500;padding:5px 12px;border-radius:100px;margin-bottom:22px}
+.eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--terra)}
+h1{font-family:'Instrument Serif',serif;font-size:clamp(34px,5vw,52px);line-height:1.08;letter-spacing:-1px;color:var(--text);margin-bottom:16px;font-weight:400}
+h1 em{color:var(--blue);font-style:italic}
+.hero-sub{font-size:16px;color:var(--text-mid);max-width:500px;margin:0 auto 28px;font-weight:300;line-height:1.7}
+.hero-actions{display:flex;align-items:center;justify-content:center;gap:10px}
+.btn-primary{background:var(--blue);color:#fff;font-size:13.5px;font-weight:500;padding:11px 22px;border-radius:8px;text-decoration:none;transition:all 0.2s}
+.btn-primary:hover{background:var(--blue-light);transform:translateY(-1px)}
+.btn-secondary{color:var(--blue);font-size:13.5px;font-weight:500;padding:11px 22px;border-radius:8px;text-decoration:none;border:1.5px solid var(--blue)}
+.intro-strip{border-top:1px solid var(--border-light);border-bottom:1px solid var(--border-light);padding:28px 48px;background:var(--cream-dark)}
+.intro-strip-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:40px}
+.intro-label{font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--terra);white-space:nowrap}
+.intro-text{font-size:14.5px;color:var(--text-mid);font-weight:300;line-height:1.7}
+.intro-text strong{color:var(--text);font-weight:500}
+.section{padding:72px 48px;border-top:1px solid var(--border-light)}
+.section-inner{max-width:1080px;margin:0 auto}
+.section-split{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.section-split.rev{direction:rtl}.section-split.rev>*{direction:ltr}
+.section-label{font-size:10.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--terra);margin-bottom:10px}
+h2{font-family:'Instrument Serif',serif;font-size:clamp(22px,2.8vw,32px);line-height:1.18;letter-spacing:-0.3px;color:var(--text);margin-bottom:22px;font-weight:400}
+h2 em{color:var(--blue);font-style:italic}
+.steps{display:flex;flex-direction:column;gap:0}
+.step{display:grid;grid-template-columns:28px 1fr;gap:14px;padding-bottom:20px;position:relative}
+.step:last-child{padding-bottom:0}
+.step:not(:last-child)::before{content:'';position:absolute;left:13px;top:28px;bottom:0;width:1px;background:var(--border)}
+.step-num{width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1}
+.step-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:5px;padding-top:4px}
+.step-text{font-size:14px;color:var(--text-mid);line-height:1.75;font-weight:300}
+.step-text strong{color:var(--text);font-weight:500}
+.step-text code{font-family:monospace;font-size:12.5px;background:var(--blue-pale);color:var(--blue);padding:2px 6px;border-radius:4px}
+.callout{background:var(--blue-pale);border:1px solid rgba(42,83,122,0.12);border-radius:8px;padding:12px 14px;margin-top:20px;font-size:13.5px;color:var(--blue);line-height:1.65}
+.callout strong{font-weight:600}
+
+/* MOCKUP */
+.mockup{background:var(--app-bg);border-radius:var(--r-lg);border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow-lg)}
+.chrome{background:var(--app-sidebar);border-bottom:1px solid var(--border);padding:9px 12px;display:flex;align-items:center;gap:7px}
+.dot{width:9px;height:9px;border-radius:50%}
+.dot.r{background:#FF6057}.dot.y{background:#FFBD2E}.dot.g{background:#28CA41}
+.mbody{display:flex}
+.msidebar{width:158px;background:var(--app-sidebar);border-right:1px solid var(--border);padding:14px 0;flex-shrink:0}
+.s-section{padding:0 10px;margin-bottom:16px}
+.s-label{font-size:9.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:7px;padding:0 4px}
+.s-item{padding:5px 7px;border-radius:5px;font-size:11.5px;color:var(--text-mid);cursor:pointer;display:flex;align-items:center;gap:6px}
+.s-item.active{background:var(--cream-dark);color:var(--text);font-weight:500}
+.s-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.mcanvas{flex:1;padding:16px;background:var(--cream);overflow:hidden}
+.badge{font-size:10px;font-weight:500;padding:3px 8px;border-radius:100px;display:inline-flex;align-items:center;white-space:nowrap}
+.b-blue{background:var(--blue-pale);color:var(--blue)}
+.b-terra{background:var(--terra-pale);color:var(--terra)}
+.b-green{background:#EBF5EE;color:#2D7A47}
+.b-orange{background:#FEF3EC;color:#C4600A}
+.b-gray{background:#F2F0EC;color:var(--text-mid)}
+.b-purple{background:#F0EEFB;color:#5B4AC4}
+.b-red{background:#FEF0F0;color:#C43A3A}
+.block{background:var(--app-block);border:1px solid var(--border-light);border-radius:var(--r);padding:11px 13px;margin-bottom:7px;box-shadow:var(--shadow-sm)}
+.block:last-child{margin-bottom:0}
+.bhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.btype{font-size:9px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-muted)}
+.avatar{width:18px;height:18px;border-radius:50%;font-size:8px;font-weight:600;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.task{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid var(--border-light);font-size:11px}
+.task:last-child{border-bottom:none;padding-bottom:0}
+.task-name{flex:1;color:var(--text);line-height:1.3}
+.task-due{font-size:10px;color:var(--text-muted);white-space:nowrap}
+.task-due.late{color:#C4600A;font-weight:500}
+.prio{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.pu{background:#E24B4A}.ph{background:#E8856A}.pm{background:#EFC227}.pl{background:#85C1A0}
+
+/* AI CARD */
+.ai-card{background:linear-gradient(135deg,var(--blue-pale),#F0EDF9);border:1px solid rgba(42,83,122,0.14);border-radius:var(--r);padding:13px;margin-bottom:7px}
+.ai-card-header{display:flex;align-items:center;gap:7px;margin-bottom:9px}
+.ai-icon{width:20px;height:20px;background:var(--blue);border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ai-card-title{font-size:11px;font-weight:600;color:var(--blue)}
+.ai-card-body{font-size:11px;color:var(--text-mid);line-height:1.65}
+.ai-card-body strong{color:var(--text);font-weight:500}
+.ai-highlight{display:inline-flex;background:rgba(42,83,122,0.08);border-radius:4px;padding:1px 5px;font-size:10px;color:var(--blue);font-weight:500;margin:0 1px}
+
+/* STAT */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:7px}
+.stat-card{background:var(--app-block);border:1px solid var(--border-light);border-radius:var(--r);padding:10px;box-shadow:var(--shadow-sm)}
+.stat-val{font-size:20px;font-weight:600;color:var(--blue);margin-bottom:2px;letter-spacing:-0.5px}
+.stat-val.orange{color:#C4600A}
+.stat-val.green{color:#2D7A47}
+.stat-label{font-size:9.5px;color:var(--text-muted)}
+
+/* NOTIF */
+.notif{display:flex;align-items:flex-start;gap:7px;padding:6px 0;border-bottom:1px solid var(--border-light)}
+.notif:last-child{border-bottom:none;padding-bottom:0}
+.notif-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.notif-text{font-size:10.5px;color:var(--text-mid);line-height:1.5;flex:1}
+.notif-text strong{color:var(--text);font-weight:500}
+.notif-time{font-size:9.5px;color:var(--text-muted);margin-top:2px}
+
+/* PROJECT STATUS */
+.proj-status-row{display:flex;align-items:center;gap:7px;padding:6px 0;border-bottom:1px solid var(--border-light)}
+.proj-status-row:last-child{border-bottom:none;padding-bottom:0}
+.proj-name{flex:1;font-weight:500;color:var(--text);font-size:11.5px}
+.proj-progress{width:64px;height:5px;background:var(--cream-dark);border-radius:3px;overflow:hidden;flex-shrink:0}
+.proj-progress-fill{height:100%;border-radius:3px}
+
+/* CHARTS */
+.bar-chart{display:flex;flex-direction:column;gap:5px}
+.bar-row{display:grid;grid-template-columns:62px 1fr 22px;align-items:center;gap:5px}
+.bar-label{font-size:9.5px;color:var(--text-mid);text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{height:12px;background:var(--cream-dark);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px}
+.bar-val{font-size:9.5px;font-weight:500;color:var(--text-muted);text-align:right}
+.donut-wrap{display:flex;align-items:center;gap:12px}
+.donut{width:60px;height:60px;border-radius:50%;flex-shrink:0;background:conic-gradient(var(--blue) 0% 42%,#E8856A 42% 65%,#EFC227 65% 82%,#85C1A0 82% 100%)}
+.donut-legend{display:flex;flex-direction:column;gap:4px}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:9.5px;color:var(--text-mid)}
+.legend-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+/* EVERYTHING TABLE */
+.etable{width:100%;border-collapse:collapse;font-size:10.5px}
+.etable th{font-size:9px;font-weight:600;letter-spacing:0.7px;text-transform:uppercase;color:var(--text-muted);padding:5px 8px;border-bottom:1.5px solid var(--border-light);text-align:left;white-space:nowrap;background:var(--cream)}
+.etable td{padding:6px 8px;border-bottom:1px solid var(--border-light);vertical-align:middle}
+.etable tr:last-child td{border-bottom:none}
+.etable tr:hover td{background:var(--cream-dark)}
+.et-name{font-weight:500;color:var(--text);max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.et-project{font-size:9.5px;color:var(--text-muted);max-width:75px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.filter-bar{display:flex;align-items:center;gap:5px;margin-bottom:8px;flex-wrap:wrap}
+.filter-chip{font-size:10px;font-weight:500;padding:3px 9px;border-radius:100px;border:1px solid var(--border);background:var(--app-block);color:var(--text-mid);display:flex;align-items:center;gap:4px;cursor:pointer}
+.filter-chip.active{background:var(--blue-pale);border-color:rgba(42,83,122,0.3);color:var(--blue)}
+
+/* DASHBOARD CONFIG */
+.config-section{border:1.5px dashed var(--border);border-radius:var(--r);padding:11px;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer}
+.config-plus{width:20px;height:20px;border-radius:50%;background:var(--blue-pale);color:var(--blue);font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.config-text{font-size:11px;color:var(--text-muted)}
+.config-text strong{color:var(--blue);font-weight:500}
+.widget-picker{background:var(--app-block);border:1px solid var(--border);border-radius:var(--r);padding:8px;margin-top:6px;box-shadow:var(--shadow-md)}
+.widget-option{display:flex;align-items:center;gap:8px;padding:6px 7px;border-radius:5px;cursor:pointer}
+.widget-option:hover{background:var(--cream-dark)}
+.widget-icon{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px}
+.widget-name{font-size:11.5px;font-weight:500;color:var(--text)}
+.widget-desc{font-size:9.5px;color:var(--text-muted)}
+
+/* CHART SCOPE PICKER */
+.scope-picker{background:var(--app-block);border:1px solid var(--border-light);border-radius:8px;padding:10px;margin-top:6px}
+.scope-title{font-size:9.5px;font-weight:600;color:var(--text-muted);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:7px}
+.scope-option{display:flex;align-items:center;gap:7px;padding:5px 6px;border-radius:5px;font-size:11px;color:var(--text-mid);cursor:pointer;margin-bottom:2px}
+.scope-option:hover{background:var(--cream-dark)}
+.scope-option.active{background:var(--blue-pale);color:var(--blue);font-weight:500}
+.scope-radio{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.scope-radio.checked{border-color:var(--blue);background:var(--blue)}
+.scope-radio.checked::after{content:'';width:4px;height:4px;border-radius:50%;background:#fff}
+
+/* PROJECT OVERVIEW */
+.ov-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:7px}
+.ov-card{background:var(--app-block);border:1px solid var(--border-light);border-radius:var(--r);padding:10px;box-shadow:var(--shadow-sm)}
+.ov-title{font-size:9px;font-weight:600;letter-spacing:0.7px;text-transform:uppercase;color:var(--text-muted);margin-bottom:7px}
+.ov-count{font-size:18px;font-weight:600;color:var(--blue);margin-bottom:1px}
+.ov-label{font-size:9.5px;color:var(--text-muted)}
+.ov-item{display:flex;align-items:center;gap:5px;padding:3px 0;border-bottom:1px solid var(--border-light);font-size:10.5px}
+.ov-item:last-child{border-bottom:none}
+.ov-name{flex:1;color:var(--text)}
+.ov-tab{font-size:9px;color:var(--text-muted)}
+
+.cta-section{background:var(--blue);padding:72px 48px;text-align:center}
+.cta-inner{max-width:500px;margin:0 auto}
+.cta-label{font-size:10.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:14px}
+.cta-h{font-family:'Instrument Serif',serif;font-size:clamp(24px,3.5vw,38px);color:#fff;line-height:1.18;letter-spacing:-0.4px;margin-bottom:12px;font-weight:400}
+.cta-sub{font-size:15px;color:rgba(255,255,255,0.65);margin-bottom:26px;font-weight:300}
+.cta-actions{display:flex;align-items:center;justify-content:center;gap:10px}
+.btn-white{background:#fff;color:var(--blue);font-size:13.5px;font-weight:500;padding:11px 22px;border-radius:8px;text-decoration:none}
+.btn-ghost{color:#fff;font-size:13.5px;padding:11px 22px;border-radius:8px;text-decoration:none;border:1.5px solid rgba(255,255,255,0.35)}
+.fade-up{opacity:0;transform:translateY(18px);transition:opacity 0.5s ease,transform 0.5s ease}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+@media(max-width:860px){.section-split{grid-template-columns:1fr}.section-split.rev{direction:ltr}.msidebar{display:none}nav .nav-links{display:none}.intro-strip-inner{flex-direction:column;gap:10px}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Trak</div>
+  <div class="nav-links"><a href="#">Product</a><a href="#">Use Cases</a><a href="#">Templates</a><a href="#">Pricing</a></div>
+  <a href="#" class="nav-cta">Start free →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero fade-up">
+  <div class="eyebrow"><span class="eyebrow-dot"></span>Dashboard & Visibility</div>
+  <h1>How to use Trak's dashboard to <em>see everything at once</em></h1>
+  <p class="hero-sub">What's there by default, what you configure, and how the Everything Table and instant charts give you a complete picture of your workspace.</p>
+  <div class="hero-actions">
+    <a href="#" class="btn-primary">Start free</a>
+    <a href="#" class="btn-secondary">Book a walkthrough</a>
+  </div>
+</section>
+
+<!-- INTRO STRIP -->
+<div class="intro-strip fade-up">
+  <div class="intro-strip-inner">
+    <div class="intro-label">How it works</div>
+    <div class="intro-text">Trak has four visibility layers: <strong>the workspace dashboard</strong> (configurable, starts useful from day one), <strong>the Everything Table</strong> (its own page — every item in your workspace, filterable), <strong>instant charts</strong> (any data type, any format, anywhere), and <strong>per-project overviews</strong> (scoped to a single project). Each serves a different level of zoom.</div>
+  </div>
+</div>
+
+<!-- S1: DASHBOARD DEFAULT + AI -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split">
+      <div>
+        <div class="section-label">Step 1</div>
+        <h2>The workspace dashboard — <em>useful from day one, no setup needed</em></h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Open the dashboard — everything default is already there</div>
+              <div class="step-text">Click <strong>Dashboard</strong> in the sidebar. Four things are there automatically: an <strong>AI workspace overview</strong>, <strong>task cards</strong> (Due Today, Due Soon, Overdue), a <strong>notifications feed</strong>, and a <strong>project status list</strong>. Nothing to configure to get here — it pulls from everything in your workspace from the moment you start using Trak.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">The AI overview reads across every project and summarizes it</div>
+              <div class="step-text">At the top of the dashboard, the AI reads your tasks, deadlines, comments, and file activity across every project and writes a plain-language summary. Which projects are on track. What's overdue. Where there's been recent feedback. Hit <strong>Regenerate</strong> any time for a fresh read — it also refreshes automatically on a schedule.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Task cards and notifications are always live</div>
+              <div class="step-text">The Due Today, Due Soon, and Overdue cards pull from every task block in every project — always current, no manual updates. The notifications feed shows team activity and client feedback as it comes in, labeled separately so you can tell internal from external at a glance. Click anything to go directly to its source.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="msidebar">
+            <div class="s-section">
+              <div class="s-label">Workspace</div>
+              <div class="s-item active"><div class="s-dot" style="background:var(--blue)"></div>Dashboard</div>
+              <div class="s-item"><div class="s-dot" style="background:var(--text-muted)"></div>Everything</div>
+              <div class="s-item"><div class="s-dot" style="background:var(--text-muted)"></div>Calendar</div>
+              <div class="s-item"><div class="s-dot" style="background:var(--text-muted)"></div>Projects</div>
+            </div>
+          </div>
+          <div class="mcanvas">
+            <div style="font-size:12.5px;font-weight:600;color:var(--text);margin-bottom:9px">Good morning, Amara.</div>
+            <div class="ai-card">
+              <div class="ai-card-header">
+                <div class="ai-icon"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M5 1L6.5 4H9.5L7 6L8 9L5 7.5L2 9L3 6L0.5 4H3.5L5 1Z" fill="white"/></svg></div>
+                <div class="ai-card-title">AI Workspace Overview</div>
+                <span class="badge b-gray" style="margin-left:auto;font-size:9px">8:02am</span>
+              </div>
+              <div class="ai-card-body"><span class="ai-highlight">Hydration Launch</span> has <strong>2 overdue tasks</strong> blocking launch readiness. <span class="ai-highlight">Brand Refresh</span> is on track. <span class="ai-highlight">Summer Campaign</span> has new activity from Mia. <strong>3 tasks due today across the workspace.</strong></div>
+            </div>
+            <div class="stat-grid">
+              <div class="stat-card"><div class="stat-val orange">2</div><div class="stat-label">Overdue</div></div>
+              <div class="stat-card"><div class="stat-val">3</div><div class="stat-label">Due today</div></div>
+              <div class="stat-card"><div class="stat-val green">12</div><div class="stat-label">Done this week</div></div>
+            </div>
+            <div class="block">
+              <div class="bhead"><div class="btype">Notifications</div><span class="badge b-blue">5 new</span></div>
+              <div class="notif">
+                <div class="notif-dot" style="background:#2D7A47"></div>
+                <div style="flex:1">
+                  <div class="notif-text"><strong>Client feedback</strong> on Packaging Direction — "Colour approved."</div>
+                  <div class="notif-time">2 min · Hydration Launch</div>
+                </div>
+              </div>
+              <div class="notif">
+                <div class="notif-dot" style="background:#5B4AC4"></div>
+                <div style="flex:1">
+                  <div class="notif-text"><strong>Mia P.</strong> commented on Hero Campaign Shot</div>
+                  <div class="notif-time">1 hour · Campaign & Creative</div>
+                </div>
+              </div>
+              <div class="notif">
+                <div class="notif-dot" style="background:var(--blue)"></div>
+                <div style="flex:1">
+                  <div class="notif-text"><strong>Jade S.</strong> completed — Create drop collection page</div>
+                  <div class="notif-time">2 hours · Shopify Setup</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S2: CONFIGURE THE DASHBOARD -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split rev">
+      <div>
+        <div class="section-label">Step 2</div>
+        <h2>Configure the dashboard to show <em>exactly what your team needs</em></h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Click + Add to start building on top of the defaults</div>
+              <div class="step-text">Scroll below the default cards and click <strong>+ Add</strong>. A picker opens with everything you can add — <strong>chart blocks, quick links to projects, custom sections</strong>. Add as many as you want. The dashboard is a canvas. You build on top of the defaults to make it useful for how your team actually works.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Add quick links to your most active projects</div>
+              <div class="step-text">Select <strong>Quick Link → Project</strong> and choose any project. It appears as a card showing the project name, status, due date, and open task count — live and always current. Add one for every project your team is actively running and click any card to jump directly in.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Rearrange, remove, and make it yours</div>
+              <div class="step-text">Drag any section to reorder it. Remove cards you don't need. If quick links are what your team uses most, move them to the top. If you only need the AI overview and one chart, keep it minimal. The layout is persistent — it stays exactly the way you configure it.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="mcanvas">
+            <div style="font-size:10.5px;font-weight:600;color:var(--text-muted);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:7px">Active Projects</div>
+            <div class="block" style="margin-bottom:7px">
+              <div class="proj-status-row">
+                <div class="s-dot" style="background:var(--terra);width:7px;height:7px;border-radius:50%;flex-shrink:0"></div>
+                <div class="proj-name">Hydration Collection Q2</div>
+                <span class="badge b-orange" style="font-size:9px;margin-right:5px">In Progress</span>
+                <div class="proj-progress"><div class="proj-progress-fill" style="width:58%;background:var(--terra)"></div></div>
+                <span class="badge b-gray" style="margin-left:5px;font-size:9px">9 open</span>
+              </div>
+              <div class="proj-status-row">
+                <div class="s-dot" style="background:var(--blue);width:7px;height:7px;border-radius:50%;flex-shrink:0"></div>
+                <div class="proj-name">Summer Campaign</div>
+                <span class="badge b-orange" style="font-size:9px;margin-right:5px">In Progress</span>
+                <div class="proj-progress"><div class="proj-progress-fill" style="width:35%;background:var(--blue)"></div></div>
+                <span class="badge b-gray" style="margin-left:5px;font-size:9px">6 open</span>
+              </div>
+              <div class="proj-status-row">
+                <div class="s-dot" style="background:#2D7A47;width:7px;height:7px;border-radius:50%;flex-shrink:0"></div>
+                <div class="proj-name">Brand Refresh</div>
+                <span class="badge b-green" style="font-size:9px;margin-right:5px">On Track</span>
+                <div class="proj-progress"><div class="proj-progress-fill" style="width:75%;background:#2D7A47"></div></div>
+                <span class="badge b-gray" style="margin-left:5px;font-size:9px">3 open</span>
+              </div>
+            </div>
+            <div class="config-section">
+              <div class="config-plus">+</div>
+              <div class="config-text"><strong>Add to dashboard</strong> — chart, quick link, or section</div>
+            </div>
+            <div class="widget-picker">
+              <div class="widget-option">
+                <div class="widget-icon" style="background:var(--blue-pale)">📊</div>
+                <div><div class="widget-name">Chart block</div><div class="widget-desc">Any data type, any format</div></div>
+              </div>
+              <div class="widget-option">
+                <div class="widget-icon" style="background:var(--terra-pale)">⚡</div>
+                <div><div class="widget-name">Quick link</div><div class="widget-desc">Jump to project with live task count</div></div>
+              </div>
+              <div class="widget-option">
+                <div class="widget-icon" style="background:#EBF5EE">📝</div>
+                <div><div class="widget-name">Custom section</div><div class="widget-desc">Add a text section or divider</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S3: EVERYTHING TABLE -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split">
+      <div>
+        <div class="section-label">Step 3</div>
+        <h2>The Everything Table — every item in your workspace, <em>filterable by any property</em></h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Click Everything in the sidebar</div>
+              <div class="step-text">The Everything Table is its own page in Trak — click <strong>Everything</strong> in the sidebar. It pulls every item across your entire workspace — every task, every block that has properties set — into a single table. Every row shows the five universal properties: <strong>status, priority, tags, due date, and assignee</strong>. Nothing is excluded.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Filter it down to exactly what you want to see</div>
+              <div class="step-text">Click <strong>Filter</strong> and combine any properties — <strong>assignee is Mia, priority is Urgent, tag is packaging</strong>. Stack as many filters as you need. The table updates instantly. The result is a precise, live slice of your workspace — every matching item across every project, pulled into one view.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Click any row to go directly to that item</div>
+              <div class="step-text">Every row in the table links back to its source — the block, the tab, the project. The Everything Table is a view into your workspace, not a copy of it. When you click through, you land in context with everything around it visible.</div>
+            </div>
+          </div>
+        </div>
+        <div class="callout"><strong>Most useful for:</strong> pre-launch audits ("everything tagged launch that isn't done"), workload checks ("everything assigned to Jade due this week"), and cross-project reviews ("all urgent items across the workspace").</div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="msidebar">
+            <div class="s-section">
+              <div class="s-label">Workspace</div>
+              <div class="s-item"><div class="s-dot" style="background:var(--blue)"></div>Dashboard</div>
+              <div class="s-item active"><div class="s-dot" style="background:var(--blue)"></div>Everything</div>
+              <div class="s-item"><div class="s-dot" style="background:var(--text-muted)"></div>Calendar</div>
+              <div class="s-item"><div class="s-dot" style="background:var(--text-muted)"></div>Projects</div>
+            </div>
+          </div>
+          <div class="mcanvas" style="padding:14px">
+            <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px">Everything</div>
+            <div class="filter-bar">
+              <div class="filter-chip active">Assignee: Mia P. ✕</div>
+              <div class="filter-chip active">Priority: Urgent, High ✕</div>
+              <div class="filter-chip">+ Filter</div>
+            </div>
+            <div style="overflow-x:auto;border-radius:7px;border:1px solid var(--border-light);background:var(--app-block);box-shadow:var(--shadow-sm)">
+              <table class="etable">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Project</th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                    <th>Due</th>
+                    <th>Tags</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><div class="et-name">Hero campaign images</div></td>
+                    <td><div class="et-project">Hydration Launch</div></td>
+                    <td><span class="badge b-orange" style="font-size:9px">In Review</span></td>
+                    <td><span class="badge b-red" style="font-size:9px">Urgent</span></td>
+                    <td><span style="font-size:10px;color:#C4600A;font-weight:500">May 1 ↑</span></td>
+                    <td><span class="badge b-purple" style="font-size:9px">design</span></td>
+                  </tr>
+                  <tr>
+                    <td><div class="et-name">PDP assets — 4 SKUs</div></td>
+                    <td><div class="et-project">Hydration Launch</div></td>
+                    <td><span class="badge b-gray" style="font-size:9px">Not Started</span></td>
+                    <td><span class="badge b-orange" style="font-size:9px">High</span></td>
+                    <td><span style="font-size:10px;color:var(--text-muted)">May 5</span></td>
+                    <td><span class="badge b-purple" style="font-size:9px">design</span></td>
+                  </tr>
+                  <tr>
+                    <td><div class="et-name">Packaging comp v3</div></td>
+                    <td><div class="et-project">Brand Refresh</div></td>
+                    <td><span class="badge b-blue" style="font-size:9px">In Review</span></td>
+                    <td><span class="badge b-orange" style="font-size:9px">High</span></td>
+                    <td><span style="font-size:10px;color:var(--text-muted)">May 6</span></td>
+                    <td><span class="badge b-gray" style="font-size:9px">packaging</span></td>
+                  </tr>
+                  <tr>
+                    <td><div class="et-name">Summer hero visual</div></td>
+                    <td><div class="et-project">Summer Campaign</div></td>
+                    <td><span class="badge b-gray" style="font-size:9px">Not Started</span></td>
+                    <td><span class="badge b-red" style="font-size:9px">Urgent</span></td>
+                    <td><span style="font-size:10px;color:var(--text-muted)">May 9</span></td>
+                    <td><span class="badge b-terra" style="font-size:9px">campaign</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="font-size:9.5px;color:var(--text-muted);margin-top:5px">Showing 4 of 22 items · filtered by assignee + priority</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S4: INSTANT CHARTS -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split rev">
+      <div>
+        <div class="section-label">Step 4</div>
+        <h2>Instant charts — <em>any data type, any format, anywhere in Trak</em></h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Add a chart block from the dashboard or any project tab</div>
+              <div class="step-text">Charts aren't just a dashboard feature. Add a chart block to the dashboard, to a project's overview tab, or to any canvas tab inside a project — anywhere you'd want to see data visualized inline. Click <strong>+ → Chart block</strong> wherever you are.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Choose what data to visualize</div>
+              <div class="step-text">Charts can be scoped to any data type in Trak — <strong>tasks by status, tasks by priority, tasks by assignee, tasks by tag, completion rate over time, items by project, overdue count</strong> — or any combination. You're not limited to project-level rollups. A chart can pull from a single tab, a specific tag, a specific assignee, or everything at once.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Pick the format that communicates it best</div>
+              <div class="step-text">The same data can be displayed multiple ways. <strong>Bar</strong> for comparing counts across categories. <strong>Donut</strong> for showing distribution at a glance. <strong>Line</strong> for tracking change over time. <strong>Summary count</strong> for a single number stat card. Choose the format for the insight, not just the aesthetic.</div>
+            </div>
+          </div>
+        </div>
+        <div class="callout"><strong>Charts are live.</strong> They pull from your workspace data in real time — as tasks are completed and properties change, the charts update automatically. No exports, no manual refreshes.</div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="mcanvas">
+            <div style="font-size:10px;font-weight:600;color:var(--text-muted);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:7px">Chart Data</div>
+            <div class="scope-picker" style="margin-bottom:10px">
+              <div class="scope-title">Measure</div>
+              <div class="scope-option active"><div class="scope-radio checked"></div>Tasks by assignee</div>
+              <div class="scope-option"><div class="scope-radio"></div>Tasks by status</div>
+              <div class="scope-option"><div class="scope-radio"></div>Tasks by priority</div>
+              <div class="scope-option"><div class="scope-radio"></div>Tasks by tag</div>
+              <div class="scope-option"><div class="scope-radio"></div>Completion rate over time</div>
+              <div class="scope-option"><div class="scope-radio"></div>Overdue count</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">
+              <div class="block" style="margin-bottom:0">
+                <div class="bhead"><div class="btype">Bar</div></div>
+                <div class="bar-chart">
+                  <div class="bar-row"><div class="bar-label">Mia P.</div><div class="bar-track"><div class="bar-fill" style="width:72%;background:#5B4AC4"></div></div><div class="bar-val">5</div></div>
+                  <div class="bar-row"><div class="bar-label">Jade S.</div><div class="bar-track"><div class="bar-fill" style="width:57%;background:var(--blue)"></div></div><div class="bar-val">4</div></div>
+                  <div class="bar-row"><div class="bar-label">Amara F.</div><div class="bar-track"><div class="bar-fill" style="width:43%;background:var(--terra)"></div></div><div class="bar-val">3</div></div>
+                  <div class="bar-row"><div class="bar-label">Rania K.</div><div class="bar-track"><div class="bar-fill" style="width:28%;background:#2D7A47"></div></div><div class="bar-val">2</div></div>
+                </div>
+              </div>
+              <div class="block" style="margin-bottom:0">
+                <div class="bhead"><div class="btype">Donut</div></div>
+                <div class="donut-wrap">
+                  <div class="donut"></div>
+                  <div class="donut-legend">
+                    <div class="legend-item"><div class="legend-dot" style="background:#5B4AC4"></div>Mia — 5</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div>Jade — 4</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:var(--terra)"></div>Amara — 3</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#85C1A0"></div>Rania — 2</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:7px">
+              <div class="block" style="margin-bottom:0">
+                <div class="bhead"><div class="btype">Line — Over Time</div></div>
+                <div style="height:44px;display:flex;align-items:flex-end;gap:3px;padding-top:4px">
+                  <div style="flex:1;background:var(--blue);border-radius:2px 2px 0 0;height:18px"></div>
+                  <div style="flex:1;background:var(--blue);border-radius:2px 2px 0 0;height:26px"></div>
+                  <div style="flex:1;background:var(--blue);border-radius:2px 2px 0 0;height:32px"></div>
+                  <div style="flex:1;background:#2D7A47;border-radius:2px 2px 0 0;height:40px"></div>
+                  <div style="flex:1;background:#2D7A47;border-radius:2px 2px 0 0;height:44px"></div>
+                </div>
+              </div>
+              <div class="block" style="margin-bottom:0">
+                <div class="bhead"><div class="btype">Summary Count</div></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px">
+                  <div style="text-align:center"><div style="font-size:18px;font-weight:700;color:var(--blue)">22</div><div style="font-size:9px;color:var(--text-muted)">Open</div></div>
+                  <div style="text-align:center"><div style="font-size:18px;font-weight:700;color:#2D7A47">12</div><div style="font-size:9px;color:var(--text-muted)">Done</div></div>
+                  <div style="text-align:center"><div style="font-size:18px;font-weight:700;color:#C4600A">2</div><div style="font-size:9px;color:var(--text-muted)">Overdue</div></div>
+                  <div style="text-align:center"><div style="font-size:18px;font-weight:700;color:#E24B4A">6</div><div style="font-size:9px;color:var(--text-muted)">Urgent</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S5: PROJECT OVERVIEW -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split">
+      <div>
+        <div class="section-label">Step 5</div>
+        <h2>Every project has its own overview — <em>the same dashboard, zoomed into one project</em></h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Click Overview in any project's tab bar</div>
+              <div class="step-text">Every project has an Overview tab that's always there — you don't create it. Click it and you get the project-level version of the dashboard: open task count, Due Today, Due Soon, and Overdue cards — all scoped to that project only. Same format as the workspace dashboard, zoomed in to a single project.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">It also shows recent team comments from across the project</div>
+              <div class="step-text">Below the task cards, the project overview surfaces a comment feed — who said what, on which block, with a direct link. Use it as your project-level async standup. Before a team check-in, open the overview. You're oriented in 20 seconds without opening individual tabs.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Each task in the overview links directly to where it lives</div>
+              <div class="step-text">Click any task in the overview cards and you're taken to it in context — in its tab, in its block, with everything around it visible. The overview is a navigation layer, not a flat list. You're always one click away from the actual work.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="mcanvas" style="padding:13px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px">
+              <div>
+                <div style="font-size:12.5px;font-weight:600;color:var(--text)">Hydration Collection — Q2</div>
+                <div style="font-size:10px;color:var(--text-muted);margin-top:1px">9 open tasks · 3 comments today</div>
+              </div>
+              <span class="badge b-orange">In Progress</span>
+            </div>
+            <div class="ov-grid">
+              <div class="ov-card">
+                <div class="ov-title">Due Today</div>
+                <div class="ov-item"><div class="prio pu"></div><div class="ov-name">Shopify SKU check</div><div class="ov-tab">Shopify</div></div>
+                <div class="ov-item"><div class="prio pm"></div><div class="ov-name">Pre-launch audit</div><div class="ov-tab">Launch Day</div></div>
+              </div>
+              <div class="ov-card" style="border-color:#FEE8E0">
+                <div class="ov-title" style="color:#C4600A">Overdue</div>
+                <div class="ov-item"><div class="prio pu"></div><div class="ov-name" style="color:#C4600A">Hero images</div><div class="ov-tab">Campaign</div></div>
+                <div class="ov-item"><div class="prio pu"></div><div class="ov-name" style="color:#C4600A">SKUs to collection</div><div class="ov-tab">Shopify</div></div>
+              </div>
+              <div class="ov-card">
+                <div class="ov-title">Open Tasks</div>
+                <div class="ov-count">9</div>
+                <div class="ov-label">across 5 tabs</div>
+              </div>
+            </div>
+            <div class="block" style="margin-top:6px">
+              <div class="bhead"><div class="btype">Team Comments</div></div>
+              <div style="display:flex;align-items:flex-start;gap:6px;padding:5px 0;border-bottom:1px solid var(--border-light)">
+                <div class="avatar" style="background:#5B4AC4">MP</div>
+                <div><div style="font-size:10px;font-weight:500;color:var(--text)">Mia P. <span style="color:var(--text-muted);font-weight:400">· Hero Campaign Shot</span></div><div style="font-size:10px;color:var(--text-mid);margin-top:1px">v3 uploaded — crop fixed, background pulled warmer.</div></div>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:6px;padding:5px 0">
+                <div class="avatar" style="background:var(--blue)">JS</div>
+                <div><div style="font-size:10px;font-weight:500;color:var(--text)">Jade S. <span style="color:var(--text-muted);font-weight:400">· Shopify Setup</span></div><div style="font-size:10px;color:var(--text-mid);margin-top:1px">Collection page live in staging — need final inventory counts.</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section fade-up">
+  <div class="cta-inner">
+    <div class="cta-label">Get started</div>
+    <h2 class="cta-h">Build a dashboard that actually tells you what's going on.</h2>
+    <p class="cta-sub">Default cards from day one. Everything Table, instant charts, and quick links when you're ready to go deeper.</p>
+    <div class="cta-actions">
+      <a href="#" class="btn-white">Start free</a>
+      <a href="#" class="btn-ghost">Book a walkthrough →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible')})},{threshold:0.08})
+document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el))
+</script>
+</body>
+</html>

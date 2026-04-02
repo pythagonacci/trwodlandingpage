@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#FDFAF6;--cream-dark:#F5F0E8;--cream-darker:#EDE6D8;
+  --blue:#2A537A;--blue-light:#3D6E9E;--blue-pale:#EBF2F9;
+  --terra:#C4603A;--terra-pale:#FBF0EC;
+  --text:#1A1A18;--text-mid:#4A4A45;--text-muted:#8A8A82;
+  --border:#E2DBD0;--border-light:#EDE8E0;
+  --app-bg:#F8F5F0;--app-sidebar:#F0ECE5;--app-block:#FFFFFF;
+  --shadow-sm:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:0 4px 16px rgba(0,0,0,0.08),0 2px 6px rgba(0,0,0,0.04);
+  --shadow-lg:0 12px 40px rgba(0,0,0,0.10),0 4px 12px rgba(0,0,0,0.06);
+  --r:10px;--r-lg:16px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--text);line-height:1.6;overflow-x:hidden}
+
+nav{position:sticky;top:0;z-index:100;background:rgba(253,250,246,0.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-light);padding:0 48px;display:flex;align-items:center;justify-content:space-between;height:56px}
+.nav-logo{font-family:'Instrument Serif',serif;font-size:20px;color:var(--blue)}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{font-size:13.5px;color:var(--text-mid);text-decoration:none;transition:color 0.2s}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{background:var(--blue);color:#fff;font-size:13px;font-weight:500;padding:7px 16px;border-radius:7px;text-decoration:none}
+
+.hero{padding:80px 48px 56px;max-width:680px;margin:0 auto;text-align:center}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;background:var(--terra-pale);border:1px solid rgba(196,96,58,0.18);color:var(--terra);font-size:11.5px;font-weight:500;padding:5px 12px;border-radius:100px;margin-bottom:22px}
+.eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--terra)}
+h1{font-family:'Instrument Serif',serif;font-size:clamp(34px,5vw,52px);line-height:1.08;letter-spacing:-1px;color:var(--text);margin-bottom:16px;font-weight:400}
+h1 em{color:var(--blue);font-style:italic}
+.hero-sub{font-size:16px;color:var(--text-mid);max-width:480px;margin:0 auto 28px;font-weight:300;line-height:1.7}
+.hero-actions{display:flex;align-items:center;justify-content:center;gap:10px}
+.btn-primary{background:var(--blue);color:#fff;font-size:13.5px;font-weight:500;padding:11px 22px;border-radius:8px;text-decoration:none;transition:all 0.2s}
+.btn-primary:hover{background:var(--blue-light);transform:translateY(-1px)}
+.btn-secondary{color:var(--blue);font-size:13.5px;font-weight:500;padding:11px 22px;border-radius:8px;text-decoration:none;border:1.5px solid var(--blue);transition:all 0.2s}
+.btn-secondary:hover{background:var(--blue-pale)}
+
+.intro-strip{border-top:1px solid var(--border-light);border-bottom:1px solid var(--border-light);padding:28px 48px;background:var(--cream-dark)}
+.intro-strip-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:40px}
+.intro-label{font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--terra);white-space:nowrap}
+.intro-text{font-size:14.5px;color:var(--text-mid);font-weight:300;line-height:1.7}
+.intro-text strong{color:var(--text);font-weight:500}
+
+.section{padding:72px 48px;border-top:1px solid var(--border-light)}
+.section-inner{max-width:1080px;margin:0 auto}
+.section-split{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.section-split.rev{direction:rtl}.section-split.rev>*{direction:ltr}
+
+.section-label{font-size:10.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--terra);margin-bottom:10px}
+h2{font-family:'Instrument Serif',serif;font-size:clamp(22px,2.8vw,32px);line-height:1.18;letter-spacing:-0.3px;color:var(--text);margin-bottom:22px;font-weight:400}
+h2 em{color:var(--blue);font-style:italic}
+
+/* STEPS */
+.steps{display:flex;flex-direction:column;gap:0}
+.step{display:grid;grid-template-columns:28px 1fr;gap:14px;padding-bottom:20px;position:relative}
+.step:last-child{padding-bottom:0}
+.step:not(:last-child)::before{content:'';position:absolute;left:13px;top:28px;bottom:0;width:1px;background:var(--border)}
+.step-num{width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1}
+.step-body{}
+.step-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:5px;padding-top:4px}
+.step-text{font-size:14px;color:var(--text-mid);line-height:1.75;font-weight:300}
+.step-text strong{color:var(--text);font-weight:500}
+.step-text code{font-family:monospace;font-size:12.5px;background:var(--blue-pale);color:var(--blue);padding:2px 6px;border-radius:4px}
+
+.callout{background:var(--blue-pale);border:1px solid rgba(42,83,122,0.12);border-radius:8px;padding:12px 14px;margin-top:20px;font-size:13.5px;color:var(--blue);line-height:1.65}
+.callout strong{font-weight:600}
+
+/* MOCKUP */
+.mockup{background:var(--app-bg);border-radius:var(--r-lg);border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow-lg)}
+.chrome{background:var(--app-sidebar);border-bottom:1px solid var(--border);padding:9px 12px;display:flex;align-items:center;gap:7px}
+.dot{width:9px;height:9px;border-radius:50%}
+.dot.r{background:#FF6057}.dot.y{background:#FFBD2E}.dot.g{background:#28CA41}
+.mbody{display:flex}
+.msidebar{width:158px;background:var(--app-sidebar);border-right:1px solid var(--border);padding:14px 0;flex-shrink:0}
+.s-section{padding:0 10px;margin-bottom:16px}
+.s-label{font-size:9.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:7px;padding:0 4px}
+.s-item{padding:5px 7px;border-radius:5px;font-size:11.5px;color:var(--text-mid);cursor:pointer}
+.s-item.active{background:var(--cream-dark);color:var(--text);font-weight:500}
+.mcanvas{flex:1;padding:18px;background:var(--cream);overflow:hidden}
+
+.proj-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:6px;letter-spacing:-0.2px}
+.meta{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+.badge{font-size:10px;font-weight:500;padding:3px 8px;border-radius:100px;display:inline-flex;align-items:center;white-space:nowrap}
+.b-blue{background:var(--blue-pale);color:var(--blue)}
+.b-terra{background:var(--terra-pale);color:var(--terra)}
+.b-green{background:#EBF5EE;color:#2D7A47}
+.b-orange{background:#FEF3EC;color:#C4600A}
+.b-gray{background:#F2F0EC;color:var(--text-mid)}
+.b-purple{background:#F0EEFB;color:#5B4AC4}
+
+.tabs{display:flex;gap:1px;border-bottom:1px solid var(--border-light);margin-bottom:14px;overflow-x:auto}
+.tab{font-size:11px;color:var(--text-muted);padding:6px 11px;border-radius:5px 5px 0 0;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;flex-shrink:0}
+.tab.active{color:var(--blue);font-weight:500;border-bottom-color:var(--blue)}
+
+.block{background:var(--app-block);border:1px solid var(--border-light);border-radius:var(--r);padding:11px 13px;margin-bottom:7px;box-shadow:var(--shadow-sm)}
+.block:last-child{margin-bottom:0}
+.bhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.btype{font-size:9px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-muted)}
+.ai-tag{font-size:9px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;background:var(--blue-pale);color:var(--blue);padding:2px 7px;border-radius:100px}
+
+.task{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid var(--border-light);font-size:11px}
+.task:last-child{border-bottom:none;padding-bottom:0}
+.check{width:13px;height:13px;border-radius:3px;border:1.5px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.check.done{background:var(--blue);border-color:var(--blue)}
+.check.done::after{content:'';width:6px;height:3.5px;border-left:1.5px solid #fff;border-bottom:1.5px solid #fff;transform:rotate(-45deg) translateY(-1px);display:block}
+.task-name{flex:1;color:var(--text)}
+.task-name.done{color:var(--text-muted);text-decoration:line-through}
+.task-due{font-size:10px;color:var(--text-muted)}
+.task-due.late{color:#C4600A;font-weight:500}
+.prio{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.pu{background:#E24B4A}.ph{background:#E8856A}.pm{background:#EFC227}.pl{background:#85C1A0}
+
+.tl-months{display:flex;font-size:9px;color:var(--text-muted);font-weight:500;border-bottom:1px solid var(--border-light);padding-bottom:4px;margin-bottom:6px}
+.tl-m{flex:1;text-align:center}
+.tl-row{display:grid;grid-template-columns:82px 1fr;align-items:center;gap:6px;margin-bottom:4px}
+.tl-label{font-size:10px;color:var(--text-mid);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tl-track{position:relative;height:16px;border-radius:3px;background:var(--cream-dark)}
+.tl-bar{position:absolute;height:100%;border-radius:3px;display:flex;align-items:center;padding:0 6px}
+.tl-text{font-size:9px;color:#fff;font-weight:500;white-space:nowrap}
+.tb{background:var(--blue)}.tt{background:var(--terra)}.tg{background:#2D7A47}.tp{background:#5B4AC4}.ta{background:#C48A1A}
+
+.file-item{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:5px;background:var(--cream);border:1px solid var(--border-light);margin-bottom:4px;font-size:11px}
+.file-item:last-child{margin-bottom:0}
+.ficon{width:24px;height:24px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:8.5px;font-weight:700;flex-shrink:0}
+.ficon.pdf{background:#FEF0EE;color:var(--terra)}
+.ficon.fig{background:#EEF2FF;color:#5B4AC4}
+.file-name{flex:1;color:var(--text)}
+.file-size{font-size:10px;color:var(--text-muted)}
+
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:4px}
+.gimg{aspect-ratio:4/3;border-radius:4px}
+
+.embed-frame{background:var(--cream-dark);border-radius:6px;padding:10px;display:flex;align-items:center;gap:9px;border:1px solid var(--border-light)}
+.embed-title{font-size:11.5px;font-weight:500;color:var(--text);margin-bottom:1px}
+.embed-url{font-size:10px;color:var(--text-muted)}
+
+.board{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.bcol-h{font-size:9px;font-weight:600;color:var(--text-muted);letter-spacing:0.7px;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
+.bcol-count{font-size:9px;background:var(--cream-dark);color:var(--text-muted);width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.bcard{background:var(--app-block);border:1px solid var(--border-light);border-radius:5px;padding:7px 8px;margin-bottom:4px;box-shadow:var(--shadow-sm)}
+.bcard-title{font-size:11px;font-weight:500;color:var(--text);margin-bottom:4px}
+.bcard-meta{display:flex;gap:3px;flex-wrap:wrap}
+
+.ov-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:8px}
+.ov-card{background:var(--app-block);border:1px solid var(--border-light);border-radius:var(--r);padding:10px;box-shadow:var(--shadow-sm)}
+.ov-title{font-size:9px;font-weight:600;letter-spacing:0.7px;text-transform:uppercase;color:var(--text-muted);margin-bottom:7px}
+.ov-item{display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid var(--border-light);font-size:10.5px}
+.ov-item:last-child{border-bottom:none}
+.ov-name{flex:1;color:var(--text)}
+.ov-tab{font-size:9px;color:var(--text-muted)}
+.ov-count{font-size:18px;font-weight:600;color:var(--blue);margin-bottom:1px}
+.ov-label{font-size:10px;color:var(--text-muted)}
+
+.img-mock{position:relative;aspect-ratio:16/9;background:linear-gradient(135deg,#F0EAE0,#E5DDD0,#D8CEC0);display:flex;align-items:center;justify-content:center;border-radius:6px;overflow:hidden}
+.pin{position:absolute;width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;box-shadow:0 2px 5px rgba(0,0,0,0.2);z-index:2}
+
+.cpanel{width:180px;border-left:1px solid var(--border-light);padding:11px;background:var(--cream);flex-shrink:0}
+.cpanel-title{font-size:9px;font-weight:600;color:var(--text-muted);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:9px}
+.comment{margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid var(--border-light)}
+.comment:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.c-author{display:flex;align-items:center;gap:5px;margin-bottom:3px}
+.c-avatar{width:17px;height:17px;border-radius:50%;font-size:8px;font-weight:600;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.c-name{font-size:10px;font-weight:500;color:var(--text)}
+.c-time{font-size:9px;color:var(--text-muted);margin-left:auto}
+.c-text{font-size:10.5px;color:var(--text-mid);line-height:1.5}
+.c-mention{color:var(--blue);font-weight:500}
+.c-ext{font-size:9px;font-weight:500;color:#2D7A47;background:#EBF5EE;padding:2px 6px;border-radius:100px;display:inline-block;margin-top:3px}
+
+.agg-board{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.agg-h{font-size:9px;font-weight:600;color:var(--text-muted);letter-spacing:0.7px;text-transform:uppercase;margin-bottom:6px;padding-bottom:5px;border-bottom:1px solid var(--border-light)}
+.agg-card{background:var(--app-block);border:1px solid var(--border-light);border-radius:6px;padding:8px;margin-bottom:4px;box-shadow:var(--shadow-sm)}
+.agg-name{font-size:11px;font-weight:500;color:var(--text);margin-bottom:3px}
+.agg-from{font-size:9.5px;color:var(--text-muted);margin-bottom:3px;display:flex;align-items:center;gap:3px}
+.agg-dot{width:4px;height:4px;border-radius:50%;background:var(--blue-light);flex-shrink:0}
+
+.shopify-grid{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:start}
+.shopify-img{width:64px;height:64px;border-radius:6px;background:var(--cream-darker);border:1px solid var(--border-light);display:flex;align-items:center;justify-content:center}
+.shopify-name{font-size:12.5px;font-weight:600;color:var(--text);margin-bottom:4px}
+.shopify-stats{display:flex;gap:12px;margin-top:7px}
+.stat-val{font-size:14px;font-weight:600;color:var(--blue)}
+.stat-label{font-size:9px;color:var(--text-muted)}
+
+.cta-section{background:var(--blue);padding:72px 48px;text-align:center}
+.cta-inner{max-width:500px;margin:0 auto}
+.cta-label{font-size:10.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:14px}
+.cta-h{font-family:'Instrument Serif',serif;font-size:clamp(24px,3.5vw,38px);color:#fff;line-height:1.18;letter-spacing:-0.4px;margin-bottom:12px;font-weight:400}
+.cta-sub{font-size:15px;color:rgba(255,255,255,0.65);margin-bottom:26px;font-weight:300}
+.cta-actions{display:flex;align-items:center;justify-content:center;gap:10px}
+.btn-white{background:#fff;color:var(--blue);font-size:13.5px;font-weight:500;padding:11px 22px;border-radius:8px;text-decoration:none}
+.btn-ghost{color:#fff;font-size:13.5px;padding:11px 22px;border-radius:8px;text-decoration:none;border:1.5px solid rgba(255,255,255,0.35)}
+
+.fade-up{opacity:0;transform:translateY(18px);transition:opacity 0.5s ease,transform 0.5s ease}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+@media(max-width:860px){
+  .section-split{grid-template-columns:1fr}
+  .section-split.rev{direction:ltr}
+  .msidebar{display:none}
+  nav .nav-links{display:none}
+  .intro-strip-inner{flex-direction:column;gap:10px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Trak</div>
+  <div class="nav-links">
+    <a href="#">Product</a><a href="#">Use Cases</a><a href="#">Templates</a><a href="#">Pricing</a>
+  </div>
+  <a href="#" class="nav-cta">Start free →</a>
+</nav>
+
+<section class="hero fade-up">
+  <div class="eyebrow"><span class="eyebrow-dot"></span>Product Development & Design</div>
+  <h1>How to run <em>product development</em> in Trak</h1>
+  <p class="hero-sub">A step-by-step walkthrough of how a physical product team sets up and manages development — from first brief to launch-ready.</p>
+  <div class="hero-actions">
+    <a href="#" class="btn-primary">Start free</a>
+    <a href="#" class="btn-secondary">Book a walkthrough</a>
+  </div>
+</section>
+
+<div class="intro-strip fade-up">
+  <div class="intro-strip-inner">
+    <div class="intro-label">How it works</div>
+    <div class="intro-text">You create <strong>one project per product</strong>, connect it to Shopify, break it into tabs by phase, and fill each tab with the blocks that phase actually needs — briefs, tasks, files, timelines, Figma embeds. Everything your team needs to develop a product lives in that one project.</div>
+  </div>
+</div>
+
+<!-- S1 -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split">
+      <div>
+        <div class="section-label">Step 1</div>
+        <h2>Create a project and connect it to your <em>Shopify product</em></h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Go to Projects and create a new project</div>
+              <div class="step-text">Name it after the product. Set a status — <strong>In Progress</strong> — a due date, a priority, and tags like <strong>skincare</strong> or <strong>serum</strong>. These propagate to your dashboard and calendar automatically.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Attach it to the Shopify product</div>
+              <div class="step-text">If the product already exists in your store — even as a draft — connect it from your product library. Trak pulls in the name, images, variant structure, and store metadata. You can also create the project directly from the product page and Trak does this automatically.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">The Shopify block appears on your first tab</div>
+              <div class="step-text">It shows live inventory, units sold, variant count, and price — so your ops context lives right next to your development work from the start.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="msidebar">
+            <div class="s-section">
+              <div class="s-label">Projects</div>
+              <div class="s-item active">Vitamin C Serum</div>
+              <div class="s-item">Moisturizer SPF 30</div>
+              <div class="s-item">Lip Treatment</div>
+            </div>
+          </div>
+          <div class="mcanvas">
+            <div class="proj-title">Vitamin C Serum — 30ml</div>
+            <div class="meta">
+              <span class="badge b-orange">⬤ In Progress</span>
+              <span class="badge b-blue">Due Apr 14</span>
+              <span class="badge b-terra">Urgent</span>
+              <span class="badge b-gray">skincare · serum</span>
+            </div>
+            <div class="block">
+              <div class="bhead"><div class="btype">Shopify Product</div><span class="badge b-green">Active</span></div>
+              <div class="shopify-grid">
+                <div class="shopify-img">
+                  <svg width="26" height="26" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="6" fill="#EDE6D8"/><path d="M16 8C12.69 8 10 10.69 10 14c0 5 6 10 6 10s6-5 6-10c0-3.31-2.69-6-6-6zm0 8a2 2 0 110-4 2 2 0 010 4z" fill="#8A8A82"/></svg>
+                </div>
+                <div>
+                  <div class="shopify-name">Vitamin C Serum 30ml</div>
+                  <div style="display:flex;gap:4px;flex-wrap:wrap"><span class="badge b-gray">3 variants</span><span class="badge b-blue">beautyco.myshopify.com</span></div>
+                  <div class="shopify-stats">
+                    <div><div class="stat-val">248</div><div class="stat-label">Units sold</div></div>
+                    <div><div class="stat-val">82</div><div class="stat-label">In stock</div></div>
+                    <div><div class="stat-val">$38</div><div class="stat-label">Price</div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S2 -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split rev">
+      <div>
+        <div class="section-label">Step 2</div>
+        <h2>Create a tab for <em>each phase</em> of your process</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Hit "New tab" and name it after a phase</div>
+              <div class="step-text">Start with your first phase — <strong>Brief & Concept</strong>. Then add <strong>Formulation</strong>, <strong>Packaging & Design</strong>, <strong>Samples & Review</strong>, <strong>Launch Ready</strong>. Each tab is a separate canvas. Your formulator works in Formulation, your creative director in Packaging — same project, separate workspaces.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Add subtabs if a phase gets complex</div>
+              <div class="step-text">Right-click any tab and select <strong>Add subtab</strong>. If Packaging needs its own sub-pages — Dieline and Mood Board, for example — nest them under it. The sidebar updates automatically so nothing gets buried.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Each tab starts blank — you build it with blocks</div>
+              <div class="step-text">Click the <strong>+</strong> on any tab to add a block. Text, tasks, files, timelines, galleries, embeds — choose what that phase actually needs. The next few steps show you exactly what to add for product development.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="mcanvas" style="padding:16px 14px 0">
+            <div class="proj-title" style="margin-bottom:7px">Vitamin C Serum — 30ml</div>
+            <div class="tabs">
+              <div class="tab">Overview</div>
+              <div class="tab active">Brief & Concept</div>
+              <div class="tab">Formulation</div>
+              <div class="tab">Packaging & Design</div>
+              <div class="tab">Samples</div>
+            </div>
+            <div style="padding-bottom:14px">
+              <div class="block">
+                <div class="bhead"><div class="btype">Text — Product Vision</div></div>
+                <div style="font-size:11.5px;color:var(--text-mid);line-height:1.7">
+                  <strong style="color:var(--text);display:block;margin-bottom:4px">Vitamin C Serum — Brief</strong>
+                  High-potency Vit C targeting hyperpigmentation, skin types 2–4. 15% L-Ascorbic acid, ferulic acid stabilizer, HA base. Lightweight, fast-absorbing, no tackiness.
+                </div>
+              </div>
+              <div class="block" style="margin-top:7px">
+                <div class="bhead"><div class="btype">Tasks — Concept Phase</div><span class="badge b-blue">4 open</span></div>
+                <div class="task"><div class="check done"></div><div class="prio pl"></div><div class="task-name done">Finalize actives with formulator</div><div class="task-due">Mar 12</div></div>
+                <div class="task"><div class="check"></div><div class="prio pu"></div><div class="task-name">Submit brief to lab</div><div class="task-due late">Mar 18 ↑</div></div>
+                <div class="task"><div class="check"></div><div class="prio pm"></div><div class="task-name">Confirm regulatory flags</div><div class="task-due">Mar 24</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S3 -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split">
+      <div>
+        <div class="section-label">Step 3</div>
+        <h2>Add your files, Figma comps, and <em>visual assets</em> to the right tab</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">On Formulation — add a file block for lab documents</div>
+              <div class="step-text">Click <strong>+ → File block</strong>. Drag in your lab results, supplier specs, and formula briefs. You can attach multiple files to one block — round one results, round two, revised brief — all versioned in place. No Drive folder to maintain separately.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">On Packaging & Design — embed your Figma comp</div>
+              <div class="step-text">Click <strong>+ → Embed block</strong> and paste the Figma link. The live frame renders inside the tab. Your team reviews the actual design without switching tools — and when your designer updates it in Figma, Trak reflects it automatically.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Add a gallery block for mood boards and visual references</div>
+              <div class="step-text">Click <strong>+ → Gallery block</strong> and upload your reference images. Texture inspiration, material swatches, competitive packaging — all visible in the canvas next to the brief they're informing.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="mcanvas">
+            <div class="tabs" style="margin-bottom:12px">
+              <div class="tab">Brief & Concept</div>
+              <div class="tab active">Formulation</div>
+              <div class="tab">Packaging & Design</div>
+            </div>
+            <div class="block">
+              <div class="bhead"><div class="btype">Files — Lab Results</div></div>
+              <div class="file-item"><div class="ficon pdf">PDF</div><div class="file-name">Lab Results — Round 1.pdf</div><div class="file-size">2.4 MB</div></div>
+              <div class="file-item"><div class="ficon pdf">PDF</div><div class="file-name">Lab Results — Round 2.pdf</div><div class="file-size">2.1 MB</div></div>
+              <div class="file-item"><div class="ficon pdf">PDF</div><div class="file-name">Revised Formula Brief v3.pdf</div><div class="file-size">840 KB</div></div>
+            </div>
+            <div class="block" style="margin-top:7px">
+              <div class="bhead"><div class="btype">Embed — Figma</div><span class="badge b-purple">Live</span></div>
+              <div class="embed-frame">
+                <div style="width:26px;height:26px;border-radius:5px;background:#fff;border:1px solid var(--border-light);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                  <svg width="14" height="14" viewBox="0 0 38 57" fill="none"><path d="M19 28.5A9.5 9.5 0 1028.5 19 9.5 9.5 0 0019 28.5z" fill="#1ABCFE"/><path d="M9.5 47.5A9.5 9.5 0 1019 38V47.5z" fill="#0ACF83"/><path d="M9.5 19A9.5 9.5 0 1019 9.5H9.5z" fill="#FF7262"/><path d="M9.5 38A9.5 9.5 0 1019 28.5H9.5z" fill="#F24E1E"/><path d="M9.5 9.5A9.5 9.5 0 1019 19H9.5z" fill="#FF7262"/></svg>
+                </div>
+                <div><div class="embed-title">Packaging Comps v2 — 4 frames</div><div class="embed-url">figma.com/file/Vc3x…</div></div>
+              </div>
+            </div>
+            <div class="block" style="margin-top:7px">
+              <div class="bhead"><div class="btype">Gallery — Mood Board</div></div>
+              <div class="gallery">
+                <div class="gimg" style="background:linear-gradient(135deg,#F5E6D3,#E8C9A8)"></div>
+                <div class="gimg" style="background:linear-gradient(135deg,#D4E8D0,#A8C8A0)"></div>
+                <div class="gimg" style="background:linear-gradient(135deg,#E8D4F0,#C8A8E0)"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S4 -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split rev">
+      <div>
+        <div class="section-label">Step 4</div>
+        <h2>Add a task block to each tab to <em>track phase-specific actions</em></h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Click + → Task block on each tab</div>
+              <div class="step-text">On Formulation, add tasks for lab-related actions: submit brief, review stability results, approve revised formula, send to regulatory. On Packaging, add tasks for design and print steps. Set an owner, due date, and priority on each task inline.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Switch to board view to see status at a glance</div>
+              <div class="step-text">Toggle the task block to <strong>board view</strong> from the block menu. Tasks sort into columns — Not Started, In Review, Done — automatically based on their status. No manual drag needed.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Check the project overview for the full picture</div>
+              <div class="step-text">Click <strong>Overview</strong> in the tab bar. Every task across every tab surfaces here — due today, due this week, overdue — each linking back to the exact tab and block it lives in.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="mcanvas" style="padding:12px">
+            <div class="block" style="margin-bottom:7px">
+              <div class="bhead"><div class="btype">Tasks — Board View</div></div>
+              <div class="board">
+                <div>
+                  <div class="bcol-h">Not Started<div class="bcol-count">2</div></div>
+                  <div class="bcard"><div class="bcard-title">Submit dieline to printer</div><div class="bcard-meta"><span class="badge b-orange">Urgent</span><span class="badge b-gray">packaging</span></div></div>
+                  <div class="bcard"><div class="bcard-title">Confirm MOQ with supplier</div><div class="bcard-meta"><span class="badge b-gray">Med</span></div></div>
+                </div>
+                <div>
+                  <div class="bcol-h">In Review<div class="bcol-count">2</div></div>
+                  <div class="bcard"><div class="bcard-title">Stability test results</div><div class="bcard-meta"><span class="badge b-blue">formulation</span></div></div>
+                  <div class="bcard"><div class="bcard-title">Packaging comp v2</div><div class="bcard-meta"><span class="badge b-purple">design</span></div></div>
+                </div>
+                <div>
+                  <div class="bcol-h">Done<div class="bcol-count">3</div></div>
+                  <div class="bcard"><div class="bcard-title">Finalize actives list</div><div class="bcard-meta"><span class="badge b-green">Done</span></div></div>
+                  <div class="bcard"><div class="bcard-title">Submit brief to lab</div><div class="bcard-meta"><span class="badge b-green">Done</span></div></div>
+                </div>
+              </div>
+            </div>
+            <div class="ov-grid">
+              <div class="ov-card"><div class="ov-title">Due Today</div><div class="ov-item"><div class="prio pu"></div><div class="ov-name">Send revised brief</div><div class="ov-tab">Formulation</div></div></div>
+              <div class="ov-card"><div class="ov-title">Overdue</div><div class="ov-item"><div class="prio ph"></div><div class="ov-name" style="color:#C4600A">Approve dieline</div><div class="ov-tab">Packaging</div></div></div>
+              <div class="ov-card"><div class="ov-title">Open Tasks</div><div class="ov-count">8</div><div class="ov-label">across 4 tabs</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S5 -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split">
+      <div>
+        <div class="section-label">Step 5</div>
+        <h2>Add a timeline block to map your <em>development schedule</em></h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Click + → Timeline block</div>
+              <div class="step-text">Add it to your project's main tab or a dedicated planning tab. Create a milestone for each phase — first lab submission, stability window, sample receipt, packaging approval, bulk production start.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Set dates and assign each milestone</div>
+              <div class="step-text">Click a milestone to set a start and end date, then assign it to the right person — your ops lead on lab milestones, your creative director on packaging, your supplier contact on production. The timeline visualizes the full schedule across all phases.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">It syncs to the workspace calendar automatically</div>
+              <div class="step-text">Every milestone shows up in the calendar the moment you create it. When a date moves, the calendar reflects it. No manual update, no "just checking — did the timeline change?"</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="mcanvas">
+            <div class="block">
+              <div class="bhead"><div class="btype">Timeline — Development Schedule</div></div>
+              <div class="tl-months"><div class="tl-m">Mar</div><div class="tl-m">Apr</div><div class="tl-m">May</div><div class="tl-m">Jun</div></div>
+              <div class="tl-row"><div class="tl-label">Lab Submission</div><div class="tl-track"><div class="tl-bar tb" style="left:0;width:20%"><div class="tl-text">R. Chen</div></div></div></div>
+              <div class="tl-row"><div class="tl-label">Stability Testing</div><div class="tl-track"><div class="tl-bar tt" style="left:18%;width:28%"><div class="tl-text">Lab ↔ Ops</div></div></div></div>
+              <div class="tl-row"><div class="tl-label">Packaging Design</div><div class="tl-track"><div class="tl-bar tp" style="left:20%;width:30%"><div class="tl-text">M. Park</div></div></div></div>
+              <div class="tl-row"><div class="tl-label">Sample Review</div><div class="tl-track"><div class="tl-bar tg" style="left:48%;width:20%"><div class="tl-text">Full team</div></div></div></div>
+              <div class="tl-row"><div class="tl-label">Bulk Production</div><div class="tl-track"><div class="tl-bar ta" style="left:70%;width:28%"><div class="tl-text">Supplier</div></div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S6 -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split rev">
+      <div>
+        <div class="section-label">Step 6</div>
+        <h2>Review designs and files by <em>commenting directly on the block</em></h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Open the comment panel on any block</div>
+              <div class="step-text">Hover over any block and click the comment icon in the toolbar. The comment panel opens alongside the block. Leave feedback pinned to exactly what you're looking at — a packaging mockup, a lab result PDF, a mood board image.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Use @ to pull a teammate into the thread</div>
+              <div class="step-text">Type <code>@name</code> in any comment. They get a notification that links directly to the block — not a Slack message saying "can you check the packaging thing." They land in the right context immediately.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Thread and resolve comments as the work moves forward</div>
+              <div class="step-text">Reply inline to create a thread. When feedback is addressed, resolve the comment. The full review history stays attached to the block — so two weeks later you can see exactly what was flagged, who responded, and what changed.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="mcanvas" style="padding:12px">
+            <div class="block">
+              <div class="bhead"><div class="btype">Image — Packaging Comp v2</div></div>
+              <div class="img-mock" style="height:120px">
+                <div style="width:46px;height:72px;background:rgba(255,255,255,0.6);border-radius:3px;border:1px solid rgba(0,0,0,0.1);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px">
+                  <div style="width:28px;height:3px;background:var(--terra);border-radius:2px"></div>
+                  <div style="width:20px;height:2px;background:var(--text-muted);border-radius:2px;opacity:0.4"></div>
+                  <div style="width:24px;height:2px;background:var(--text-muted);border-radius:2px;opacity:0.3"></div>
+                </div>
+                <div class="pin" style="background:var(--terra);top:16%;left:30%">1</div>
+                <div class="pin" style="background:var(--blue);bottom:20%;right:20%">2</div>
+              </div>
+            </div>
+          </div>
+          <div class="cpanel">
+            <div class="cpanel-title">Comments</div>
+            <div class="comment">
+              <div class="c-author"><div class="c-avatar" style="background:var(--terra)">JS</div><div class="c-name">Jade S.</div><div class="c-time">2h</div></div>
+              <div class="c-text">Logo too small — needs more breathing room at top. Bump 15%?</div>
+            </div>
+            <div class="comment">
+              <div class="c-author"><div class="c-avatar" style="background:var(--blue)">MP</div><div class="c-name">Mia P.</div><div class="c-time">1h</div></div>
+              <div class="c-text"><span class="c-mention">@Jade</span> agreed — ingredient font is 7pt, too small for compliance. Revising now.</div>
+            </div>
+            <div class="comment">
+              <div class="c-author"><div class="c-avatar" style="background:#2D7A47">EX</div><div class="c-name">External</div><div class="c-time">30m</div></div>
+              <div class="c-text">Colour approved on our end. Proceed with proof.</div>
+              <div class="c-ext">Client feedback</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S7 -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split">
+      <div>
+        <div class="section-label">Step 7</div>
+        <h2>Share specific tabs with suppliers or founders using a <em>Magic Link</em></h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Turn on the client page from the project header</div>
+              <div class="step-text">Click the share toggle in the project header. This enables the public client view. Nothing is visible yet — you choose exactly which tabs to expose in the next step.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Mark specific tabs as visible and set a client-facing title</div>
+              <div class="step-text">Right-click any tab and select <strong>Make public</strong>. Set a client-facing title if the internal name — "Packaging & Design" — doesn't make sense for your supplier. They'll only see the tabs you've explicitly made public.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Copy the Magic Link and send it</div>
+              <div class="step-text">No login required. They see a clean view of just those tabs — your brief, your Figma embed, your files. They leave comments directly on the page. Those comments appear in your project labeled as <strong>external feedback</strong>, separate from your internal thread.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div style="background:var(--cream);padding:16px">
+          <div style="background:#fff;border:1px solid var(--border-light);border-radius:9px;padding:16px;box-shadow:var(--shadow-md)">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--border-light)">
+              <div style="width:30px;height:30px;background:var(--blue);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;font-size:14px;color:#fff;flex-shrink:0">T</div>
+              <div>
+                <div style="font-size:12.5px;font-weight:600;color:var(--text)">Vitamin C Serum — Packaging Review</div>
+                <div style="font-size:10px;color:var(--text-muted)">Shared by beautyco · 2 tabs visible</div>
+              </div>
+            </div>
+            <div class="tabs" style="margin-bottom:12px">
+              <div class="tab active">Packaging Direction</div>
+              <div class="tab">Final Comps</div>
+            </div>
+            <div class="block" style="margin-bottom:7px">
+              <div class="bhead"><div class="btype">Text — Brief for Review</div></div>
+              <div style="font-size:11px;color:var(--text-mid);line-height:1.65">Minimalist direction. Clean sans type, terracotta accent. Frosted glass dropper. Please review and comment below.</div>
+            </div>
+            <div class="block">
+              <div class="bhead"><div class="btype">Files</div></div>
+              <div class="file-item"><div class="ficon fig">Fig</div><div class="file-name">Packaging Comp v2 — Final</div><div class="file-size">View only</div></div>
+            </div>
+            <div style="margin-top:9px;padding:8px 10px;background:var(--cream);border-radius:6px;border:1px solid var(--border-light);display:flex;align-items:center;gap:6px">
+              <div style="font-size:11px;color:var(--text-muted);flex:1">Leave a comment…</div>
+              <div style="font-size:10.5px;font-weight:500;color:var(--blue)">Send</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S8 -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split rev">
+      <div>
+        <div class="section-label">Step 8</div>
+        <h2>Use AI to <em>build blocks, edit content, and search</em> across your project</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Hit ⌘K and describe what you need built</div>
+              <div class="step-text">Type something like <strong>"set up a packaging review tab with a brief section, approval task list, and a two-week timeline."</strong> Trak creates the blocks on the canvas — a text block, a task block, a timeline block — ready to fill in. Not a suggestion. The blocks are there.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Select any block to edit it with AI</div>
+              <div class="step-text">Click a block, open the AI panel, and ask it to rewrite — revise the formulation brief after a direction change, restructure a task list after a scope change, summarize a supplier PDF you've attached. Every AI edit is undoable from the block toolbar.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Use ⌘K to search the whole project conversationally</div>
+              <div class="step-text">Ask <strong>"what was the feedback on round two samples?"</strong> — Trak finds the comment, on the block, in the tab. You don't have to remember where it lives or open each tab to check.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="mcanvas" style="padding:12px">
+            <div style="background:var(--blue-pale);border:1px solid rgba(42,83,122,0.15);border-radius:6px;padding:8px 10px;margin-bottom:9px;font-size:11px;color:var(--blue)">
+              <span style="font-weight:600">⌘K</span>&nbsp; "Set up packaging review tab with brief, tasks, and timeline"
+            </div>
+            <div style="font-size:10px;color:var(--text-muted);margin-bottom:8px;display:flex;align-items:center;gap:5px">
+              <div style="width:13px;height:13px;background:var(--blue);border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="6" height="6" viewBox="0 0 10 10" fill="none"><path d="M5 1L6.5 4H9.5L7 6L8 9L5 7.5L2 9L3 6L0.5 4H3.5L5 1Z" fill="white"/></svg></div>
+              3 blocks created on Packaging &amp; Design
+            </div>
+            <div class="block" style="border-left:2px solid var(--blue);margin-bottom:5px">
+              <div class="bhead"><div class="btype">Text</div><div class="ai-tag">AI</div></div>
+              <div style="font-size:11px;color:var(--text-mid)"><strong style="color:var(--text)">Packaging Review Brief</strong><br>Direction, approval stages, and stakeholder contacts for V2 review cycle.</div>
+            </div>
+            <div class="block" style="border-left:2px solid var(--blue);margin-bottom:5px">
+              <div class="bhead"><div class="btype">Tasks</div><div class="ai-tag">AI</div></div>
+              <div class="task" style="padding:3px 0"><div class="check"></div><div class="prio pu"></div><div class="task-name" style="font-size:10.5px">Approve dieline from printer</div></div>
+              <div class="task" style="padding:3px 0"><div class="check"></div><div class="prio ph"></div><div class="task-name" style="font-size:10.5px">Internal sign-off on comps</div></div>
+              <div class="task" style="padding:3px 0;border-bottom:none"><div class="check"></div><div class="prio pm"></div><div class="task-name" style="font-size:10.5px">Share Magic Link with supplier</div></div>
+            </div>
+            <div class="block" style="border-left:2px solid var(--blue)">
+              <div class="bhead"><div class="btype">Timeline</div><div class="ai-tag">AI</div></div>
+              <div class="tl-row"><div class="tl-label">Internal review</div><div class="tl-track"><div class="tl-bar tb" style="left:0;width:35%"><div class="tl-text">3 days</div></div></div></div>
+              <div class="tl-row" style="margin-bottom:0"><div class="tl-label">Supplier review</div><div class="tl-track"><div class="tl-bar tt" style="left:33%;width:30%"><div class="tl-text">2 days</div></div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S9 -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-split">
+      <div>
+        <div class="section-label">Step 9</div>
+        <h2>Tag any block with a status — then <em>pull a cross-project view</em> instantly</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Open the properties panel on any block</div>
+              <div class="step-text">Click the properties icon on any block — a Figma embed, a file, a gallery, a task. Add a <strong>tag</strong> (like <code>packaging</code> or <code>regulatory</code>) and set a <strong>status</strong> (In Review, Approved, Needs Revision). This works on every block type, not just tasks.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Tag as you work — across every tab</div>
+              <div class="step-text">Your designer tags a Figma comp on Packaging as <strong>packaging · in review</strong>. Another comp on Concept gets <strong>concept · approved</strong>. A third on Samples gets <strong>sampling · needs revision</strong>. Three different tabs. Same tagging system.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Ask AI to aggregate by tag or status</div>
+              <div class="step-text">Hit <code>⌘K</code> and ask <strong>"Show me all Figma files and their current status."</strong> Trak pulls every matching block from across the project into a board — grouped by status, with the source tab shown on each card. No separate tracker needed. The tags you set while working become the view you use to manage.</div>
+            </div>
+          </div>
+        </div>
+        <div class="callout"><strong>Works for anything.</strong> Every file tagged <code>regulatory</code>. Every task tagged <code>supplier</code>. Every asset tagged <code>final</code>. Ask for it, get a live board — built from the work already in the canvas.</div>
+      </div>
+      <div class="mockup">
+        <div class="chrome"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="mbody">
+          <div class="mcanvas" style="padding:12px">
+            <div style="background:var(--blue-pale);border:1px solid rgba(42,83,122,0.15);border-radius:6px;padding:8px 10px;margin-bottom:9px;font-size:11px;color:var(--blue)">
+              <span style="font-weight:600">AI</span>&nbsp; "Show me all Figma files and their current status"
+            </div>
+            <div style="font-size:10px;color:var(--text-muted);margin-bottom:9px">4 Figma embeds across 3 tabs</div>
+            <div class="agg-board">
+              <div>
+                <div class="agg-h">In Review</div>
+                <div class="agg-card"><div class="agg-name">Packaging Comp v2</div><div class="agg-from"><div class="agg-dot"></div>Packaging &amp; Design</div><div style="display:flex;gap:3px"><span class="badge b-purple">packaging</span></div></div>
+                <div class="agg-card"><div class="agg-name">Label Typography</div><div class="agg-from"><div class="agg-dot"></div>Packaging &amp; Design</div><div style="display:flex;gap:3px"><span class="badge b-purple">packaging</span></div></div>
+              </div>
+              <div>
+                <div class="agg-h">Approved</div>
+                <div class="agg-card"><div class="agg-name">Brand Direction</div><div class="agg-from"><div class="agg-dot"></div>Brief &amp; Concept</div><div style="display:flex;gap:3px"><span class="badge b-green">concept</span></div></div>
+              </div>
+              <div>
+                <div class="agg-h">Needs Revision</div>
+                <div class="agg-card"><div class="agg-name">Sample Renders v1</div><div class="agg-from"><div class="agg-dot"></div>Samples &amp; Review</div><div style="display:flex;gap:3px"><span class="badge b-terra">sampling</span></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section fade-up">
+  <div class="cta-inner">
+    <div class="cta-label">Get started</div>
+    <h2 class="cta-h">Set up your first product project in Trak.</h2>
+    <p class="cta-sub">Takes about five minutes. Your team will have a shared canvas by end of day.</p>
+    <div class="cta-actions">
+      <a href="#" class="btn-white">Start free</a>
+      <a href="#" class="btn-ghost">Book a walkthrough →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible')})},{threshold:0.08})
+document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el))
+</script>
+</body>
+</html>
