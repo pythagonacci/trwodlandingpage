@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How Dusk tracks influencer seeding — Trak</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --cream: #FDFAF6;
+    --cream-dark: #F5F0E8;
+    --cream-border: #EAE4D9;
+    --blue: #2A537A;
+    --blue-light: #3D6E9E;
+    --blue-pale: #EBF1F7;
+    --terracotta: #C4714A;
+    --terracotta-pale: #F5EDE7;
+    --ink: #1A1714;
+    --ink-mid: #3D3830;
+    --ink-light: #6B6358;
+    --ink-faint: #9B9389;
+    --plum: #7A5A7A;
+    --plum-pale: #F2EDF2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 20px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(253,250,246,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--cream-border);
+  }
+  .nav-logo { font-weight: 500; font-size: 17px; color: var(--ink); letter-spacing: -0.02em; text-decoration: none; }
+  .nav-logo span { color: var(--blue); }
+  .nav-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--blue); color: white;
+    font-size: 13px; font-weight: 500; padding: 9px 20px;
+    border-radius: 6px; text-decoration: none; letter-spacing: -0.01em;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--blue-light); }
+
+  .hero {
+    padding: 160px 48px 100px; max-width: 860px; margin: 0 auto;
+    opacity: 0; animation: fadeUp 0.8s ease forwards; animation-delay: 0.1s;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-light); margin-bottom: 28px;
+  }
+  .hero-eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--plum); }
+  .hero h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(38px, 5vw, 58px); line-height: 1.1;
+    letter-spacing: -0.02em; margin-bottom: 28px;
+  }
+  .hero h1 em { font-style: italic; color: var(--blue); }
+  .hero-sub { font-size: 18px; line-height: 1.65; color: var(--ink-mid); font-weight: 300; max-width: 640px; margin-bottom: 48px; }
+  .hero-stats {
+    display: flex; border: 1px solid var(--cream-border); border-radius: 10px; overflow: hidden; background: white;
+    opacity: 0; animation: fadeUp 0.8s ease forwards; animation-delay: 0.3s;
+  }
+  .stat { flex: 1; padding: 24px 28px; border-right: 1px solid var(--cream-border); }
+  .stat:last-child { border-right: none; }
+  .stat-number { font-family: 'Instrument Serif', serif; font-size: 32px; letter-spacing: -0.02em; line-height: 1; margin-bottom: 6px; }
+  .stat-label { font-size: 12px; color: var(--ink-faint); }
+
+  .section { max-width: 860px; margin: 0 auto; padding: 80px 48px; }
+  .section + .section { padding-top: 0; }
+  .section-divider { max-width: 860px; margin: 0 auto; padding: 0 48px; border: none; border-top: 1px solid var(--cream-border); }
+  .section-label { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 20px; }
+  .section h2 { font-family: 'Instrument Serif', serif; font-size: clamp(26px,3.5vw,36px); line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 24px; }
+  .section h2 em { font-style: italic; color: var(--blue); }
+  .body-text { font-size: 16.5px; line-height: 1.75; color: var(--ink-mid); font-weight: 300; }
+  .body-text p + p { margin-top: 20px; }
+  .body-text strong { font-weight: 500; color: var(--ink); }
+
+  .pullquote { margin: 56px 0; padding: 36px 40px; background: var(--plum-pale); border-left: 3px solid var(--plum); border-radius: 0 8px 8px 0; }
+  .pullquote p { font-family: 'Instrument Serif', serif; font-size: clamp(20px,2.5vw,26px); line-height: 1.4; font-style: italic; letter-spacing: -0.01em; }
+
+  .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; }
+  .result-card { padding: 28px 32px; border: 1px solid var(--cream-border); border-radius: 10px; background: white; }
+  .result-card.featured { background: var(--blue); border-color: var(--blue); grid-column: 1/-1; display: flex; align-items: center; gap: 48px; padding: 36px 40px; }
+  .result-card.featured .result-number { color: white; font-size: clamp(52px,7vw,72px); white-space: nowrap; }
+  .result-card.featured .result-label { color: rgba(255,255,255,0.7); }
+  .result-card.featured .result-desc { font-size: 16px; color: rgba(255,255,255,0.85); font-weight: 300; line-height: 1.6; border-left: 1px solid rgba(255,255,255,0.2); padding-left: 48px; }
+  .result-number { font-family: 'Instrument Serif', serif; font-size: clamp(36px,4vw,48px); letter-spacing: -0.03em; line-height: 1; margin-bottom: 8px; }
+  .result-label { font-size: 12px; font-weight: 400; color: var(--ink-faint); letter-spacing: 0.03em; }
+
+  .cta-section { margin: 0 auto 100px; max-width: 860px; padding: 64px; background: var(--ink); border-radius: 16px; display: flex; align-items: center; justify-content: space-between; gap: 48px; }
+  .cta-text h2 { font-family: 'Instrument Serif', serif; font-size: clamp(24px,3vw,32px); color: white; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 12px; }
+  .cta-text h2 em { font-style: italic; color: #E8C84A; }
+  .cta-text p { font-size: 15px; color: rgba(255,255,255,0.6); font-weight: 300; line-height: 1.6; max-width: 380px; }
+  .cta-buttons { display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; }
+  .btn-primary { display: inline-flex; align-items: center; justify-content: center; background: white; color: var(--ink); font-size: 14px; font-weight: 500; padding: 13px 28px; border-radius: 8px; text-decoration: none; white-space: nowrap; transition: opacity 0.2s; }
+  .btn-primary:hover { opacity: 0.9; }
+  .btn-secondary { display: inline-flex; align-items: center; justify-content: center; background: transparent; color: rgba(255,255,255,0.7); font-size: 14px; padding: 13px 28px; border-radius: 8px; text-decoration: none; border: 1px solid rgba(255,255,255,0.15); white-space: nowrap; transition: all 0.2s; }
+  .btn-secondary:hover { border-color: rgba(255,255,255,0.35); color: white; }
+
+  footer { border-top: 1px solid var(--cream-border); padding: 32px 48px; display: flex; align-items: center; justify-content: space-between; }
+  footer p { font-size: 13px; color: var(--ink-faint); font-weight: 300; }
+  footer a { font-size: 13px; color: var(--blue); text-decoration: none; }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+  .animate-in { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .animate-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* =============================================
+     TRAK UI MOCKUP SYSTEM
+     ============================================= */
+
+  .mockup-section { max-width: 1000px; margin: 0 auto; padding: 0 48px 96px; }
+  .mockup-section-header { max-width: 860px; margin: 0 auto 56px; padding: 0 48px; }
+  .mockup-section-header .section-label { margin-bottom: 12px; }
+  .mockup-section-header h2 { font-family: 'Instrument Serif', serif; font-size: clamp(26px,3.5vw,36px); line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 16px; }
+  .mockup-section-header p { font-size: 16px; color: var(--ink-light); font-weight: 300; max-width: 560px; }
+
+  .mockup-wrapper { margin-bottom: 64px; }
+  .mockup-caption { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; gap: 24px; }
+  .mockup-tab-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 6px; }
+  .mockup-caption h3 { font-family: 'Instrument Serif', serif; font-size: 22px; letter-spacing: -0.01em; color: var(--ink); margin-bottom: 8px; }
+  .mockup-caption p { font-size: 14px; color: var(--ink-light); font-weight: 300; line-height: 1.6; max-width: 540px; }
+
+  .trak-window { border-radius: 12px; overflow: hidden; border: 1px solid #E2E2E0; box-shadow: 0 4px 32px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04); background: #ffffff; font-family: 'DM Sans', sans-serif; }
+
+  .trak-project-header { padding: 20px 24px 0; background: #fff; border-bottom: 1px solid #F0EFED; }
+  .trak-back-link { font-size: 12px; color: #8A8880; display: flex; align-items: center; gap: 4px; margin-bottom: 10px; }
+  .trak-project-title-row { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+  .trak-project-name { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; color: #1A1714; line-height: 1; text-transform: uppercase; }
+  .trak-header-actions { display: flex; align-items: center; gap: 8px; }
+  .trak-enable-public { display: flex; align-items: center; gap: 5px; font-size: 12px; color: #5A7A96; padding: 5px 10px; border: 1px solid #D0E0EC; border-radius: 5px; background: #F5F9FC; }
+  .trak-meta-row { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+  .trak-pill { display: inline-flex; align-items: center; font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 4px; }
+  .pill-in-progress { background: #EBF3FF; color: #2A537A; }
+  .pill-todo { background: #F2F2F0; color: #6B6B68; }
+  .pill-done { background: #E6F5EE; color: #2D7A4F; }
+  .pill-blocked { background: #FEE9E9; color: #B94040; }
+  .pill-urgent { background: #FEF3E7; color: #B06020; }
+  .pill-due { background: transparent; color: #8A8880; font-size: 11px; }
+
+  .trak-tabbar { display: flex; align-items: flex-end; gap: 0; padding: 0 24px; border-bottom: 1px solid #F0EFED; background: #fff; overflow: hidden; }
+  .trak-tab { padding: 10px 16px; font-size: 13px; color: #8A8880; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; display: flex; align-items: center; gap: 6px; white-space: nowrap; font-weight: 400; }
+  .trak-tab.active { color: #1A1714; border-bottom-color: #1A1714; font-weight: 500; }
+  .trak-tab-icon { font-size: 12px; opacity: 0.5; }
+  .trak-tab-add { padding: 10px 12px; font-size: 16px; color: #BBBAB8; margin-bottom: -1px; }
+
+  .trak-canvas { background: #fff; padding: 28px 24px; position: relative; }
+  .trak-right-icons { position: absolute; right: 0; top: 0; bottom: 0; width: 36px; background: #fff; border-left: 1px solid #F0EFED; display: flex; flex-direction: column; align-items: center; padding: 16px 0; gap: 16px; }
+  .trak-right-icon { width: 18px; height: 18px; opacity: 0.3; display: flex; align-items: center; justify-content: center; }
+
+  .trak-text-block .trak-block-inner { padding: 8px 4px; }
+  .trak-block-inner { border-radius: 6px; padding: 14px 16px; position: relative; }
+  .trak-text-content { font-size: 14px; color: #2A2926; line-height: 1.65; font-weight: 300; }
+  .trak-text-content strong { font-weight: 500; color: #1A1714; }
+
+  .trak-section-header { margin: 18px 0 8px; padding-right: 44px; }
+  .trak-section-header-title { font-size: 15px; font-weight: 600; color: #1A1714; letter-spacing: -0.01em; }
+  .trak-section-header-sub { font-size: 12px; color: #9B9389; margin-top: 2px; }
+
+  .trak-col-row { display: grid; gap: 8px; margin-bottom: 6px; padding-right: 44px; }
+  .trak-col-row.cols-2 { grid-template-columns: 1fr 1fr; }
+  .trak-col-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .trak-text-card { border: 1px solid #EFEFED; border-radius: 8px; padding: 14px 16px; }
+  .trak-text-card-label { font-size: 10px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: #9B9389; margin-bottom: 8px; }
+  .trak-text-card-content { font-size: 12.5px; line-height: 1.6; color: #2A2926; font-weight: 300; }
+  .trak-text-card-content strong { font-weight: 500; color: #1A1714; }
+
+  .trak-table-block { border: 1px solid #EFEFED; border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
+  .trak-table-header-bar { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: #FAFAF9; border-bottom: 1px solid #EFEFED; }
+  .trak-table-title { font-size: 13px; font-weight: 600; color: #1A1714; }
+  .trak-table-head { display: flex; padding: 7px 14px; background: #F5F5F3; border-bottom: 1px solid #EFEFED; }
+  .trak-table-head-cell { font-size: 10px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: #9B9389; }
+  .trak-table-row { display: flex; align-items: center; padding: 10px 14px; border-bottom: 1px solid #F5F5F3; }
+  .trak-table-row:last-child { border-bottom: none; }
+  .trak-table-row:hover { background: #FAFAF9; }
+  .trak-table-cell { font-size: 12px; color: #2A2926; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 8px; }
+  .trak-table-cell.muted { color: #9B9389; }
+  .trak-table-cell.bold { font-weight: 500; color: #1A1714; }
+
+  .trak-shopify-card { border: 1px solid #EFEFED; border-radius: 8px; overflow: hidden; }
+  .trak-shopify-img { height: 80px; background: linear-gradient(135deg, #F5F0E8, #EAE4D9); display: flex; align-items: center; justify-content: center; font-size: 24px; }
+  .trak-shopify-body { padding: 10px 12px; }
+  .trak-shopify-name { font-size: 12px; font-weight: 600; color: #1A1714; margin-bottom: 6px; line-height: 1.3; }
+  .trak-shopify-stats { display: flex; gap: 16px; }
+  .trak-shopify-stat-val { font-size: 14px; font-weight: 600; color: #1A1714; line-height: 1; }
+  .trak-shopify-stat-key { font-size: 10px; color: #9B9389; margin-top: 2px; }
+  .trak-shopify-status { margin-top: 8px; }
+
+  .trak-chart-block { border: 1px solid #EFEFED; border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
+  .trak-chart-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: #FAFAF9; border-bottom: 1px solid #EFEFED; }
+  .trak-chart-title { font-size: 13px; font-weight: 600; color: #1A1714; display: flex; align-items: center; gap: 8px; }
+  .trak-chart-badge { font-size: 10px; font-weight: 500; padding: 2px 7px; background: #EEF0FF; color: #5B63B7; border-radius: 4px; }
+  .trak-chart-body { padding: 20px; display: flex; gap: 24px; align-items: center; }
+  .trak-donut { width: 110px; height: 110px; flex-shrink: 0; }
+  .trak-chart-breakdown { flex: 1; }
+  .trak-breakdown-row { display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; border-radius: 5px; margin-bottom: 2px; }
+  .trak-breakdown-left { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #2A2926; }
+  .trak-breakdown-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .trak-breakdown-val { font-size: 12px; color: #6B6B68; }
+  .trak-chart-footer { padding: 10px 20px; border-top: 1px solid #F0EFED; display: flex; gap: 24px; }
+  .trak-chart-foot-label { font-size: 10px; color: #9B9389; }
+  .trak-chart-foot-val { font-size: 18px; font-weight: 600; color: #1A1714; line-height: 1.2; }
+
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .hero { padding: 120px 24px 72px; }
+    .hero-stats { flex-direction: column; }
+    .stat { border-right: none; border-bottom: 1px solid var(--cream-border); }
+    .stat:last-child { border-bottom: none; }
+    .section { padding: 56px 24px; }
+    .mockup-section { padding: 0 16px 64px; }
+    .mockup-section-header { padding: 0 24px; }
+    .trak-tabbar { overflow-x: auto; }
+    .trak-col-row.cols-2 { grid-template-columns: 1fr; }
+    .trak-col-row.cols-3 { grid-template-columns: 1fr 1fr; }
+    .results-grid { grid-template-columns: 1fr; }
+    .result-card.featured { flex-direction: column; gap: 24px; align-items: flex-start; }
+    .result-card.featured .result-desc { border-left: none; padding-left: 0; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 24px; }
+    .cta-section { flex-direction: column; padding: 48px 36px; gap: 32px; }
+    footer { padding: 24px; flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Tra<span>k</span></a>
+  <a href="#" class="nav-cta">Use this template →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">
+    <span class="hero-eyebrow-dot"></span>
+    Case Study · Influencer Seeding Template
+  </div>
+  <h1>How Dusk tracked influencer seeding for their <em>new body oil launch.</em></h1>
+  <p class="hero-sub">24 influencers. One tab. How Dusk kept their seeding campaign organized from address collected to post live.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-number">24</div><div class="stat-label">Influencers seeded</div></div>
+    <div class="stat"><div class="stat-number">18</div><div class="stat-label">Posts published</div></div>
+    <div class="stat"><div class="stat-number">2.1M</div><div class="stat-label">Combined reach</div></div>
+    <div class="stat"><div class="stat-number">1 tab</div><div class="stat-label">All of it</div></div>
+  </div>
+</section>
+
+<hr class="section-divider animate-in">
+
+<!-- SITUATION -->
+<section class="section animate-in">
+  <div class="section-label">The Campaign</div>
+  <h2>A new product. A seeding list. <em>The usual chaos.</em></h2>
+  <div class="body-text">
+    <p>Dusk is a body care brand. Their Amber Body Oil — dry oil, fast-absorbing, a warm amber and sandalwood scent — was their most-anticipated launch of the year. They had a list of 24 influencers they wanted to seed ahead of the launch date: a mix of mid-size lifestyle creators, a few skinfluencers, and two editors.</p>
+    <p>The process is always the same: collect addresses, confirm what each person is getting, ship, follow up, track whether they posted. The problem is that it's all happening at once and the information lives everywhere — DMs for addresses, email for follow-ups, a spreadsheet nobody remembers to update.</p>
+    <p>For the Amber Body Oil launch they ran the whole thing out of a single Trak tab.</p>
+  </div>
+</section>
+
+<hr class="section-divider animate-in">
+
+<!-- MOCKUPS -->
+<div class="mockup-section-header animate-in" style="padding-top: 80px;">
+  <div class="section-label">Inside the Project</div>
+  <h2 style="font-family:'Instrument Serif',serif;font-size:clamp(26px,3.5vw,36px);line-height:1.2;letter-spacing:-0.02em;margin-bottom:16px;">Two tabs. That's it.</h2>
+  <p style="font-size:16px;color:var(--ink-light);font-weight:300;max-width:560px;">The seeding tracker and a post-campaign summary. Everything needed to run a seeding campaign from start to finish.</p>
+</div>
+
+<div class="mockup-section">
+
+  <!-- MOCKUP 1: SEEDING TRACKER -->
+  <div class="mockup-wrapper animate-in">
+    <div class="mockup-caption">
+      <div class="mockup-caption-left">
+        <div class="mockup-tab-label">Tab 01</div>
+        <h3>Seeding Tracker</h3>
+        <p>Every influencer in one table. Handle, platform, what they were sent, address confirmed, shipped, posted, and a link to the content. The Shopify block at the top keeps the product and its launch inventory visible without switching tabs.</p>
+      </div>
+    </div>
+    <div class="trak-window">
+      <div class="trak-project-header">
+        <div class="trak-back-link">
+          <svg viewBox="0 0 12 12" fill="none" width="12" height="12"><path d="M7.5 2.5L4 6l3.5 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Back to projects
+        </div>
+        <div class="trak-project-title-row">
+          <div class="trak-project-name">DUSK — AMBER BODY OIL SEEDING</div>
+          <div class="trak-header-actions">
+            <div class="trak-enable-public">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M6 1.5C6 1.5 4 4 4 6s2 4.5 2 4.5M6 1.5C6 1.5 8 4 8 6s-2 4.5-2 4.5M1.5 6h9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+              Enable Public Link
+            </div>
+          </div>
+        </div>
+        <div class="trak-meta-row">
+          <span class="trak-pill pill-in-progress">In Progress</span>
+          <span class="trak-pill pill-due">Launch Sept 12</span>
+        </div>
+        <div class="trak-tabbar">
+          <div class="trak-tab"><span class="trak-tab-icon">⊞</span>Overview</div>
+          <div class="trak-tab active">Seeding Tracker</div>
+          <div class="trak-tab">Results</div>
+          <div class="trak-tab trak-tab-add">+</div>
+        </div>
+      </div>
+      <div class="trak-canvas" style="padding-right:60px;">
+
+        <!-- Pinned product -->
+        <div style="padding-right:44px;margin-bottom:16px;">
+          <div class="trak-shopify-card" style="display:grid;grid-template-columns:90px 1fr;">
+            <div class="trak-shopify-img" style="height:100%;background:linear-gradient(135deg,#F5EDE7,#EAE4D9);">🫙</div>
+            <div class="trak-shopify-body">
+              <div class="trak-shopify-name">Amber Body Oil — 100ml</div>
+              <div class="trak-shopify-stats">
+                <div><div class="trak-shopify-stat-val">0</div><div class="trak-shopify-stat-key">In stock (pre-launch)</div></div>
+                <div><div class="trak-shopify-stat-val">$48</div><div class="trak-shopify-stat-key">Retail price</div></div>
+                <div><div class="trak-shopify-stat-val">24</div><div class="trak-shopify-stat-key">Units seeded</div></div>
+              </div>
+              <div class="trak-shopify-status"><span class="trak-pill pill-todo" style="font-size:10px;">Draft — launches Sept 12</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="trak-col-row cols-3" style="margin-bottom:16px;">
+          <div class="trak-text-card">
+            <div class="trak-text-card-label">What's in the package</div>
+            <div class="trak-text-card-content">
+              Amber Body Oil 100ml<br>
+              Dusk branded dust bag<br>
+              Handwritten note
+            </div>
+          </div>
+          <div class="trak-text-card">
+            <div class="trak-text-card-label">Ship date</div>
+            <div class="trak-text-card-content">
+              <strong>Sept 5</strong> — 7 days before launch.<br>
+              All addresses needed by Sept 3.
+            </div>
+          </div>
+          <div class="trak-text-card">
+            <div class="trak-text-card-label">Ask</div>
+            <div class="trak-text-card-content">
+              No formal obligation. Post if you love it. Tag @dusk.body and use #AmberOil if you do.
+            </div>
+          </div>
+        </div>
+
+        <div class="trak-section-header">
+          <div class="trak-section-header-title">Influencer List</div>
+          <div class="trak-section-header-sub">24 contacts — address, ship status, and post tracking</div>
+        </div>
+
+        <div class="trak-table-block" style="margin-right:44px;">
+          <div class="trak-table-header-bar">
+            <div class="trak-table-title">Seeding List</div>
+            <div style="font-size:11px;color:#9B9389;">24 total · 18 posted</div>
+          </div>
+          <div class="trak-table-head">
+            <div class="trak-table-head-cell" style="flex:1.8;">Handle</div>
+            <div class="trak-table-head-cell" style="flex:1;">Platform</div>
+            <div class="trak-table-head-cell" style="flex:1;">Followers</div>
+            <div class="trak-table-head-cell" style="flex:0.8;">Address</div>
+            <div class="trak-table-head-cell" style="flex:0.8;">Shipped</div>
+            <div class="trak-table-head-cell" style="flex:0.8;">Posted</div>
+            <div class="trak-table-head-cell" style="flex:1.2;">Content</div>
+          </div>
+
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:1.8;">@theluminousskin</div>
+            <div class="trak-table-cell muted" style="flex:1;">TikTok + IG</div>
+            <div class="trak-table-cell muted" style="flex:1;">284K</div>
+            <div class="trak-table-cell" style="flex:0.8;"><span class="trak-pill pill-done" style="font-size:10px;">✓</span></div>
+            <div class="trak-table-cell" style="flex:0.8;"><span class="trak-pill pill-done" style="font-size:10px;">✓</span></div>
+            <div class="trak-table-cell" style="flex:0.8;"><span class="trak-pill pill-done" style="font-size:10px;">✓</span></div>
+            <div class="trak-table-cell muted" style="flex:1.2;">TikTok · 340K views</div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:1.8;">@softmorningco</div>
+            <div class="trak-table-cell muted" style="flex:1;">Instagram</div>
+            <div class="trak-table-cell muted" style="flex:1;">91K</div>
+            <div class="trak-table-cell" style="flex:0.8;"><span class="trak-pill pill-done" style="font-size:10px;">✓</span></div>
+            <div class="trak-table-cell" style="flex:0.8;"><span class="trak-pill pill-done" style="font-size:10px;">✓</span></div>
+            <div class="trak-table-cell" style="flex:0.8;"><span class="trak-pill pill-done" style="font-size:10px;">✓</span></div>
+            <div class="trak-table-cell muted" style="flex:1.2;">IG Reel · 88K views</div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:1.8;">@rituelbeauty</div>
+            <div class="trak-table-cell muted" style="flex:1;">TikTok</div>
+            <div class="trak-table-cell muted" style="flex:1;">178K</div>
+            <div class="trak-table-cell" style="flex:0.8;"><span class="trak-pill pill-done" style="font-size:10px;">✓</span></div>
+            <div class="trak-table-cell" style="flex:0.8;"><span class="trak-pill pill-done" style="font-size:10px;">✓</span></div>
+            <div class="trak-table-cell" style="flex:0.8;"><span class="trak-pill pill-done" style="font-size:10px;">✓</span></div>
+            <div class="trak-table-cell muted" style="flex:1.2;">TikTok · 210K views</div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:1.8;">@calmandcurated</div>
+            <div class="trak-table-cell muted" style="flex:1;">Instagram</div>
+            <div class="trak-table-cell muted" style="flex:1;">62K</div>
+            <div class="trak-table-cell" style="flex:0.8;"><span class="trak-pill pill-done" style="font-size:10px;">✓</span></div>
+            <div class="trak-table-cell" style="flex:0.8;"><span class="trak-pill pill-done" style="font-size:10px;">✓</span></div>
+            <div class="trak-table-cell" style="flex:0.8;"><span class="trak-pill pill-in-progress" style="font-size:10px;">Pending</span></div>
+            <div class="trak-table-cell muted" style="flex:1.2;">—</div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:1.8;">Vogue Beauty</div>
+            <div class="trak-table-cell muted" style="flex:1;">Editorial</div>
+            <div class="trak-table-cell muted" style="flex:1;">—</div>
+            <div class="trak-table-cell" style="flex:0.8;"><span class="trak-pill pill-done" style="font-size:10px;">✓</span></div>
+            <div class="trak-table-cell" style="flex:0.8;"><span class="trak-pill pill-done" style="font-size:10px;">✓</span></div>
+            <div class="trak-table-cell" style="flex:0.8;"><span class="trak-pill pill-todo" style="font-size:10px;">—</span></div>
+            <div class="trak-table-cell muted" style="flex:1.2;">—</div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:1.8;">@oilsandrituals</div>
+            <div class="trak-table-cell muted" style="flex:1;">TikTok + IG</div>
+            <div class="trak-table-cell muted" style="flex:1;">430K</div>
+            <div class="trak-table-cell" style="flex:0.8;"><span class="trak-pill pill-done" style="font-size:10px;">✓</span></div>
+            <div class="trak-table-cell" style="flex:0.8;"><span class="trak-pill pill-done" style="font-size:10px;">✓</span></div>
+            <div class="trak-table-cell" style="flex:0.8;"><span class="trak-pill pill-done" style="font-size:10px;">✓</span></div>
+            <div class="trak-table-cell muted" style="flex:1.2;">TikTok · 580K views</div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:1.8;">@morningshelf</div>
+            <div class="trak-table-cell muted" style="flex:1;">Instagram</div>
+            <div class="trak-table-cell muted" style="flex:1;">44K</div>
+            <div class="trak-table-cell" style="flex:0.8;"><span class="trak-pill pill-todo" style="font-size:10px;">Pending</span></div>
+            <div class="trak-table-cell" style="flex:0.8;"><span class="trak-pill pill-todo" style="font-size:10px;">—</span></div>
+            <div class="trak-table-cell" style="flex:0.8;"><span class="trak-pill pill-todo" style="font-size:10px;">—</span></div>
+            <div class="trak-table-cell muted" style="flex:1.2;">—</div>
+          </div>
+          <div class="trak-table-row" style="background:#FAFAF9;">
+            <div class="trak-table-cell muted" style="flex:7;font-size:11px;color:#BBBAB8;">+ 17 more rows</div>
+          </div>
+        </div>
+
+        <div class="trak-right-icons">
+          <div class="trak-right-icon">🔒</div>
+          <div class="trak-right-icon">✦</div>
+          <div class="trak-right-icon">⊞</div>
+          <div class="trak-right-icon">💬</div>
+          <div class="trak-right-icon">👤</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOCKUP 2: RESULTS -->
+  <div class="mockup-wrapper animate-in">
+    <div class="mockup-caption">
+      <div class="mockup-caption-left">
+        <div class="mockup-tab-label">Tab 02</div>
+        <h3>Results</h3>
+        <p>Written two weeks after launch. A breakdown of who posted, total reach, and a chart showing performance by platform. The Shopify block shows the product live — same block from the tracker tab, now showing real sales numbers.</p>
+      </div>
+    </div>
+    <div class="trak-window">
+      <div class="trak-project-header">
+        <div class="trak-project-title-row">
+          <div class="trak-project-name">DUSK — AMBER BODY OIL SEEDING</div>
+        </div>
+        <div class="trak-meta-row">
+          <span class="trak-pill pill-done">Complete</span>
+          <span class="trak-pill pill-due">Launched Sept 12</span>
+        </div>
+        <div class="trak-tabbar">
+          <div class="trak-tab"><span class="trak-tab-icon">⊞</span>Overview</div>
+          <div class="trak-tab">Seeding Tracker</div>
+          <div class="trak-tab active">Results</div>
+          <div class="trak-tab trak-tab-add">+</div>
+        </div>
+      </div>
+      <div class="trak-canvas" style="padding-right:60px;">
+
+        <div class="trak-col-row cols-3">
+          <div class="trak-text-card">
+            <div class="trak-text-card-label">Reach</div>
+            <div class="trak-text-card-content">
+              <strong>Total reach:</strong> 2.1M<br>
+              <strong>Posts published:</strong> 18 / 24<br>
+              <strong>TikTok views:</strong> 1.4M<br>
+              <strong>IG views:</strong> 700K
+            </div>
+          </div>
+          <div class="trak-text-card">
+            <div class="trak-text-card-label">Top performer</div>
+            <div class="trak-text-card-content">
+              <strong>@oilsandrituals</strong><br>
+              580K TikTok views<br>
+              Link in bio for 3 days<br>
+              ~420 direct click-throughs
+            </div>
+          </div>
+          <div class="trak-text-card">
+            <div class="trak-text-card-label">Post rate</div>
+            <div class="trak-text-card-content">
+              <strong>18 of 24 seeded</strong> posted within 2 weeks of receiving. 4 still pending. 2 didn't post.
+            </div>
+          </div>
+        </div>
+
+        <div class="trak-section-header">
+          <div class="trak-section-header-title">Performance by Platform</div>
+        </div>
+
+        <div class="trak-chart-block" style="margin-right:44px;">
+          <div class="trak-chart-header">
+            <div class="trak-chart-title">
+              Reach by Platform
+              <span class="trak-chart-badge">Chart</span>
+            </div>
+          </div>
+          <div class="trak-chart-body">
+            <svg class="trak-donut" viewBox="0 0 110 110">
+              <circle cx="55" cy="55" r="38" fill="none" stroke="#2A537A" stroke-width="18"
+                stroke-dasharray="150.4 88.6" stroke-dashoffset="0" transform="rotate(-90 55 55)"/>
+              <circle cx="55" cy="55" r="38" fill="none" stroke="#C4714A" stroke-width="18"
+                stroke-dasharray="75.4 163.6" stroke-dashoffset="-150.4" transform="rotate(-90 55 55)"/>
+              <circle cx="55" cy="55" r="38" fill="none" stroke="#9B9389" stroke-width="18"
+                stroke-dasharray="13.2 225.8" stroke-dashoffset="-225.8" transform="rotate(-90 55 55)"/>
+              <text x="55" y="51" text-anchor="middle" font-size="11" font-weight="600" fill="#1A1714" font-family="DM Sans">2.1M</text>
+              <text x="55" y="63" text-anchor="middle" font-size="8" fill="#9B9389" font-family="DM Sans">total reach</text>
+            </svg>
+            <div class="trak-chart-breakdown">
+              <div class="trak-breakdown-row">
+                <div class="trak-breakdown-left"><div class="trak-breakdown-dot" style="background:#2A537A;"></div>TikTok</div>
+                <div class="trak-breakdown-val">1.4M (67%)</div>
+              </div>
+              <div class="trak-breakdown-row">
+                <div class="trak-breakdown-left"><div class="trak-breakdown-dot" style="background:#C4714A;"></div>Instagram</div>
+                <div class="trak-breakdown-val">700K (33%)</div>
+              </div>
+              <div class="trak-breakdown-row">
+                <div class="trak-breakdown-left"><div class="trak-breakdown-dot" style="background:#9B9389;"></div>Editorial</div>
+                <div class="trak-breakdown-val">Pending</div>
+              </div>
+            </div>
+          </div>
+          <div class="trak-chart-footer">
+            <div><div class="trak-chart-foot-label">Posts</div><div class="trak-chart-foot-val">18</div></div>
+            <div><div class="trak-chart-foot-label">Seeded</div><div class="trak-chart-foot-val">24</div></div>
+            <div><div class="trak-chart-foot-label">Post rate</div><div class="trak-chart-foot-val">75%</div></div>
+          </div>
+        </div>
+
+        <div class="trak-section-header">
+          <div class="trak-section-header-title">Product — Post-Launch</div>
+        </div>
+
+        <div style="padding-right:44px;">
+          <div class="trak-shopify-card" style="display:grid;grid-template-columns:90px 1fr;">
+            <div class="trak-shopify-img" style="height:100%;background:linear-gradient(135deg,#F5EDE7,#EAE4D9);">🫙</div>
+            <div class="trak-shopify-body">
+              <div class="trak-shopify-name">Amber Body Oil — 100ml</div>
+              <div class="trak-shopify-stats">
+                <div><div class="trak-shopify-stat-val">112</div><div class="trak-shopify-stat-key">In stock</div></div>
+                <div><div class="trak-shopify-stat-val">388</div><div class="trak-shopify-stat-key">Units sold</div></div>
+                <div><div class="trak-shopify-stat-val">$48</div><div class="trak-shopify-stat-key">Price</div></div>
+                <div><div class="trak-shopify-stat-val">4.9★</div><div class="trak-shopify-stat-key">Rating</div></div>
+              </div>
+              <div class="trak-shopify-status"><span class="trak-pill pill-done" style="font-size:10px;">Active</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="trak-right-icons">
+          <div class="trak-right-icon">🔒</div>
+          <div class="trak-right-icon">✦</div>
+          <div class="trak-right-icon">⊞</div>
+          <div class="trak-right-icon">💬</div>
+          <div class="trak-right-icon">👤</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end mockup-section -->
+
+<hr class="section-divider animate-in">
+
+<!-- RESULTS -->
+<section class="section animate-in">
+  <div class="section-label">The Result</div>
+  <h2>18 posts. 2.1M reach. <em>One tab.</em></h2>
+  <div class="body-text">
+    <p>The Amber Body Oil launched September 12. Eighteen of the twenty-four seeded influencers posted within two weeks. @oilsandrituals drove 580K views on TikTok alone and kept the link in bio for three days. The product hit 388 units sold in the first two weeks.</p>
+    <p>The Results tab got filled in as posts went live — reach, views, and post rate all in one place. When it comes to the next launch, the seeding list from this project is the starting point.</p>
+  </div>
+
+  <div class="results-grid">
+    <div class="result-card featured">
+      <div><div class="result-number">2.1M</div><div class="result-label">Combined reach</div></div>
+      <p class="result-desc">18 posts across TikTok and Instagram. @oilsandrituals was the standout — 580K views, link in bio for 3 days.</p>
+    </div>
+    <div class="result-card"><div class="result-number">75%</div><div class="result-label">Post rate — 18 of 24 seeded</div></div>
+    <div class="result-card"><div class="result-number">388</div><div class="result-label">Units sold in first two weeks</div></div>
+    <div class="result-card"><div class="result-number">2 tabs</div><div class="result-label">Tracker and results — nothing else needed</div></div>
+  </div>
+
+  <div class="pullquote animate-in">
+    <p>"Every launch we were chasing addresses in DMs and updating a spreadsheet nobody had open. Now it's one table. You can see exactly where every person is at."</p>
+  </div>
+</section>
+
+<hr class="section-divider animate-in">
+
+<!-- CTA -->
+<section class="section animate-in" style="padding-bottom:0;">
+  <div class="cta-section">
+    <div class="cta-text">
+      <h2>Track your next seeding campaign <em>in one place.</em></h2>
+      <p>The Influencer Seeding template is two tabs — tracker and results. Clone it for any product launch.</p>
+    </div>
+    <div class="cta-buttons">
+      <a href="#" class="btn-primary">Use this template →</a>
+      <a href="#" class="btn-secondary">See all templates</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Trak. Built for D2C brands.</p>
+  <a href="#">View all case studies →</a>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.06 });
+  document.querySelectorAll('.animate-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

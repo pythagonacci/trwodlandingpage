@@ -10,6 +10,17 @@ export const metadata: Metadata = {
   },
   description:
     "Saria is the brand operating system for modern D2C teams — launches, campaigns, and collaborators in one workspace, built around Shopify.",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1
+    }
+  },
   openGraph: {
     type: "website",
     siteName: "Saria",

@@ -13,6 +13,17 @@ const PRODUCT_LINKS = [
   { href: "/product/connect", label: "05 - Connect" }
 ];
 
+const TEMPLATE_LINKS = [
+  { href: "/templates", label: "All Templates" },
+  { href: "/templates/multi-sku-seasonal-drop", label: "01 - Multi-SKU / Seasonal Drop" },
+  {
+    href: "/templates/product-design-and-development",
+    label: "02 - Product Design and Development"
+  },
+  { href: "/templates/pop-ups", label: "03 - Pop-Ups" },
+  { href: "/templates/pr-tracking", label: "04 - PR Tracking" }
+];
+
 const LINKS = [
   { href: "/pricing", label: "Pricing", hideOnMobile: true }
 ];
@@ -20,12 +31,15 @@ const LINKS = [
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [productMenuOpen, setProductMenuOpen] = useState(false);
+  const [templatesMenuOpen, setTemplatesMenuOpen] = useState(false);
   const [useCaseMenuOpen, setUseCaseMenuOpen] = useState(false);
   const productMenuRef = useRef<HTMLLIElement>(null);
+  const templatesMenuRef = useRef<HTMLLIElement>(null);
   const useCaseMenuRef = useRef<HTMLLIElement>(null);
 
   const closeMenus = () => {
     setProductMenuOpen(false);
+    setTemplatesMenuOpen(false);
     setUseCaseMenuOpen(false);
   };
 
@@ -40,7 +54,7 @@ export function Nav() {
   }, []);
 
   useEffect(() => {
-    if (!productMenuOpen && !useCaseMenuOpen) {
+    if (!productMenuOpen && !templatesMenuOpen && !useCaseMenuOpen) {
       return;
     }
 
@@ -49,6 +63,7 @@ export function Nav() {
 
       if (
         !productMenuRef.current?.contains(target) &&
+        !templatesMenuRef.current?.contains(target) &&
         !useCaseMenuRef.current?.contains(target)
       ) {
         closeMenus();
@@ -68,7 +83,7 @@ export function Nav() {
       window.removeEventListener("pointerdown", onPointerDown);
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [productMenuOpen, useCaseMenuOpen]);
+  }, [productMenuOpen, templatesMenuOpen, useCaseMenuOpen]);
 
   return (
     <nav
@@ -98,6 +113,7 @@ export function Nav() {
             className="relative"
             onMouseEnter={() => {
               setProductMenuOpen(true);
+              setTemplatesMenuOpen(false);
               setUseCaseMenuOpen(false);
             }}
             onMouseLeave={() => setProductMenuOpen(false)}
@@ -110,6 +126,7 @@ export function Nav() {
               onClick={() => setProductMenuOpen(false)}
               onFocus={() => {
                 setProductMenuOpen(true);
+                setTemplatesMenuOpen(false);
                 setUseCaseMenuOpen(false);
               }}
             >
@@ -128,10 +145,62 @@ export function Nav() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="block rounded-lg px-3 py-2 text-[12px] text-ink-3 transition-colors duration-150 hover:bg-cream-2 hover:text-ink"
+                    className="group flex items-center justify-between rounded-lg px-3 py-2 text-[12px] text-ink-3 transition-all duration-150 hover:bg-cream hover:text-ink focus-visible:bg-cream focus-visible:text-ink"
                     onClick={closeMenus}
                   >
-                    {item.label}
+                    <span>{item.label}</span>
+                    <span className="translate-x-[-2px] text-[11px] text-accent opacity-0 transition-all duration-150 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100">
+                      →
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </li>
+          <li
+            ref={templatesMenuRef}
+            className="relative"
+            onMouseEnter={() => {
+              setTemplatesMenuOpen(true);
+              setProductMenuOpen(false);
+              setUseCaseMenuOpen(false);
+            }}
+            onMouseLeave={() => setTemplatesMenuOpen(false)}
+          >
+            <Link
+              href={TEMPLATE_LINKS[0].href}
+              aria-expanded={templatesMenuOpen}
+              aria-haspopup="menu"
+              className="inline-flex items-center gap-1 transition-colors duration-150 hover:text-ink"
+              onClick={() => setTemplatesMenuOpen(false)}
+              onFocus={() => {
+                setTemplatesMenuOpen(true);
+                setProductMenuOpen(false);
+                setUseCaseMenuOpen(false);
+              }}
+            >
+              Templates
+              <span className="text-[10px] text-stone">v</span>
+            </Link>
+            <div
+              className={`absolute left-1/2 top-full z-50 w-[280px] -translate-x-1/2 pt-3 transition-all duration-150 ${
+                templatesMenuOpen
+                  ? "pointer-events-auto visible opacity-100"
+                  : "pointer-events-none invisible opacity-0"
+              }`}
+            >
+              <div className="rounded-xl border border-cream-3 bg-[rgba(250,248,244,0.98)] p-2 shadow-[0_18px_42px_rgba(28,25,23,0.12)] backdrop-blur-md">
+                {TEMPLATE_LINKS.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="group flex items-center justify-between rounded-lg px-3 py-2 text-[12px] text-ink-3 transition-all duration-150 hover:bg-cream hover:text-ink focus-visible:bg-cream focus-visible:text-ink"
+                    onClick={closeMenus}
+                  >
+                    <span>{item.label}</span>
+                    <span className="translate-x-[-2px] text-[11px] text-accent opacity-0 transition-all duration-150 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100">
+                      →
+                    </span>
                   </Link>
                 ))}
               </div>
@@ -143,6 +212,7 @@ export function Nav() {
             onMouseEnter={() => {
               setUseCaseMenuOpen(true);
               setProductMenuOpen(false);
+              setTemplatesMenuOpen(false);
             }}
             onMouseLeave={() => setUseCaseMenuOpen(false)}
           >
@@ -155,6 +225,7 @@ export function Nav() {
               onFocus={() => {
                 setUseCaseMenuOpen(true);
                 setProductMenuOpen(false);
+                setTemplatesMenuOpen(false);
               }}
             >
               Use Cases
@@ -172,10 +243,13 @@ export function Nav() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="block rounded-lg px-3 py-2 text-[12px] text-ink-3 transition-colors duration-150 hover:bg-cream-2 hover:text-ink"
+                    className="group flex items-center justify-between rounded-lg px-3 py-2 text-[12px] text-ink-3 transition-all duration-150 hover:bg-cream hover:text-ink focus-visible:bg-cream focus-visible:text-ink"
                     onClick={closeMenus}
                   >
-                    {item.label}
+                    <span>{item.label}</span>
+                    <span className="translate-x-[-2px] text-[11px] text-accent opacity-0 transition-all duration-150 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100">
+                      →
+                    </span>
                   </Link>
                 ))}
               </div>

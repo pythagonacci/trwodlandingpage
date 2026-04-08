@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How Éclat Studio Sold Out in 47 Minutes — Trak</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --cream: #FDFAF6;
+    --cream-dark: #F5F0E8;
+    --cream-border: #EAE4D9;
+    --blue: #2A537A;
+    --blue-light: #3D6E9E;
+    --blue-pale: #EBF1F7;
+    --terracotta: #C4714A;
+    --terracotta-pale: #F5EDE7;
+    --ink: #1A1714;
+    --ink-mid: #3D3830;
+    --ink-light: #6B6358;
+    --ink-faint: #9B9389;
+    --lemon: #E8C84A;
+    --lemon-pale: #FBF6E0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 20px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(253,250,246,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--cream-border);
+  }
+  .nav-logo { font-weight: 500; font-size: 17px; color: var(--ink); letter-spacing: -0.02em; text-decoration: none; }
+  .nav-logo span { color: var(--blue); }
+  .nav-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--blue); color: white;
+    font-size: 13px; font-weight: 500; padding: 9px 20px;
+    border-radius: 6px; text-decoration: none; letter-spacing: -0.01em;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--blue-light); }
+
+  /* HERO */
+  .hero {
+    padding: 160px 48px 100px; max-width: 860px; margin: 0 auto;
+    opacity: 0; animation: fadeUp 0.8s ease forwards; animation-delay: 0.1s;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-light); margin-bottom: 28px;
+  }
+  .hero-eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--terracotta); }
+  .hero h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(38px, 5vw, 58px); line-height: 1.1;
+    letter-spacing: -0.02em; margin-bottom: 28px;
+  }
+  .hero h1 em { font-style: italic; color: var(--blue); }
+  .hero-sub { font-size: 18px; line-height: 1.65; color: var(--ink-mid); font-weight: 300; max-width: 640px; margin-bottom: 48px; }
+  .hero-stats {
+    display: flex; border: 1px solid var(--cream-border); border-radius: 10px; overflow: hidden; background: white;
+    opacity: 0; animation: fadeUp 0.8s ease forwards; animation-delay: 0.3s;
+  }
+  .stat { flex: 1; padding: 24px 28px; border-right: 1px solid var(--cream-border); }
+  .stat:last-child { border-right: none; }
+  .stat-number { font-family: 'Instrument Serif', serif; font-size: 32px; letter-spacing: -0.02em; line-height: 1; margin-bottom: 6px; }
+  .stat-label { font-size: 12px; color: var(--ink-faint); }
+
+  /* LAYOUT */
+  .section { max-width: 860px; margin: 0 auto; padding: 80px 48px; }
+  .section + .section { padding-top: 0; }
+  .section-divider { max-width: 860px; margin: 0 auto; padding: 0 48px; border: none; border-top: 1px solid var(--cream-border); }
+  .section-label { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 20px; }
+  .section h2 { font-family: 'Instrument Serif', serif; font-size: clamp(26px,3.5vw,36px); line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 24px; }
+  .section h2 em { font-style: italic; color: var(--blue); }
+  .body-text { font-size: 16.5px; line-height: 1.75; color: var(--ink-mid); font-weight: 300; }
+  .body-text p + p { margin-top: 20px; }
+  .body-text strong { font-weight: 500; color: var(--ink); }
+
+  /* PULLQUOTE */
+  .pullquote { margin: 56px 0; padding: 36px 40px; background: var(--lemon-pale); border-left: 3px solid var(--lemon); border-radius: 0 8px 8px 0; }
+  .pullquote p { font-family: 'Instrument Serif', serif; font-size: clamp(20px,2.5vw,26px); line-height: 1.4; font-style: italic; letter-spacing: -0.01em; }
+
+  /* REPLACED GRID */
+  .replaced-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 32px; border-radius: 10px; overflow: hidden; border: 1px solid var(--cream-border); }
+  .replaced-item { padding: 20px 24px; background: white; display: flex; align-items: flex-start; gap: 14px; }
+  .replaced-icon { width: 32px; height: 32px; border-radius: 6px; background: var(--cream-dark); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; }
+  .replaced-text strong { display: block; font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 2px; text-decoration: line-through; text-decoration-color: var(--terracotta); }
+  .replaced-text span { font-size: 12px; color: var(--ink-faint); font-weight: 300; }
+
+  /* TIMELINE */
+  .timeline-visual { margin: 40px 0; position: relative; }
+  .timeline-line { position: absolute; left: 16px; top: 8px; bottom: 8px; width: 1px; background: var(--cream-border); }
+  .timeline-event { display: flex; align-items: flex-start; gap: 20px; padding: 0 0 28px 0; position: relative; }
+  .timeline-event:last-child { padding-bottom: 0; }
+  .timeline-dot { width: 33px; height: 33px; border-radius: 50%; background: var(--cream-dark); border: 1px solid var(--cream-border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index: 1; font-size: 12px; }
+  .timeline-dot.active { background: var(--blue); border-color: var(--blue); color: white; }
+  .timeline-event-text { padding-top: 6px; }
+  .timeline-event-date { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 3px; }
+  .timeline-event-name { font-size: 15px; color: var(--ink); }
+  .timeline-event-name.highlight { color: var(--blue); font-weight: 500; }
+
+  /* RESULTS */
+  .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; }
+  .result-card { padding: 28px 32px; border: 1px solid var(--cream-border); border-radius: 10px; background: white; }
+  .result-card.featured { background: var(--blue); border-color: var(--blue); grid-column: 1/-1; display: flex; align-items: center; gap: 48px; padding: 36px 40px; }
+  .result-card.featured .result-number { color: white; font-size: clamp(52px,7vw,72px); white-space: nowrap; }
+  .result-card.featured .result-label { color: rgba(255,255,255,0.7); }
+  .result-card.featured .result-desc { font-size: 16px; color: rgba(255,255,255,0.85); font-weight: 300; line-height: 1.6; border-left: 1px solid rgba(255,255,255,0.2); padding-left: 48px; }
+  .result-number { font-family: 'Instrument Serif', serif; font-size: clamp(36px,4vw,48px); letter-spacing: -0.03em; line-height: 1; margin-bottom: 8px; }
+  .result-label { font-size: 12px; font-weight: 400; color: var(--ink-faint); letter-spacing: 0.03em; }
+
+  /* SKU TABLE */
+  .sku-row { display: grid; grid-template-columns: 1fr 80px 100px; gap: 0; padding: 16px 0; border-bottom: 1px solid var(--cream-border); align-items: center; }
+  .sku-row.header { padding: 12px 0; border-bottom: 2px solid var(--cream-border); }
+  .sku-row.header span { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); }
+  .sku-name { font-size: 15px; color: var(--ink); }
+  .sku-units { font-size: 15px; color: var(--ink-mid); font-weight: 300; text-align: right; }
+  .sku-revenue { font-size: 15px; color: var(--ink); font-weight: 400; text-align: right; }
+  .sku-bar-wrap { height: 4px; background: var(--cream-dark); border-radius: 2px; margin-top: 8px; grid-column: 1/-1; }
+  .sku-bar { height: 100%; border-radius: 2px; background: var(--blue); }
+  .sold-out-tag { display: inline-flex; font-size: 10px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 7px; background: var(--terracotta-pale); color: var(--terracotta); border-radius: 4px; margin-left: 10px; vertical-align: middle; }
+
+  /* CTA */
+  .cta-section { margin: 0 auto 100px; max-width: 860px; padding: 64px; background: var(--ink); border-radius: 16px; display: flex; align-items: center; justify-content: space-between; gap: 48px; }
+  .cta-text h2 { font-family: 'Instrument Serif', serif; font-size: clamp(24px,3vw,32px); color: white; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 12px; }
+  .cta-text h2 em { font-style: italic; color: var(--lemon); }
+  .cta-text p { font-size: 15px; color: rgba(255,255,255,0.6); font-weight: 300; line-height: 1.6; max-width: 380px; }
+  .cta-buttons { display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; }
+  .btn-primary { display: inline-flex; align-items: center; justify-content: center; background: white; color: var(--ink); font-size: 14px; font-weight: 500; padding: 13px 28px; border-radius: 8px; text-decoration: none; white-space: nowrap; transition: opacity 0.2s; }
+  .btn-primary:hover { opacity: 0.9; }
+  .btn-secondary { display: inline-flex; align-items: center; justify-content: center; background: transparent; color: rgba(255,255,255,0.7); font-size: 14px; padding: 13px 28px; border-radius: 8px; text-decoration: none; border: 1px solid rgba(255,255,255,0.15); white-space: nowrap; transition: all 0.2s; }
+  .btn-secondary:hover { border-color: rgba(255,255,255,0.35); color: white; }
+
+  footer { border-top: 1px solid var(--cream-border); padding: 32px 48px; display: flex; align-items: center; justify-content: space-between; }
+  footer p { font-size: 13px; color: var(--ink-faint); font-weight: 300; }
+  footer a { font-size: 13px; color: var(--blue); text-decoration: none; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+  .animate-in { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .animate-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* =============================================
+     TRAK UI MOCKUP SYSTEM
+     ============================================= */
+
+  .mockup-section {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 48px 96px;
+  }
+
+  .mockup-section-header {
+    max-width: 860px;
+    margin: 0 auto 56px;
+    padding: 0 48px;
+  }
+
+  .mockup-section-header .section-label { margin-bottom: 12px; }
+
+  .mockup-section-header h2 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(26px,3.5vw,36px);
+    line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 16px;
+  }
+
+  .mockup-section-header p {
+    font-size: 16px; color: var(--ink-light); font-weight: 300; max-width: 560px;
+  }
+
+  .mockup-wrapper {
+    margin-bottom: 64px;
+  }
+
+  .mockup-caption {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 16px; gap: 24px;
+  }
+
+  .mockup-caption-left {}
+
+  .mockup-tab-label {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-faint); margin-bottom: 6px;
+  }
+
+  .mockup-caption h3 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 22px; letter-spacing: -0.01em; color: var(--ink); margin-bottom: 8px;
+  }
+
+  .mockup-caption p {
+    font-size: 14px; color: var(--ink-light); font-weight: 300; line-height: 1.6; max-width: 480px;
+  }
+
+  .magic-link-badge {
+    display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase;
+    padding: 5px 10px; background: var(--blue-pale); color: var(--blue); border-radius: 5px;
+    margin-top: 4px;
+  }
+
+  /* THE TRAK UI WINDOW */
+  .trak-window {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #E2E2E0;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    background: #ffffff;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* PROJECT HEADER */
+  .trak-project-header {
+    padding: 20px 24px 0;
+    background: #fff;
+    border-bottom: 1px solid #F0EFED;
+  }
+
+  .trak-back-link {
+    font-size: 12px; color: #8A8880; display: flex; align-items: center; gap: 4px; margin-bottom: 10px;
+  }
+
+  .trak-back-link svg { width: 12px; height: 12px; }
+
+  .trak-project-title-row {
+    display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px;
+  }
+
+  .trak-project-name {
+    font-size: 22px; font-weight: 600; letter-spacing: -0.01em; color: #1A1714; line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .trak-header-actions {
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .trak-enable-public {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 12px; color: #5A7A96; padding: 5px 10px;
+    border: 1px solid #D0E0EC; border-radius: 5px; background: #F5F9FC;
+  }
+
+  .trak-meta-row {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 14px;
+  }
+
+  .trak-pill {
+    display: inline-flex; align-items: center;
+    font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 4px;
+  }
+
+  .pill-in-progress { background: #EBF3FF; color: #2A537A; }
+  .pill-todo { background: #F2F2F0; color: #6B6B68; }
+  .pill-done { background: #E6F5EE; color: #2D7A4F; }
+  .pill-blocked { background: #FEE9E9; color: #B94040; }
+  .pill-urgent { background: #FEF3E7; color: #B06020; }
+  .pill-due { background: transparent; color: #8A8880; font-size: 11px; }
+
+  /* TAB BAR */
+  .trak-tabbar {
+    display: flex; align-items: flex-end; gap: 0;
+    padding: 0 24px;
+    border-bottom: 1px solid #F0EFED;
+    background: #fff;
+    overflow: hidden;
+  }
+
+  .trak-tab {
+    padding: 10px 16px; font-size: 13px; color: #8A8880; cursor: pointer;
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+    display: flex; align-items: center; gap: 6px; white-space: nowrap;
+    font-weight: 400;
+  }
+
+  .trak-tab.active {
+    color: #1A1714; border-bottom-color: #1A1714; font-weight: 500;
+  }
+
+  .trak-tab-icon { font-size: 12px; opacity: 0.5; }
+  .trak-tab-add { padding: 10px 12px; font-size: 16px; color: #BBBAB8; margin-bottom: -1px; }
+
+  /* CANVAS */
+  .trak-canvas {
+    background: #fff;
+    padding: 28px 24px;
+    position: relative;
+  }
+
+  /* RIGHT SIDEBAR ICONS */
+  .trak-right-icons {
+    position: absolute; right: 0; top: 0; bottom: 0;
+    width: 36px;
+    background: #fff;
+    border-left: 1px solid #F0EFED;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 16px 0; gap: 16px;
+  }
+
+  .trak-right-icon {
+    width: 18px; height: 18px; opacity: 0.3;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* BLOCK */
+  .trak-block {
+    margin-bottom: 6px;
+    padding-right: 44px; /* room for right icons */
+    position: relative;
+  }
+
+  .trak-block-inner {
+    border-radius: 6px;
+    padding: 14px 16px;
+    position: relative;
+  }
+
+  .trak-block-inner:hover { background: #FAFAF9; }
+
+  .trak-block-menu {
+    position: absolute; top: 10px; right: 10px;
+    font-size: 13px; color: #BBBAB8; opacity: 0; pointer-events: none;
+  }
+
+  .trak-block-inner:hover .trak-block-menu { opacity: 1; }
+
+  /* TEXT BLOCK */
+  .trak-text-block .trak-block-inner { padding: 8px 4px; }
+  .trak-text-content { font-size: 14px; color: #2A2926; line-height: 1.65; font-weight: 300; }
+  .trak-text-content strong { font-weight: 500; color: #1A1714; }
+
+  /* SECTION HEADER BLOCK */
+  .trak-section-header { margin: 18px 0 8px; padding-right: 44px; }
+  .trak-section-header-title { font-size: 15px; font-weight: 600; color: #1A1714; letter-spacing: -0.01em; }
+  .trak-section-header-sub { font-size: 12px; color: #9B9389; margin-top: 2px; }
+
+  /* TASK BLOCK */
+  .trak-task-block { border: 1px solid #EFEFED; border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
+
+  .trak-task-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 11px 14px; background: #FAFAF9; border-bottom: 1px solid #EFEFED;
+  }
+
+  .trak-task-title { font-size: 13px; font-weight: 600; color: #1A1714; letter-spacing: -0.01em; }
+
+  .trak-task-view-toggles {
+    display: flex; align-items: center; gap: 2px;
+  }
+
+  .trak-view-btn {
+    width: 26px; height: 24px; display: flex; align-items: center; justify-content: center;
+    border-radius: 4px; font-size: 11px; color: #BBBAB8; cursor: pointer;
+  }
+
+  .trak-view-btn.active { background: #1A1714; color: white; }
+
+  .trak-task-row {
+    display: flex; align-items: center; padding: 9px 14px;
+    border-bottom: 1px solid #F5F5F3; gap: 10px;
+  }
+
+  .trak-task-row:last-child { border-bottom: none; }
+
+  .trak-task-check {
+    width: 15px; height: 15px; border-radius: 50%;
+    border: 1.5px solid #CCCBC8; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .trak-task-check.done { border-color: #2D7A4F; background: #2D7A4F; }
+  .trak-task-check.done::after { content: '✓'; font-size: 9px; color: white; }
+
+  .trak-task-check.in-progress { border-color: #2A537A; }
+
+  .trak-task-name { font-size: 13px; color: #1A1714; flex: 1; font-weight: 400; }
+  .trak-task-name.done { text-decoration: line-through; color: #9B9389; }
+
+  .trak-task-meta { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+
+  .trak-meta-icon { font-size: 13px; color: #CCCBC8; }
+
+  .trak-task-add { padding: 9px 14px; font-size: 12px; color: #BBBAB8; display: flex; align-items: center; gap: 5px; }
+
+  /* SHOPIFY BLOCK */
+  .trak-shopify-row { display: grid; gap: 8px; margin-bottom: 8px; }
+  .trak-shopify-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .trak-shopify-row.cols-2 { grid-template-columns: 1fr 1fr; }
+
+  .trak-shopify-card {
+    border: 1px solid #EFEFED; border-radius: 8px; overflow: hidden;
+  }
+
+  .trak-shopify-img {
+    height: 80px; background: linear-gradient(135deg, #FBF6E0, #F5EDE7);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+  }
+
+  .trak-shopify-body { padding: 10px 12px; }
+  .trak-shopify-name { font-size: 12px; font-weight: 600; color: #1A1714; margin-bottom: 6px; line-height: 1.3; }
+
+  .trak-shopify-stats { display: flex; gap: 12px; }
+  .trak-shopify-stat { }
+  .trak-shopify-stat-val { font-size: 14px; font-weight: 600; color: #1A1714; line-height: 1; }
+  .trak-shopify-stat-key { font-size: 10px; color: #9B9389; margin-top: 2px; }
+
+  .trak-shopify-status { margin-top: 8px; }
+
+  /* TABLE BLOCK */
+  .trak-table-block { border: 1px solid #EFEFED; border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
+
+  .trak-table-header-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 14px; background: #FAFAF9; border-bottom: 1px solid #EFEFED;
+  }
+
+  .trak-table-title { font-size: 13px; font-weight: 600; color: #1A1714; }
+
+  .trak-table-head { display: flex; padding: 7px 14px; background: #F5F5F3; border-bottom: 1px solid #EFEFED; }
+  .trak-table-head-cell { font-size: 10px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: #9B9389; }
+
+  .trak-table-row { display: flex; align-items: center; padding: 9px 14px; border-bottom: 1px solid #F5F5F3; gap: 0; }
+  .trak-table-row:last-child { border-bottom: none; }
+  .trak-table-row:hover { background: #FAFAF9; }
+
+  .trak-table-cell { font-size: 12px; color: #2A2926; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 8px; }
+  .trak-table-cell.muted { color: #9B9389; }
+  .trak-table-cell.bold { font-weight: 500; color: #1A1714; }
+
+  /* GALLERY BLOCK */
+  .trak-gallery-block { border: 1px solid #EFEFED; border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
+  .trak-gallery-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: #FAFAF9; border-bottom: 1px solid #EFEFED; }
+  .trak-gallery-title { font-size: 13px; font-weight: 600; color: #1A1714; }
+  .trak-gallery-grid { display: grid; gap: 2px; padding: 2px; }
+  .trak-gallery-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .trak-gallery-grid.cols-5 { grid-template-columns: repeat(5, 1fr); }
+  .trak-gallery-item { aspect-ratio: 1; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+
+  /* CHART BLOCK */
+  .trak-chart-block { border: 1px solid #EFEFED; border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
+  .trak-chart-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: #FAFAF9; border-bottom: 1px solid #EFEFED; }
+  .trak-chart-title { font-size: 13px; font-weight: 600; color: #1A1714; display: flex; align-items: center; gap: 8px; }
+  .trak-chart-badge { font-size: 10px; font-weight: 500; padding: 2px 7px; background: #EEF0FF; color: #5B63B7; border-radius: 4px; }
+  .trak-chart-actions { display: flex; gap: 12px; }
+  .trak-chart-action { font-size: 11px; color: #8A8880; display: flex; align-items: center; gap: 4px; }
+  .trak-chart-body { padding: 20px; display: flex; gap: 24px; align-items: center; }
+  .trak-chart-donut-wrap { position: relative; flex-shrink: 0; }
+
+  .trak-donut {
+    width: 120px; height: 120px;
+  }
+
+  .trak-chart-breakdown { flex: 1; }
+  .trak-breakdown-row { display: flex; align-items: center; justify-content: space-between; padding: 7px 10px; border-radius: 5px; margin-bottom: 3px; }
+  .trak-breakdown-row:hover { background: #FAFAF9; }
+  .trak-breakdown-left { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #2A2926; }
+  .trak-breakdown-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .trak-breakdown-val { font-size: 12px; color: #6B6B68; font-weight: 400; }
+  .trak-chart-footer { padding: 10px 20px; border-top: 1px solid #F0EFED; display: flex; gap: 16px; }
+  .trak-chart-foot-stat { }
+  .trak-chart-foot-label { font-size: 10px; color: #9B9389; }
+  .trak-chart-foot-val { font-size: 18px; font-weight: 600; color: #1A1714; line-height: 1.2; }
+
+  /* TWO COLUMN ROW */
+  .trak-col-row { display: grid; gap: 8px; margin-bottom: 6px; padding-right: 44px; }
+  .trak-col-row.cols-2 { grid-template-columns: 1fr 1fr; }
+  .trak-col-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+  .trak-text-card { border: 1px solid #EFEFED; border-radius: 8px; padding: 14px 16px; }
+  .trak-text-card-label { font-size: 10px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: #9B9389; margin-bottom: 8px; }
+  .trak-text-card-content { font-size: 12.5px; line-height: 1.6; color: #2A2926; font-weight: 300; }
+  .trak-text-card-content strong { font-weight: 500; color: #1A1714; }
+
+  /* MAGIC LINK BANNER */
+  .trak-magic-banner {
+    background: #EBF1F7; border-bottom: 1px solid #D0E0EC;
+    padding: 8px 24px; display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .trak-magic-banner-text { font-size: 12px; color: #2A537A; display: flex; align-items: center; gap: 6px; }
+  .trak-magic-banner-action { font-size: 12px; color: #2A537A; font-weight: 500; }
+
+  /* SUBTAB SIDEBAR */
+  .trak-subtab-layout { display: grid; grid-template-columns: 180px 1fr; }
+  .trak-subtab-sidebar { border-right: 1px solid #F0EFED; padding: 16px 0; background: #FAFAF9; }
+  .trak-subtab-label { font-size: 10px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; color: #9B9389; padding: 0 16px 8px; }
+  .trak-subtab-item { padding: 7px 16px; font-size: 13px; color: #6B6B68; display: flex; align-items: center; gap: 7px; cursor: pointer; }
+  .trak-subtab-item.active { color: #1A1714; background: #EFEFED; font-weight: 500; border-right: 2px solid #1A1714; }
+  .trak-subtab-icon { font-size: 11px; opacity: 0.5; }
+
+  /* STATUS DOT */
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot-done { background: #2D7A4F; }
+  .dot-todo { background: #CCCBC8; }
+  .dot-in-progress { background: #2A537A; }
+  .dot-blocked { background: #B94040; }
+
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .hero { padding: 120px 24px 72px; }
+    .hero-stats { flex-direction: column; }
+    .stat { border-right: none; border-bottom: 1px solid var(--cream-border); }
+    .stat:last-child { border-bottom: none; }
+    .section { padding: 56px 24px; }
+    .mockup-section { padding: 0 16px 64px; }
+    .mockup-section-header { padding: 0 24px; }
+    .trak-tabbar { overflow-x: auto; }
+    .trak-shopify-row.cols-3 { grid-template-columns: 1fr 1fr; }
+    .trak-col-row.cols-2 { grid-template-columns: 1fr; }
+    .replaced-grid { grid-template-columns: 1fr; }
+    .results-grid { grid-template-columns: 1fr; }
+    .result-card.featured { flex-direction: column; gap: 24px; align-items: flex-start; }
+    .result-card.featured .result-desc { border-left: none; padding-left: 0; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 24px; }
+    .cta-section { flex-direction: column; padding: 48px 36px; gap: 32px; }
+    .trak-subtab-layout { grid-template-columns: 1fr; }
+    .trak-subtab-sidebar { display: none; }
+    footer { padding: 24px; flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Tra<span>k</span></a>
+  <a href="#" class="nav-cta">Use this template →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">
+    <span class="hero-eyebrow-dot"></span>
+    Case Study · Seasonal Drop Template
+  </div>
+  <h1>How Éclat Studio launched <em>The Lemon Edit</em> and sold out in 47 minutes.</h1>
+  <p class="hero-sub">A small team. Three new SKUs. Six weeks from brief to live. Here's how Éclat Studio ran their entire seasonal drop out of a single Trak project — and what happened when they did.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-number">47 min</div><div class="stat-label">Time to sell out</div></div>
+    <div class="stat"><div class="stat-number">$28,850</div><div class="stat-label">First-hour revenue</div></div>
+    <div class="stat"><div class="stat-number">950</div><div class="stat-label">Units sold</div></div>
+    <div class="stat"><div class="stat-number">1,240</div><div class="stat-label">Waitlist signups in 48hrs</div></div>
+  </div>
+</section>
+
+<hr class="section-divider animate-in">
+
+<!-- INTRO -->
+<section class="section animate-in">
+  <div class="section-label">The Drop</div>
+  <h2>Three SKUs. Six weeks. <em>One project.</em></h2>
+  <div class="body-text">
+    <p>Éclat Studio had a concept — The Lemon Edit, a limited three-product drop built on their Soft Glow base formula. They had a team, a manufacturer, and six weeks. What they didn't have was one place to run it. The brief was in Notion, assets were in Drive, copy was in email threads, and the ops contractor was asking Slack questions that had already been answered somewhere else.</p>
+    <p>They set up a single Trak project and ran the entire launch from it — brief to brief, shoot to sold out.</p>
+  </div>
+
+  <div class="timeline-visual animate-in" style="margin-top:36px;">
+    <div class="timeline-line"></div>
+    <div class="timeline-event"><div class="timeline-dot">✦</div><div class="timeline-event-text"><div class="timeline-event-date">June 2</div><div class="timeline-event-name">Brief locked in Launch HQ</div></div></div>
+    <div class="timeline-event"><div class="timeline-dot">✦</div><div class="timeline-event-text"><div class="timeline-event-date">June 6</div><div class="timeline-event-name">Photographer briefed via Magic Link — Creative Direction tab</div></div></div>
+    <div class="timeline-event"><div class="timeline-dot">✦</div><div class="timeline-event-text"><div class="timeline-event-date">June 14</div><div class="timeline-event-name">Product samples approved across all three SKU subtabs</div></div></div>
+    <div class="timeline-event"><div class="timeline-dot">✦</div><div class="timeline-event-text"><div class="timeline-event-date">June 18</div><div class="timeline-event-name">Shoot day. Raw selects uploaded to Creative Direction tab same evening.</div></div></div>
+    <div class="timeline-event"><div class="timeline-dot">✦</div><div class="timeline-event-text"><div class="timeline-event-date">June 28</div><div class="timeline-event-name">All assets approved. Final all-clear in Assets + Approvals.</div></div></div>
+    <div class="timeline-event"><div class="timeline-dot">✦</div><div class="timeline-event-text"><div class="timeline-event-date">July 7</div><div class="timeline-event-name">PR packages shipped. 15 creators and editors.</div></div></div>
+    <div class="timeline-event"><div class="timeline-dot">✦</div><div class="timeline-event-text"><div class="timeline-event-date">July 11</div><div class="timeline-event-name">Email #1 sends. 61% open rate.</div></div></div>
+    <div class="timeline-event"><div class="timeline-dot active">→</div><div class="timeline-event-text"><div class="timeline-event-date">July 14, 9:00am EST</div><div class="timeline-event-name highlight">The Lemon Edit goes live.</div></div></div>
+    <div class="timeline-event"><div class="timeline-dot active">✓</div><div class="timeline-event-text"><div class="timeline-event-date">July 14, 9:47am EST</div><div class="timeline-event-name highlight">Sold out. 950 units. 47 minutes.</div></div></div>
+  </div>
+</section>
+
+<hr class="section-divider animate-in">
+
+<!-- MOCKUPS SECTION -->
+<div class="mockup-section-header animate-in" style="padding-top: 80px;">
+  <div class="section-label">Inside the Project</div>
+  <h2 style="font-family:'Instrument Serif',serif;font-size:clamp(26px,3.5vw,36px);line-height:1.2;letter-spacing:-0.02em;margin-bottom:16px;">How the template was built</h2>
+  <p style="font-size:16px;color:var(--ink-light);font-weight:300;max-width:560px;">Seven tabs. Here's what the Éclat team put inside each one and why it mattered.</p>
+</div>
+
+<div class="mockup-section">
+
+  <!-- MOCKUP 1: LAUNCH HQ -->
+  <div class="mockup-wrapper animate-in">
+    <div class="mockup-caption">
+      <div class="mockup-caption-left">
+        <div class="mockup-tab-label">Tab 01</div>
+        <h3>Launch HQ</h3>
+        <p>The command center. Campaign brief, live Shopify inventory, master task tracker, and the full six-week timeline — all in one tab. The Launch Day subtab is what the team had open on July 14.</p>
+      </div>
+    </div>
+    <div class="trak-window">
+      <!-- Project Header -->
+      <div class="trak-project-header">
+        <div class="trak-back-link">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M7.5 2.5L4 6l3.5 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Back to projects
+        </div>
+        <div class="trak-project-title-row">
+          <div class="trak-project-name">THE LEMON EDIT</div>
+          <div class="trak-header-actions">
+            <div class="trak-enable-public">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M6 1.5C6 1.5 4 4 4 6s2 4.5 2 4.5M6 1.5C6 1.5 8 4 8 6s-2 4.5-2 4.5M1.5 6h9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+              Enable Public Link
+            </div>
+          </div>
+        </div>
+        <div class="trak-meta-row">
+          <span class="trak-pill pill-in-progress">In Progress</span>
+          <span class="trak-pill pill-due">Due July 14</span>
+          <span class="trak-pill pill-urgent">Urgent</span>
+        </div>
+        <div class="trak-tabbar">
+          <div class="trak-tab"><span class="trak-tab-icon">⊞</span>Overview</div>
+          <div class="trak-tab active">Launch HQ</div>
+          <div class="trak-tab">Product Lineup</div>
+          <div class="trak-tab">Creative Direction</div>
+          <div class="trak-tab">Campaign Rollout + PR</div>
+          <div class="trak-tab">Site + Merch</div>
+          <div class="trak-tab trak-tab-add">+</div>
+        </div>
+      </div>
+      <!-- Canvas -->
+      <div class="trak-canvas" style="padding-right: 60px;">
+        <!-- Brief text block -->
+        <div class="trak-block trak-text-block">
+          <div class="trak-block-inner">
+            <div class="trak-text-content">
+              <strong>The Lemon Edit</strong> is Éclat Studio's first seasonal drop — a limited extension of the Soft Glow core line built around lemon as a hero ingredient. Three products. Launch date: July 14. Drop window: 72 hours or until sold out. No restock announcement at launch.
+            </div>
+            <div class="trak-block-menu">···</div>
+          </div>
+        </div>
+
+        <!-- Drop details + target customer (2 col) -->
+        <div class="trak-col-row cols-2">
+          <div class="trak-text-card">
+            <div class="trak-text-card-label">Drop Details</div>
+            <div class="trak-text-card-content">
+              <strong>Launch date:</strong> July 14<br>
+              <strong>Channel priority:</strong> Email → IG → TikTok<br>
+              <strong>Lip Balm:</strong> $18 · 400 units<br>
+              <strong>Moisturizer:</strong> $42 · 250 units<br>
+              <strong>Mist:</strong> $28 · 300 units
+            </div>
+          </div>
+          <div class="trak-text-card">
+            <div class="trak-text-card-label">Who We're Talking To</div>
+            <div class="trak-text-card-content">
+              Women 22–34. Already in the Rhode/Augustinus Bader orbit but not yet spending at that level. She buys intentionally. She found Éclat through a friend or a TikTok.
+            </div>
+          </div>
+        </div>
+
+        <!-- Section header: Products -->
+        <div class="trak-section-header">
+          <div class="trak-section-header-title">Products</div>
+          <div class="trak-section-header-sub">Pinned from Shopify — live inventory and variant status</div>
+        </div>
+
+        <!-- Shopify blocks -->
+        <div class="trak-shopify-row cols-3" style="padding-right:44px;margin-bottom:8px;">
+          <div class="trak-shopify-card">
+            <div class="trak-shopify-img">🍋</div>
+            <div class="trak-shopify-body">
+              <div class="trak-shopify-name">The Lemon Edit Lip Balm</div>
+              <div class="trak-shopify-stats">
+                <div class="trak-shopify-stat"><div class="trak-shopify-stat-val">400</div><div class="trak-shopify-stat-key">In stock</div></div>
+                <div class="trak-shopify-stat"><div class="trak-shopify-stat-val">$18</div><div class="trak-shopify-stat-key">Price</div></div>
+              </div>
+              <div class="trak-shopify-status"><span class="trak-pill pill-todo" style="font-size:10px;">Draft</span></div>
+            </div>
+          </div>
+          <div class="trak-shopify-card">
+            <div class="trak-shopify-img" style="background:linear-gradient(135deg,#F0F4FF,#E8F0FA);">✨</div>
+            <div class="trak-shopify-body">
+              <div class="trak-shopify-name">Lemon Brightening Moisturizer</div>
+              <div class="trak-shopify-stats">
+                <div class="trak-shopify-stat"><div class="trak-shopify-stat-val">250</div><div class="trak-shopify-stat-key">In stock</div></div>
+                <div class="trak-shopify-stat"><div class="trak-shopify-stat-val">$42</div><div class="trak-shopify-stat-key">Price</div></div>
+              </div>
+              <div class="trak-shopify-status"><span class="trak-pill pill-todo" style="font-size:10px;">Draft</span></div>
+            </div>
+          </div>
+          <div class="trak-shopify-card">
+            <div class="trak-shopify-img" style="background:linear-gradient(135deg,#E8F9F0,#F0FBF5);">💧</div>
+            <div class="trak-shopify-body">
+              <div class="trak-shopify-name">Lemon Dewy Mist Spray</div>
+              <div class="trak-shopify-stats">
+                <div class="trak-shopify-stat"><div class="trak-shopify-stat-val">300</div><div class="trak-shopify-stat-key">In stock</div></div>
+                <div class="trak-shopify-stat"><div class="trak-shopify-stat-val">$28</div><div class="trak-shopify-stat-key">Price</div></div>
+              </div>
+              <div class="trak-shopify-status"><span class="trak-pill pill-todo" style="font-size:10px;">Draft</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section header: Master tasks -->
+        <div class="trak-section-header">
+          <div class="trak-section-header-title">Master Task Tracker</div>
+          <div class="trak-section-header-sub">Pre-production phase</div>
+        </div>
+
+        <!-- Task block -->
+        <div class="trak-task-block" style="margin-right:44px;">
+          <div class="trak-task-header">
+            <div class="trak-task-title">Pre-Production</div>
+            <div class="trak-task-view-toggles">
+              <div class="trak-view-btn active">☰</div>
+              <div class="trak-view-btn">⊞</div>
+              <div class="trak-view-btn">⊟</div>
+              <div style="font-size:16px;color:#CCCBC8;margin-left:4px;">···</div>
+            </div>
+          </div>
+          <div class="trak-task-row">
+            <div class="trak-task-check done"></div>
+            <div class="trak-task-name done">Lock campaign brief</div>
+            <div class="trak-task-meta">
+              <span class="trak-pill pill-done" style="font-size:10px;">Done</span>
+              <span class="trak-meta-icon">⚑</span><span class="trak-meta-icon">👤</span><span class="trak-meta-icon">📅</span><span class="trak-meta-icon">🏷</span>
+            </div>
+          </div>
+          <div class="trak-task-row">
+            <div class="trak-task-check done"></div>
+            <div class="trak-task-name done">Confirm unit quantities with manufacturer</div>
+            <div class="trak-task-meta">
+              <span class="trak-pill pill-done" style="font-size:10px;">Done</span>
+              <span class="trak-meta-icon">⚑</span><span class="trak-meta-icon">👤</span><span class="trak-meta-icon">📅</span><span class="trak-meta-icon">🏷</span>
+            </div>
+          </div>
+          <div class="trak-task-row">
+            <div class="trak-task-check in-progress"></div>
+            <div class="trak-task-name">Brief photographer</div>
+            <div class="trak-task-meta">
+              <span class="trak-pill pill-in-progress" style="font-size:10px;">In Progress</span>
+              <span class="trak-meta-icon">⚑</span><span class="trak-meta-icon">👤</span><span class="trak-meta-icon">📅</span><span class="trak-meta-icon">🏷</span>
+            </div>
+          </div>
+          <div class="trak-task-row">
+            <div class="trak-task-check"></div>
+            <div class="trak-task-name">Finalize product names + copy direction</div>
+            <div class="trak-task-meta">
+              <span class="trak-pill pill-todo" style="font-size:10px;">To-Do</span>
+              <span class="trak-meta-icon">⚑</span><span class="trak-meta-icon">👤</span><span class="trak-meta-icon">📅</span><span class="trak-meta-icon">🏷</span>
+            </div>
+          </div>
+          <div class="trak-task-add">+ Add task</div>
+        </div>
+
+        <div class="trak-right-icons">
+          <div class="trak-right-icon">🔒</div>
+          <div class="trak-right-icon">✦</div>
+          <div class="trak-right-icon">⊞</div>
+          <div class="trak-right-icon">💬</div>
+          <div class="trak-right-icon">👤</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOCKUP 2: PRODUCT LINEUP (subtabs) -->
+  <div class="mockup-wrapper animate-in">
+    <div class="mockup-caption">
+      <div class="mockup-caption-left">
+        <div class="mockup-tab-label">Tab 02</div>
+        <h3>Product Lineup</h3>
+        <p>One subtab per SKU. Each has the live Shopify block for that product, product story, key details, approval tasks, photography, and manufacturer documents. When the ops contractor needed to confirm inventory, they went straight to the Moisturizer subtab.</p>
+      </div>
+    </div>
+    <div class="trak-window">
+      <div class="trak-project-header">
+        <div class="trak-project-title-row">
+          <div class="trak-project-name">THE LEMON EDIT</div>
+          <div class="trak-header-actions"><div class="trak-enable-public" style="font-size:12px;color:#5A7A96;padding:5px 10px;border:1px solid #D0E0EC;border-radius:5px;background:#F5F9FC;">Enable Public Link</div></div>
+        </div>
+        <div class="trak-meta-row">
+          <span class="trak-pill pill-in-progress">In Progress</span>
+          <span class="trak-pill pill-due">Due July 14</span>
+          <span class="trak-pill pill-urgent">Urgent</span>
+        </div>
+        <div class="trak-tabbar">
+          <div class="trak-tab"><span class="trak-tab-icon">⊞</span>Overview</div>
+          <div class="trak-tab">Launch HQ</div>
+          <div class="trak-tab active">Product Lineup</div>
+          <div class="trak-tab">Creative Direction</div>
+          <div class="trak-tab">Campaign Rollout + PR</div>
+          <div class="trak-tab trak-tab-add">+</div>
+        </div>
+      </div>
+      <div class="trak-subtab-layout">
+        <div class="trak-subtab-sidebar">
+          <div class="trak-subtab-label">Subtabs</div>
+          <div class="trak-subtab-item"><span class="trak-subtab-icon">🍋</span>Lemon Lip Balm</div>
+          <div class="trak-subtab-item active"><span class="trak-subtab-icon">✨</span>Brightening Moisturizer</div>
+          <div class="trak-subtab-item"><span class="trak-subtab-icon">💧</span>Dewy Mist Spray</div>
+        </div>
+        <div class="trak-canvas" style="padding-right:60px;">
+          <div class="trak-section-header" style="margin-top:0;">
+            <div class="trak-section-header-title">Lemon Brightening Moisturizer</div>
+            <div class="trak-section-header-sub">Hero treatment SKU — limited run of 250 units</div>
+          </div>
+
+          <!-- Shopify block -->
+          <div style="margin-right:44px;margin-bottom:8px;">
+            <div class="trak-shopify-card" style="display:grid;grid-template-columns:100px 1fr;">
+              <div class="trak-shopify-img" style="height:100%;background:linear-gradient(135deg,#F0F4FF,#E8F0FA);">✨</div>
+              <div class="trak-shopify-body">
+                <div class="trak-shopify-name">Lemon Brightening Moisturizer</div>
+                <div class="trak-shopify-stats" style="gap:20px;">
+                  <div class="trak-shopify-stat"><div class="trak-shopify-stat-val">250</div><div class="trak-shopify-stat-key">In stock</div></div>
+                  <div class="trak-shopify-stat"><div class="trak-shopify-stat-val">$42</div><div class="trak-shopify-stat-key">Price</div></div>
+                  <div class="trak-shopify-stat"><div class="trak-shopify-stat-val">1</div><div class="trak-shopify-stat-key">Variants</div></div>
+                  <div class="trak-shopify-stat"><div class="trak-shopify-stat-val">0</div><div class="trak-shopify-stat-key">Units sold</div></div>
+                </div>
+                <div class="trak-shopify-status" style="margin-top:8px;"><span class="trak-pill pill-todo" style="font-size:10px;">Draft — not live</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2 col: product story + key details -->
+          <div class="trak-col-row cols-2">
+            <div class="trak-text-card">
+              <div class="trak-text-card-label">Product Story</div>
+              <div class="trak-text-card-content">The moisturizer is the collection's anchor — the product that justifies the drop as a skincare story. Lemon vitamin C + niacinamide for a brightening, pore-minimizing effect. Lightweight gel-cream. Works under SPF.</div>
+            </div>
+            <div class="trak-text-card">
+              <div class="trak-text-card-label">Key Details</div>
+              <div class="trak-text-card-content">
+                <strong>Price:</strong> $42 &nbsp; <strong>Units:</strong> 250<br>
+                <strong>Hero ingredients:</strong> Lemon vit C, niacinamide, HA<br>
+                <strong>Packaging:</strong> Frosted glass jar, yellow lid<br>
+                <strong>Status:</strong> Pending Shopify listing
+              </div>
+            </div>
+          </div>
+
+          <!-- Task block -->
+          <div class="trak-task-block" style="margin-right:44px;">
+            <div class="trak-task-header">
+              <div class="trak-task-title">Moisturizer — Product Tasks</div>
+              <div class="trak-task-view-toggles">
+                <div class="trak-view-btn active">☰</div>
+                <div class="trak-view-btn">⊞</div>
+                <div class="trak-view-btn">⊟</div>
+              </div>
+            </div>
+            <div class="trak-task-row">
+              <div class="trak-task-check done"></div>
+              <div class="trak-task-name done">Approve product sample</div>
+              <div class="trak-task-meta"><span class="trak-pill pill-done" style="font-size:10px;">Done</span><span class="trak-meta-icon">⚑</span><span class="trak-meta-icon">👤</span><span class="trak-meta-icon">📅</span></div>
+            </div>
+            <div class="trak-task-row">
+              <div class="trak-task-check in-progress"></div>
+              <div class="trak-task-name">Write PDP copy</div>
+              <div class="trak-task-meta"><span class="trak-pill pill-in-progress" style="font-size:10px;">In Progress</span><span class="trak-meta-icon">⚑</span><span class="trak-meta-icon">👤</span><span class="trak-meta-icon">📅</span></div>
+            </div>
+            <div class="trak-task-row">
+              <div class="trak-task-check"></div>
+              <div class="trak-task-name">Approve product photography</div>
+              <div class="trak-task-meta"><span class="trak-pill pill-todo" style="font-size:10px;">To-Do</span><span class="trak-meta-icon">⚑</span><span class="trak-meta-icon">👤</span><span class="trak-meta-icon">📅</span></div>
+            </div>
+            <div class="trak-task-row">
+              <div class="trak-task-check"></div>
+              <div class="trak-task-name">Build Shopify listing</div>
+              <div class="trak-task-meta"><span class="trak-pill pill-todo" style="font-size:10px;">To-Do</span><span class="trak-meta-icon">⚑</span><span class="trak-meta-icon">👤</span><span class="trak-meta-icon">📅</span></div>
+            </div>
+            <div class="trak-task-add">+ Add task</div>
+          </div>
+
+          <div class="trak-right-icons">
+            <div class="trak-right-icon">🔒</div>
+            <div class="trak-right-icon">✦</div>
+            <div class="trak-right-icon">⊞</div>
+            <div class="trak-right-icon">💬</div>
+            <div class="trak-right-icon">👤</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOCKUP 3: CREATIVE DIRECTION (Magic Link) -->
+  <div class="mockup-wrapper animate-in">
+    <div class="mockup-caption">
+      <div class="mockup-caption-left">
+        <div class="mockup-tab-label">Tab 03</div>
+        <h3>Creative Direction</h3>
+        <p>The only tab with a Magic Link. Photographer Maya Elias opened it on June 6 — no login, no account. She saw the creative vision, the moodboard, the shot list table, and the files she needed. The shot list updated live as selects were approved. No back-and-forth email.</p>
+      </div>
+      <span class="magic-link-badge">
+        <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M6 1.5C6 1.5 4 4 4 6s2 4.5 2 4.5M6 1.5C6 1.5 8 4 8 6s-2 4.5-2 4.5M1.5 6h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Magic Link
+      </span>
+    </div>
+    <div class="trak-window">
+      <!-- Magic link banner -->
+      <div class="trak-magic-banner">
+        <div class="trak-magic-banner-text">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M6 1.5C6 1.5 4 4 4 6s2 4.5 2 4.5M6 1.5C6 1.5 8 4 8 6s-2 4.5-2 4.5M1.5 6h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Public page — Creative Brief: The Lemon Edit · Shared by Nour K.
+        </div>
+        <div class="trak-magic-banner-action">Copy link →</div>
+      </div>
+      <div class="trak-project-header">
+        <div class="trak-project-title-row">
+          <div class="trak-project-name">THE LEMON EDIT</div>
+        </div>
+        <div class="trak-tabbar">
+          <div class="trak-tab"><span class="trak-tab-icon">⊞</span>Overview</div>
+          <div class="trak-tab">Launch HQ</div>
+          <div class="trak-tab">Product Lineup</div>
+          <div class="trak-tab active">Creative Direction</div>
+          <div class="trak-tab">Campaign Rollout + PR</div>
+          <div class="trak-tab trak-tab-add">+</div>
+        </div>
+      </div>
+      <div class="trak-canvas" style="padding-right:60px;">
+        <!-- Creative vision text -->
+        <div class="trak-block trak-text-block">
+          <div class="trak-block-inner">
+            <div class="trak-text-content">
+              <strong>Creative Vision —</strong> The Lemon Edit should feel like early morning light through a window. Not tropical. Not loud. The lemon is a detail, not a costume. Reference points: Aesop campaigns, early Rhode product imagery, Jacquemus Le Citron. Clean surfaces. Natural light. Skin that looks real.
+            </div>
+          </div>
+        </div>
+
+        <!-- Moodboard gallery -->
+        <div class="trak-gallery-block" style="margin-right:44px;">
+          <div class="trak-gallery-header">
+            <div class="trak-gallery-title">Campaign Moodboard</div>
+            <div style="font-size:11px;color:#9B9389;">12 images</div>
+          </div>
+          <div class="trak-gallery-grid cols-5" style="padding:8px;">
+            <div class="trak-gallery-item" style="background:#FBF6E0;">🍋</div>
+            <div class="trak-gallery-item" style="background:#F5F0E8;">☀️</div>
+            <div class="trak-gallery-item" style="background:#EBF1F7;">💎</div>
+            <div class="trak-gallery-item" style="background:#F5EDE7;">🌿</div>
+            <div class="trak-gallery-item" style="background:#E8F9F0;">✨</div>
+            <div class="trak-gallery-item" style="background:#F5F0E8;">🤍</div>
+            <div class="trak-gallery-item" style="background:#FBF6E0;">🍊</div>
+            <div class="trak-gallery-item" style="background:#EBF1F7;">🪞</div>
+            <div class="trak-gallery-item" style="background:#F5EDE7;">💛</div>
+            <div class="trak-gallery-item" style="background:linear-gradient(135deg,#FBF6E0,#F5EDE7);">+3</div>
+          </div>
+        </div>
+
+        <!-- Shot list table -->
+        <div class="trak-section-header">
+          <div class="trak-section-header-title">Shot List</div>
+          <div class="trak-section-header-sub">Required deliverables per SKU — minimum selects noted</div>
+        </div>
+
+        <div class="trak-table-block" style="margin-right:44px;">
+          <div class="trak-table-header-bar">
+            <div class="trak-table-title">Shot List</div>
+            <div style="font-size:11px;color:#9B9389;">11 shots</div>
+          </div>
+          <div class="trak-table-head">
+            <div class="trak-table-head-cell" style="flex:2;">Shot Type</div>
+            <div class="trak-table-head-cell" style="flex:1.5;">SKU</div>
+            <div class="trak-table-head-cell" style="flex:1;">Min. Selects</div>
+            <div class="trak-table-head-cell" style="flex:1;">Status</div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:2;">Hero flat lay</div>
+            <div class="trak-table-cell" style="flex:1.5;">Lip Balm</div>
+            <div class="trak-table-cell muted" style="flex:1;">3</div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-done" style="font-size:10px;">Approved</span></div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:2;">On-skin application</div>
+            <div class="trak-table-cell" style="flex:1.5;">Lip Balm</div>
+            <div class="trak-table-cell muted" style="flex:1;">4</div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-done" style="font-size:10px;">Approved</span></div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:2;">Hero flat lay</div>
+            <div class="trak-table-cell" style="flex:1.5;">Moisturizer</div>
+            <div class="trak-table-cell muted" style="flex:1;">3</div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-in-progress" style="font-size:10px;">In Review</span></div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:2;">Spray in action</div>
+            <div class="trak-table-cell" style="flex:1.5;">Mist</div>
+            <div class="trak-table-cell muted" style="flex:1;">4</div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-todo" style="font-size:10px;">Not started</span></div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:2;">Full collection flat lay</div>
+            <div class="trak-table-cell" style="flex:1.5;">All 3 SKUs</div>
+            <div class="trak-table-cell muted" style="flex:1;">3</div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-todo" style="font-size:10px;">Not started</span></div>
+          </div>
+        </div>
+
+        <div class="trak-right-icons">
+          <div class="trak-right-icon">🔒</div>
+          <div class="trak-right-icon">✦</div>
+          <div class="trak-right-icon">⊞</div>
+          <div class="trak-right-icon">💬</div>
+          <div class="trak-right-icon">👤</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOCKUP 4: CAMPAIGN ROLLOUT + PR -->
+  <div class="mockup-wrapper animate-in">
+    <div class="mockup-caption">
+      <div class="mockup-caption-left">
+        <div class="mockup-tab-label">Tab 04</div>
+        <h3>Campaign Rollout + PR</h3>
+        <p>Email sequence, social content calendar, and the full seeding list — 15 rows tracking every creator and editor from address confirmed to posted. By the time packages shipped July 7, every row had an address.</p>
+      </div>
+    </div>
+    <div class="trak-window">
+      <div class="trak-project-header">
+        <div class="trak-project-title-row">
+          <div class="trak-project-name">THE LEMON EDIT</div>
+          <div class="trak-header-actions"><div class="trak-enable-public" style="font-size:12px;color:#5A7A96;padding:5px 10px;border:1px solid #D0E0EC;border-radius:5px;background:#F5F9FC;">Enable Public Link</div></div>
+        </div>
+        <div class="trak-meta-row">
+          <span class="trak-pill pill-in-progress">In Progress</span>
+          <span class="trak-pill pill-due">Due July 14</span>
+        </div>
+        <div class="trak-tabbar">
+          <div class="trak-tab"><span class="trak-tab-icon">⊞</span>Overview</div>
+          <div class="trak-tab">Launch HQ</div>
+          <div class="trak-tab">Product Lineup</div>
+          <div class="trak-tab">Creative Direction</div>
+          <div class="trak-tab active">Campaign Rollout + PR</div>
+          <div class="trak-tab">Site + Merch</div>
+          <div class="trak-tab trak-tab-add">+</div>
+        </div>
+      </div>
+      <div class="trak-canvas" style="padding-right:60px;">
+
+        <div class="trak-section-header" style="margin-top:0;">
+          <div class="trak-section-header-title">Email Sequence</div>
+          <div class="trak-section-header-sub">Three emails. List-first. Launches 72 hours before drop.</div>
+        </div>
+
+        <div class="trak-table-block" style="margin-right:44px;">
+          <div class="trak-table-header-bar">
+            <div class="trak-table-title">Email Sequence</div>
+          </div>
+          <div class="trak-table-head">
+            <div class="trak-table-head-cell" style="flex:2;">Email</div>
+            <div class="trak-table-head-cell" style="flex:2.5;">Subject Line</div>
+            <div class="trak-table-head-cell" style="flex:1.2;">Send Date</div>
+            <div class="trak-table-head-cell" style="flex:1;">Status</div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:2;">#1 — Teaser</div>
+            <div class="trak-table-cell muted" style="flex:2.5;">Something lemony is coming.</div>
+            <div class="trak-table-cell muted" style="flex:1.2;">July 11</div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-done" style="font-size:10px;">Scheduled</span></div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:2;">#2 — Countdown</div>
+            <div class="trak-table-cell muted" style="flex:2.5;">The Lemon Edit drops in 48 hours.</div>
+            <div class="trak-table-cell muted" style="flex:1.2;">July 12</div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-done" style="font-size:10px;">Scheduled</span></div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:2;">#3 — We're Live</div>
+            <div class="trak-table-cell muted" style="flex:2.5;">The Lemon Edit is live.</div>
+            <div class="trak-table-cell muted" style="flex:1.2;">July 14</div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-in-progress" style="font-size:10px;">Draft</span></div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:2;">#4 — Sold Out</div>
+            <div class="trak-table-cell muted" style="flex:2.5;">That was fast.</div>
+            <div class="trak-table-cell muted" style="flex:1.2;">July 14</div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-todo" style="font-size:10px;">Not started</span></div>
+          </div>
+        </div>
+
+        <div class="trak-section-header">
+          <div class="trak-section-header-title">PR + Seeding</div>
+          <div class="trak-section-header-sub">Packages ship July 7 — product in hand before launch day</div>
+        </div>
+
+        <div class="trak-table-block" style="margin-right:44px;">
+          <div class="trak-table-header-bar">
+            <div class="trak-table-title">Seeding List</div>
+            <div style="font-size:11px;color:#9B9389;">15 contacts</div>
+          </div>
+          <div class="trak-table-head">
+            <div class="trak-table-head-cell" style="flex:2;">Name</div>
+            <div class="trak-table-head-cell" style="flex:1;">Type</div>
+            <div class="trak-table-head-cell" style="flex:1;">Platform</div>
+            <div class="trak-table-head-cell" style="flex:1;">Address</div>
+            <div class="trak-table-head-cell" style="flex:1;">Shipped</div>
+            <div class="trak-table-head-cell" style="flex:1;">Posted</div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:2;">@softglowskin</div>
+            <div class="trak-table-cell muted" style="flex:1;">Creator</div>
+            <div class="trak-table-cell muted" style="flex:1;">TikTok + IG</div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-done" style="font-size:10px;">✓</span></div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-done" style="font-size:10px;">✓</span></div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-done" style="font-size:10px;">✓</span></div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:2;">@theglassyskin</div>
+            <div class="trak-table-cell muted" style="flex:1;">Creator</div>
+            <div class="trak-table-cell muted" style="flex:1;">TikTok + IG</div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-done" style="font-size:10px;">✓</span></div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-done" style="font-size:10px;">✓</span></div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-in-progress" style="font-size:10px;">Pending</span></div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:2;">@frenchpharmacygirl</div>
+            <div class="trak-table-cell muted" style="flex:1;">Creator</div>
+            <div class="trak-table-cell muted" style="flex:1;">TikTok</div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-done" style="font-size:10px;">✓</span></div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-done" style="font-size:10px;">✓</span></div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-todo" style="font-size:10px;">—</span></div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:2;">Vogue Beauty</div>
+            <div class="trak-table-cell muted" style="flex:1;">Editor</div>
+            <div class="trak-table-cell muted" style="flex:1;">Editorial</div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-done" style="font-size:10px;">✓</span></div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-done" style="font-size:10px;">✓</span></div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-todo" style="font-size:10px;">—</span></div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:2;">Into The Gloss</div>
+            <div class="trak-table-cell muted" style="flex:1;">Editor</div>
+            <div class="trak-table-cell muted" style="flex:1;">Editorial</div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-done" style="font-size:10px;">✓</span></div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-in-progress" style="font-size:10px;">In transit</span></div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-todo" style="font-size:10px;">—</span></div>
+          </div>
+        </div>
+
+        <div class="trak-right-icons">
+          <div class="trak-right-icon">🔒</div>
+          <div class="trak-right-icon">✦</div>
+          <div class="trak-right-icon">⊞</div>
+          <div class="trak-right-icon">💬</div>
+          <div class="trak-right-icon">👤</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOCKUP 5: POST LAUNCH -->
+  <div class="mockup-wrapper animate-in">
+    <div class="mockup-caption">
+      <div class="mockup-caption-left">
+        <div class="mockup-tab-label">Tab 07</div>
+        <h3>Post-Launch</h3>
+        <p>Written within 48 hours of sellout. The restock decision was made here, next to the chart showing the moisturizer drove 36% of revenue on 26% of inventory. The next drop brief started August 1.</p>
+      </div>
+    </div>
+    <div class="trak-window">
+      <div class="trak-project-header">
+        <div class="trak-project-title-row">
+          <div class="trak-project-name">THE LEMON EDIT</div>
+          <div class="trak-header-actions"><div class="trak-enable-public" style="font-size:12px;color:#5A7A96;padding:5px 10px;border:1px solid #D0E0EC;border-radius:5px;background:#F5F9FC;">Enable Public Link</div></div>
+        </div>
+        <div class="trak-meta-row">
+          <span class="trak-pill pill-done">Complete</span>
+          <span class="trak-pill pill-due">Launched July 14</span>
+        </div>
+        <div class="trak-tabbar">
+          <div class="trak-tab"><span class="trak-tab-icon">⊞</span>Overview</div>
+          <div class="trak-tab">Launch HQ</div>
+          <div class="trak-tab">Assets + Approvals</div>
+          <div class="trak-tab active">Post-Launch</div>
+          <div class="trak-tab trak-tab-add">+</div>
+        </div>
+      </div>
+      <div class="trak-canvas" style="padding-right:60px;">
+
+        <!-- Results text -->
+        <div class="trak-col-row cols-2">
+          <div class="trak-text-card">
+            <div class="trak-text-card-label">Revenue + Sales</div>
+            <div class="trak-text-card-content">
+              <strong>Total revenue:</strong> $28,850<br>
+              <strong>Units sold:</strong> 950 / 950<br>
+              <strong>Time to sell out:</strong> 47 minutes<br>
+              <strong>Avg. order value:</strong> $36.40<br>
+              <strong>2+ SKU orders:</strong> 41%
+            </div>
+          </div>
+          <div class="trak-text-card">
+            <div class="trak-text-card-label">Channel Performance</div>
+            <div class="trak-text-card-content">
+              <strong>Email → orders:</strong> 73%<br>
+              <strong>TikTok → orders:</strong> 19%<br>
+              <strong>Email open rate (#3):</strong> 61%<br>
+              <strong>TikTok launch video:</strong> 84K views<br>
+              <strong>Waitlist signups:</strong> 1,240
+            </div>
+          </div>
+        </div>
+
+        <!-- Chart block: Revenue by SKU -->
+        <div class="trak-chart-block" style="margin-right:44px;margin-top:8px;">
+          <div class="trak-chart-header">
+            <div class="trak-chart-title">
+              Revenue by SKU
+              <span class="trak-chart-badge">Chart</span>
+            </div>
+            <div class="trak-chart-actions">
+              <span class="trak-chart-action">🔒 Lock</span>
+              <span class="trak-chart-action">↻ Refresh</span>
+              <span class="trak-chart-action">📷 Save snapshot</span>
+            </div>
+          </div>
+          <div class="trak-chart-body">
+            <div class="trak-chart-donut-wrap">
+              <svg class="trak-donut" viewBox="0 0 120 120">
+                <!-- Moisturizer 36% -->
+                <circle cx="60" cy="60" r="40" fill="none" stroke="#2A537A" stroke-width="20"
+                  stroke-dasharray="90.5 160.5" stroke-dashoffset="0" transform="rotate(-90 60 60)"/>
+                <!-- Mist 29% -->
+                <circle cx="60" cy="60" r="40" fill="none" stroke="#E8C84A" stroke-width="20"
+                  stroke-dasharray="72.9 177.7" stroke-dashoffset="-90.5" transform="rotate(-90 60 60)"/>
+                <!-- Lip Balm 25% -->
+                <circle cx="60" cy="60" r="40" fill="none" stroke="#C4714A" stroke-width="20"
+                  stroke-dasharray="62.8 188.5" stroke-dashoffset="-163.4" transform="rotate(-90 60 60)"/>
+                <!-- Uplift 10% -->
+                <circle cx="60" cy="60" r="40" fill="none" stroke="#D0CFC8" stroke-width="20"
+                  stroke-dasharray="25.1 226.2" stroke-dashoffset="-226.2" transform="rotate(-90 60 60)"/>
+                <text x="60" y="56" text-anchor="middle" font-size="13" font-weight="600" fill="#1A1714" font-family="DM Sans">$28.8K</text>
+                <text x="60" y="70" text-anchor="middle" font-size="9" fill="#9B9389" font-family="DM Sans">total</text>
+              </svg>
+            </div>
+            <div class="trak-chart-breakdown">
+              <div class="trak-breakdown-row">
+                <div class="trak-breakdown-left"><div class="trak-breakdown-dot" style="background:#2A537A;"></div>Lemon Brightening Moisturizer</div>
+                <div class="trak-breakdown-val">$10,500 (36%)</div>
+              </div>
+              <div class="trak-breakdown-row">
+                <div class="trak-breakdown-left"><div class="trak-breakdown-dot" style="background:#E8C84A;"></div>Lemon Dewy Mist Spray</div>
+                <div class="trak-breakdown-val">$8,400 (29%)</div>
+              </div>
+              <div class="trak-breakdown-row">
+                <div class="trak-breakdown-left"><div class="trak-breakdown-dot" style="background:#C4714A;"></div>Lemon Lip Balm</div>
+                <div class="trak-breakdown-val">$7,200 (25%)</div>
+              </div>
+              <div class="trak-breakdown-row">
+                <div class="trak-breakdown-left"><div class="trak-breakdown-dot" style="background:#D0CFC8;"></div>Multi-SKU order uplift</div>
+                <div class="trak-breakdown-val">$2,750 (10%)</div>
+              </div>
+            </div>
+          </div>
+          <div class="trak-chart-footer">
+            <div class="trak-chart-foot-stat"><div class="trak-chart-foot-label">Total revenue</div><div class="trak-chart-foot-val">$28,850</div></div>
+            <div class="trak-chart-foot-stat"><div class="trak-chart-foot-label">Units sold</div><div class="trak-chart-foot-val">950</div></div>
+            <div class="trak-chart-foot-stat"><div class="trak-chart-foot-label">SKUs</div><div class="trak-chart-foot-val">3</div></div>
+          </div>
+        </div>
+
+        <!-- Shopify blocks post-launch -->
+        <div class="trak-section-header">
+          <div class="trak-section-header-title">Shopify — Post-Launch Status</div>
+        </div>
+        <div class="trak-shopify-row cols-3" style="padding-right:44px;">
+          <div class="trak-shopify-card">
+            <div class="trak-shopify-img">🍋</div>
+            <div class="trak-shopify-body">
+              <div class="trak-shopify-name">Lemon Lip Balm</div>
+              <div class="trak-shopify-stats">
+                <div class="trak-shopify-stat"><div class="trak-shopify-stat-val">0</div><div class="trak-shopify-stat-key">In stock</div></div>
+                <div class="trak-shopify-stat"><div class="trak-shopify-stat-val">400</div><div class="trak-shopify-stat-key">Sold</div></div>
+              </div>
+              <div class="trak-shopify-status" style="margin-top:6px;"><span class="trak-pill pill-blocked" style="font-size:10px;">Sold out</span></div>
+            </div>
+          </div>
+          <div class="trak-shopify-card">
+            <div class="trak-shopify-img" style="background:linear-gradient(135deg,#F0F4FF,#E8F0FA);">✨</div>
+            <div class="trak-shopify-body">
+              <div class="trak-shopify-name">Brightening Moisturizer</div>
+              <div class="trak-shopify-stats">
+                <div class="trak-shopify-stat"><div class="trak-shopify-stat-val">0</div><div class="trak-shopify-stat-key">In stock</div></div>
+                <div class="trak-shopify-stat"><div class="trak-shopify-stat-val">250</div><div class="trak-shopify-stat-key">Sold</div></div>
+              </div>
+              <div class="trak-shopify-status" style="margin-top:6px;"><span class="trak-pill pill-blocked" style="font-size:10px;">Sold out</span></div>
+            </div>
+          </div>
+          <div class="trak-shopify-card">
+            <div class="trak-shopify-img" style="background:linear-gradient(135deg,#E8F9F0,#F0FBF5);">💧</div>
+            <div class="trak-shopify-body">
+              <div class="trak-shopify-name">Dewy Mist Spray</div>
+              <div class="trak-shopify-stats">
+                <div class="trak-shopify-stat"><div class="trak-shopify-stat-val">0</div><div class="trak-shopify-stat-key">In stock</div></div>
+                <div class="trak-shopify-stat"><div class="trak-shopify-stat-val">300</div><div class="trak-shopify-stat-key">Sold</div></div>
+              </div>
+              <div class="trak-shopify-status" style="margin-top:6px;"><span class="trak-pill pill-blocked" style="font-size:10px;">Sold out</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="trak-right-icons">
+          <div class="trak-right-icon">🔒</div>
+          <div class="trak-right-icon">✦</div>
+          <div class="trak-right-icon">⊞</div>
+          <div class="trak-right-icon">💬</div>
+          <div class="trak-right-icon">👤</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end mockup-section -->
+
+<hr class="section-divider animate-in">
+
+<!-- RESULTS -->
+<section class="section animate-in">
+  <div class="section-label">The Result</div>
+  <h2>950 units. 47 minutes. <em>One project.</em></h2>
+  <div class="body-text">
+    <p>The Lemon Edit went live at 9:00am on July 14. The email went out at 9:05. By 9:47, every unit across all three SKUs was gone. $28,850 in revenue. 73% of first-hour orders came from the email list. TikTok drove the rest — the mid-spray mist shot, shared by two creators from the seeding list, accounted for 40% of TikTok traffic.</p>
+  </div>
+
+  <div class="results-grid">
+    <div class="result-card featured">
+      <div><div class="result-number">47 min</div><div class="result-label">Full sellout — all 950 units</div></div>
+      <p class="result-desc">Email list drove 73% of first-hour orders. TikTok drove the rest. No paid ads. No discount codes. The product and the list did the work.</p>
+    </div>
+    <div class="result-card"><div class="result-number">$28,850</div><div class="result-label">Revenue in under one hour</div></div>
+    <div class="result-card"><div class="result-number">61%</div><div class="result-label">Open rate on the live email</div></div>
+    <div class="result-card"><div class="result-number">41%</div><div class="result-label">Orders with 2 or more SKUs</div></div>
+    <div class="result-card"><div class="result-number">1,240</div><div class="result-label">Waitlist signups in 48 hours</div></div>
+  </div>
+
+  <div class="pullquote animate-in">
+    <p>"We've done launches where half the team didn't know the brief had changed. This time everyone was working from the same project, the same tabs, the same assets. Launch morning was the calmest it's ever been."</p>
+  </div>
+
+  <div class="body-text">
+    <p>The waitlist collected 1,240 emails in the 48 hours after sellout. The restock decision — how many moisturizer units, whether to make The Lemon Edit permanent — was made inside the Post-Launch tab, next to the chart that showed the moisturizer had driven 36% of revenue on 26% of inventory. The answer was obvious. The team started the next drop brief on August 1.</p>
+  </div>
+</section>
+
+<hr class="section-divider animate-in">
+
+<!-- CTA -->
+<section class="section animate-in" style="padding-bottom:0;">
+  <div class="cta-section">
+    <div class="cta-text">
+      <h2>Run your next drop like <em>The Lemon Edit.</em></h2>
+      <p>The Seasonal Drop template is ready to use. Clone it, brief your team, and run your next launch from one project. Works for any multi-SKU drop — seasonal, collab, limited edition.</p>
+    </div>
+    <div class="cta-buttons">
+      <a href="#" class="btn-primary">Use this template →</a>
+      <a href="#" class="btn-secondary">See all templates</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Trak. Built for D2C brands.</p>
+  <a href="#">View all case studies →</a>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.06 });
+  document.querySelectorAll('.animate-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

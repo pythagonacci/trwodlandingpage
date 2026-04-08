@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How Fold developed their Market Tote — Trak</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --cream: #FDFAF6;
+    --cream-dark: #F5F0E8;
+    --cream-border: #EAE4D9;
+    --blue: #2A537A;
+    --blue-light: #3D6E9E;
+    --blue-pale: #EBF1F7;
+    --terracotta: #C4714A;
+    --terracotta-pale: #F5EDE7;
+    --ink: #1A1714;
+    --ink-mid: #3D3830;
+    --ink-light: #6B6358;
+    --ink-faint: #9B9389;
+    --dust: #8A7A6A;
+    --dust-pale: #F2EDE6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 20px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(253,250,246,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--cream-border);
+  }
+  .nav-logo { font-weight: 500; font-size: 17px; color: var(--ink); letter-spacing: -0.02em; text-decoration: none; }
+  .nav-logo span { color: var(--blue); }
+  .nav-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--blue); color: white;
+    font-size: 13px; font-weight: 500; padding: 9px 20px;
+    border-radius: 6px; text-decoration: none; letter-spacing: -0.01em;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--blue-light); }
+
+  .hero {
+    padding: 160px 48px 100px; max-width: 860px; margin: 0 auto;
+    opacity: 0; animation: fadeUp 0.8s ease forwards; animation-delay: 0.1s;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-light); margin-bottom: 28px;
+  }
+  .hero-eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--dust); }
+  .hero h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(38px, 5vw, 58px); line-height: 1.1;
+    letter-spacing: -0.02em; margin-bottom: 28px;
+  }
+  .hero h1 em { font-style: italic; color: var(--blue); }
+  .hero-sub { font-size: 18px; line-height: 1.65; color: var(--ink-mid); font-weight: 300; max-width: 640px; margin-bottom: 48px; }
+  .hero-stats {
+    display: flex; border: 1px solid var(--cream-border); border-radius: 10px; overflow: hidden; background: white;
+    opacity: 0; animation: fadeUp 0.8s ease forwards; animation-delay: 0.3s;
+  }
+  .stat { flex: 1; padding: 24px 28px; border-right: 1px solid var(--cream-border); }
+  .stat:last-child { border-right: none; }
+  .stat-number { font-family: 'Instrument Serif', serif; font-size: 32px; letter-spacing: -0.02em; line-height: 1; margin-bottom: 6px; }
+  .stat-label { font-size: 12px; color: var(--ink-faint); }
+
+  .section { max-width: 860px; margin: 0 auto; padding: 80px 48px; }
+  .section + .section { padding-top: 0; }
+  .section-divider { max-width: 860px; margin: 0 auto; padding: 0 48px; border: none; border-top: 1px solid var(--cream-border); }
+  .section-label { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 20px; }
+  .section h2 { font-family: 'Instrument Serif', serif; font-size: clamp(26px,3.5vw,36px); line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 24px; }
+  .section h2 em { font-style: italic; color: var(--blue); }
+  .body-text { font-size: 16.5px; line-height: 1.75; color: var(--ink-mid); font-weight: 300; }
+  .body-text p + p { margin-top: 20px; }
+  .body-text strong { font-weight: 500; color: var(--ink); }
+
+  .pullquote { margin: 56px 0; padding: 36px 40px; background: var(--dust-pale); border-left: 3px solid var(--dust); border-radius: 0 8px 8px 0; }
+  .pullquote p { font-family: 'Instrument Serif', serif; font-size: clamp(20px,2.5vw,26px); line-height: 1.4; font-style: italic; letter-spacing: -0.01em; }
+
+  .timeline-visual { margin: 40px 0; position: relative; }
+  .timeline-line { position: absolute; left: 16px; top: 8px; bottom: 8px; width: 1px; background: var(--cream-border); }
+  .timeline-event { display: flex; align-items: flex-start; gap: 20px; padding: 0 0 28px 0; position: relative; }
+  .timeline-event:last-child { padding-bottom: 0; }
+  .timeline-dot { width: 33px; height: 33px; border-radius: 50%; background: var(--cream-dark); border: 1px solid var(--cream-border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index: 1; font-size: 12px; }
+  .timeline-dot.active { background: var(--blue); border-color: var(--blue); color: white; }
+  .timeline-event-text { padding-top: 6px; }
+  .timeline-event-date { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 3px; }
+  .timeline-event-name { font-size: 15px; color: var(--ink); }
+  .timeline-event-name.highlight { color: var(--blue); font-weight: 500; }
+
+  .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; }
+  .result-card { padding: 28px 32px; border: 1px solid var(--cream-border); border-radius: 10px; background: white; }
+  .result-card.featured { background: var(--blue); border-color: var(--blue); grid-column: 1/-1; display: flex; align-items: center; gap: 48px; padding: 36px 40px; }
+  .result-card.featured .result-number { color: white; font-size: clamp(52px,7vw,72px); white-space: nowrap; }
+  .result-card.featured .result-label { color: rgba(255,255,255,0.7); }
+  .result-card.featured .result-desc { font-size: 16px; color: rgba(255,255,255,0.85); font-weight: 300; line-height: 1.6; border-left: 1px solid rgba(255,255,255,0.2); padding-left: 48px; }
+  .result-number { font-family: 'Instrument Serif', serif; font-size: clamp(36px,4vw,48px); letter-spacing: -0.03em; line-height: 1; margin-bottom: 8px; }
+  .result-label { font-size: 12px; font-weight: 400; color: var(--ink-faint); letter-spacing: 0.03em; }
+
+  .cta-section { margin: 0 auto 100px; max-width: 860px; padding: 64px; background: var(--ink); border-radius: 16px; display: flex; align-items: center; justify-content: space-between; gap: 48px; }
+  .cta-text h2 { font-family: 'Instrument Serif', serif; font-size: clamp(24px,3vw,32px); color: white; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 12px; }
+  .cta-text h2 em { font-style: italic; color: #E8C84A; }
+  .cta-text p { font-size: 15px; color: rgba(255,255,255,0.6); font-weight: 300; line-height: 1.6; max-width: 380px; }
+  .cta-buttons { display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; }
+  .btn-primary { display: inline-flex; align-items: center; justify-content: center; background: white; color: var(--ink); font-size: 14px; font-weight: 500; padding: 13px 28px; border-radius: 8px; text-decoration: none; white-space: nowrap; transition: opacity 0.2s; }
+  .btn-primary:hover { opacity: 0.9; }
+  .btn-secondary { display: inline-flex; align-items: center; justify-content: center; background: transparent; color: rgba(255,255,255,0.7); font-size: 14px; padding: 13px 28px; border-radius: 8px; text-decoration: none; border: 1px solid rgba(255,255,255,0.15); white-space: nowrap; transition: all 0.2s; }
+  .btn-secondary:hover { border-color: rgba(255,255,255,0.35); color: white; }
+
+  footer { border-top: 1px solid var(--cream-border); padding: 32px 48px; display: flex; align-items: center; justify-content: space-between; }
+  footer p { font-size: 13px; color: var(--ink-faint); font-weight: 300; }
+  footer a { font-size: 13px; color: var(--blue); text-decoration: none; }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+  .animate-in { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .animate-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* =============================================
+     TRAK UI MOCKUP SYSTEM
+     ============================================= */
+
+  .mockup-section { max-width: 1000px; margin: 0 auto; padding: 0 48px 96px; }
+  .mockup-section-header { max-width: 860px; margin: 0 auto 56px; padding: 0 48px; }
+  .mockup-section-header .section-label { margin-bottom: 12px; }
+  .mockup-section-header h2 { font-family: 'Instrument Serif', serif; font-size: clamp(26px,3.5vw,36px); line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 16px; }
+  .mockup-section-header p { font-size: 16px; color: var(--ink-light); font-weight: 300; max-width: 560px; }
+
+  .mockup-wrapper { margin-bottom: 64px; }
+  .mockup-caption { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; gap: 24px; }
+  .mockup-tab-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 6px; }
+  .mockup-caption h3 { font-family: 'Instrument Serif', serif; font-size: 22px; letter-spacing: -0.01em; color: var(--ink); margin-bottom: 8px; }
+  .mockup-caption p { font-size: 14px; color: var(--ink-light); font-weight: 300; line-height: 1.6; max-width: 540px; }
+
+  .trak-window { border-radius: 12px; overflow: hidden; border: 1px solid #E2E2E0; box-shadow: 0 4px 32px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04); background: #ffffff; font-family: 'DM Sans', sans-serif; }
+
+  .trak-project-header { padding: 20px 24px 0; background: #fff; border-bottom: 1px solid #F0EFED; }
+  .trak-back-link { font-size: 12px; color: #8A8880; display: flex; align-items: center; gap: 4px; margin-bottom: 10px; }
+  .trak-project-title-row { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+  .trak-project-name { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; color: #1A1714; line-height: 1; text-transform: uppercase; }
+  .trak-header-actions { display: flex; align-items: center; gap: 8px; }
+  .trak-enable-public { display: flex; align-items: center; gap: 5px; font-size: 12px; color: #5A7A96; padding: 5px 10px; border: 1px solid #D0E0EC; border-radius: 5px; background: #F5F9FC; }
+  .trak-meta-row { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+  .trak-pill { display: inline-flex; align-items: center; font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 4px; }
+  .pill-in-progress { background: #EBF3FF; color: #2A537A; }
+  .pill-todo { background: #F2F2F0; color: #6B6B68; }
+  .pill-done { background: #E6F5EE; color: #2D7A4F; }
+  .pill-blocked { background: #FEE9E9; color: #B94040; }
+  .pill-urgent { background: #FEF3E7; color: #B06020; }
+  .pill-due { background: transparent; color: #8A8880; font-size: 11px; }
+  .pill-review { background: #F5EDE7; color: #8A4A20; }
+
+  .trak-tabbar { display: flex; align-items: flex-end; gap: 0; padding: 0 24px; border-bottom: 1px solid #F0EFED; background: #fff; overflow: hidden; }
+  .trak-tab { padding: 10px 16px; font-size: 13px; color: #8A8880; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; display: flex; align-items: center; gap: 6px; white-space: nowrap; font-weight: 400; }
+  .trak-tab.active { color: #1A1714; border-bottom-color: #1A1714; font-weight: 500; }
+  .trak-tab-icon { font-size: 12px; opacity: 0.5; }
+  .trak-tab-add { padding: 10px 12px; font-size: 16px; color: #BBBAB8; margin-bottom: -1px; }
+
+  .trak-canvas { background: #fff; padding: 28px 24px; position: relative; }
+  .trak-right-icons { position: absolute; right: 0; top: 0; bottom: 0; width: 36px; background: #fff; border-left: 1px solid #F0EFED; display: flex; flex-direction: column; align-items: center; padding: 16px 0; gap: 16px; }
+  .trak-right-icon { width: 18px; height: 18px; opacity: 0.3; display: flex; align-items: center; justify-content: center; }
+
+  .trak-block { margin-bottom: 6px; padding-right: 44px; position: relative; }
+  .trak-text-block .trak-block-inner { padding: 8px 4px; }
+  .trak-block-inner { border-radius: 6px; padding: 14px 16px; position: relative; }
+  .trak-text-content { font-size: 14px; color: #2A2926; line-height: 1.65; font-weight: 300; }
+  .trak-text-content strong { font-weight: 500; color: #1A1714; }
+
+  .trak-section-header { margin: 18px 0 8px; padding-right: 44px; }
+  .trak-section-header-title { font-size: 15px; font-weight: 600; color: #1A1714; letter-spacing: -0.01em; }
+  .trak-section-header-sub { font-size: 12px; color: #9B9389; margin-top: 2px; }
+
+  .trak-task-block { border: 1px solid #EFEFED; border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
+  .trak-task-header { display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; background: #FAFAF9; border-bottom: 1px solid #EFEFED; }
+  .trak-task-title { font-size: 13px; font-weight: 600; color: #1A1714; letter-spacing: -0.01em; }
+  .trak-task-view-toggles { display: flex; align-items: center; gap: 2px; }
+  .trak-view-btn { width: 26px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-size: 11px; color: #BBBAB8; }
+  .trak-view-btn.active { background: #1A1714; color: white; }
+  .trak-task-row { display: flex; align-items: center; padding: 9px 14px; border-bottom: 1px solid #F5F5F3; gap: 10px; }
+  .trak-task-row:last-child { border-bottom: none; }
+  .trak-task-check { width: 15px; height: 15px; border-radius: 50%; border: 1.5px solid #CCCBC8; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .trak-task-check.done { border-color: #2D7A4F; background: #2D7A4F; }
+  .trak-task-check.done::after { content: '✓'; font-size: 9px; color: white; }
+  .trak-task-check.in-progress { border-color: #2A537A; }
+  .trak-task-name { font-size: 13px; color: #1A1714; flex: 1; font-weight: 400; }
+  .trak-task-name.done { text-decoration: line-through; color: #9B9389; }
+  .trak-task-meta { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+  .trak-meta-icon { font-size: 13px; color: #CCCBC8; }
+  .trak-task-add { padding: 9px 14px; font-size: 12px; color: #BBBAB8; display: flex; align-items: center; gap: 5px; }
+
+  .trak-shopify-card { border: 1px solid #EFEFED; border-radius: 8px; overflow: hidden; }
+  .trak-shopify-img { height: 80px; background: linear-gradient(135deg, #F5F0E8, #EAE4D9); display: flex; align-items: center; justify-content: center; font-size: 24px; }
+  .trak-shopify-body { padding: 10px 12px; }
+  .trak-shopify-name { font-size: 12px; font-weight: 600; color: #1A1714; margin-bottom: 6px; line-height: 1.3; }
+  .trak-shopify-stats { display: flex; gap: 12px; }
+  .trak-shopify-stat-val { font-size: 14px; font-weight: 600; color: #1A1714; line-height: 1; }
+  .trak-shopify-stat-key { font-size: 10px; color: #9B9389; margin-top: 2px; }
+  .trak-shopify-status { margin-top: 8px; }
+
+  .trak-table-block { border: 1px solid #EFEFED; border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
+  .trak-table-header-bar { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: #FAFAF9; border-bottom: 1px solid #EFEFED; }
+  .trak-table-title { font-size: 13px; font-weight: 600; color: #1A1714; }
+  .trak-table-head { display: flex; padding: 7px 14px; background: #F5F5F3; border-bottom: 1px solid #EFEFED; }
+  .trak-table-head-cell { font-size: 10px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: #9B9389; }
+  .trak-table-row { display: flex; align-items: center; padding: 9px 14px; border-bottom: 1px solid #F5F5F3; }
+  .trak-table-row:last-child { border-bottom: none; }
+  .trak-table-row:hover { background: #FAFAF9; }
+  .trak-table-cell { font-size: 12px; color: #2A2926; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 8px; }
+  .trak-table-cell.muted { color: #9B9389; }
+  .trak-table-cell.bold { font-weight: 500; color: #1A1714; }
+
+  .trak-gallery-block { border: 1px solid #EFEFED; border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
+  .trak-gallery-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: #FAFAF9; border-bottom: 1px solid #EFEFED; }
+  .trak-gallery-title { font-size: 13px; font-weight: 600; color: #1A1714; }
+  .trak-gallery-grid { display: grid; gap: 2px; padding: 2px; }
+  .trak-gallery-grid.cols-5 { grid-template-columns: repeat(5, 1fr); }
+  .trak-gallery-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .trak-gallery-item { aspect-ratio: 1; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+
+  .trak-col-row { display: grid; gap: 8px; margin-bottom: 6px; padding-right: 44px; }
+  .trak-col-row.cols-2 { grid-template-columns: 1fr 1fr; }
+  .trak-col-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .trak-text-card { border: 1px solid #EFEFED; border-radius: 8px; padding: 14px 16px; }
+  .trak-text-card-label { font-size: 10px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: #9B9389; margin-bottom: 8px; }
+  .trak-text-card-content { font-size: 12.5px; line-height: 1.6; color: #2A2926; font-weight: 300; }
+  .trak-text-card-content strong { font-weight: 500; color: #1A1714; }
+
+  /* COMMENT THREAD BLOCK */
+  .trak-comment-block { border: 1px solid #EFEFED; border-radius: 8px; overflow: hidden; margin-bottom: 8px; margin-right: 44px; }
+  .trak-comment-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: #FAFAF9; border-bottom: 1px solid #EFEFED; }
+  .trak-comment-title { font-size: 13px; font-weight: 600; color: #1A1714; }
+  .trak-comment-count { font-size: 11px; color: #9B9389; }
+  .trak-comment-thread { padding: 12px 14px; display: flex; flex-direction: column; gap: 12px; }
+  .trak-comment { display: flex; gap: 10px; align-items: flex-start; }
+  .trak-comment-avatar { width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; color: white; }
+  .trak-comment-body { flex: 1; }
+  .trak-comment-meta { font-size: 11px; color: #9B9389; margin-bottom: 3px; display: flex; gap: 8px; }
+  .trak-comment-author { font-weight: 500; color: #6B6B68; }
+  .trak-comment-text { font-size: 12.5px; color: #2A2926; line-height: 1.5; font-weight: 300; }
+  .trak-comment-text strong { font-weight: 500; color: #1A1714; }
+  .trak-comment-reply { padding: 8px 14px; border-top: 1px solid #F5F5F3; display: flex; gap: 8px; align-items: center; }
+  .trak-comment-input { flex: 1; font-size: 12px; color: #9B9389; background: #F5F5F3; border-radius: 5px; padding: 6px 10px; }
+
+  /* SAMPLE ROUND BLOCK */
+  .trak-sample-block { border: 1px solid #EFEFED; border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
+  .trak-sample-header { display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; background: #FAFAF9; border-bottom: 1px solid #EFEFED; }
+  .trak-sample-title { font-size: 13px; font-weight: 600; color: #1A1714; }
+  .trak-sample-round { padding: 14px 14px; border-bottom: 1px solid #F5F5F3; }
+  .trak-sample-round:last-child { border-bottom: none; }
+  .trak-sample-round-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .trak-sample-round-name { font-size: 13px; font-weight: 500; color: #1A1714; }
+  .trak-sample-round-date { font-size: 11px; color: #9B9389; }
+  .trak-sample-feedback { font-size: 12px; color: #6B6B68; line-height: 1.55; font-weight: 300; }
+  .trak-sample-feedback strong { font-weight: 500; color: #1A1714; }
+  .trak-sample-changes { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 4px; }
+  .trak-change-tag { font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 4px; background: #F5F5F3; color: #6B6B68; }
+  .trak-change-tag.open { background: #FEF3E7; color: #B06020; }
+  .trak-change-tag.resolved { background: #E6F5EE; color: #2D7A4F; }
+
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .hero { padding: 120px 24px 72px; }
+    .hero-stats { flex-direction: column; }
+    .stat { border-right: none; border-bottom: 1px solid var(--cream-border); }
+    .stat:last-child { border-bottom: none; }
+    .section { padding: 56px 24px; }
+    .mockup-section { padding: 0 16px 64px; }
+    .mockup-section-header { padding: 0 24px; }
+    .trak-tabbar { overflow-x: auto; }
+    .trak-col-row.cols-2 { grid-template-columns: 1fr; }
+    .trak-col-row.cols-3 { grid-template-columns: 1fr 1fr; }
+    .results-grid { grid-template-columns: 1fr; }
+    .result-card.featured { flex-direction: column; gap: 24px; align-items: flex-start; }
+    .result-card.featured .result-desc { border-left: none; padding-left: 0; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 24px; }
+    .cta-section { flex-direction: column; padding: 48px 36px; gap: 32px; }
+    footer { padding: 24px; flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Tra<span>k</span></a>
+  <a href="#" class="nav-cta">Use this template →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">
+    <span class="hero-eyebrow-dot"></span>
+    Case Study · Product Development Template
+  </div>
+  <h1>How Fold took the <em>Market Tote</em> from brief to production.</h1>
+  <p class="hero-sub">From initial brief to final sample sign-off — how the Fold team managed design, samples, and manufacturer communication in one project.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-number">14 wks</div><div class="stat-label">Brief to production-ready</div></div>
+    <div class="stat"><div class="stat-number">3</div><div class="stat-label">Sample rounds</div></div>
+    <div class="stat"><div class="stat-number">4</div><div class="stat-label">People across the project</div></div>
+    <div class="stat"><div class="stat-number">1</div><div class="stat-label">Project in Trak</div></div>
+  </div>
+</section>
+
+<hr class="section-divider animate-in">
+
+<!-- SITUATION -->
+<section class="section animate-in">
+  <div class="section-label">The Product</div>
+  <h2>A new bag. A small team. <em>A lot of back-and-forth.</em></h2>
+  <div class="body-text">
+    <p>Fold makes bags and accessories built around the idea that everyday objects should work harder. Their existing line — a zip pouch, a passport wallet, a structured crossbody — had built a solid customer base. The Market Tote was a natural next step: a canvas and leather tote sized for the farmer's market, the grocery run, the Tuesday errands. Simple brief, well-understood category.</p>
+    <p>The team is small. Nadia handles product design and works directly with their manufacturer in Portugal. James manages ops and sourcing. Their photographer and copywriter come in at the end. The development process is the same every time: brief, sketches, spec sheet, sample rounds, revisions, sign-off, production.</p>
+    <p>What changes is how well that process is documented. The Market Tote was the first product they ran entirely in Trak — brief through sign-off. Every sample round, every revision note, every question from the factory — in the project, not scattered across email threads.</p>
+  </div>
+</section>
+
+<hr class="section-divider animate-in">
+
+<!-- THE PROCESS -->
+<section class="section animate-in">
+  <div class="section-label">The Process</div>
+  <h2>Fourteen weeks, <em>start to finish.</em></h2>
+  <div class="body-text">
+    <p>The project had four tabs: Product Brief, Design & Samples, Manufacturer, and Launch Prep. Nadia worked primarily in Design & Samples, logging every sample round and tracking revision status. James owned Manufacturer — costing table, production timeline, factory comms. Launch Prep was built out once sample three was signed off.</p>
+  </div>
+
+  <div class="timeline-visual animate-in">
+    <div class="timeline-line"></div>
+    <div class="timeline-event"><div class="timeline-dot">✦</div><div class="timeline-event-text"><div class="timeline-event-date">Week 1</div><div class="timeline-event-name">Brief written. Specs, dimensions, materials, and target retail price documented in Product Brief tab.</div></div></div>
+    <div class="timeline-event"><div class="timeline-dot">✦</div><div class="timeline-event-text"><div class="timeline-event-date">Week 2–3</div><div class="timeline-event-name">Sketches and reference images uploaded to Design & Samples. Spec sheet finalized.</div></div></div>
+    <div class="timeline-event"><div class="timeline-dot">✦</div><div class="timeline-event-text"><div class="timeline-event-date">Week 4</div><div class="timeline-event-name">Spec sheet sent to factory. Costing and timeline logged in Manufacturer tab.</div></div></div>
+    <div class="timeline-event"><div class="timeline-dot">✦</div><div class="timeline-event-text"><div class="timeline-event-date">Week 6</div><div class="timeline-event-name">Sample 1 received. Nadia logged feedback directly on the sample round block — handle width, base reinforcement, zipper pocket depth.</div></div></div>
+    <div class="timeline-event"><div class="timeline-dot">✦</div><div class="timeline-event-text"><div class="timeline-event-date">Week 9</div><div class="timeline-event-name">Sample 2 received. Most changes resolved. Strap attachment still needs work.</div></div></div>
+    <div class="timeline-event"><div class="timeline-dot">✦</div><div class="timeline-event-text"><div class="timeline-event-date">Week 12</div><div class="timeline-event-name">Sample 3 received. Sign-off given. Launch Prep tab opened.</div></div></div>
+    <div class="timeline-event"><div class="timeline-dot active">→</div><div class="timeline-event-text"><div class="timeline-event-date">Week 14</div><div class="timeline-event-name highlight">Production order placed. 400 units.</div></div></div>
+  </div>
+</section>
+
+<hr class="section-divider animate-in">
+
+<!-- MOCKUPS -->
+<div class="mockup-section-header animate-in" style="padding-top: 80px;">
+  <div class="section-label">Inside the Project</div>
+  <h2 style="font-family:'Instrument Serif',serif;font-size:clamp(26px,3.5vw,36px);line-height:1.2;letter-spacing:-0.02em;margin-bottom:16px;">How the template was built</h2>
+  <p style="font-size:16px;color:var(--ink-light);font-weight:300;max-width:560px;">Four tabs. Here's what the Fold team put in each one and how they used it.</p>
+</div>
+
+<div class="mockup-section">
+
+  <!-- MOCKUP 1: PRODUCT BRIEF -->
+  <div class="mockup-wrapper animate-in">
+    <div class="mockup-caption">
+      <div class="mockup-caption-left">
+        <div class="mockup-tab-label">Tab 01</div>
+        <h3>Product Brief</h3>
+        <p>Where the product starts. The concept, target customer, dimensions, materials, and retail price target — all written out before any design work begins. The pinned Shopify block shows the existing crossbody, which informed the sizing decisions for the tote.</p>
+      </div>
+    </div>
+    <div class="trak-window">
+      <div class="trak-project-header">
+        <div class="trak-back-link">
+          <svg viewBox="0 0 12 12" fill="none" width="12" height="12"><path d="M7.5 2.5L4 6l3.5 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Back to projects
+        </div>
+        <div class="trak-project-title-row">
+          <div class="trak-project-name">FOLD — MARKET TOTE</div>
+          <div class="trak-header-actions">
+            <div class="trak-enable-public">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M6 1.5C6 1.5 4 4 4 6s2 4.5 2 4.5M6 1.5C6 1.5 8 4 8 6s-2 4.5-2 4.5M1.5 6h9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+              Enable Public Link
+            </div>
+          </div>
+        </div>
+        <div class="trak-meta-row">
+          <span class="trak-pill pill-in-progress">In Progress</span>
+          <span class="trak-pill pill-due">Production Q2</span>
+        </div>
+        <div class="trak-tabbar">
+          <div class="trak-tab"><span class="trak-tab-icon">⊞</span>Overview</div>
+          <div class="trak-tab active">Product Brief</div>
+          <div class="trak-tab">Design & Samples</div>
+          <div class="trak-tab">Manufacturer</div>
+          <div class="trak-tab">Launch Prep</div>
+          <div class="trak-tab trak-tab-add">+</div>
+        </div>
+      </div>
+      <div class="trak-canvas" style="padding-right:60px;">
+
+        <div class="trak-block trak-text-block">
+          <div class="trak-block-inner">
+            <div class="trak-text-content">
+              <strong>Market Tote</strong> — a canvas and leather tote for everyday carry. Sized between a grocery bag and a weekend bag. The customer already owns our crossbody. This is for when she needs more room. Waxed canvas body, full-grain leather handles and base panel. Should hold a laptop, a jacket, and groceries without looking like a duffel bag.
+            </div>
+          </div>
+        </div>
+
+        <div class="trak-col-row cols-3">
+          <div class="trak-text-card">
+            <div class="trak-text-card-label">Dimensions (target)</div>
+            <div class="trak-text-card-content">
+              <strong>H:</strong> 38cm<br>
+              <strong>W:</strong> 32cm<br>
+              <strong>D:</strong> 14cm<br>
+              <strong>Handle drop:</strong> 28cm
+            </div>
+          </div>
+          <div class="trak-text-card">
+            <div class="trak-text-card-label">Materials</div>
+            <div class="trak-text-card-content">
+              <strong>Body:</strong> 12oz waxed canvas<br>
+              <strong>Base panel:</strong> Full-grain leather<br>
+              <strong>Handles:</strong> Rolled leather<br>
+              <strong>Lining:</strong> Cotton twill
+            </div>
+          </div>
+          <div class="trak-text-card">
+            <div class="trak-text-card-label">Commercial</div>
+            <div class="trak-text-card-content">
+              <strong>Target retail:</strong> $195<br>
+              <strong>Target COGS:</strong> &lt;$58<br>
+              <strong>First run:</strong> 400 units<br>
+              <strong>Colorways:</strong> 2 (Sand, Black)
+            </div>
+          </div>
+        </div>
+
+        <div class="trak-section-header">
+          <div class="trak-section-header-title">Related Product</div>
+          <div class="trak-section-header-sub">Pinned from Shopify — used as sizing reference</div>
+        </div>
+
+        <div style="padding-right:44px;margin-bottom:8px;">
+          <div class="trak-shopify-card" style="display:grid;grid-template-columns:100px 1fr;">
+            <div class="trak-shopify-img" style="height:100%;">👜</div>
+            <div class="trak-shopify-body">
+              <div class="trak-shopify-name">Structured Crossbody — Waxed Canvas</div>
+              <div class="trak-shopify-stats" style="gap:20px;">
+                <div><div class="trak-shopify-stat-val">214</div><div class="trak-shopify-stat-key">In stock</div></div>
+                <div><div class="trak-shopify-stat-val">$145</div><div class="trak-shopify-stat-key">Price</div></div>
+                <div><div class="trak-shopify-stat-val">1,840</div><div class="trak-shopify-stat-key">Units sold</div></div>
+                <div><div class="trak-shopify-stat-val">4.8★</div><div class="trak-shopify-stat-key">Rating</div></div>
+              </div>
+              <div class="trak-shopify-status" style="margin-top:8px;"><span class="trak-pill pill-in-progress" style="font-size:10px;">Active</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="trak-section-header">
+          <div class="trak-section-header-title">Tasks</div>
+        </div>
+        <div class="trak-task-block" style="margin-right:44px;">
+          <div class="trak-task-header">
+            <div class="trak-task-title">Brief & Kick-Off</div>
+            <div class="trak-task-view-toggles">
+              <div class="trak-view-btn active">☰</div>
+              <div class="trak-view-btn">⊞</div>
+            </div>
+          </div>
+          <div class="trak-task-row">
+            <div class="trak-task-check done"></div>
+            <div class="trak-task-name done">Write product brief</div>
+            <div class="trak-task-meta"><span class="trak-pill pill-done" style="font-size:10px;">Done</span><span class="trak-meta-icon">👤</span></div>
+          </div>
+          <div class="trak-task-row">
+            <div class="trak-task-check done"></div>
+            <div class="trak-task-name done">Align on dimensions + colorways</div>
+            <div class="trak-task-meta"><span class="trak-pill pill-done" style="font-size:10px;">Done</span><span class="trak-meta-icon">👤</span></div>
+          </div>
+          <div class="trak-task-row">
+            <div class="trak-task-check done"></div>
+            <div class="trak-task-name done">Confirm target COGS with James</div>
+            <div class="trak-task-meta"><span class="trak-pill pill-done" style="font-size:10px;">Done</span><span class="trak-meta-icon">👤</span></div>
+          </div>
+          <div class="trak-task-add">+ Add task</div>
+        </div>
+
+        <div class="trak-right-icons">
+          <div class="trak-right-icon">🔒</div>
+          <div class="trak-right-icon">✦</div>
+          <div class="trak-right-icon">⊞</div>
+          <div class="trak-right-icon">💬</div>
+          <div class="trak-right-icon">👤</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOCKUP 2: DESIGN & SAMPLES -->
+  <div class="mockup-wrapper animate-in">
+    <div class="mockup-caption">
+      <div class="mockup-caption-left">
+        <div class="mockup-tab-label">Tab 02</div>
+        <h3>Design & Samples</h3>
+        <p>Nadia's tab. Sketches and reference images in a gallery block, the spec sheet as a table, and a sample round block for each round received — with feedback logged directly alongside the revision status. James could see exactly where things stood without Nadia having to update him separately.</p>
+      </div>
+    </div>
+    <div class="trak-window">
+      <div class="trak-project-header">
+        <div class="trak-project-title-row">
+          <div class="trak-project-name">FOLD — MARKET TOTE</div>
+        </div>
+        <div class="trak-meta-row">
+          <span class="trak-pill pill-in-progress">In Progress</span>
+          <span class="trak-pill pill-due">Production Q2</span>
+        </div>
+        <div class="trak-tabbar">
+          <div class="trak-tab"><span class="trak-tab-icon">⊞</span>Overview</div>
+          <div class="trak-tab">Product Brief</div>
+          <div class="trak-tab active">Design & Samples</div>
+          <div class="trak-tab">Manufacturer</div>
+          <div class="trak-tab">Launch Prep</div>
+          <div class="trak-tab trak-tab-add">+</div>
+        </div>
+      </div>
+      <div class="trak-canvas" style="padding-right:60px;">
+
+        <div class="trak-gallery-block" style="margin-right:44px;">
+          <div class="trak-gallery-header">
+            <div class="trak-gallery-title">Sketches + References</div>
+            <div style="font-size:11px;color:#9B9389;">8 files</div>
+          </div>
+          <div class="trak-gallery-grid cols-4" style="padding:8px;">
+            <div class="trak-gallery-item" style="background:#F2EDE6;">✏️</div>
+            <div class="trak-gallery-item" style="background:#EAE4D9;">📐</div>
+            <div class="trak-gallery-item" style="background:#F5F0E8;">🎨</div>
+            <div class="trak-gallery-item" style="background:#EFF4F0;">👜</div>
+            <div class="trak-gallery-item" style="background:#EBF1F7;">🪡</div>
+            <div class="trak-gallery-item" style="background:#F5EDE7;">🟫</div>
+            <div class="trak-gallery-item" style="background:#EAE4D9;">📏</div>
+            <div class="trak-gallery-item" style="background:linear-gradient(135deg,#F2EDE6,#EAE4D9);">+2</div>
+          </div>
+        </div>
+
+        <div class="trak-section-header">
+          <div class="trak-section-header-title">Spec Sheet</div>
+        </div>
+
+        <div class="trak-table-block" style="margin-right:44px;">
+          <div class="trak-table-header-bar">
+            <div class="trak-table-title">Technical Spec</div>
+            <div style="font-size:11px;color:#9B9389;">v3 — final</div>
+          </div>
+          <div class="trak-table-head">
+            <div class="trak-table-head-cell" style="flex:2;">Component</div>
+            <div class="trak-table-head-cell" style="flex:2;">Specification</div>
+            <div class="trak-table-head-cell" style="flex:1.5;">Material / Supplier</div>
+            <div class="trak-table-head-cell" style="flex:1;">Status</div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:2;">Body</div>
+            <div class="trak-table-cell muted" style="flex:2;">12oz waxed canvas, double-stitched seams</div>
+            <div class="trak-table-cell muted" style="flex:1.5;">Halley Stevensons</div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-done" style="font-size:10px;">Confirmed</span></div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:2;">Base panel</div>
+            <div class="trak-table-cell muted" style="flex:2;">3mm full-grain leather, hand-stitched to body</div>
+            <div class="trak-table-cell muted" style="flex:1.5;">Cortez Leathers</div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-done" style="font-size:10px;">Confirmed</span></div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:2;">Handles</div>
+            <div class="trak-table-cell muted" style="flex:2;">Rolled leather, 2.5cm diameter, 28cm drop</div>
+            <div class="trak-table-cell muted" style="flex:1.5;">Cortez Leathers</div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-done" style="font-size:10px;">Confirmed</span></div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:2;">Interior pocket</div>
+            <div class="trak-table-cell muted" style="flex:2;">Zip pocket, 28 x 18cm, YKK #5 zipper</div>
+            <div class="trak-table-cell muted" style="flex:1.5;">YKK</div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-done" style="font-size:10px;">Confirmed</span></div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:2;">Hardware</div>
+            <div class="trak-table-cell muted" style="flex:2;">Brass D-rings, antique finish</div>
+            <div class="trak-table-cell muted" style="flex:1.5;">TBD</div>
+            <div class="trak-table-cell" style="flex:1;"><span class="trak-pill pill-in-progress" style="font-size:10px;">Sourcing</span></div>
+          </div>
+        </div>
+
+        <div class="trak-section-header">
+          <div class="trak-section-header-title">Sample Rounds</div>
+          <div class="trak-section-header-sub">Feedback and revision status per round</div>
+        </div>
+
+        <div class="trak-sample-block" style="margin-right:44px;">
+          <div class="trak-sample-header">
+            <div class="trak-sample-title">Sample Rounds</div>
+            <span class="trak-pill pill-done" style="font-size:10px;">S3 signed off</span>
+          </div>
+
+          <div class="trak-sample-round">
+            <div class="trak-sample-round-header">
+              <div class="trak-sample-round-name">Sample 1</div>
+              <div class="trak-sample-round-date">Received Week 6</div>
+            </div>
+            <div class="trak-sample-feedback">
+              Good overall shape. <strong>Handle width too narrow</strong> — feels flimsy when loaded. <strong>Base panel not reinforced enough</strong> — needs an interior board. Interior zip pocket is too shallow at 12cm, needs 18cm minimum. Canvas treatment good, colour accurate.
+            </div>
+            <div class="trak-sample-changes">
+              <span class="trak-change-tag resolved">Handle width ✓</span>
+              <span class="trak-change-tag resolved">Base reinforcement ✓</span>
+              <span class="trak-change-tag resolved">Zip pocket depth ✓</span>
+            </div>
+          </div>
+
+          <div class="trak-sample-round">
+            <div class="trak-sample-round-header">
+              <div class="trak-sample-round-name">Sample 2</div>
+              <div class="trak-sample-round-date">Received Week 9</div>
+            </div>
+            <div class="trak-sample-feedback">
+              Handle and base both fixed. Pocket depth correct. <strong>Strap attachment point pulling away from body</strong> — stitching not deep enough on the leather tabs. Sand colorway slightly warm, needs to shift cooler. Otherwise production-ready.
+            </div>
+            <div class="trak-sample-changes">
+              <span class="trak-change-tag resolved">Strap attachment ✓</span>
+              <span class="trak-change-tag resolved">Sand colorway ✓</span>
+            </div>
+          </div>
+
+          <div class="trak-sample-round">
+            <div class="trak-sample-round-header">
+              <div class="trak-sample-round-name">Sample 3</div>
+              <div class="trak-sample-round-date">Received Week 12</div>
+            </div>
+            <div class="trak-sample-feedback">
+              All changes resolved. Sand colorway correct. Strap attachment solid. <strong>Signed off for production.</strong>
+            </div>
+            <div class="trak-sample-changes">
+              <span class="trak-change-tag resolved">All changes resolved ✓</span>
+              <span class="trak-change-tag resolved">Production sign-off ✓</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="trak-right-icons">
+          <div class="trak-right-icon">🔒</div>
+          <div class="trak-right-icon">✦</div>
+          <div class="trak-right-icon">⊞</div>
+          <div class="trak-right-icon">💬</div>
+          <div class="trak-right-icon">👤</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOCKUP 3: MANUFACTURER -->
+  <div class="mockup-wrapper animate-in">
+    <div class="mockup-caption">
+      <div class="mockup-caption-left">
+        <div class="mockup-tab-label">Tab 03</div>
+        <h3>Manufacturer</h3>
+        <p>James's tab. Factory details, costing breakdown, production timeline, and a task block for everything that needs to happen between sign-off and the shipment landing. When Nadia had a question about lead times, this tab had the answer.</p>
+      </div>
+    </div>
+    <div class="trak-window">
+      <div class="trak-project-header">
+        <div class="trak-project-title-row">
+          <div class="trak-project-name">FOLD — MARKET TOTE</div>
+        </div>
+        <div class="trak-meta-row">
+          <span class="trak-pill pill-in-progress">In Progress</span>
+          <span class="trak-pill pill-due">Production Q2</span>
+        </div>
+        <div class="trak-tabbar">
+          <div class="trak-tab"><span class="trak-tab-icon">⊞</span>Overview</div>
+          <div class="trak-tab">Product Brief</div>
+          <div class="trak-tab">Design & Samples</div>
+          <div class="trak-tab active">Manufacturer</div>
+          <div class="trak-tab">Launch Prep</div>
+          <div class="trak-tab trak-tab-add">+</div>
+        </div>
+      </div>
+      <div class="trak-canvas" style="padding-right:60px;">
+
+        <div class="trak-col-row cols-2">
+          <div class="trak-text-card">
+            <div class="trak-text-card-label">Factory</div>
+            <div class="trak-text-card-content">
+              <strong>Atelier Minho, Portugal</strong><br>
+              Contact: Rafael / rafael@minho.pt<br>
+              <strong>Lead time:</strong> 8–10 weeks post sign-off<br>
+              <strong>MOQ:</strong> 200 units per colorway<br>
+              <strong>Relationship:</strong> 3 years, 4 prior products
+            </div>
+          </div>
+          <div class="trak-text-card">
+            <div class="trak-text-card-label">Order</div>
+            <div class="trak-text-card-content">
+              <strong>Units:</strong> 400 total (200 Sand, 200 Black)<br>
+              <strong>Order placed:</strong> Week 14<br>
+              <strong>Est. ship date:</strong> Week 22<br>
+              <strong>Incoterms:</strong> FOB Lisbon<br>
+              <strong>Status:</strong> In production
+            </div>
+          </div>
+        </div>
+
+        <div class="trak-section-header">
+          <div class="trak-section-header-title">Costing</div>
+        </div>
+
+        <div class="trak-table-block" style="margin-right:44px;">
+          <div class="trak-table-header-bar">
+            <div class="trak-table-title">Cost Breakdown — per unit</div>
+          </div>
+          <div class="trak-table-head">
+            <div class="trak-table-head-cell" style="flex:2.5;">Item</div>
+            <div class="trak-table-head-cell" style="flex:1;">Cost</div>
+            <div class="trak-table-head-cell" style="flex:1;">Notes</div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:2.5;">Materials (canvas, leather, hardware)</div>
+            <div class="trak-table-cell muted" style="flex:1;">$28.40</div>
+            <div class="trak-table-cell muted" style="flex:1;">Quoted</div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:2.5;">Labour (cut, sew, finish)</div>
+            <div class="trak-table-cell muted" style="flex:1;">$16.80</div>
+            <div class="trak-table-cell muted" style="flex:1;">Quoted</div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:2.5;">Packaging + tags</div>
+            <div class="trak-table-cell muted" style="flex:1;">$3.20</div>
+            <div class="trak-table-cell muted" style="flex:1;">Estimated</div>
+          </div>
+          <div class="trak-table-row">
+            <div class="trak-table-cell bold" style="flex:2.5;">Freight + duties</div>
+            <div class="trak-table-cell muted" style="flex:1;">$6.50</div>
+            <div class="trak-table-cell muted" style="flex:1;">Estimated</div>
+          </div>
+          <div class="trak-table-row" style="background:#FAFAF9;">
+            <div class="trak-table-cell bold" style="flex:2.5;font-weight:600;color:#1A1714;">Total COGS</div>
+            <div class="trak-table-cell" style="flex:1;font-weight:600;color:#1A1714;">$54.90</div>
+            <div class="trak-table-cell muted" style="flex:1;">Target: &lt;$58 ✓</div>
+          </div>
+        </div>
+
+        <div class="trak-section-header">
+          <div class="trak-section-header-title">Production Tasks</div>
+        </div>
+
+        <div class="trak-task-block" style="margin-right:44px;">
+          <div class="trak-task-header">
+            <div class="trak-task-title">Post Sign-Off</div>
+            <div class="trak-task-view-toggles">
+              <div class="trak-view-btn active">☰</div>
+              <div class="trak-view-btn">⊞</div>
+            </div>
+          </div>
+          <div class="trak-task-row">
+            <div class="trak-task-check done"></div>
+            <div class="trak-task-name done">Send final spec sheet v3 to Atelier Minho</div>
+            <div class="trak-task-meta"><span class="trak-pill pill-done" style="font-size:10px;">Done</span><span class="trak-meta-icon">👤</span></div>
+          </div>
+          <div class="trak-task-row">
+            <div class="trak-task-check done"></div>
+            <div class="trak-task-name done">Confirm 400 unit order + deposit paid</div>
+            <div class="trak-task-meta"><span class="trak-pill pill-done" style="font-size:10px;">Done</span><span class="trak-meta-icon">👤</span></div>
+          </div>
+          <div class="trak-task-row">
+            <div class="trak-task-check in-progress"></div>
+            <div class="trak-task-name">Confirm packaging spec with factory</div>
+            <div class="trak-task-meta"><span class="trak-pill pill-in-progress" style="font-size:10px;">In Progress</span><span class="trak-meta-icon">👤</span></div>
+          </div>
+          <div class="trak-task-row">
+            <div class="trak-task-check"></div>
+            <div class="trak-task-name">Book freight forwarder — FOB Lisbon</div>
+            <div class="trak-task-meta"><span class="trak-pill pill-todo" style="font-size:10px;">To-Do</span><span class="trak-meta-icon">👤</span></div>
+          </div>
+          <div class="trak-task-row">
+            <div class="trak-task-check"></div>
+            <div class="trak-task-name">QC check at factory before shipment</div>
+            <div class="trak-task-meta"><span class="trak-pill pill-todo" style="font-size:10px;">To-Do</span><span class="trak-meta-icon">👤</span></div>
+          </div>
+          <div class="trak-task-add">+ Add task</div>
+        </div>
+
+        <div class="trak-right-icons">
+          <div class="trak-right-icon">🔒</div>
+          <div class="trak-right-icon">✦</div>
+          <div class="trak-right-icon">⊞</div>
+          <div class="trak-right-icon">💬</div>
+          <div class="trak-right-icon">👤</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOCKUP 4: LAUNCH PREP -->
+  <div class="mockup-wrapper animate-in">
+    <div class="mockup-caption">
+      <div class="mockup-caption-left">
+        <div class="mockup-tab-label">Tab 04</div>
+        <h3>Launch Prep</h3>
+        <p>Opened once sample three was signed off. Product copy, photography brief, and the Shopify listing status — built out while production runs so it's ready the day stock lands. The block comment thread shows Nadia and the copywriter working through the product description together.</p>
+      </div>
+    </div>
+    <div class="trak-window">
+      <div class="trak-project-header">
+        <div class="trak-project-title-row">
+          <div class="trak-project-name">FOLD — MARKET TOTE</div>
+        </div>
+        <div class="trak-meta-row">
+          <span class="trak-pill pill-in-progress">In Progress</span>
+          <span class="trak-pill pill-due">Launch Week 24</span>
+        </div>
+        <div class="trak-tabbar">
+          <div class="trak-tab"><span class="trak-tab-icon">⊞</span>Overview</div>
+          <div class="trak-tab">Product Brief</div>
+          <div class="trak-tab">Design & Samples</div>
+          <div class="trak-tab">Manufacturer</div>
+          <div class="trak-tab active">Launch Prep</div>
+          <div class="trak-tab trak-tab-add">+</div>
+        </div>
+      </div>
+      <div class="trak-canvas" style="padding-right:60px;">
+
+        <div class="trak-col-row cols-2">
+          <div class="trak-text-card">
+            <div class="trak-text-card-label">Product Copy — Draft</div>
+            <div class="trak-text-card-content">
+              The Market Tote is built for the days when you need more room. Waxed canvas body, full-grain leather handles and base panel. Fits a laptop, a jacket, and whatever else the day asks for. Available in Sand and Black.
+            </div>
+          </div>
+          <div class="trak-text-card">
+            <div class="trak-text-card-label">Photography Brief</div>
+            <div class="trak-text-card-content">
+              <strong>Shots needed:</strong> Hero flat lay, carried shot, interior detail, base leather detail, both colorways together<br>
+              <strong>Photographer:</strong> Mia S. — briefed<br>
+              <strong>Date:</strong> TBC — when stock lands
+            </div>
+          </div>
+        </div>
+
+        <!-- Comment thread on copy block -->
+        <div class="trak-comment-block">
+          <div class="trak-comment-header">
+            <div class="trak-comment-title">Comments — Product Copy</div>
+            <div class="trak-comment-count">3 comments</div>
+          </div>
+          <div class="trak-comment-thread">
+            <div class="trak-comment">
+              <div class="trak-comment-avatar" style="background:#2A537A;">N</div>
+              <div class="trak-comment-body">
+                <div class="trak-comment-meta"><span class="trak-comment-author">Nadia</span><span>2 days ago</span></div>
+                <div class="trak-comment-text">@Tom first pass at the PDP copy above — want to make sure "whatever else the day asks for" doesn't feel too vague. Can we be more specific about what fits? Like call out the laptop explicitly?</div>
+              </div>
+            </div>
+            <div class="trak-comment">
+              <div class="trak-comment-avatar" style="background:#8A7A6A;">T</div>
+              <div class="trak-comment-body">
+                <div class="trak-comment-meta"><span class="trak-comment-author">Tom</span><span>1 day ago</span></div>
+                <div class="trak-comment-text">Agree — I'll rework it. Also want to lead with the leather base panel, that's the differentiator. Will have a revised version by end of day.</div>
+              </div>
+            </div>
+            <div class="trak-comment">
+              <div class="trak-comment-avatar" style="background:#2D7A4F;">J</div>
+              <div class="trak-comment-body">
+                <div class="trak-comment-meta"><span class="trak-comment-author">James</span><span>1 day ago</span></div>
+                <div class="trak-comment-text">Can we also confirm the dimensions in the copy? Customers always ask.</div>
+              </div>
+            </div>
+          </div>
+          <div class="trak-comment-reply">
+            <div class="trak-comment-avatar" style="background:#CCCBC8;width:20px;height:20px;font-size:9px;">+</div>
+            <div class="trak-comment-input">Reply...</div>
+          </div>
+        </div>
+
+        <div class="trak-section-header">
+          <div class="trak-section-header-title">Shopify Listing</div>
+        </div>
+
+        <div class="trak-task-block" style="margin-right:44px;">
+          <div class="trak-task-header">
+            <div class="trak-task-title">Pre-Launch Checklist</div>
+            <div class="trak-task-view-toggles">
+              <div class="trak-view-btn active">☰</div>
+              <div class="trak-view-btn">⊞</div>
+            </div>
+          </div>
+          <div class="trak-task-row">
+            <div class="trak-task-check done"></div>
+            <div class="trak-task-name done">Create Shopify product draft — both variants</div>
+            <div class="trak-task-meta"><span class="trak-pill pill-done" style="font-size:10px;">Done</span><span class="trak-meta-icon">👤</span></div>
+          </div>
+          <div class="trak-task-row">
+            <div class="trak-task-check in-progress"></div>
+            <div class="trak-task-name">Finalize product copy + dimensions</div>
+            <div class="trak-task-meta"><span class="trak-pill pill-in-progress" style="font-size:10px;">In Progress</span><span class="trak-meta-icon">👤</span></div>
+          </div>
+          <div class="trak-task-row">
+            <div class="trak-task-check"></div>
+            <div class="trak-task-name">Upload approved photography</div>
+            <div class="trak-task-meta"><span class="trak-pill pill-todo" style="font-size:10px;">Waiting on stock</span><span class="trak-meta-icon">👤</span></div>
+          </div>
+          <div class="trak-task-row">
+            <div class="trak-task-check"></div>
+            <div class="trak-task-name">Set pricing + inventory — Sand and Black</div>
+            <div class="trak-task-meta"><span class="trak-pill pill-todo" style="font-size:10px;">To-Do</span><span class="trak-meta-icon">👤</span></div>
+          </div>
+          <div class="trak-task-row">
+            <div class="trak-task-check"></div>
+            <div class="trak-task-name">Publish listing</div>
+            <div class="trak-task-meta"><span class="trak-pill pill-todo" style="font-size:10px;">To-Do</span><span class="trak-meta-icon">👤</span></div>
+          </div>
+          <div class="trak-task-add">+ Add task</div>
+        </div>
+
+        <div class="trak-right-icons">
+          <div class="trak-right-icon">🔒</div>
+          <div class="trak-right-icon">✦</div>
+          <div class="trak-right-icon">⊞</div>
+          <div class="trak-right-icon">💬</div>
+          <div class="trak-right-icon">👤</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end mockup-section -->
+
+<hr class="section-divider animate-in">
+
+<!-- RESULTS -->
+<section class="section animate-in">
+  <div class="section-label">The Result</div>
+  <h2>Production order placed. <em>Launch prep already running.</em></h2>
+  <div class="body-text">
+    <p>The Market Tote went into production at week 14. Three sample rounds, one spec sheet that got updated and not lost, and a costing table that meant James and Nadia were never looking at different numbers. By the time the production order went out, Launch Prep was already half-built — copy in draft, photography brief written, Shopify listing created.</p>
+    <p>The project stays open until stock lands and the listing goes live. Everything that happened during development is still there — sample round notes, revision history, factory correspondence — if they need to refer back to it for the next bag.</p>
+  </div>
+
+  <div class="results-grid">
+    <div class="result-card featured">
+      <div><div class="result-number">14 wks</div><div class="result-label">Brief to production order</div></div>
+      <p class="result-desc">Three sample rounds, all revisions tracked in the same project. James and Nadia were never working off different versions of the spec.</p>
+    </div>
+    <div class="result-card"><div class="result-number">3</div><div class="result-label">Sample rounds, all logged in one tab</div></div>
+    <div class="result-card"><div class="result-number">$54.90</div><div class="result-label">COGS — under the $58 target</div></div>
+    <div class="result-card"><div class="result-number">400</div><div class="result-label">Units in production, 2 colorways</div></div>
+  </div>
+
+  <div class="pullquote animate-in">
+    <p>"Every sample round, every revision note — it's all still in the project. When we do the next bag we'll start from the same template and already know what to expect from Atelier Minho."</p>
+  </div>
+</section>
+
+<hr class="section-divider animate-in">
+
+<!-- CTA -->
+<section class="section animate-in" style="padding-bottom:0;">
+  <div class="cta-section">
+    <div class="cta-text">
+      <h2>Manage your next product in <em>one project.</em></h2>
+      <p>The Product Development template covers brief through production — spec sheet, sample rounds, manufacturer, and launch prep. Clone it and start from week one.</p>
+    </div>
+    <div class="cta-buttons">
+      <a href="#" class="btn-primary">Use this template →</a>
+      <a href="#" class="btn-secondary">See all templates</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Trak. Built for D2C brands.</p>
+  <a href="#">View all case studies →</a>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.06 });
+  document.querySelectorAll('.animate-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
