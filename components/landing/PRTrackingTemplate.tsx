@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { TemplateTitleCTA } from "@/components/landing/TemplateTitleCTA";
 
 const heroStats = [
   { value: "24", label: "Influencers seeded" },
@@ -258,16 +259,19 @@ export function PRTrackingTemplate() {
           <span className="h-1.5 w-1.5 rounded-full bg-accent" />
           Case Study · Influencer Seeding Template
         </div>
-        <h1
-          className="max-w-[820px] font-display text-[clamp(38px,5vw,58px)] leading-[1.08] text-ink"
-          style={{
-            fontFamily: "var(--font-hero-display), Georgia, serif",
-            letterSpacing: "-0.03em"
-          }}
-        >
-          How Dusk tracked influencer seeding for their{" "}
-          <span className="text-accent">new body oil launch.</span>
-        </h1>
+        <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between md:gap-6">
+          <h1
+            className="max-w-[820px] font-display text-[clamp(38px,5vw,58px)] leading-[1.08] text-ink"
+            style={{
+              fontFamily: "var(--font-hero-display), Georgia, serif",
+              letterSpacing: "-0.03em"
+            }}
+          >
+            How Dusk tracked influencer seeding for their{" "}
+            <span className="text-accent">new body oil launch.</span>
+          </h1>
+          <TemplateTitleCTA />
+        </div>
         <p className="mt-7 max-w-[640px] text-[18px] font-light leading-[1.7] text-ink-2">
           24 influencers. One tab. How Dusk kept their seeding campaign organized from address
           collected to post live.

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
+import { TemplateTitleCTA } from "@/components/landing/TemplateTitleCTA";
 
 type PopupProduct = {
   name: string;
@@ -636,16 +637,19 @@ export function PopupTemplate() {
           <span className="h-1.5 w-1.5 rounded-full bg-accent" />
           Case Study · Pop-Up Event Template
         </div>
-        <h1
-          className="max-w-[820px] font-display text-[clamp(38px,5vw,58px)] leading-[1.08] text-ink"
-          style={{
-            fontFamily: "var(--font-hero-display), Georgia, serif",
-            letterSpacing: "-0.03em"
-          }}
-        >
-          How Maison C&egrave;dre planned and ran their{" "}
-          <span className="text-accent">SoHo pop-up</span> in six weeks.
-        </h1>
+        <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between md:gap-6">
+          <h1
+            className="max-w-[820px] font-display text-[clamp(38px,5vw,58px)] leading-[1.08] text-ink"
+            style={{
+              fontFamily: "var(--font-hero-display), Georgia, serif",
+              letterSpacing: "-0.03em"
+            }}
+          >
+            How Maison C&egrave;dre planned and ran their{" "}
+            <span className="text-accent">SoHo pop-up</span> in six weeks.
+          </h1>
+          <TemplateTitleCTA />
+        </div>
         <p className="mt-7 max-w-[640px] text-[18px] font-light leading-[1.7] text-ink-2">
           Four days on Greene Street. Here&apos;s how the Maison C&egrave;dre
           team kept the planning, logistics, and event operations in one place.

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { TemplateTitleCTA } from "@/components/landing/TemplateTitleCTA";
 
 type LaunchProduct = {
   name: string;
@@ -425,17 +426,20 @@ export function Templates() {
           <span className="h-1.5 w-1.5 rounded-full bg-accent" />
           Case Study · Seasonal Drop Template
         </div>
-        <h1
-          className="max-w-[820px] font-display text-[clamp(38px,5vw,58px)] leading-[1.08] text-ink"
-          style={{
-            fontFamily: "var(--font-hero-display), Georgia, serif",
-            letterSpacing: "-0.03em"
-          }}
-        >
-          How &Eacute;clat Studio launched{" "}
-          <span className="text-accent">The Lemon Edit</span> and sold out in
-          47 minutes.
-        </h1>
+        <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between md:gap-6">
+          <h1
+            className="max-w-[820px] font-display text-[clamp(38px,5vw,58px)] leading-[1.08] text-ink"
+            style={{
+              fontFamily: "var(--font-hero-display), Georgia, serif",
+              letterSpacing: "-0.03em"
+            }}
+          >
+            How &Eacute;clat Studio launched{" "}
+            <span className="text-accent">The Lemon Edit</span> and sold out in
+            47 minutes.
+          </h1>
+          <TemplateTitleCTA />
+        </div>
         <p className="mt-7 max-w-[640px] text-[18px] font-light leading-[1.7] text-ink-2">
           A small team. Three new SKUs. Six weeks from brief to live.
           Here&apos;s how &Eacute;clat Studio ran their entire seasonal drop

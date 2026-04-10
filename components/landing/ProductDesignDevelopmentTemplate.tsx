@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
 import Link from "next/link";
+import { TemplateTitleCTA } from "@/components/landing/TemplateTitleCTA";
 
 const heroStats = [
   { value: "14 wks", label: "Brief to production-ready" },
@@ -397,16 +398,19 @@ export function ProductDesignDevelopmentTemplate() {
           <span className="h-1.5 w-1.5 rounded-full bg-accent" />
           Case Study · Product Design and Development Template
         </div>
-        <h1
-          className="max-w-[820px] font-display text-[clamp(38px,5vw,58px)] leading-[1.08] text-ink"
-          style={{
-            fontFamily: "var(--font-hero-display), Georgia, serif",
-            letterSpacing: "-0.03em"
-          }}
-        >
-          How Fold took the <span className="text-accent">Market Tote</span> from brief to
-          production.
-        </h1>
+        <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between md:gap-6">
+          <h1
+            className="max-w-[820px] font-display text-[clamp(38px,5vw,58px)] leading-[1.08] text-ink"
+            style={{
+              fontFamily: "var(--font-hero-display), Georgia, serif",
+              letterSpacing: "-0.03em"
+            }}
+          >
+            How Fold took the <span className="text-accent">Market Tote</span> from brief to
+            production.
+          </h1>
+          <TemplateTitleCTA />
+        </div>
         <p className="mt-7 max-w-[640px] text-[18px] font-light leading-[1.7] text-ink-2">
           From initial brief to final sample sign-off - how the Fold team managed design,
           samples, and manufacturer communication in one project.
