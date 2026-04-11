@@ -14,7 +14,7 @@ export function Hero() {
         <div className="grid gap-10 pt-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-x-20 lg:pt-10">
           <div>
             <h1 className="hero-anim hero-anim-heading font-display text-[clamp(32px,5.2vw,64px)] font-semibold leading-[1.05] tracking-[-0.045em] text-ink">
-              The Operating System for Modern D2C Brands
+              The Product Launch Workspace for Modern D2C Brands
             </h1>
           </div>
           <div className="flex flex-col justify-start lg:pt-1">
