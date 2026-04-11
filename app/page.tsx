@@ -1,3 +1,4 @@
+import { Inter } from "next/font/google";
 import { createPageMetadata } from "@/app/seo";
 import { Nav } from "@/components/landing/Nav";
 import { Hero } from "@/components/landing/Hero";
@@ -6,6 +7,12 @@ import { Features } from "@/components/landing/Features";
 import { MagicLinks } from "@/components/landing/MagicLinks";
 import { CTA } from "@/components/landing/CTA";
 import { Footer } from "@/components/landing/Footer";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap"
+});
 
 export const metadata = createPageMetadata({
   title: "The Operating System for Modern D2C Brands | Saria",
@@ -16,8 +23,8 @@ export const metadata = createPageMetadata({
 
 export default function Page() {
   return (
-    <>
-      <Nav />
+    <div className={`landing-linear-light min-h-screen ${inter.variable} ${inter.className}`}>
+      <Nav variant="linearLight" />
       <main>
         <Hero />
         <Pain />
@@ -26,6 +33,6 @@ export default function Page() {
         <CTA />
       </main>
       <Footer />
-    </>
+    </div>
   );
 }

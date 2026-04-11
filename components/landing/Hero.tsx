@@ -9,72 +9,46 @@ export function Hero() {
   const [isVideoReady, setIsVideoReady] = useState(false);
 
   return (
-    <section
-      id="top"
-      className="border-b pt-[60px]"
-      style={{ backgroundColor: "#F4F2EE", borderColor: "#DEDBD4" }}
-    >
-      <div className="mx-auto flex max-w-[1320px] flex-col items-center px-8 pb-16">
-        {/* Badge pill */}
-        <div
-          className="hero-anim hero-anim-badge mt-6 mb-4 inline-flex items-center gap-2 rounded-full px-4 py-1.5 pl-2.5 text-[12.5px] font-medium tracking-[0.02em] md:mt-8 md:mb-5"
-          style={{ backgroundColor: "#EBF0FF", color: "#2B52EE" }}
-        >
-          <span
-            className="h-1.5 w-1.5 shrink-0 rounded-full"
-            style={{ backgroundColor: "#2B52EE" }}
-          />
-          Trusted by 1k+ Brands on Shopify
-        </div>
-
-        {/* Headline */}
-        <h1
-          className="hero-anim hero-anim-heading mx-auto mb-4 max-w-[1100px] text-center font-display text-[clamp(32px,5.5vw,68px)] font-normal leading-[1.08]"
-          style={{
-            fontFamily: "var(--font-hero-display), Georgia, serif",
-            letterSpacing: "-2px",
-            color: "#0F0E0C"
-          }}
-        >
-          The Operating System for Modern D2C Brands
-        </h1>
-
-        {/* Subheadline */}
-        <p
-          className="hero-anim hero-anim-sub mb-6 max-w-[720px] text-center text-[16px] font-light leading-[1.7]"
-          style={{ color: "#555" }}
-        >
-          The AI-Native workspace for your products, team, and launches. Spend{" "}
-          <strong>less time managing work</strong> and more time creating{" "}
-          <strong>products customers love</strong>.
-        </p>
-
-        {/* CTA row + no credit card */}
-        <div className="hero-anim hero-anim-ctas mb-6 flex flex-col items-center gap-2">
-          <div className="flex flex-row flex-wrap items-center justify-center gap-6">
-            <a
-              href="https://app.sariasoftware.com/start-free-trial"
-              className="rounded-full px-3 py-1.5 text-[11px] font-medium text-white transition-colors duration-200 hover:opacity-90"
-              target="_blank"
-              rel="noreferrer"
-              style={{ backgroundColor: "#2B52EE" }}
-            >
-              Start Free Trial
-            </a>
-            <a
-              href="#features"
-              className="flex items-center gap-1 text-[11px] font-normal text-ink transition-colors duration-150 hover:opacity-70"
-            >
-              See how it works →
-            </a>
+    <section id="top" className="border-b border-cream-3 bg-cream pt-[60px]">
+      <div className="mx-auto max-w-[1320px] px-6 pb-14 md:px-8 lg:px-12 lg:pb-20">
+        <div className="grid gap-10 pt-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-x-20 lg:pt-10">
+          <div>
+            <h1 className="hero-anim hero-anim-heading font-display text-[clamp(32px,5.2vw,64px)] font-semibold leading-[1.05] tracking-[-0.045em] text-ink">
+              The Operating System for Modern D2C Brands
+            </h1>
           </div>
-          <span className="text-[11px]" style={{ color: "#78716C" }}>
-            No credit card required
-          </span>
+          <div className="flex flex-col justify-start lg:pt-1">
+            <p className="hero-anim hero-anim-sub text-[15px] font-normal leading-[1.75] text-[#8a8a8e] md:text-[16px]">
+              The AI-Native workspace for your products, team, and launches. Spend{" "}
+              <strong className="font-medium text-ink">less time managing work</strong> and more time
+              creating <strong className="font-medium text-ink">products customers love</strong>.
+            </p>
+            <div className="hero-anim hero-anim-ctas mt-8 flex flex-col gap-3">
+              <div className="flex flex-wrap items-center gap-4">
+                <a
+                  href="https://app.sariasoftware.com/start-free-trial"
+                  className="inline-flex items-center justify-center rounded-lg bg-[#2B52EE] px-4 py-2 text-[12px] font-medium text-white transition-colors duration-200 hover:opacity-90"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Start Free Trial
+                </a>
+                <a
+                  href="#features"
+                  className="inline-flex items-center gap-1 text-[12px] font-normal text-ink-3 transition-colors duration-150 hover:text-ink"
+                >
+                  See how it works →
+                </a>
+              </div>
+              <span className="text-[11px] text-stone">No credit card required</span>
+            </div>
+          </div>
         </div>
 
-        {/* Hero visual + logo bar wrapper — visual and logo bar connect seamlessly */}
-        <div className="hero-video-shell w-full max-w-[1320px]" style={{ width: "100%", maxWidth: "1320px" }}>
+        <div
+          className="hero-video-shell hero-anim hero-anim-visual mt-12 w-full max-w-[1320px] lg:mt-16"
+          style={{ width: "100%", maxWidth: "1320px" }}
+        >
           <div
             className="hero-video-frame relative flex aspect-[16/8.2] items-center justify-center overflow-hidden max-[880px]:aspect-[4/3]"
             style={{ position: "relative", width: "100%", aspectRatio: "16 / 8.2", overflow: "hidden" }}
@@ -101,7 +75,6 @@ export function Hero() {
               <source src={heroVideoSrc} type="video/mp4" />
             </video>
           </div>
-
         </div>
       </div>
     </section>

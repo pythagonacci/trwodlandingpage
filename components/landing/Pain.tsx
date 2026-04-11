@@ -66,8 +66,8 @@ function PainItem({ index, number, title, body }: PainItemProps) {
 
 export function Pain() {
   return (
-    <section className="grid grid-cols-2 border-b border-cream-3 max-[880px]:grid-cols-1">
-      <div className="sticky top-[60px] self-start border-r border-cream-3 px-[60px] py-[100px] max-[880px]:static max-[880px]:border-b max-[880px]:border-r-0 max-[880px]:px-6 max-[880px]:pt-[60px] max-[880px]:pb-10">
+    <section className="grid grid-cols-2 border-b border-cream-3 bg-cream max-[880px]:grid-cols-1">
+      <div className="sticky top-[60px] self-start border-r border-cream-3 bg-cream px-[60px] py-[100px] max-[880px]:static max-[880px]:border-b max-[880px]:border-r-0 max-[880px]:px-6 max-[880px]:pt-[60px] max-[880px]:pb-10">
         <div className="mb-7 text-[11px] font-medium uppercase tracking-[0.12em] text-stone">
           The Problem
         </div>
@@ -81,7 +81,7 @@ export function Pain() {
           launches.
         </p>
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col bg-cream-2">
         {PAIN_ITEMS.map((item, index) => (
           <PainItem
             key={item.number}

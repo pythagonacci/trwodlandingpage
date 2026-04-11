@@ -28,7 +28,9 @@ const LINKS = [
   { href: "/pricing", label: "Pricing", hideOnMobile: true }
 ];
 
-export function Nav() {
+export type NavVariant = "default" | "linear" | "linearLight";
+
+export function Nav({ variant = "default" }: { variant?: NavVariant }) {
   const [scrolled, setScrolled] = useState(false);
   const [productMenuOpen, setProductMenuOpen] = useState(false);
   const [templatesMenuOpen, setTemplatesMenuOpen] = useState(false);
@@ -85,16 +87,27 @@ export function Nav() {
     };
   }, [productMenuOpen, templatesMenuOpen, useCaseMenuOpen]);
 
+  const isLinearDark = variant === "linear";
+  const isLinearLight = variant === "linearLight";
+
   return (
     <nav
-      className={`fixed inset-x-0 top-0 z-[200] h-[60px] border-b border-cream-3 bg-[rgba(250,248,244,0.94)] backdrop-blur-xl transition-shadow duration-200 ${
-        scrolled ? "shadow-nav" : "shadow-none"
+      className={`fixed inset-x-0 top-0 z-[200] h-[60px] border-b backdrop-blur-xl transition-shadow duration-200 ${
+        isLinearDark
+          ? `border-white/[0.08] bg-black/75 ${
+              scrolled ? "shadow-[0_1px_0_rgba(255,255,255,0.06)]" : "shadow-none"
+            }`
+          : `border-cream-3 bg-[rgba(250,248,244,0.94)] ${
+              scrolled ? "shadow-nav" : "shadow-none"
+            }`
       }`}
     >
       <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between px-4 md:px-8 lg:px-12">
         <Link
           href="/"
-          className="flex items-center gap-2 font-display text-[20px] font-semibold tracking-[-0.015em] text-ink"
+          className={`flex items-center gap-2 font-display text-[18px] font-semibold tracking-[-0.015em] ${
+            isLinearDark ? "text-white" : "text-ink"
+          }`}
           onClick={closeMenus}
         >
           <Image
@@ -107,7 +120,11 @@ export function Nav() {
           />
           <span>Saria</span>
         </Link>
-        <ul className="flex items-center gap-8 text-[13px] font-normal text-ink-3">
+        <ul
+          className={`flex items-center gap-8 text-[12px] font-normal ${
+            isLinearDark ? "text-white/55" : "text-ink-3"
+          }`}
+        >
           <li
             ref={productMenuRef}
             className="relative"
@@ -122,7 +139,9 @@ export function Nav() {
               href={PRODUCT_LINKS[0].href}
               aria-expanded={productMenuOpen}
               aria-haspopup="menu"
-              className="inline-flex items-center gap-1 transition-colors duration-150 hover:text-ink"
+              className={`inline-flex items-center gap-1 transition-colors duration-150 ${
+                isLinearDark ? "hover:text-white" : "hover:text-ink"
+              }`}
               onClick={() => setProductMenuOpen(false)}
               onFocus={() => {
                 setProductMenuOpen(true);
@@ -131,7 +150,7 @@ export function Nav() {
               }}
             >
               Product
-              <span className="text-[10px] text-stone">v</span>
+              <span className={`text-[10px] ${isLinearDark ? "text-white/35" : "text-stone"}`}>v</span>
             </Link>
             <div
               className={`absolute left-1/2 top-full z-50 w-[250px] -translate-x-1/2 pt-3 transition-all duration-150 ${
@@ -140,16 +159,30 @@ export function Nav() {
                   : "pointer-events-none invisible opacity-0"
               }`}
             >
-              <div className="rounded-xl border border-cream-3 bg-[rgba(250,248,244,0.98)] p-2 shadow-[0_18px_42px_rgba(28,25,23,0.12)] backdrop-blur-md">
+              <div
+                className={`rounded-xl border p-2 shadow-[0_24px_64px_rgba(0,0,0,0.55)] backdrop-blur-md ${
+                  isLinearDark
+                    ? "border-white/[0.1] bg-[#111111]/98"
+                    : "border-cream-3 bg-[rgba(250,248,244,0.98)] shadow-[0_18px_42px_rgba(28,25,23,0.12)]"
+                }`}
+              >
                 {PRODUCT_LINKS.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="group flex items-center justify-between rounded-lg px-3 py-2 text-[12px] text-ink-3 transition-all duration-150 hover:bg-cream hover:text-ink focus-visible:bg-cream focus-visible:text-ink"
+                    className={`group flex items-center justify-between rounded-lg px-3 py-2 text-[12px] transition-all duration-150 ${
+                      isLinearDark
+                        ? "text-white/65 hover:bg-white/[0.06] hover:text-white focus-visible:bg-white/[0.06] focus-visible:text-white"
+                        : "text-ink-3 hover:bg-cream hover:text-ink focus-visible:bg-cream focus-visible:text-ink"
+                    }`}
                     onClick={closeMenus}
                   >
                     <span>{item.label}</span>
-                    <span className="translate-x-[-2px] text-[11px] text-accent opacity-0 transition-all duration-150 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100">
+                    <span
+                      className={`translate-x-[-2px] text-[11px] opacity-0 transition-all duration-150 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 ${
+                        isLinearDark ? "text-white/50" : "text-accent"
+                      }`}
+                    >
                       →
                     </span>
                   </Link>
@@ -171,7 +204,9 @@ export function Nav() {
               href={TEMPLATE_LINKS[0].href}
               aria-expanded={templatesMenuOpen}
               aria-haspopup="menu"
-              className="inline-flex items-center gap-1 transition-colors duration-150 hover:text-ink"
+              className={`inline-flex items-center gap-1 transition-colors duration-150 ${
+                isLinearDark ? "hover:text-white" : "hover:text-ink"
+              }`}
               onClick={() => setTemplatesMenuOpen(false)}
               onFocus={() => {
                 setTemplatesMenuOpen(true);
@@ -180,7 +215,7 @@ export function Nav() {
               }}
             >
               Templates
-              <span className="text-[10px] text-stone">v</span>
+              <span className={`text-[10px] ${isLinearDark ? "text-white/35" : "text-stone"}`}>v</span>
             </Link>
             <div
               className={`absolute left-1/2 top-full z-50 w-[280px] -translate-x-1/2 pt-3 transition-all duration-150 ${
@@ -189,16 +224,30 @@ export function Nav() {
                   : "pointer-events-none invisible opacity-0"
               }`}
             >
-              <div className="rounded-xl border border-cream-3 bg-[rgba(250,248,244,0.98)] p-2 shadow-[0_18px_42px_rgba(28,25,23,0.12)] backdrop-blur-md">
+              <div
+                className={`rounded-xl border p-2 shadow-[0_24px_64px_rgba(0,0,0,0.55)] backdrop-blur-md ${
+                  isLinearDark
+                    ? "border-white/[0.1] bg-[#111111]/98"
+                    : "border-cream-3 bg-[rgba(250,248,244,0.98)] shadow-[0_18px_42px_rgba(28,25,23,0.12)]"
+                }`}
+              >
                 {TEMPLATE_LINKS.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="group flex items-center justify-between rounded-lg px-3 py-2 text-[12px] text-ink-3 transition-all duration-150 hover:bg-cream hover:text-ink focus-visible:bg-cream focus-visible:text-ink"
+                    className={`group flex items-center justify-between rounded-lg px-3 py-2 text-[12px] transition-all duration-150 ${
+                      isLinearDark
+                        ? "text-white/65 hover:bg-white/[0.06] hover:text-white focus-visible:bg-white/[0.06] focus-visible:text-white"
+                        : "text-ink-3 hover:bg-cream hover:text-ink focus-visible:bg-cream focus-visible:text-ink"
+                    }`}
                     onClick={closeMenus}
                   >
                     <span>{item.label}</span>
-                    <span className="translate-x-[-2px] text-[11px] text-accent opacity-0 transition-all duration-150 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100">
+                    <span
+                      className={`translate-x-[-2px] text-[11px] opacity-0 transition-all duration-150 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 ${
+                        isLinearDark ? "text-white/50" : "text-accent"
+                      }`}
+                    >
                       →
                     </span>
                   </Link>
@@ -220,7 +269,9 @@ export function Nav() {
               href={USE_CASE_ITEMS[0].href}
               aria-expanded={useCaseMenuOpen}
               aria-haspopup="menu"
-              className="inline-flex items-center gap-1 transition-colors duration-150 hover:text-ink"
+              className={`inline-flex items-center gap-1 transition-colors duration-150 ${
+                isLinearDark ? "hover:text-white" : "hover:text-ink"
+              }`}
               onClick={() => setUseCaseMenuOpen(false)}
               onFocus={() => {
                 setUseCaseMenuOpen(true);
@@ -229,7 +280,7 @@ export function Nav() {
               }}
             >
               Use Cases
-              <span className="text-[10px] text-stone">v</span>
+              <span className={`text-[10px] ${isLinearDark ? "text-white/35" : "text-stone"}`}>v</span>
             </Link>
             <div
               className={`absolute left-1/2 top-full z-50 w-[288px] -translate-x-1/2 pt-3 transition-all duration-150 ${
@@ -238,16 +289,30 @@ export function Nav() {
                   : "pointer-events-none invisible opacity-0"
               }`}
             >
-              <div className="rounded-xl border border-cream-3 bg-[rgba(250,248,244,0.98)] p-2 shadow-[0_18px_42px_rgba(28,25,23,0.12)] backdrop-blur-md">
+              <div
+                className={`rounded-xl border p-2 shadow-[0_24px_64px_rgba(0,0,0,0.55)] backdrop-blur-md ${
+                  isLinearDark
+                    ? "border-white/[0.1] bg-[#111111]/98"
+                    : "border-cream-3 bg-[rgba(250,248,244,0.98)] shadow-[0_18px_42px_rgba(28,25,23,0.12)]"
+                }`}
+              >
                 {USE_CASE_ITEMS.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="group flex items-center justify-between rounded-lg px-3 py-2 text-[12px] text-ink-3 transition-all duration-150 hover:bg-cream hover:text-ink focus-visible:bg-cream focus-visible:text-ink"
+                    className={`group flex items-center justify-between rounded-lg px-3 py-2 text-[12px] transition-all duration-150 ${
+                      isLinearDark
+                        ? "text-white/65 hover:bg-white/[0.06] hover:text-white focus-visible:bg-white/[0.06] focus-visible:text-white"
+                        : "text-ink-3 hover:bg-cream hover:text-ink focus-visible:bg-cream focus-visible:text-ink"
+                    }`}
                     onClick={closeMenus}
                   >
                     <span>{item.label}</span>
-                    <span className="translate-x-[-2px] text-[11px] text-accent opacity-0 transition-all duration-150 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100">
+                    <span
+                      className={`translate-x-[-2px] text-[11px] opacity-0 transition-all duration-150 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 ${
+                        isLinearDark ? "text-white/50" : "text-accent"
+                      }`}
+                    >
                       →
                     </span>
                   </Link>
@@ -262,7 +327,9 @@ export function Nav() {
             >
               <Link
                 href={item.href}
-                className="transition-colors duration-150 hover:text-ink"
+                className={`transition-colors duration-150 ${
+                  isLinearDark ? "hover:text-white" : "hover:text-ink"
+                }`}
                 onClick={closeMenus}
               >
                 {item.label}
@@ -272,7 +339,13 @@ export function Nav() {
           <li className="flex items-center gap-3">
             <Link
               href="https://app.sariasoftware.com/login"
-              className="rounded-full border border-cream-3 px-4 py-2 text-[12px] font-medium text-ink transition-colors duration-200 hover:border-stone hover:bg-cream-2"
+              className={`border px-4 py-2 text-[12px] font-medium transition-colors duration-200 ${
+                isLinearDark
+                  ? "rounded-lg border-white/[0.14] text-white/85 hover:border-white/25 hover:bg-white/[0.05]"
+                  : isLinearLight
+                    ? "rounded-lg border-cream-3 text-ink hover:border-stone hover:bg-cream-2"
+                    : "rounded-full border-cream-3 text-ink hover:border-stone hover:bg-cream-2"
+              }`}
               onClick={closeMenus}
               target="_blank"
               rel="noreferrer"
@@ -281,11 +354,17 @@ export function Nav() {
             </Link>
             <Link
               href="https://app.sariasoftware.com/start-free-trial"
-              className="rounded-full px-4 py-2 text-[12px] font-medium text-white transition-colors duration-200"
+              className={`px-4 py-2 text-[12px] font-medium text-white transition-colors duration-200 ${
+                isLinearDark
+                  ? "rounded-lg bg-white text-black hover:bg-white/90"
+                  : isLinearLight
+                    ? "rounded-lg hover:opacity-90"
+                    : "rounded-full hover:opacity-90"
+              }`}
               onClick={closeMenus}
               target="_blank"
               rel="noreferrer"
-              style={{ backgroundColor: "#1D4ED8" }}
+              style={isLinearDark ? undefined : { backgroundColor: "#1D4ED8" }}
             >
               Start Free Trial
             </Link>

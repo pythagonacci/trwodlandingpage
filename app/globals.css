@@ -305,4 +305,23 @@
     position: relative;
     z-index: 1;
   }
+
+  /* Home: Linear-style layout + Inter; light palette only (scoped) */
+  .landing-linear-light {
+    --cream: #faf8f4;
+    --cream-2: #f2efe8;
+    --cream-3: #e8e3d8;
+    --sand: #d4cbb8;
+    --stone: #9a9184;
+    --ink: #1c1917;
+    --ink-2: #44403c;
+    --ink-3: #78716c;
+    --accent: #1d4ed8;
+    --accent-bg: #eff6ff;
+    --font-display: var(--font-inter, ui-sans-serif, system-ui, sans-serif);
+    --font-sans: var(--font-inter, ui-sans-serif, system-ui, sans-serif);
+    --font-hero-display: var(--font-inter, ui-sans-serif, system-ui, sans-serif);
+    background-color: var(--cream);
+    color: var(--ink);
+  }
 }
