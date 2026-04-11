@@ -44,7 +44,7 @@ export function Hero() {
           className="hero-anim hero-anim-sub mb-6 max-w-[720px] text-center text-[16px] font-light leading-[1.7]"
           style={{ color: "#555" }}
         >
-          One workspace for your products, people, and launches. Spend{" "}
+          The AI-Native workspace for your products, team, and launches. Spend{" "}
           <strong>less time managing work</strong> and more time creating{" "}
           <strong>products customers love</strong>.
         </p>
