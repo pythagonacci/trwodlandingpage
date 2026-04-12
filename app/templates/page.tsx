@@ -21,6 +21,14 @@ const templateCards = [
     stats: ["14 weeks", "3 sample rounds", "1 project"]
   },
   {
+    href: "/templates/pop-ups",
+    eyebrow: "Event Template",
+    title: "Pop-Ups",
+    description:
+      "A case-study template for planning retail events across vendor logistics, creative direction, inventory, staffing, and day-of execution.",
+    stats: ["6 weeks", "4 tabs", "$41,200 revenue"]
+  },
+  {
     href: "/templates/pr-tracking",
     eyebrow: "PR Template",
     title: "PR Tracking",
