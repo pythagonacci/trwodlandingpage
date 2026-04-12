@@ -12,7 +12,6 @@ type PopupProduct = {
   rightValue?: string;
   imageSrc?: string;
   imageAlt?: string;
-  emoji?: string;
   gradient?: string;
   status: string;
   tone: "progress" | "urgent" | "done" | "neutral" | "blue";
@@ -67,32 +66,32 @@ const popupTimeline = [
 
 const replacedItems = [
   {
-    icon: "📱",
+    icon: "IM",
     oldLabel: "iMessage task threads",
     replacement: "Replaced by master task tracker in Event HQ"
   },
   {
-    icon: "📧",
+    icon: "EM",
     oldLabel: "Vendor emails buried in inbox",
     replacement: "Replaced by Vendor & Logistics table"
   },
   {
-    icon: "📝",
+    icon: "NO",
     oldLabel: "Notes app run of show",
     replacement: "Replaced by Day-Of timeline block"
   },
   {
-    icon: "📊",
+    icon: "SH",
     oldLabel: "Spreadsheet merch plan",
     replacement: "Replaced by merchandise table in Creative & Styling"
   },
   {
-    icon: "🛍",
+    icon: "SP",
     oldLabel: "Separate Shopify tab, always open",
     replacement: "Replaced by live Shopify blocks in Trak"
   },
   {
-    icon: "💬",
+    icon: "SL",
     oldLabel: "Slack threads across three channels",
     replacement: "Replaced by task blocks and block comments"
   }
@@ -216,9 +215,9 @@ const moodboardTiles: MoodboardTile[] = [
 ];
 
 const vendorRows = [
-  ["Form Supply Co.", "Rack fabrication + install", "$2,400", "✓ Paid", "Confirmed"],
-  ["Studio Stem", "Florals - 3 arrangements", "$780", "✓ Paid", "Confirmed"],
-  ["Arc Events", "Lighting setup + rental", "$1,100", "✓ Paid", "Confirmed"],
+  ["Form Supply Co.", "Rack fabrication + install", "$2,400", "Paid", "Confirmed"],
+  ["Studio Stem", "Florals - 3 arrangements", "$780", "Paid", "Confirmed"],
+  ["Arc Events", "Lighting setup + rental", "$1,100", "Paid", "Confirmed"],
   ["Ace Printing", "Signage + price tags", "$340", "Pending", "In Progress"],
   ["GreenClean NYC", "Post-event clean", "$220", "-", "Booked"]
 ];
@@ -413,7 +412,6 @@ function ProductCard({
   name,
   imageSrc,
   imageAlt,
-  emoji,
   gradient,
   leftValue,
   leftLabel,
@@ -425,7 +423,6 @@ function ProductCard({
   name: string;
   imageSrc?: string;
   imageAlt?: string;
-  emoji?: string;
   gradient?: string;
   leftValue: string;
   leftLabel: string;
@@ -450,7 +447,7 @@ function ProductCard({
         <div
           className={`flex h-20 items-center justify-center bg-gradient-to-br text-[24px] ${gradient ?? "from-[#F4EEE5] to-[#EAE4D9]"}`}
         >
-          {emoji}
+          {name.slice(0, 2).toUpperCase()}
         </div>
       )}
       <div className="px-3 py-3">
@@ -498,7 +495,7 @@ function TaskBlock({
           {title}
         </div>
         <div className="flex items-center gap-1.5 text-[11px] text-[#B8B4AC]">
-          <span className="rounded-[4px] bg-accent-bg px-1.5 py-0.5 text-accent">☰</span>
+          <span className="rounded-[4px] bg-accent-bg px-1.5 py-0.5 text-accent">Menu</span>
           <span>⊞</span>
         </div>
       </div>
@@ -516,7 +513,7 @@ function TaskBlock({
                   : "border-[#D0CCC4] text-transparent"
             }`}
           >
-            {task.complete ? "✓" : "·"}
+            {task.complete ? "" : "·"}
           </span>
           <div
             className={`flex-1 text-[12px] ${
@@ -579,7 +576,7 @@ function DataTable({
             const isStatus = cellIndex === row.length - 1 && headers[cellIndex] === "Status";
             const isDeposit = headers[cellIndex] === "Deposit";
             const tone =
-              cell.includes("Confirmed") || cell.includes("✓ Paid")
+              cell.includes("Confirmed") || cell.includes("Paid")
                 ? "done"
                 : cell.includes("In Progress") || cell.includes("Pending") || cell.includes("In Review")
                   ? "progress"
@@ -612,11 +609,11 @@ function DataTable({
 function RightRail() {
   return (
     <div className="absolute inset-y-0 right-0 flex w-9 flex-col items-center gap-4 border-l border-[#F0EEEA] bg-white py-4 text-[13px] text-[#C5C0B6]">
-      <span>🔒</span>
-      <span>✦</span>
+      <span>L</span>
+      <span>AI</span>
       <span>⊞</span>
-      <span>💬</span>
-      <span>👤</span>
+      <span>C</span>
+      <span>U</span>
     </div>
   );
 }
@@ -772,7 +769,7 @@ export function PopupTemplate() {
                     : "border-cream-3 bg-cream-2 text-stone"
                 }`}
               >
-                {event.complete ? "✓" : event.active ? "→" : "✦"}
+                {event.complete ? "OK" : event.active ? "Next" : ""}
               </div>
               <div className="pt-1">
                 <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-stone">
@@ -879,7 +876,6 @@ export function PopupTemplate() {
                         name={product.name}
                         imageSrc={product.imageSrc}
                         imageAlt={product.imageAlt}
-                        emoji={product.emoji}
                         gradient={product.gradient}
                         leftValue={product.stock ?? ""}
                         leftLabel="In stock"
@@ -1141,7 +1137,6 @@ export function PopupTemplate() {
                         name={product.name}
                         imageSrc={product.imageSrc}
                         imageAlt={product.imageAlt}
-                        emoji={product.emoji}
                         gradient={product.gradient}
                         leftValue={product.leftValue ?? ""}
                         leftLabel={product.leftLabel ?? ""}

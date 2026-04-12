@@ -329,7 +329,7 @@ function TaskBlock({
       <div className="flex items-center justify-between border-b border-[#EFECE5] bg-[#FAF9F6] px-4 py-3">
         <div className="text-[12px] font-semibold tracking-[-0.01em] text-ink">{title}</div>
         <div className="flex items-center gap-1.5 text-[11px] text-[#B8B4AC]">
-          <span className="rounded-[4px] bg-accent-bg px-1.5 py-0.5 text-accent">☰</span>
+          <span className="rounded-[4px] bg-accent-bg px-1.5 py-0.5 text-accent">Menu</span>
           <span>⊞</span>
         </div>
       </div>
@@ -348,7 +348,7 @@ function TaskBlock({
                   : "border-[#D0CCC4] text-transparent"
             )}
           >
-            {task.complete ? "✓" : "·"}
+            {task.complete ? "" : "·"}
           </span>
           <div
             className={cx(
@@ -381,11 +381,11 @@ function TaskBlock({
 function RightRail() {
   return (
     <div className="absolute inset-y-0 right-0 flex w-9 flex-col items-center gap-4 border-l border-[#F0EEEA] bg-white py-4 text-[13px] text-[#C5C0B6]">
-      <span>🔒</span>
-      <span>✦</span>
+      <span>L</span>
+      <span>AI</span>
       <span>⊞</span>
-      <span>💬</span>
-      <span>👤</span>
+      <span>C</span>
+      <span>U</span>
     </div>
   );
 }
@@ -506,7 +506,7 @@ export function ProductDesignDevelopmentTemplate() {
                     : "border-cream-3 bg-cream-2 text-stone"
                 )}
               >
-                {event.active ? "→" : "✦"}
+                {event.active ? "Next" : ""}
               </div>
               <div className="pt-1">
                 <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-stone">
@@ -609,7 +609,7 @@ export function ProductDesignDevelopmentTemplate() {
                   <div className="mb-3 mr-11 overflow-hidden rounded-[12px] border border-[#EFECE5] bg-white">
                     <div className="grid min-[720px]:grid-cols-[100px_minmax(0,1fr)]">
                       <div className="flex items-center justify-center bg-[linear-gradient(135deg,#F2EFE8,#E8E3D8)] text-[28px]">
-                        👜
+                        Bag
                       </div>
                       <div className="px-4 py-4">
                         <div className="mb-2 text-[12px] font-semibold text-ink">
@@ -620,7 +620,7 @@ export function ProductDesignDevelopmentTemplate() {
                             ["214", "In stock"],
                             ["$145", "Price"],
                             ["1,840", "Units sold"],
-                            ["4.8★", "Rating"]
+                            ["4.8", "Rating"]
                           ].map(([value, label]) => (
                             <div key={label}>
                               <div className="text-[14px] font-semibold leading-none text-ink">
@@ -747,7 +747,7 @@ export function ProductDesignDevelopmentTemplate() {
                                 key={change}
                                 className="rounded-[6px] bg-[#E7F6EE] px-2.5 py-1 text-[10px] font-medium text-[#2F6B49]"
                               >
-                                {change} ✓
+                                {change} resolved
                               </span>
                             ))}
                           </div>
@@ -833,7 +833,7 @@ export function ProductDesignDevelopmentTemplate() {
                     <div className="flex items-center bg-[#FAF9F6] px-4 py-3 text-[12px]">
                       <div className="flex-[2.5] pr-2 font-semibold text-ink">Total COGS</div>
                       <div className="flex-1 pr-2 font-semibold text-ink">$54.90</div>
-                      <div className="flex-1 text-ink-2">Target: &lt;$58 ✓</div>
+                      <div className="flex-1 text-ink-2">Target: &lt;$58 met</div>
                     </div>
                   </div>
 

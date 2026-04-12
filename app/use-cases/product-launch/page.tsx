@@ -586,14 +586,14 @@ export default function Page() {
                 <ProductRow
                   variant="serum"
                   name="Hydra-Burst Serum"
-                  meta="copy ✓ - images ✓ - pricing ✓"
+                  meta="copy ready - images ready - pricing ready"
                   status="Ready"
                   statusClassName={base.badgeSuccess}
                 />
                 <ProductRow
                   variant="cream"
                   name="Moisture Barrier Cream"
-                  meta="copy ✓ - images pending - pricing ✓"
+                  meta="copy ready - images pending - pricing ready"
                   status="In Progress"
                   statusClassName={base.badgeWarm}
                 />
@@ -607,7 +607,7 @@ export default function Page() {
                 <ProductRow
                   variant="toner"
                   name="Hydra-Mist Toner"
-                  meta="copy ✓ - images ✓ - pricing ✓"
+                  meta="copy ready - images ready - pricing ready"
                   status="Scheduled"
                   statusClassName={base.badgeViolet}
                 />

@@ -1,12 +1,36 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function Hero() {
-  const heroVideoSrc = "/media/demo1-web.mp4";
-  const heroPosterSrc = "/media/demo1-poster.jpg";
+  const heroVideoSrc = "/media/studiohero-web.mp4";
+  const heroPosterSrc = "/media/studiohero-poster.jpg";
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isVideoReady, setIsVideoReady] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) {
+      return;
+    }
+
+    video.muted = true;
+    video.defaultMuted = true;
+
+    const playVideo = () => {
+      setIsVideoReady(true);
+      void video.play().catch(() => {});
+    };
+
+    if (video.readyState >= 2) {
+      playVideo();
+      return;
+    }
+
+    video.addEventListener("canplay", playVideo, { once: true });
+    return () => video.removeEventListener("canplay", playVideo);
+  }, []);
 
   return (
     <section id="top" className="border-b border-cream-3 bg-cream pt-[60px]">
@@ -62,6 +86,7 @@ export function Hero() {
               className={`object-cover transition-opacity duration-300 ${isVideoReady ? "opacity-0" : "opacity-100"}`}
             />
             <video
+              ref={videoRef}
               className={`h-full w-full object-cover transition-opacity duration-300 ${isVideoReady ? "opacity-100" : "opacity-0"}`}
               style={{ width: "100%", height: "100%", objectFit: "cover" }}
               poster={heroPosterSrc}
@@ -69,8 +94,12 @@ export function Hero() {
               muted
               loop
               playsInline
-              preload="metadata"
+              preload="auto"
               onLoadedData={() => setIsVideoReady(true)}
+              onCanPlay={() => {
+                setIsVideoReady(true);
+                void videoRef.current?.play().catch(() => {});
+              }}
             >
               <source src={heroVideoSrc} type="video/mp4" />
             </video>

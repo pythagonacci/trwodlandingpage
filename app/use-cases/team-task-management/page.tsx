@@ -1,5 +1,25 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
+import {
+  FiCalendar,
+  FiCheckCircle,
+  FiCpu,
+  FiFileText,
+  FiHash,
+  FiInbox,
+  FiKey,
+  FiLock,
+  FiMapPin,
+  FiMessageSquare,
+  FiPlus,
+  FiSearch,
+  FiSliders,
+  FiTag,
+  FiTarget,
+  FiUser,
+  FiUsers,
+  FiZap
+} from "react-icons/fi";
 import { createPageMetadata } from "@/app/seo";
 import { Nav } from "@/components/landing/Nav";
 import base from "../dashboard-visibility/use-case.module.css";
@@ -760,7 +780,7 @@ export default function Page() {
           }
           features={[
             {
-              icon: "👥",
+              icon: <FiUsers />,
               title: "A dedicated members page",
               body: (
                 <>
@@ -771,7 +791,7 @@ export default function Page() {
               )
             },
             {
-              icon: "🔑",
+              icon: <FiKey />,
               title: "Workspace roles and project-level permissions",
               body: (
                 <>
@@ -783,7 +803,7 @@ export default function Page() {
               )
             },
             {
-              icon: "🏷️",
+              icon: <FiTag />,
               title: "Teams - groups you assign and configure together",
               body: (
                 <>
@@ -817,7 +837,7 @@ export default function Page() {
           }
           features={[
             {
-              icon: "👤",
+              icon: <FiUser />,
               title: "Assignees are a universal property",
               body: (
                 <>
@@ -829,7 +849,7 @@ export default function Page() {
               )
             },
             {
-              icon: "✅",
+              icon: <FiCheckCircle />,
               title: "Priority and due dates travel with ownership",
               body: (
                 <>
@@ -841,7 +861,7 @@ export default function Page() {
               )
             },
             {
-              icon: "🔍",
+              icon: <FiSearch />,
               title: "Nothing without an owner falls through the cracks",
               body: (
                 <>
@@ -881,7 +901,7 @@ export default function Page() {
           }
           features={[
             {
-              icon: "💬",
+              icon: <FiMessageSquare />,
               title: "Ask in plain language",
               body: (
                 <>
@@ -893,7 +913,7 @@ export default function Page() {
               )
             },
             {
-              icon: "🎯",
+              icon: <FiTarget />,
               title: "Infinite scope - one project or the whole workspace",
               body: (
                 <>
@@ -905,7 +925,7 @@ export default function Page() {
               )
             },
             {
-              icon: "📌",
+              icon: <FiMapPin />,
               title: "Pin it wherever it&apos;s most useful",
               body: (
                 <>
@@ -937,7 +957,7 @@ export default function Page() {
           }
           features={[
             {
-              icon: "📑",
+              icon: <FiFileText />,
               title: "Tabs organize work into areas, not lists",
               body: (
                 <>
@@ -949,7 +969,7 @@ export default function Page() {
               )
             },
             {
-              icon: "📅",
+              icon: <FiCalendar />,
               title: "Timeline blocks for sequences and milestones",
               body: (
                 <>
@@ -960,7 +980,7 @@ export default function Page() {
               )
             },
             {
-              icon: "🤖",
+              icon: <FiCpu />,
               title: "AI can build the structure for you",
               body: (
                 <>
@@ -986,7 +1006,7 @@ export default function Page() {
           }
           features={[
             {
-              icon: "💬",
+              icon: <FiMessageSquare />,
               title: "Comment on any block, not the project in general",
               body: (
                 <>
@@ -1008,7 +1028,7 @@ export default function Page() {
               )
             },
             {
-              icon: "📬",
+              icon: <FiInbox />,
               title: "Comment feeds on the dashboard and project overview",
               body: (
                 <>
@@ -1046,7 +1066,7 @@ export default function Page() {
           }
           features={[
             {
-              icon: "#",
+              icon: <FiHash />,
               title: "Ask it anything about your workspace",
               body: (
                 <>
@@ -1057,7 +1077,7 @@ export default function Page() {
               )
             },
             {
-              icon: "+",
+              icon: <FiPlus />,
               title: "Create and update tasks from Slack",
               body: (
                 <>
@@ -1068,7 +1088,7 @@ export default function Page() {
               )
             },
             {
-              icon: "✦",
+              icon: <FiSliders />,
               title: "AI-powered, not just a slash command",
               body: (
                 <>
@@ -1099,7 +1119,7 @@ export default function Page() {
           }
           features={[
             {
-              icon: "🔒",
+              icon: <FiLock />,
               title: "Per-project permissions for individuals or teams",
               body: (
                 <>
@@ -1110,7 +1130,7 @@ export default function Page() {
               )
             },
             {
-              icon: "⚡",
+              icon: <FiZap />,
               title: "Add a team, not a list of people",
               body: (
                 <>

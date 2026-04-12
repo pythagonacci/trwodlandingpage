@@ -9,7 +9,6 @@ type LaunchProduct = {
   price: string;
   imageSrc?: string;
   imageAlt?: string;
-  emoji?: string;
   gradient?: string;
 };
 
@@ -283,7 +282,6 @@ function ShopifyCard({
   price,
   imageSrc,
   imageAlt,
-  emoji,
   gradient
 }: {
   name: string;
@@ -291,7 +289,6 @@ function ShopifyCard({
   price: string;
   imageSrc?: string;
   imageAlt?: string;
-  emoji?: string;
   gradient?: string;
 }) {
   return (
@@ -310,7 +307,7 @@ function ShopifyCard({
         <div
           className={`flex h-20 items-center justify-center bg-gradient-to-br text-[24px] ${gradient ?? "from-[#F8F1D5] to-[#F5E8D7]"}`}
         >
-          {emoji}
+          {name.slice(0, 2).toUpperCase()}
         </div>
       )}
       <div className="px-3 py-3">
@@ -359,7 +356,7 @@ function TaskBlock({
         </div>
         <div className="flex items-center gap-1.5 text-[11px] text-[#B8B4AC]">
           <span className="rounded-[4px] bg-accent-bg px-1.5 py-0.5 text-accent">
-            ☰
+            Menu
           </span>
           <span>⊞</span>
           <span>⊟</span>
@@ -379,7 +376,7 @@ function TaskBlock({
                   : "border-[#D0CCC4] text-transparent"
             }`}
           >
-            {task.complete ? "✓" : "·"}
+            {task.complete ? "" : "·"}
           </span>
           <div
             className={`flex-1 text-[12px] ${
@@ -409,11 +406,11 @@ function TaskBlock({
 function RightRail() {
   return (
     <div className="absolute inset-y-0 right-0 flex w-9 flex-col items-center gap-4 border-l border-[#F0EEEA] bg-white py-4 text-[13px] text-[#C5C0B6]">
-      <span>🔒</span>
-      <span>✦</span>
+      <span>L</span>
+      <span>AI</span>
       <span>⊞</span>
-      <span>💬</span>
-      <span>👤</span>
+      <span>C</span>
+      <span>U</span>
     </div>
   );
 }
@@ -510,7 +507,7 @@ export function Templates() {
                     : "border-cream-3 bg-cream-2 text-stone"
                 }`}
               >
-                {event.complete ? "✓" : event.active ? "→" : "✦"}
+                {event.complete ? "OK" : event.active ? "Next" : ""}
               </div>
               <div className="pt-1">
                 <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-stone">
@@ -641,13 +638,13 @@ export function Templates() {
                       Subtabs
                     </div>
                     <div className="px-4 py-2 text-[12px] text-ink-2">
-                      🍋 Lemon Lip Balm
+                      Lemon Lip Balm
                     </div>
                     <div className="border-r-2 border-ink bg-[#EFECE5] px-4 py-2 text-[12px] font-medium text-ink">
-                      ✨ Brightening Moisturizer
+                      Brightening Moisturizer
                     </div>
                     <div className="px-4 py-2 text-[12px] text-ink-2">
-                      💧 Dewy Mist Spray
+                      Dewy Mist Spray
                     </div>
                   </div>
 
@@ -659,7 +656,7 @@ export function Templates() {
                     <div className="mb-3 mr-11 overflow-hidden rounded-[12px] border border-[#EFECE5] bg-white">
                       <div className="grid min-[720px]:grid-cols-[100px_minmax(0,1fr)]">
                         <div className="flex items-center justify-center bg-gradient-to-br from-[#EEF2FF] to-[#E3EEF9] text-[28px]">
-                          ✨
+                          LM
                         </div>
                         <div className="px-4 py-4">
                           <div className="mb-2 text-[12px] font-semibold text-ink">

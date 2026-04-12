@@ -97,7 +97,7 @@ export function Nav({ variant = "default" }: { variant?: NavVariant }) {
           ? `border-white/[0.08] bg-black/75 ${
               scrolled ? "shadow-[0_1px_0_rgba(255,255,255,0.06)]" : "shadow-none"
             }`
-          : `border-cream-3 bg-[rgba(250,248,244,0.94)] ${
+          : `border-cream-3 bg-[rgba(255,255,255,0.94)] ${
               scrolled ? "shadow-nav" : "shadow-none"
             }`
       }`}
@@ -163,7 +163,7 @@ export function Nav({ variant = "default" }: { variant?: NavVariant }) {
                 className={`rounded-xl border p-2 shadow-[0_24px_64px_rgba(0,0,0,0.55)] backdrop-blur-md ${
                   isLinearDark
                     ? "border-white/[0.1] bg-[#111111]/98"
-                    : "border-cream-3 bg-[rgba(250,248,244,0.98)] shadow-[0_18px_42px_rgba(28,25,23,0.12)]"
+                    : "border-cream-3 bg-[rgba(255,255,255,0.98)] shadow-[0_18px_42px_rgba(28,25,23,0.10)]"
                 }`}
               >
                 {PRODUCT_LINKS.map((item) => (
@@ -228,7 +228,7 @@ export function Nav({ variant = "default" }: { variant?: NavVariant }) {
                 className={`rounded-xl border p-2 shadow-[0_24px_64px_rgba(0,0,0,0.55)] backdrop-blur-md ${
                   isLinearDark
                     ? "border-white/[0.1] bg-[#111111]/98"
-                    : "border-cream-3 bg-[rgba(250,248,244,0.98)] shadow-[0_18px_42px_rgba(28,25,23,0.12)]"
+                    : "border-cream-3 bg-[rgba(255,255,255,0.98)] shadow-[0_18px_42px_rgba(28,25,23,0.10)]"
                 }`}
               >
                 {TEMPLATE_LINKS.map((item) => (
@@ -293,7 +293,7 @@ export function Nav({ variant = "default" }: { variant?: NavVariant }) {
                 className={`rounded-xl border p-2 shadow-[0_24px_64px_rgba(0,0,0,0.55)] backdrop-blur-md ${
                   isLinearDark
                     ? "border-white/[0.1] bg-[#111111]/98"
-                    : "border-cream-3 bg-[rgba(250,248,244,0.98)] shadow-[0_18px_42px_rgba(28,25,23,0.12)]"
+                    : "border-cream-3 bg-[rgba(255,255,255,0.98)] shadow-[0_18px_42px_rgba(28,25,23,0.10)]"
                 }`}
               >
                 {USE_CASE_ITEMS.map((item) => (

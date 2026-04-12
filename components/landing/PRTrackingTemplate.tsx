@@ -230,18 +230,18 @@ function InfoCard({
 function RightRail() {
   return (
     <div className="absolute inset-y-0 right-0 flex w-9 flex-col items-center gap-4 border-l border-[#F0EEEA] bg-white py-4 text-[13px] text-[#C5C0B6]">
-      <span>🔒</span>
-      <span>✦</span>
+      <span>L</span>
+      <span>AI</span>
       <span>⊞</span>
-      <span>💬</span>
-      <span>👤</span>
+      <span>C</span>
+      <span>U</span>
     </div>
   );
 }
 
 function MiniStatus({ state }: { state: RowState }) {
   if (state === "done") {
-    return <StatusPill tone="done">✓</StatusPill>;
+    return <StatusPill tone="done">Done</StatusPill>;
   }
 
   if (state === "pending") {
@@ -639,7 +639,7 @@ export function PRTrackingTemplate() {
                               ["112", "In stock"],
                               ["388", "Units sold"],
                               ["$48", "Price"],
-                              ["4.9★", "Rating"]
+                              ["4.9", "Rating"]
                             ].map(([value, label]) => (
                               <div key={label}>
                                 <div className="text-[14px] font-semibold leading-none text-ink">

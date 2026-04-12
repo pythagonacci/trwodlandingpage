@@ -8,11 +8,11 @@
   }
 
   :root {
-    --cream: #FAF8F4;
-    --cream-2: #F2EFE8;
-    --cream-3: #E8E3D8;
-    --sand: #D4CBB8;
-    --stone: #9A9184;
+    --cream: #FFFFFF;
+    --cream-2: #FEFEFE;
+    --cream-3: #F0F0F0;
+    --sand: #E0E0E0;
+    --stone: #909090;
     --ink: #1C1917;
     --ink-2: #44403C;
     --ink-3: #78716C;
@@ -155,38 +155,39 @@
   .hero-video-shell::before {
     content: "";
     position: absolute;
-    inset: 18px 10px 34px;
+    inset: 4px -8px -22px;
     z-index: -2;
-    border-radius: 34px;
+    border-radius: 42px;
     background:
-      radial-gradient(circle at top, rgba(219, 231, 255, 0.82), transparent 55%),
-      radial-gradient(circle at bottom, rgba(255, 255, 255, 0.95), transparent 60%);
-    filter: blur(26px);
-    opacity: 0.95;
+      radial-gradient(circle at top, rgba(224, 224, 224, 0.32), transparent 62%),
+      linear-gradient(180deg, rgba(240, 240, 240, 0.24), rgba(255, 255, 255, 0));
+    filter: blur(24px);
+    opacity: 0.9;
   }
 
   .hero-video-shell::after {
     content: "";
     position: absolute;
-    inset: 8px 0 18px;
+    inset: 15px 7px 6px;
     z-index: -3;
-    border-radius: 42px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(244, 242, 238, 0.28));
-    filter: blur(18px);
-    opacity: 0.9;
+    border-radius: 38px;
+    background: rgba(144, 144, 144, 0.08);
+    filter: blur(34px);
+    opacity: 0.72;
   }
 
   .hero-video-frame {
-    border: 1px solid rgba(222, 219, 212, 0.52);
+    border: 1px solid rgba(144, 144, 144, 0.18);
     border-radius: 30px 30px 0 0;
-    background: #f8f5ef;
+    background: #ffffff;
     box-shadow:
-      0 26px 56px rgba(28, 25, 23, 0.07),
+      0 18px 44px rgba(28, 25, 23, 0.055),
+      0 0 0 12px rgba(255, 255, 255, 0.82),
       inset 0 1px 0 rgba(255, 255, 255, 0.55);
   }
 
   .hero-video-bar {
-    background: rgba(244, 242, 238, 0.92);
+    background: rgba(255, 255, 255, 0.92);
     border-right: 1px solid rgba(222, 219, 212, 0.52);
     border-bottom: 1px solid rgba(222, 219, 212, 0.52);
     border-left: 1px solid rgba(222, 219, 212, 0.52);
@@ -220,7 +221,7 @@
     inset: 8px 0;
     z-index: -3;
     border-radius: 36px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(244, 242, 238, 0.24));
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.12));
     filter: blur(18px);
     opacity: 0.82;
   }
@@ -228,7 +229,7 @@
   .feature-demo-frame {
     border: 1px solid rgba(222, 219, 212, 0.5);
     border-radius: 24px;
-    background: #f7f3ec;
+    background: #ffffff;
     box-shadow:
       0 24px 48px rgba(28, 25, 23, 0.06),
       inset 0 1px 0 rgba(255, 255, 255, 0.5);
@@ -308,11 +309,11 @@
 
   /* Home: Linear-style layout + Inter; light palette only (scoped) */
   .landing-linear-light {
-    --cream: #faf8f4;
-    --cream-2: #f2efe8;
-    --cream-3: #e8e3d8;
-    --sand: #d4cbb8;
-    --stone: #9a9184;
+    --cream: #ffffff;
+    --cream-2: #fefefe;
+    --cream-3: #f0f0f0;
+    --sand: #e0e0e0;
+    --stone: #909090;
     --ink: #1c1917;
     --ink-2: #44403c;
     --ink-3: #78716c;
