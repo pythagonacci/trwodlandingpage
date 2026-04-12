@@ -92,7 +92,7 @@ export function Nav({ variant = "default" }: { variant?: NavVariant }) {
 
   return (
     <nav
-      className={`fixed inset-x-0 top-0 z-[200] h-[60px] border-b backdrop-blur-xl transition-shadow duration-200 ${
+      className={`fixed inset-x-0 top-0 z-[200] h-[48px] border-b backdrop-blur-xl transition-shadow duration-200 ${
         isLinearDark
           ? `border-white/[0.08] bg-black/75 ${
               scrolled ? "shadow-[0_1px_0_rgba(255,255,255,0.06)]" : "shadow-none"
@@ -105,7 +105,7 @@ export function Nav({ variant = "default" }: { variant?: NavVariant }) {
       <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between px-4 md:px-8 lg:px-12">
         <Link
           href="/"
-          className={`flex items-center gap-2 font-display text-[18px] font-semibold tracking-[-0.015em] ${
+          className={`flex items-center gap-1.5 font-display text-[16px] font-semibold tracking-[-0.015em] ${
             isLinearDark ? "text-white" : "text-ink"
           }`}
           onClick={closeMenus}
@@ -113,15 +113,15 @@ export function Nav({ variant = "default" }: { variant?: NavVariant }) {
           <Image
             src="/logo-copy.png"
             alt="Saria logo"
-            width={28}
-            height={28}
-            className="h-7 w-7 object-contain"
+            width={24}
+            height={24}
+            className="h-6 w-6 object-contain"
             priority
           />
           <span>Saria</span>
         </Link>
         <ul
-          className={`flex items-center gap-8 text-[12px] font-normal ${
+          className={`flex items-center gap-6 text-[11px] font-normal ${
             isLinearDark ? "text-white/55" : "text-ink-3"
           }`}
         >
@@ -150,7 +150,7 @@ export function Nav({ variant = "default" }: { variant?: NavVariant }) {
               }}
             >
               Product
-              <span className={`text-[10px] ${isLinearDark ? "text-white/35" : "text-stone"}`}>v</span>
+              <span className={`text-[9px] ${isLinearDark ? "text-white/35" : "text-stone"}`}>v</span>
             </Link>
             <div
               className={`absolute left-1/2 top-full z-50 w-[250px] -translate-x-1/2 pt-3 transition-all duration-150 ${
@@ -170,7 +170,7 @@ export function Nav({ variant = "default" }: { variant?: NavVariant }) {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`group flex items-center justify-between rounded-lg px-3 py-2 text-[12px] transition-all duration-150 ${
+                    className={`group flex items-center justify-between rounded-lg px-3 py-1.5 text-[11px] transition-all duration-150 ${
                       isLinearDark
                         ? "text-white/65 hover:bg-white/[0.06] hover:text-white focus-visible:bg-white/[0.06] focus-visible:text-white"
                         : "text-ink-3 hover:bg-cream hover:text-ink focus-visible:bg-cream focus-visible:text-ink"
@@ -179,7 +179,7 @@ export function Nav({ variant = "default" }: { variant?: NavVariant }) {
                   >
                     <span>{item.label}</span>
                     <span
-                      className={`translate-x-[-2px] text-[11px] opacity-0 transition-all duration-150 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 ${
+                      className={`translate-x-[-2px] text-[10px] opacity-0 transition-all duration-150 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 ${
                         isLinearDark ? "text-white/50" : "text-accent"
                       }`}
                     >
@@ -215,7 +215,7 @@ export function Nav({ variant = "default" }: { variant?: NavVariant }) {
               }}
             >
               Templates
-              <span className={`text-[10px] ${isLinearDark ? "text-white/35" : "text-stone"}`}>v</span>
+              <span className={`text-[9px] ${isLinearDark ? "text-white/35" : "text-stone"}`}>v</span>
             </Link>
             <div
               className={`absolute left-1/2 top-full z-50 w-[280px] -translate-x-1/2 pt-3 transition-all duration-150 ${
@@ -235,7 +235,7 @@ export function Nav({ variant = "default" }: { variant?: NavVariant }) {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`group flex items-center justify-between rounded-lg px-3 py-2 text-[12px] transition-all duration-150 ${
+                    className={`group flex items-center justify-between rounded-lg px-3 py-1.5 text-[11px] transition-all duration-150 ${
                       isLinearDark
                         ? "text-white/65 hover:bg-white/[0.06] hover:text-white focus-visible:bg-white/[0.06] focus-visible:text-white"
                         : "text-ink-3 hover:bg-cream hover:text-ink focus-visible:bg-cream focus-visible:text-ink"
@@ -244,7 +244,7 @@ export function Nav({ variant = "default" }: { variant?: NavVariant }) {
                   >
                     <span>{item.label}</span>
                     <span
-                      className={`translate-x-[-2px] text-[11px] opacity-0 transition-all duration-150 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 ${
+                      className={`translate-x-[-2px] text-[10px] opacity-0 transition-all duration-150 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 ${
                         isLinearDark ? "text-white/50" : "text-accent"
                       }`}
                     >
@@ -280,7 +280,7 @@ export function Nav({ variant = "default" }: { variant?: NavVariant }) {
               }}
             >
               Use Cases
-              <span className={`text-[10px] ${isLinearDark ? "text-white/35" : "text-stone"}`}>v</span>
+              <span className={`text-[9px] ${isLinearDark ? "text-white/35" : "text-stone"}`}>v</span>
             </Link>
             <div
               className={`absolute left-1/2 top-full z-50 w-[288px] -translate-x-1/2 pt-3 transition-all duration-150 ${
@@ -300,7 +300,7 @@ export function Nav({ variant = "default" }: { variant?: NavVariant }) {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`group flex items-center justify-between rounded-lg px-3 py-2 text-[12px] transition-all duration-150 ${
+                    className={`group flex items-center justify-between rounded-lg px-3 py-1.5 text-[11px] transition-all duration-150 ${
                       isLinearDark
                         ? "text-white/65 hover:bg-white/[0.06] hover:text-white focus-visible:bg-white/[0.06] focus-visible:text-white"
                         : "text-ink-3 hover:bg-cream hover:text-ink focus-visible:bg-cream focus-visible:text-ink"
@@ -309,7 +309,7 @@ export function Nav({ variant = "default" }: { variant?: NavVariant }) {
                   >
                     <span>{item.label}</span>
                     <span
-                      className={`translate-x-[-2px] text-[11px] opacity-0 transition-all duration-150 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 ${
+                      className={`translate-x-[-2px] text-[10px] opacity-0 transition-all duration-150 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 ${
                         isLinearDark ? "text-white/50" : "text-accent"
                       }`}
                     >
@@ -336,10 +336,10 @@ export function Nav({ variant = "default" }: { variant?: NavVariant }) {
               </Link>
             </li>
           ))}
-          <li className="flex items-center gap-3">
+          <li className="flex items-center gap-2">
             <Link
               href="https://app.sariasoftware.com/login"
-              className={`border px-4 py-2 text-[12px] font-medium transition-colors duration-200 ${
+              className={`border px-3.5 py-1.5 text-[11px] font-medium transition-colors duration-200 ${
                 isLinearDark
                   ? "rounded-lg border-white/[0.14] text-white/85 hover:border-white/25 hover:bg-white/[0.05]"
                   : isLinearLight
@@ -354,7 +354,7 @@ export function Nav({ variant = "default" }: { variant?: NavVariant }) {
             </Link>
             <Link
               href="https://app.sariasoftware.com/start-free-trial"
-              className={`px-4 py-2 text-[12px] font-medium text-white transition-colors duration-200 ${
+              className={`px-3.5 py-1.5 text-[11px] font-medium text-white transition-colors duration-200 ${
                 isLinearDark
                   ? "rounded-lg bg-white text-black hover:bg-white/90"
                   : isLinearLight

@@ -37,17 +37,17 @@ export function Hero() {
       <div className="mx-auto max-w-[1320px] px-6 pb-14 md:px-8 lg:px-12 lg:pb-20">
         <div className="grid gap-10 pt-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-x-20 lg:pt-10">
           <div>
-            <h1 className="hero-anim hero-anim-heading font-display text-[clamp(32px,5.2vw,64px)] font-semibold leading-[1.05] tracking-[-0.045em] text-ink">
+            <h1 className="hero-anim hero-anim-heading font-display text-[clamp(32px,5.2vw,64px)] font-medium leading-[1.05] tracking-[-0.045em] text-ink">
               The Product Launch Workspace for Modern D2C Brands
             </h1>
           </div>
           <div className="flex flex-col justify-start lg:pt-1">
-            <p className="hero-anim hero-anim-sub text-[15px] font-normal leading-[1.75] text-[#8a8a8e] md:text-[16px]">
+            <p className="hero-anim hero-anim-sub text-[16px] font-normal leading-[1.75] text-[#8a8a8e] md:text-[18px]">
               The AI-Native workspace for your products, team, and launches. Spend{" "}
               <strong className="font-medium text-ink">less time managing work</strong> and more time
               creating <strong className="font-medium text-ink">products customers love</strong>.
             </p>
-            <div className="hero-anim hero-anim-ctas mt-8 flex flex-col gap-3">
+            <div className="hero-anim hero-anim-ctas mt-5 flex flex-col gap-3">
               <div className="flex flex-wrap items-center gap-4">
                 <a
                   href="https://app.sariasoftware.com/start-free-trial"
