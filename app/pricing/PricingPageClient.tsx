@@ -34,7 +34,7 @@ const PLANS: Plan[] = [
     note: "No credit card required",
     muted: true,
     ctaLabel: "Get started free",
-    ctaHref: "/#cta",
+    ctaHref: "https://app.sariasoftware.com/signup",
     groups: [
       {
         items: [
@@ -48,14 +48,14 @@ const PLANS: Plan[] = [
   },
   {
     tier: "Business",
-    name: "Scale",
+    name: "Business",
     tagline: "For teams running a full creative operation.",
     monthly: 25,
     annual: 20,
     featured: true,
     badge: "Most popular",
-    ctaLabel: "Start Scale plan",
-    ctaHref: "/#cta",
+    ctaLabel: "Start Business plan",
+    ctaHref: "https://app.sariasoftware.com/billing/start?plan=business",
     groups: [
       {
         label: "Workspace",
@@ -80,12 +80,12 @@ const PLANS: Plan[] = [
   },
   {
     tier: "Standard",
-    name: "Growth",
+    name: "Standard",
     tagline: "For active brands running campaigns and launches.",
     monthly: 15,
     annual: 12,
-    ctaLabel: "Start Growth plan",
-    ctaHref: "/#cta",
+    ctaLabel: "Start Standard plan",
+    ctaHref: "https://app.sariasoftware.com/billing/start?plan=standard",
     groups: [
       {
         label: "Workspace",
@@ -113,7 +113,7 @@ const FAQS = [
   {
     question: "What counts as a workspace?",
     answer:
-      "A workspace is your team's dedicated instance of Saria - with its own projects, members, and settings. Scale plan users can create as many as their organization needs."
+      "A workspace is your team's dedicated instance of Saria - with its own projects, members, and settings. Business plan users can create as many as their organization needs."
   },
   {
     question: "What's a Magic Link?",
@@ -123,7 +123,7 @@ const FAQS = [
   {
     question: "What's the Everything page?",
     answer:
-      "A unified view across all your workspaces and projects - one place to see status, deadlines, and activity across your entire operation. Exclusive to the Scale plan."
+      "A unified view across all your workspaces and projects - one place to see status, deadlines, and activity across your entire operation. Exclusive to the Business plan."
   },
   {
     question: "Can I switch plans later?",
