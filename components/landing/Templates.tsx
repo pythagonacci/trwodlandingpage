@@ -135,11 +135,110 @@ const shotListRows = [
   { shot: "Routine stack", sku: "All SKUs", minimum: "2", status: "In review" }
 ];
 
+const socialPostRows = [
+  {
+    creator: "Maya Elias",
+    deliverable: "IG Reel - morning routine",
+    product: "Mist Spray",
+    postDate: "July 13",
+    status: "Draft approved",
+    tone: "done"
+  },
+  {
+    creator: "Ari Lane",
+    deliverable: "TikTok GRWM",
+    product: "Moisturizer",
+    postDate: "July 14",
+    status: "Needs caption",
+    tone: "progress"
+  },
+  {
+    creator: "Nina Park",
+    deliverable: "Stories - 3 frames",
+    product: "Lip Balm",
+    postDate: "July 14",
+    status: "Scheduled",
+    tone: "blue"
+  },
+  {
+    creator: "Jules N.",
+    deliverable: "Unboxing Reel",
+    product: "Full set",
+    postDate: "July 15",
+    status: "Waiting on draft",
+    tone: "urgent"
+  }
+];
+
 const resultCards = [
   { value: "$28,850", label: "Revenue in under one hour" },
   { value: "61%", label: "Open rate on the live email" },
   { value: "41%", label: "Orders with 2 or more SKUs" },
   { value: "1,240", label: "Waitlist signups in 48 hours" }
+];
+
+const aiChecklistTasks = [
+  ["Build Mist Spray Shopify listing", "Lina"],
+  ["Build Moisturizer Shopify listing", "Lina"],
+  ["QA all Shopify listings", "Lina"],
+  ["Approve final PDP image - Lip Balm", "Nour"],
+  ["Confirm variant label copy - Mist Spray", "Nour"],
+  ["Approve Moisturizer product photography", "Nour"]
+];
+
+const milestoneRows = [
+  ["Finalize all PDP copy", "Product Lineup", "July 9", "Nour", "In Progress"],
+  ["Approve shot selects", "Creative Direction", "July 10", "Maya", "In Progress"],
+  ["QA all Shopify listings", "Product Lineup", "July 11", "Lina", "To-Do"],
+  ["Send launch email #1", "Campaign Rollout", "July 11", "Nour", "To-Do"],
+  ["Go live - all three SKUs", "Launch HQ", "July 14", "Team", "To-Do"]
+];
+
+const managerStats = [
+  { value: "36", label: "Tasks tracked", sub: "across 7 tabs" },
+  { value: "3", label: "Assignees coordinated", sub: "zero status syncs" },
+  { value: "0", label: "Status meetings held", sub: "during 6 weeks" },
+  { value: "100%", label: "Launch-day readiness", sub: "confirmed by AI" }
+];
+
+const statusBreakdownRows = [
+  {
+    label: "Launch HQ",
+    count: "8 tasks",
+    segments: [
+      { width: "75%", color: "#2F6B49" },
+      { width: "12.5%", color: "var(--accent)" },
+      { width: "12.5%", color: "#B8B4AC" }
+    ]
+  },
+  {
+    label: "Product Lineup",
+    count: "13 tasks",
+    segments: [
+      { width: "31%", color: "#2F6B49" },
+      { width: "23%", color: "var(--accent)" },
+      { width: "38%", color: "#B8B4AC" },
+      { width: "8%", color: "#99601A" }
+    ]
+  },
+  {
+    label: "Creative Direction",
+    count: "9 tasks",
+    segments: [
+      { width: "55%", color: "#2F6B49" },
+      { width: "22%", color: "var(--accent)" },
+      { width: "11%", color: "#B8B4AC" },
+      { width: "12%", color: "#99601A" }
+    ]
+  },
+  {
+    label: "Campaign Rollout",
+    count: "10 tasks",
+    segments: [
+      { width: "80%", color: "#2F6B49" },
+      { width: "20%", color: "#B8B4AC" }
+    ]
+  }
 ];
 
 function MockPill({
@@ -172,6 +271,7 @@ function MockTabs({ active }: { active: string }) {
     "Launch HQ",
     "Product Lineup",
     "Creative Direction",
+    "Social Media Posts",
     "Campaign Rollout + PR",
     "Site + Merch"
   ];
@@ -202,11 +302,13 @@ function MockWindow({
   activeTab,
   banner,
   backLink = false,
+  titleAction,
   children
 }: {
   activeTab: string;
   banner?: ReactNode;
   backLink?: boolean;
+  titleAction?: ReactNode;
   children: ReactNode;
 }) {
   return (
@@ -224,10 +326,12 @@ function MockWindow({
             <div className="text-[20px] font-semibold tracking-[-0.03em] text-ink">
               THE LEMON EDIT
             </div>
-            <div className="inline-flex items-center gap-2 rounded-[6px] border border-[#D7E5F6] bg-[#F5F9FC] px-3 py-1.5 text-[11px] font-medium text-[#53708A]">
-              <span>◎</span>
-              <span>Enable Public Link</span>
-            </div>
+            {titleAction ?? (
+              <div className="inline-flex items-center gap-2 rounded-[6px] border border-[#D7E5F6] bg-[#F5F9FC] px-3 py-1.5 text-[11px] font-medium text-[#53708A]">
+                <span>◎</span>
+                <span>Enable Public Link</span>
+              </div>
+            )}
           </div>
           <div className="mb-4 flex flex-wrap items-center gap-2">
             <MockPill tone="progress">In Progress</MockPill>
@@ -415,6 +519,209 @@ function RightRail() {
   );
 }
 
+function AiBadge() {
+  return (
+    <div className="inline-flex items-center gap-2 rounded-[8px] border border-[#D7E5F6] bg-[#F5F9FC] px-3 py-1.5 text-[11px] font-semibold text-accent">
+      <span>✦</span>
+      <span>AI Workspace</span>
+    </div>
+  );
+}
+
+function ChatBubble({
+  children,
+  from = "ai"
+}: {
+  children: ReactNode;
+  from?: "ai" | "user";
+}) {
+  const isUser = from === "user";
+
+  return (
+    <div className={`mb-2.5 flex items-start gap-2.5 ${isUser ? "justify-end" : ""}`}>
+      {!isUser ? (
+        <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-accent text-[11px] font-semibold text-white">
+          ✦
+        </div>
+      ) : null}
+      <div
+        className={`max-w-[80%] rounded-[12px] px-3.5 py-2.5 text-[12.5px] leading-[1.65] ${
+          isUser
+            ? "bg-[#F3F1EC] text-ink"
+            : "border border-[#EFECE5] bg-white text-ink-2"
+        }`}
+      >
+        {children}
+      </div>
+      {isUser ? (
+        <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-[#EFECE5] text-[11px] font-semibold text-stone">
+          N
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function AiAction({ children }: { children: ReactNode }) {
+  return (
+    <div className="mt-2 inline-flex items-center gap-2 rounded-[6px] border border-[#D7E5F6] bg-[#F5F9FC] px-2.5 py-1 text-[10px] font-medium text-accent">
+      <span>✦</span>
+      <span>{children}</span>
+    </div>
+  );
+}
+
+function AiCreatedShell({
+  title,
+  meta,
+  children
+}: {
+  title: string;
+  meta?: ReactNode;
+  children: ReactNode;
+}) {
+  return (
+    <div className="mr-11 overflow-hidden rounded-[12px] border border-[#D7E5F6] bg-white">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#D7E5F6] bg-[#F5F9FC] px-4 py-3">
+        <div className="flex items-center gap-2 text-[12px] font-semibold text-accent">
+          <span>✦</span>
+          <span>{title}</span>
+        </div>
+        {meta ? <div className="text-[11px] text-[#53708A]">{meta}</div> : null}
+      </div>
+      {children}
+    </div>
+  );
+}
+
+function MagicLinkBadge() {
+  return (
+    <div className="inline-flex items-center gap-2 rounded-[6px] bg-accent-bg px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-accent">
+      <span>◎</span>
+      <span>Magic Link</span>
+    </div>
+  );
+}
+
+function AiTaskRow({ name, assignee }: { name: string; assignee: string }) {
+  return (
+    <div className="flex items-center gap-2.5 border-b border-[#EEF2FF] px-4 py-2.5 text-[12px] last:border-b-0">
+      <span className="h-[15px] w-[15px] flex-shrink-0 rounded-full border border-[#D0CCC4]" />
+      <div className="flex-1 text-ink">{name}</div>
+      <span className="rounded-full bg-[#EFECE5] px-2 py-0.5 text-[10px] text-stone">
+        {assignee}
+      </span>
+      <MockPill>To-Do</MockPill>
+    </div>
+  );
+}
+
+function MilestoneTable() {
+  return (
+    <AiCreatedShell
+      title="Remaining Milestones"
+      meta={
+        <span className="inline-flex items-center gap-2">
+          <MockPill tone="blue">Live - synced to tasks</MockPill>
+          <span>Added to Overview tab</span>
+        </span>
+      }
+    >
+      <div className="flex border-b border-[#EFECE5] bg-[#F5F3EE] px-4 py-2 text-[10px] font-medium uppercase tracking-[0.06em] text-stone">
+        <div className="flex-[2]">Milestone</div>
+        <div className="flex-[1.5]">Tab</div>
+        <div className="flex-1">Due</div>
+        <div className="flex-1">Owner</div>
+        <div className="flex-1">Status</div>
+      </div>
+      {milestoneRows.map(([milestone, tab, due, owner, status]) => (
+        <div
+          key={milestone}
+          className="flex items-center border-b border-[#F5F3EE] px-4 py-3 text-[12px] last:border-b-0"
+        >
+          <div className="flex-[2] pr-2 font-medium text-ink">{milestone}</div>
+          <div className="flex-[1.5] pr-2 text-[11px] text-stone">{tab}</div>
+          <div className="flex-1 pr-2 text-ink-2">{due}</div>
+          <div className="flex-1 pr-2 text-ink-2">{owner}</div>
+          <div className="flex-1">
+            <MockPill tone={status === "In Progress" ? "progress" : "neutral"}>
+              {status}
+            </MockPill>
+          </div>
+        </div>
+      ))}
+    </AiCreatedShell>
+  );
+}
+
+function PromptBar({
+  children,
+  run = false
+}: {
+  children: ReactNode;
+  run?: boolean;
+}) {
+  return (
+    <div className="mb-3 mr-11 flex items-center gap-2.5 rounded-[10px] border border-[#D7E5F6] bg-[#F5F9FC] px-4 py-2.5 text-[12.5px] text-[#53708A]">
+      <span className="flex-shrink-0 text-[14px] text-accent">✦</span>
+      <span className="flex-1">{children}</span>
+      {run ? (
+        <span className="rounded-[6px] bg-accent px-3.5 py-1.5 text-[11px] font-medium text-white">
+          Run
+        </span>
+      ) : null}
+    </div>
+  );
+}
+
+function StatusBreakdownChart() {
+  return (
+    <AiCreatedShell
+      title="Task Status by Tab"
+      meta={
+        <div className="flex flex-wrap gap-3 text-[10px] text-stone">
+          {[
+            ["Done", "#2F6B49"],
+            ["In Progress", "var(--accent)"],
+            ["To-Do", "#B8B4AC"],
+            ["Blocked", "#99601A"]
+          ].map(([label, color]) => (
+            <span key={label} className="inline-flex items-center gap-1.5">
+              <span
+                className="h-2 w-2 rounded-[2px]"
+                style={{ backgroundColor: color }}
+              />
+              {label}
+            </span>
+          ))}
+        </div>
+      }
+    >
+      <div className="px-4 py-4">
+        {statusBreakdownRows.map((row) => (
+          <div key={row.label} className="mb-3.5 last:mb-0">
+            <div className="mb-1.5 flex items-center justify-between">
+              <span className="text-[12px] text-ink">{row.label}</span>
+              <span className="text-[11px] text-stone">{row.count}</span>
+            </div>
+            <div className="flex h-2.5 overflow-hidden rounded-full bg-[#F3F1EC]">
+              {row.segments.map((segment, index) => (
+                <span
+                  key={`${row.label}-${index}`}
+                  style={{
+                    width: segment.width,
+                    backgroundColor: segment.color
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </AiCreatedShell>
+  );
+}
+
 export function Templates() {
   return (
     <div className="bg-cream">
@@ -440,7 +747,7 @@ export function Templates() {
         <p className="mt-7 max-w-[640px] text-[18px] font-light leading-[1.7] text-ink-2">
           A small team. Three new SKUs. Six weeks from brief to live.
           Here&apos;s how &Eacute;clat Studio ran their entire seasonal drop
-          out of a single Trak project - and what happened when they did.
+          out of a single Saria project - and what happened when they did.
         </p>
         <div className="mt-10 grid overflow-hidden rounded-[14px] border border-cream-3 bg-white md:grid-cols-4">
           {templateStats.map((stat, index) => (
@@ -488,8 +795,8 @@ export function Templates() {
               had already been answered somewhere else.
             </p>
             <p>
-              They set up a single Trak project and ran the entire launch from
-              it - brief to brief, shoot to sold out.
+              They set up a single Saria project and ran the entire launch from
+              it - brief to sold out.
             </p>
           </div>
         </div>
@@ -565,7 +872,7 @@ export function Templates() {
                 <div className="relative bg-white px-5 py-5 pr-14">
                   <div className="mb-2 rounded-[10px] px-1 py-1 pr-11">
                     <div className="rounded-[8px] px-3 py-2 text-[13px] leading-[1.65] text-ink-2">
-                      <strong>The Lemon Edit</strong> is Eclat Studio&apos;s
+                      <strong>The Lemon Edit</strong> is &Eacute;clat Studio&apos;s
                       first seasonal drop - a limited extension of the Soft Glow
                       core line built around lemon as a hero ingredient. Three
                       products. Launch date: July 14. Drop window: 72 hours or
@@ -588,7 +895,7 @@ export function Templates() {
                     <ContentCard label="Who We&apos;re Talking To">
                       Women 22-34. Already in the Rhode/Augustinus Bader orbit
                       but not yet spending at that level. She buys
-                      intentionally. She found Eclat through a friend or a
+                      intentionally. She found &Eacute;clat through a friend or a
                       TikTok.
                     </ContentCard>
                   </div>
@@ -735,10 +1042,7 @@ export function Templates() {
                   needed.
                 </p>
               </div>
-              <div className="inline-flex items-center gap-2 rounded-[6px] bg-accent-bg px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-accent">
-                <span>◎</span>
-                <span>Magic Link</span>
-              </div>
+              <MagicLinkBadge />
             </div>
             <div className="feature-demo-shell px-0 pb-0 pt-4">
               <MockWindow
@@ -854,8 +1158,389 @@ export function Templates() {
               </MockWindow>
             </div>
           </div>
+
+          <div>
+            <div className="mx-auto mb-5 flex max-w-[1000px] flex-wrap items-start justify-between gap-4">
+              <div>
+                <div className="mb-1 text-[11px] font-medium uppercase tracking-[0.1em] text-stone">
+                  Tab 04
+                </div>
+                <h3 className="font-display text-[24px] tracking-[-0.02em] text-ink">
+                  Social Media Posts
+                </h3>
+                <p className="mt-2 max-w-[660px] text-[14px] leading-[1.7] text-ink-2">
+                  The creator and editor work did not live in a spreadsheet. The
+                  team tracked every influencer deliverable in one Social Media
+                  Posts tab, then used Magic Links so each creator could review
+                  the brief, upload drafts, and confirm captions without a Saria
+                  login.
+                </p>
+              </div>
+              <MagicLinkBadge />
+            </div>
+            <div className="feature-demo-shell px-0 pb-0 pt-4">
+              <MockWindow
+                activeTab="Social Media Posts"
+                banner={
+                  <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#D7E5F6] bg-[#F5F9FC] px-5 py-2 text-[12px] text-[#53708A]">
+                    <div className="flex items-center gap-2">
+                      <span>◎</span>
+                      <span>
+                        Public page - Creator Brief: The Lemon Edit · Shared
+                        with 15 creators
+                      </span>
+                    </div>
+                    <span className="font-medium">Copy link →</span>
+                  </div>
+                }
+              >
+                <div className="relative bg-white px-5 py-5 pr-14">
+                  <SectionHeader
+                    title="Influencer Posting Tracker"
+                    subtitle="Draft status, post dates, linked briefs, and caption approval in one tab"
+                  />
+                  <div className="mb-3 mr-11 overflow-hidden rounded-[12px] border border-[#EFECE5] bg-white">
+                    <div className="flex items-center justify-between border-b border-[#EFECE5] bg-[#FAF9F6] px-4 py-3">
+                      <div className="text-[12px] font-semibold text-ink">
+                        Social Media Posts
+                      </div>
+                      <div className="text-[11px] text-stone">
+                        15 creators · 23 deliverables
+                      </div>
+                    </div>
+                    <div className="flex border-b border-[#EFECE5] bg-[#F5F3EE] px-4 py-2 text-[10px] font-medium uppercase tracking-[0.06em] text-stone">
+                      <div className="flex-[1.4]">Creator</div>
+                      <div className="flex-[2]">Deliverable</div>
+                      <div className="flex-[1.2]">Product</div>
+                      <div className="flex-1">Post Date</div>
+                      <div className="flex-[1.2]">Status</div>
+                    </div>
+                    {socialPostRows.map((row) => (
+                      <div
+                        key={`${row.creator}-${row.deliverable}`}
+                        className="flex items-center border-b border-[#F5F3EE] px-4 py-3 text-[12px] last:border-b-0"
+                      >
+                        <div className="flex-[1.4] pr-2 font-medium text-ink">
+                          {row.creator}
+                        </div>
+                        <div className="flex-[2] pr-2 text-ink-2">
+                          {row.deliverable}
+                        </div>
+                        <div className="flex-[1.2] pr-2 text-ink-2">
+                          {row.product}
+                        </div>
+                        <div className="flex-1 pr-2 text-ink-2">
+                          {row.postDate}
+                        </div>
+                        <div className="flex-[1.2]">
+                          <MockPill
+                            tone={
+                              row.tone as "neutral" | "progress" | "done" | "urgent" | "blue"
+                            }
+                          >
+                            {row.status}
+                          </MockPill>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="grid gap-3 pr-11 md:grid-cols-[1.1fr_0.9fr]">
+                    <div className="overflow-hidden rounded-[12px] border border-[#D7E5F6] bg-white">
+                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#D7E5F6] bg-[#F5F9FC] px-4 py-3">
+                        <div className="flex items-center gap-2 text-[12px] font-semibold text-accent">
+                          <span>◎</span>
+                          <span>Magic Link View - Ari Lane</span>
+                        </div>
+                        <MockPill tone="blue">External collaborator</MockPill>
+                      </div>
+                      <div className="space-y-3 px-4 py-4 text-[12.5px] leading-[1.65] text-ink-2">
+                        <p>
+                          Ari sees only the GRWM deliverable, the Lemon
+                          Brightening Moisturizer notes, approved product
+                          claims, caption guidance, and the upload field for her
+                          draft.
+                        </p>
+                        <div className="rounded-[10px] border border-[#EFECE5] bg-[#FAF9F6] px-3 py-3">
+                          <div className="mb-1 text-[10px] font-medium uppercase tracking-[0.08em] text-stone">
+                            Creator note
+                          </div>
+                          <p>
+                            &quot;Draft is uploaded. I kept the hook softer and
+                            used the under-SPF angle from the brief.&quot;
+                          </p>
+                        </div>
+                        <div className="inline-flex items-center gap-2 rounded-[6px] border border-[#D7E5F6] bg-[#F5F9FC] px-2.5 py-1 text-[10px] font-medium text-accent">
+                          <span>◎</span>
+                          <span>Draft attached · Caption ready for review</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="overflow-hidden rounded-[12px] border border-[#EFECE5] bg-white">
+                      <div className="border-b border-[#EFECE5] bg-[#FAF9F6] px-4 py-3 text-[12px] font-semibold text-ink">
+                        Creator Brief Assets
+                      </div>
+                      <div className="grid grid-cols-3 gap-1 p-2">
+                        {launchProducts.map((product) => (
+                          <div
+                            key={product.name}
+                            className="relative aspect-square overflow-hidden rounded-[6px] bg-[#F7F4EE]"
+                          >
+                            <Image
+                              src={product.imageSrc ?? ""}
+                              alt={product.imageAlt ?? product.name}
+                              fill
+                              className="object-contain p-1"
+                              sizes="90px"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                      <div className="border-t border-[#EFECE5] px-4 py-3 text-[11px] leading-[1.6] text-stone">
+                        Shared assets stayed attached to the post tracker, so
+                        draft feedback and posting status lived beside the
+                        product context.
+                      </div>
+                    </div>
+                  </div>
+                  <RightRail />
+                </div>
+              </MockWindow>
+            </div>
+          </div>
         </div>
       </section>
+
+      <hr className="mx-auto max-w-[860px] border-0 border-t border-cream-3 px-12 max-[768px]:mx-6 max-[768px]:max-w-none max-[768px]:px-0" />
+
+      <section className="mx-auto max-w-[1000px] px-12 py-20 max-[768px]:px-4 max-[768px]:py-14">
+        <div className="mx-auto mb-14 max-w-[860px] px-0 md:px-6">
+          <div className="mb-3 text-[11px] font-medium uppercase tracking-[0.12em] text-stone">
+            AI Workspace
+          </div>
+          <h2 className="max-w-[740px] font-display text-[clamp(30px,3.5vw,40px)] leading-[1.14] tracking-[-0.03em] text-ink">
+            The AI didn&apos;t just answer questions.{" "}
+            <span className="font-semibold text-accent">It did the work.</span>
+          </h2>
+          <p className="mt-3 max-w-[600px] text-[16px] font-light leading-[1.8] text-ink-2">
+            Saria&apos;s AI lives inside every project. It knows your tasks, your
+            docs, your Shopify data, and your team - and it can act on all of
+            it. The &Eacute;clat team used it throughout the launch, not as a
+            chatbot, but as someone who actually understood the project.
+          </p>
+        </div>
+
+        <div className="space-y-16">
+          <div>
+            <div className="mx-auto mb-5 max-w-[1000px]">
+              <div className="mb-1 text-[11px] font-medium uppercase tracking-[0.1em] text-stone">
+                AI in action · 01
+              </div>
+              <h3 className="font-display text-[24px] tracking-[-0.02em] text-ink">
+                Ask anything. Get a real answer.
+              </h3>
+              <p className="mt-2 max-w-[680px] text-[14px] leading-[1.7] text-ink-2">
+                Three days before launch, Nour needed a clear picture of what
+                was still open. She didn&apos;t dig through subtabs or message
+                the team. She asked the AI. It scanned every task across all
+                seven tabs, synthesized the full picture, and built the
+                checklist for her.
+              </p>
+            </div>
+            <div className="feature-demo-shell px-0 pb-0 pt-4">
+              <MockWindow activeTab="Launch HQ" titleAction={<AiBadge />}>
+                <div className="relative bg-white px-5 py-5 pr-14">
+                  <div className="mr-11 mb-3">
+                    <ChatBubble from="user">
+                      Which tasks across all three SKUs are still open going
+                      into launch week?
+                    </ChatBubble>
+                    <ChatBubble>
+                      Across your three product subtabs, there are{" "}
+                      <strong>6 open tasks</strong> going into launch week:
+                      <br />
+                      <br />
+                      <strong>Lip Balm:</strong> Build Shopify listing · Approve
+                      final PDP image
+                      <br />
+                      <strong>Moisturizer:</strong> Approve product photography
+                      · Build Shopify listing
+                      <br />
+                      <strong>Mist Spray:</strong> Confirm variant label copy ·
+                      QA Shopify listing
+                      <br />
+                      <br />
+                      All 4 manufacturing approval tasks are marked Done. Want
+                      me to create a launch-week checklist block grouping these
+                      by owner?
+                      <div>
+                        <AiAction>Scanned 36 tasks across 7 tabs</AiAction>
+                      </div>
+                    </ChatBubble>
+                    <ChatBubble from="user">
+                      Yes - create the checklist. Assign Shopify tasks to Lina
+                      and copy tasks to me.
+                    </ChatBubble>
+                    <ChatBubble>
+                      Done. I&apos;ve added a Launch Week Checklist block with
+                      all 6 tasks, assigned and prioritized. Lina will see her
+                      tasks when she opens the project.
+                      <div>
+                        <AiAction>
+                          Created: Launch Week Checklist · 6 tasks · 2 assignees
+                        </AiAction>
+                      </div>
+                    </ChatBubble>
+                  </div>
+
+                  <AiCreatedShell
+                    title="Launch Week Checklist"
+                    meta={
+                      <span className="inline-flex items-center gap-2">
+                        <MockPill tone="blue">Created by AI</MockPill>
+                        <span>6 tasks · 2 assignees</span>
+                      </span>
+                    }
+                  >
+                    {aiChecklistTasks.map(([name, assignee]) => (
+                      <AiTaskRow key={name} name={name} assignee={assignee} />
+                    ))}
+                  </AiCreatedShell>
+                  <RightRail />
+                </div>
+              </MockWindow>
+            </div>
+          </div>
+
+          <div>
+            <div className="mx-auto mb-5 max-w-[1000px]">
+              <div className="mb-1 text-[11px] font-medium uppercase tracking-[0.1em] text-stone">
+                AI in action · 02
+              </div>
+              <h3 className="font-display text-[24px] tracking-[-0.02em] text-ink">
+                One prompt. A block that stays in sync.
+              </h3>
+              <p className="mt-2 max-w-[680px] text-[14px] leading-[1.7] text-ink-2">
+                Two weeks out, the team wanted a campaign timeline table - all
+                remaining milestones, sorted by date, visible on the Overview
+                tab. Nour typed the request. The AI built it and placed it. The
+                table wasn&apos;t a snapshot; it was a live block pulling from
+                tasks already in the project.
+              </p>
+            </div>
+            <div className="feature-demo-shell px-0 pb-0 pt-4">
+              <MockWindow activeTab="Overview" titleAction={<AiBadge />}>
+                <div className="relative bg-white px-5 py-5 pr-14">
+                  <PromptBar run>
+                    Create a table of all remaining milestones, sorted by due
+                    date, and add it to the Overview tab
+                  </PromptBar>
+                  <MilestoneTable />
+                  <RightRail />
+                </div>
+              </MockWindow>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <hr className="mx-auto max-w-[860px] border-0 border-t border-cream-3 px-12 max-[768px]:mx-6 max-[768px]:max-w-none max-[768px]:px-0" />
+
+      <section className="mx-auto max-w-[1000px] px-12 py-20 max-[768px]:px-4 max-[768px]:py-14">
+        <div className="mx-auto mb-10 max-w-[860px] px-0 md:px-6">
+          <div className="mb-3 text-[11px] font-medium uppercase tracking-[0.12em] text-stone">
+            For the person running the launch
+          </div>
+          <h2 className="font-display text-[clamp(30px,3.5vw,40px)] leading-[1.14] tracking-[-0.03em] text-ink">
+            Full visibility. No status meetings.
+          </h2>
+          <p className="mt-3 max-w-[600px] text-[16px] font-light leading-[1.8] text-ink-2">
+            Managing a launch means knowing exactly where things stand at any
+            moment - across SKUs, across your team, across every part of the
+            project. Saria gives you that picture without having to ask anyone
+            for it.
+          </p>
+        </div>
+
+        <div className="mx-auto mb-16 grid max-w-[860px] gap-10 px-0 md:grid-cols-2 md:px-6">
+          <div className="space-y-5 text-[16px] font-light leading-[1.8] text-ink-2">
+            <p>
+              Before Saria, Nour was running status updates manually - a Friday
+              Slack message, a shared Notion table she had to update herself,
+              and a running note on her phone of what she was afraid people
+              were forgetting.
+            </p>
+            <p>
+              With Saria, she opened the Overview tab and knew. Every task across
+              every SKU, every assignee, every status - pulled into one view
+              automatically. Nothing to maintain. Nothing to ask.
+            </p>
+            <p>
+              And when she wanted a breakdown by tab or assignee, she
+              didn&apos;t build a pivot table. She asked the AI. In fifteen
+              seconds, she had a live chart sitting inside the project.
+            </p>
+          </div>
+          <div className="grid content-start gap-3 sm:grid-cols-2">
+            {managerStats.map((stat) => (
+              <div
+                key={stat.label}
+                className="rounded-[14px] border border-cream-3 bg-white px-5 py-5"
+              >
+                <div
+                  className="font-display text-[30px] leading-none text-ink"
+                  style={{ letterSpacing: "-0.03em" }}
+                >
+                  {stat.value}
+                </div>
+                <div className="mt-1.5 text-[11px] font-medium text-ink">
+                  {stat.label}
+                </div>
+                <div className="mt-0.5 text-[10px] uppercase tracking-[0.06em] text-stone">
+                  {stat.sub}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <div className="mx-auto mb-5 max-w-[1000px]">
+            <div className="mb-1 text-[11px] font-medium uppercase tracking-[0.1em] text-stone">
+              AI in action · 03
+            </div>
+            <h3 className="font-display text-[24px] tracking-[-0.02em] text-ink">
+              &quot;Show me task completion by tab.&quot;
+            </h3>
+            <p className="mt-2 max-w-[680px] text-[14px] leading-[1.7] text-ink-2">
+              Five days out, Nour wanted to know which parts of the project
+              were lagging. She typed one sentence. The AI generated a
+              breakdown chart directly inside the project - pulling from every
+              real task in every real tab.
+            </p>
+          </div>
+          <div className="feature-demo-shell px-0 pb-0 pt-4">
+            <MockWindow activeTab="Overview" titleAction={<AiBadge />}>
+              <div className="relative bg-white px-5 py-5 pr-14">
+                <PromptBar>Show me a breakdown of task status by tab</PromptBar>
+                <div className="mr-11 mb-3">
+                  <ChatBubble>
+                    Here&apos;s a live breakdown of all 36 tasks across your
+                    project by tab. Product Lineup has the most open work - 5
+                    tasks still To-Do. Campaign Rollout is in the best shape at
+                    80% done.
+                  </ChatBubble>
+                </div>
+                <StatusBreakdownChart />
+                <RightRail />
+              </div>
+            </MockWindow>
+          </div>
+        </div>
+      </section>
+
+      <hr className="mx-auto max-w-[860px] border-0 border-t border-cream-3 px-12 max-[768px]:mx-6 max-[768px]:max-w-none max-[768px]:px-0" />
 
       <section className="mx-auto max-w-[860px] px-12 py-20 max-[768px]:px-6 max-[768px]:py-14">
         <div className="mb-3 text-[11px] font-medium uppercase tracking-[0.12em] text-stone">
@@ -878,8 +1563,9 @@ export function Templates() {
               </div>
               <p className="mt-2">
                 The Lemon Edit sold out in 47 minutes because inventory,
-                creative, launch-day tasks, and live updates were all run from
-                one project instead of across six tools.
+                creative, launch-day tasks, live Shopify data, and real-time
+                visibility were all running from one project - not six tools
+                and a Friday Slack message.
               </p>
             </div>
           </div>
@@ -930,7 +1616,8 @@ export function Templates() {
             </h2>
             <p className="mt-3 text-[15px] font-light leading-[1.7] text-ink-2">
               Use the same structure for launch HQ, SKU subtabs, creative
-              direction, and launch-day coordination.
+              direction, and launch-day coordination - with AI that knows your
+              project as well as you do.
             </p>
           </div>
           <div className="flex w-full flex-col gap-3 md:w-auto">
