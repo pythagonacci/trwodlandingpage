@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How Éclat Studio launched The Lemon Edit — Trak Case Study</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream:     #FDFAF6;
+  --cream-2:   #F7F4EE;
+  --cream-3:   #EDEADE;
+  --ink:       #1C1917;
+  --ink-2:     #44403C;
+  --stone:     #78716C;
+  --accent:    #C4622D;
+  --accent-bg: #FDF0E8;
+  --blue:      #2A537A;
+  --blue-bg:   #F5F9FC;
+  --blue-bdr:  #D7E5F6;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── LAYOUT ── */
+.wrap      { max-width: 860px;  margin: 0 auto; padding: 0 48px; }
+.wrap-wide { max-width: 1000px; margin: 0 auto; padding: 0 48px; }
+@media(max-width:768px) { .wrap, .wrap-wide { padding: 0 24px; } }
+
+hr.divider { border: none; border-top: 1px solid var(--cream-3); max-width: 860px; margin: 0 auto; }
+
+/* ── PILLS ── */
+.pill {
+  display: inline-flex; align-items: center;
+  border-radius: 6px; padding: 4px 10px;
+  font-size: 10px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.pill-neutral  { background: #F3F1EC;       color: var(--stone); }
+.pill-progress { background: var(--accent-bg); color: var(--accent); }
+.pill-done     { background: #E7F6EE;       color: #2F6B49; }
+.pill-urgent   { background: #FAEFD9;       color: #99601A; }
+.pill-blue     { background: #EEF2FF;       color: #5B63B7; }
+.pill-ai       { background: rgba(42,83,122,0.10); color: var(--blue); }
+
+/* ── MOCK WINDOW ── */
+.mock-window {
+  overflow: hidden; border-radius: 24px;
+  border: 1px solid rgba(222,219,212,0.7);
+  background: #fff;
+  box-shadow: 0 24px 48px rgba(28,25,23,0.08);
+}
+.window-chrome { background: #fff; border-bottom: 1px solid var(--cream-3); }
+.window-chrome-inner { padding: 20px 20px 0; }
+.back-link { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--stone); margin-bottom: 12px; }
+.window-title-row { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
+.window-title { font-size: 20px; font-weight: 600; letter-spacing: -0.03em; color: var(--ink); }
+.pub-link-btn { display: inline-flex; align-items: center; gap: 8px; border-radius: 6px; border: 1px solid var(--blue-bdr); background: var(--blue-bg); padding: 6px 12px; font-size: 11px; font-weight: 500; color: #53708A; }
+.pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+
+/* ── TABS ── */
+.tabs-scroll { overflow-x: auto; }
+.tabs-inner { display: flex; min-width: max-content; align-items: flex-end; border-top: 1px solid var(--cream-3); padding: 0 20px; }
+.tab { display: flex; align-items: center; gap: 6px; padding: 12px 16px; font-size: 12px; color: var(--stone); border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; cursor: default; }
+.tab.active { border-bottom-color: var(--ink); font-weight: 500; color: var(--ink); }
+.tab-plus { padding: 12px; font-size: 16px; color: #B8B4AC; margin-bottom: -1px; }
+
+/* ── WINDOW BODY ── */
+.window-body { position: relative; padding: 20px; background: #fff; }
+.pr-rail { padding-right: 56px; }
+
+/* ── RIGHT RAIL ── */
+.right-rail {
+  position: absolute; top: 0; right: 0; bottom: 0; width: 36px;
+  border-left: 1px solid #F0EEEA; background: #fff;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 16px; padding: 16px 0; font-size: 13px; color: #C5C0B6;
+}
+
+/* ── CONTENT CARDS ── */
+.content-card { border-radius: 12px; border: 1px solid #EFECE5; background: #fff; padding: 16px; }
+.content-card-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--stone); margin-bottom: 8px; }
+.content-card-text { font-size: 12.5px; line-height: 1.65; color: var(--ink-2); }
+.two-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+@media(max-width:600px){ .two-cards { grid-template-columns: 1fr; } }
+
+/* ── SECTION HEADER (inside window) ── */
+.sec-hdr { margin-bottom: 12px; }
+.sec-hdr-title { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; color: var(--ink); }
+.sec-hdr-sub   { font-size: 11px; color: var(--stone); margin-top: 4px; }
+
+/* ── SHOPIFY CARDS ── */
+.shopify-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 12px; }
+@media(max-width:600px){ .shopify-grid { grid-template-columns: 1fr; } }
+.shopify-card { overflow: hidden; border-radius: 12px; border: 1px solid #EFECE5; background: #fff; }
+.shopify-img  { height: 80px; background: #F7F4EE; display: flex; align-items: center; justify-content: center; font-size: 28px; }
+.shopify-info { padding: 12px; }
+.shopify-name { font-size: 12px; font-weight: 600; line-height: 1.35; color: var(--ink); margin-bottom: 8px; }
+.shopify-meta { display: flex; gap: 16px; margin-bottom: 10px; }
+.shopify-mv { font-size: 14px; font-weight: 600; line-height: 1; color: var(--ink); }
+.shopify-ml { font-size: 10px; color: var(--stone); margin-top: 4px; }
+
+/* ── TASK BLOCK ── */
+.task-block { overflow: hidden; border-radius: 12px; border: 1px solid #EFECE5; background: #fff; margin-bottom: 12px; }
+.task-block-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #EFECE5; background: #FAF9F6; padding: 12px 16px; }
+.task-block-title { font-size: 12px; font-weight: 600; letter-spacing: -0.01em; color: var(--ink); }
+.task-actions { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #B8B4AC; }
+.task-menu-tag { border-radius: 4px; background: var(--accent-bg); padding: 2px 6px; font-size: 10px; color: var(--accent); }
+.task-row { display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #F5F3EE; padding: 12px 16px; }
+.task-row:last-of-type { border-bottom: none; }
+.task-check { width: 15px; height: 15px; border-radius: 50%; border: 1px solid #D0CCC4; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; }
+.task-check.done { border-color: #2F6B49; background: #E7F6EE; color: #2F6B49; }
+.task-check.prog { border-color: var(--accent); }
+.task-name { flex: 1; font-size: 12px; color: var(--ink); }
+.task-name.done { color: var(--stone); text-decoration: line-through; }
+.task-add { padding: 12px 16px; font-size: 11px; color: #B8B4AC; }
+
+/* ── SUBTAB LAYOUT ── */
+.subtab-layout { display: grid; grid-template-columns: 180px 1fr; }
+@media(max-width:640px){ .subtab-layout { grid-template-columns: 1fr; } }
+.subtab-nav { border-right: 1px solid #F0EEEA; background: #FAF9F6; padding: 16px 0; }
+.subtab-nav-label { padding: 0 16px 8px; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--stone); }
+.subtab-item { padding: 8px 16px; font-size: 12px; color: var(--ink-2); cursor: default; }
+.subtab-item.active { font-weight: 500; color: var(--ink); border-right: 2px solid var(--ink); background: #fff; margin-right: -1px; }
+
+/* ── MAGIC LINK BANNER ── */
+.magic-banner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; background: var(--blue-bg); border-bottom: 1px solid var(--blue-bdr); padding: 8px 20px; font-size: 12px; color: #53708A; }
+.magic-badge { display: inline-flex; align-items: center; gap: 8px; border-radius: 6px; background: var(--accent-bg); padding: 6px 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
+
+/* ── MOODBOARD ── */
+.moodboard { overflow: hidden; border-radius: 12px; border: 1px solid #EFECE5; background: #fff; margin-bottom: 12px; }
+.moodboard-header { display: flex; justify-content: space-between; align-items: center; background: #FAF9F6; border-bottom: 1px solid #EFECE5; padding: 12px 16px; font-size: 12px; font-weight: 600; color: var(--ink); }
+.moodboard-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 4px; padding: 4px; }
+.moodboard-tile { aspect-ratio: 1; border-radius: 6px; background: #F7F4EE; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+
+/* ── TABLE BLOCK ── */
+.table-block { overflow: hidden; border-radius: 12px; border: 1px solid #EFECE5; background: #fff; margin-bottom: 12px; }
+.table-block-header { display: flex; justify-content: space-between; align-items: center; background: #FAF9F6; border-bottom: 1px solid #EFECE5; padding: 12px 16px; font-size: 12px; font-weight: 600; color: var(--ink); }
+.table-cols { display: flex; padding: 8px 16px; background: #F5F3EE; border-bottom: 1px solid #EFECE5; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--stone); }
+.table-row { display: flex; align-items: center; padding: 12px 16px; border-bottom: 1px solid #F5F3EE; font-size: 12px; }
+.table-row:last-child { border-bottom: none; }
+.c2 { flex: 2; padding-right: 8px; }
+.c15 { flex: 1.5; padding-right: 8px; }
+.c1 { flex: 1; padding-right: 8px; }
+
+/* ── PAGE SECTIONS ── */
+.hero-section { padding: 96px 0 80px; }
+@media(max-width:768px){ .hero-section { padding: 72px 0 56px; } }
+
+.hero-title { font-family: 'DM Serif Display', Georgia, serif; font-size: clamp(38px,5vw,58px); line-height: 1.08; letter-spacing: -0.03em; color: var(--ink); max-width: 820px; }
+.hero-accent { color: var(--accent); }
+.hero-sub { font-size: 18px; font-weight: 300; line-height: 1.7; color: var(--ink-2); max-width: 640px; margin-top: 28px; margin-bottom: 40px; }
+
+.stat-grid { display: grid; grid-template-columns: repeat(4,1fr); overflow: hidden; border-radius: 14px; border: 1px solid var(--cream-3); background: #fff; }
+@media(max-width:640px){ .stat-grid { grid-template-columns: repeat(2,1fr); } }
+.stat-cell { padding: 24px 28px; border-right: 1px solid var(--cream-3); }
+.stat-cell:last-child { border-right: none; }
+@media(max-width:640px){
+  .stat-cell:nth-child(2){ border-right:none; }
+  .stat-cell:nth-child(1),.stat-cell:nth-child(2),.stat-cell:nth-child(3){ border-bottom:1px solid var(--cream-3); }
+}
+.stat-value { font-family: 'DM Serif Display', Georgia, serif; font-size: 32px; line-height: 1; letter-spacing: -0.03em; color: var(--ink); }
+.stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--stone); margin-top: 8px; }
+
+.two-col { display: grid; grid-template-columns: minmax(0,0.9fr) minmax(0,1.1fr); gap: 48px; padding: 80px 0; }
+@media(max-width:700px){ .two-col { grid-template-columns: 1fr; padding: 56px 0; } }
+
+.eyebrow { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.12em; color: var(--stone); display: flex; align-items: center; gap: 8px; }
+.eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+.section-h2 { font-family: 'DM Serif Display', Georgia, serif; font-size: clamp(30px,3.5vw,40px); line-height: 1.14; letter-spacing: -0.03em; color: var(--ink); margin-bottom: 24px; }
+.section-h2 .accent { color: var(--accent); font-weight: 600; }
+.body-text { font-size: 16px; font-weight: 300; line-height: 1.8; color: var(--ink-2); }
+.body-text p+p { margin-top: 20px; }
+
+/* ── TIMELINE ── */
+.tl-wrap { position: relative; padding-left: 52px; }
+.tl-line { position: absolute; left: 16px; top: 8px; bottom: 8px; width: 1px; background: var(--cream-3); }
+.tl-item { position: relative; display: flex; gap: 16px; padding-bottom: 28px; }
+.tl-item:last-child { padding-bottom: 0; }
+.tl-dot { position: absolute; left: -52px; width: 33px; height: 33px; border-radius: 50%; border: 1px solid var(--cream-3); background: var(--cream-2); display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--stone); z-index: 1; }
+.tl-dot.active { border-color: var(--accent); background: var(--accent-bg); color: var(--accent); }
+.tl-date { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--stone); }
+.tl-label { font-size: 15px; line-height: 1.55; color: var(--ink); margin-top: 4px; }
+.tl-label.accent { color: var(--accent); font-weight: 500; }
+
+/* ── SECTION PY ── */
+.section-py { padding: 80px 0; }
+@media(max-width:768px){ .section-py { padding: 56px 0; } }
+
+.tab-num { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: var(--stone); margin-bottom: 4px; }
+.tab-title { font-family: 'DM Serif Display', Georgia, serif; font-size: 24px; letter-spacing: -0.02em; color: var(--ink); margin-bottom: 8px; }
+.tab-desc { font-size: 14px; line-height: 1.7; color: var(--ink-2); max-width: 620px; margin-bottom: 20px; }
+.tab-header-row { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+.demo-block { margin-bottom: 64px; }
+.demo-block:last-child { margin-bottom: 0; }
+
+/* ── AI ── */
+.ai-badge { display: inline-flex; align-items: center; gap: 8px; border-radius: 8px; border: 1px solid var(--blue-bdr); background: var(--blue-bg); padding: 6px 12px; font-size: 11px; font-weight: 600; color: var(--blue); }
+.chat-row { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 10px; }
+.chat-row.user { justify-content: flex-end; }
+.av-ai { width: 28px; height: 28px; border-radius: 50%; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; }
+.av-user { width: 28px; height: 28px; border-radius: 50%; background: #EFECE5; color: var(--stone); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; }
+.bubble { max-width: 80%; border-radius: 12px; padding: 10px 14px; font-size: 12.5px; line-height: 1.65; }
+.bubble-user { background: #F3F1EC; color: var(--ink); }
+.bubble-ai { border: 1px solid #EFECE5; background: #fff; color: var(--ink-2); }
+.bubble-action { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--blue-bdr); background: var(--blue-bg); border-radius: 6px; padding: 5px 10px; font-size: 10px; font-weight: 500; color: var(--blue); margin-top: 8px; }
+.ai-created { border: 1px solid var(--blue-bdr); border-radius: 12px; overflow: hidden; }
+.ai-created-header { display: flex; align-items: center; justify-content: space-between; background: var(--blue-bg); border-bottom: 1px solid var(--blue-bdr); padding: 12px 16px; }
+.ai-created-title { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: var(--blue); }
+.ai-created-sub { font-size: 11px; color: #53708A; }
+.ai-task-row { display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #EEF2FF; padding: 10px 16px; font-size: 12px; }
+.ai-task-row:last-child { border-bottom: none; }
+.ai-assignee { border-radius: 99px; background: #EFECE5; padding: 2px 8px; font-size: 10px; color: var(--stone); flex-shrink: 0; }
+.ai-prompt-bar { display: flex; align-items: center; gap: 10px; border: 1px solid var(--blue-bdr); background: var(--blue-bg); border-radius: 10px; padding: 10px 16px; margin-bottom: 12px; font-size: 12.5px; color: #53708A; }
+.ai-prompt-run { background: var(--blue); color: #fff; border-radius: 6px; padding: 6px 14px; font-size: 11px; font-weight: 500; flex-shrink: 0; }
+
+/* ── BAR CHART ── */
+.bar-chart-inner { padding: 16px; }
+.bar-row { margin-bottom: 14px; }
+.bar-row:last-child { margin-bottom: 0; }
+.bar-label-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.bar-lbl { font-size: 12px; color: var(--ink); }
+.bar-cnt { font-size: 11px; color: var(--stone); }
+.bar-track { height: 10px; border-radius: 99px; overflow: hidden; display: flex; }
+.bar-seg { height: 100%; }
+.bar-legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 10px; color: var(--stone); }
+.legend-item { display: flex; align-items: center; gap: 5px; }
+.legend-swatch { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+
+/* ── MANAGER ── */
+.manager-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 48px; }
+@media(max-width:700px){ .manager-two-col { grid-template-columns: 1fr; } }
+.mini-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-content: start; }
+.mini-stat { border-radius: 14px; border: 1px solid var(--cream-3); background: #fff; padding: 20px; }
+.mini-stat-val { font-family: 'DM Serif Display', Georgia, serif; font-size: 30px; letter-spacing: -0.03em; color: var(--ink); line-height: 1; }
+.mini-stat-lbl { font-size: 11px; font-weight: 500; color: var(--ink); margin-top: 6px; }
+.mini-stat-sub { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--stone); margin-top: 2px; }
+
+/* ── RESULT ── */
+.result-hero { display: grid; grid-template-columns: auto 1fr; gap: 48px; align-items: center; border-radius: 18px; border: 1px solid var(--accent); background: var(--accent-bg); padding: 28px 28px; margin-bottom: 16px; }
+@media(max-width:600px){ .result-hero { grid-template-columns: 1fr; gap: 16px; } }
+.result-big { font-family: 'DM Serif Display', Georgia, serif; font-size: clamp(52px,7vw,72px); letter-spacing: -0.04em; color: var(--ink); line-height: 1; }
+.result-divider { border-left: 1px solid rgba(196,98,45,0.2); padding-left: 48px; }
+@media(max-width:600px){ .result-divider { border-left: none; padding-left: 0; border-top: 1px solid rgba(196,98,45,0.2); padding-top: 16px; } }
+.result-unit-lbl { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 8px; }
+.result-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+@media(max-width:500px){ .result-cards { grid-template-columns: 1fr; } }
+.result-card { border-radius: 18px; border: 1px solid var(--cream-3); background: #fff; padding: 24px 28px; }
+.result-card-val { font-family: 'DM Serif Display', Georgia, serif; font-size: 42px; letter-spacing: -0.04em; color: var(--ink); line-height: 1; }
+.result-card-lbl { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--stone); margin-top: 8px; }
+.quote-block { border-left: 3px solid var(--accent); background: var(--accent-bg); border-radius: 0 14px 14px 0; padding: 24px; }
+.quote-text { font-family: 'DM Serif Display', Georgia, serif; font-size: clamp(22px,2.6vw,28px); line-height: 1.4; letter-spacing: -0.02em; color: var(--ink); }
+
+/* ── CTA ── */
+.cta-box { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 32px; border-radius: 20px; border: 1px solid var(--cream-3); background: var(--cream-2); padding: 48px 40px; }
+@media(max-width:600px){ .cta-box { padding: 32px 24px; } }
+.cta-title { font-family: 'DM Serif Display', Georgia, serif; font-size: clamp(26px,3vw,34px); line-height: 1.18; letter-spacing: -0.02em; color: var(--ink); margin-bottom: 10px; }
+.cta-title .accent { color: var(--accent); }
+.cta-sub { font-size: 15px; font-weight: 300; line-height: 1.7; color: var(--ink-2); }
+.cta-btns { display: flex; flex-direction: column; gap: 10px; min-width: 180px; }
+.btn-primary { display: inline-flex; align-items: center; justify-content: center; border-radius: 99px; background: #fff; padding: 12px 28px; font-size: 13px; font-weight: 500; color: var(--ink); text-decoration: none; border: 1px solid var(--cream-3); }
+.btn-secondary { display: inline-flex; align-items: center; justify-content: center; border-radius: 99px; border: 1px solid var(--cream-3); padding: 12px 28px; font-size: 13px; font-weight: 500; color: var(--ink-2); text-decoration: none; background: transparent; }
+
+/* ── UTILS ── */
+.mt-8  { margin-top: 8px; }
+.mt-12 { margin-top: 12px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.mt-32 { margin-top: 32px; }
+.mt-40 { margin-top: 40px; }
+.mt-56 { margin-top: 56px; }
+.mb-8  { margin-bottom: 8px; }
+.mb-12 { margin-bottom: 12px; }
+.mb-16 { margin-bottom: 16px; }
+.mb-32 { margin-bottom: 32px; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════ HERO ══════════════════════ -->
+<section class="hero-section">
+  <div class="wrap">
+    <div class="eyebrow mb-32" style="margin-bottom:28px;">
+      <span class="eyebrow-dot"></span> Case Study · Seasonal Drop Template
+    </div>
+
+    <h1 class="hero-title">How Éclat Studio launched <span class="hero-accent">The Lemon Edit</span> and sold out in 47 minutes.</h1>
+    <p class="hero-sub">A small team. Three new SKUs. Six weeks from brief to live. Here's how Éclat Studio ran their entire seasonal drop out of a single Trak project — and what happened when they did.</p>
+
+    <div class="stat-grid">
+      <div class="stat-cell"><div class="stat-value">47 min</div><div class="stat-label">Time to sell out</div></div>
+      <div class="stat-cell"><div class="stat-value">$28,850</div><div class="stat-label">First-hour revenue</div></div>
+      <div class="stat-cell"><div class="stat-value">950</div><div class="stat-label">Units sold</div></div>
+      <div class="stat-cell"><div class="stat-value">1,240</div><div class="stat-label">Waitlist signups in 48hrs</div></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ THE DROP + TIMELINE ══════════════════════ -->
+<div class="wrap">
+  <div class="two-col">
+    <div>
+      <div class="eyebrow" style="margin-bottom:20px;">The Drop</div>
+      <h2 class="section-h2">Three SKUs. Six weeks. <span class="accent">One project.</span></h2>
+      <div class="body-text">
+        <p>Éclat Studio had a concept — The Lemon Edit, a limited three-product drop built on their Soft Glow base formula. They had a team, a manufacturer, and six weeks. What they didn't have was one place to run it.</p>
+        <p>The brief was in Notion, assets were in Drive, copy was in email threads, and the ops contractor was asking Slack questions that had already been answered somewhere else. Nobody had a real picture of where things actually stood.</p>
+        <p>They set up a single Trak project and ran the entire launch from it — brief to sold out.</p>
+      </div>
+    </div>
+    <div>
+      <div class="tl-wrap">
+        <div class="tl-line"></div>
+        <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-date">June 2</div><div class="tl-label">Brief locked in Launch HQ</div></div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-date">June 6</div><div class="tl-label">Photographer briefed via Magic Link — Creative Direction tab</div></div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-date">June 14</div><div class="tl-label">Product samples approved across all three SKU subtabs</div></div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-date">June 18</div><div class="tl-label">Shoot day. Raw selects uploaded to Creative Direction tab same evening.</div></div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-date">June 28</div><div class="tl-label">All assets approved. Final all-clear in Assets + Approvals.</div></div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-date">July 7</div><div class="tl-label">PR packages shipped. 15 creators and editors.</div></div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-date">July 11</div><div class="tl-label">Email #1 sends. 61% open rate.</div></div></div>
+        <div class="tl-item"><div class="tl-dot active"></div><div><div class="tl-date">July 14, 9:00am EST</div><div class="tl-label accent">The Lemon Edit goes live.</div></div></div>
+        <div class="tl-item"><div class="tl-dot active">✓</div><div><div class="tl-date">July 14, 9:47am EST</div><div class="tl-label accent">Sold out. 950 units. 47 minutes.</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ══════════════════════ INSIDE THE PROJECT ══════════════════════ -->
+<div class="section-py">
+  <div class="wrap-wide">
+
+    <div class="wrap" style="padding-bottom:0;">
+      <div class="eyebrow" style="margin-bottom:12px;">Inside the Project</div>
+      <h2 class="section-h2 mt-8">How the template was built</h2>
+      <p class="body-text mt-12" style="max-width:560px;">Seven tabs. Here's what the Éclat team put inside each one and why it mattered.</p>
+    </div>
+
+    <!-- TAB 01 -->
+    <div class="demo-block mt-56">
+      <div class="tab-num">Tab 01</div>
+      <h3 class="tab-title">Launch HQ</h3>
+      <p class="tab-desc">The command center. Campaign brief, live Shopify inventory, master task tracker, and the full six-week timeline — all in one tab. The Launch Day subtab is what the team had open on July 14.</p>
+
+      <div class="mock-window">
+        <div class="window-chrome">
+          <div class="window-chrome-inner">
+            <div class="back-link"><span>←</span><span>Back to projects</span></div>
+            <div class="window-title-row">
+              <div class="window-title">THE LEMON EDIT</div>
+              <div class="pub-link-btn"><span>◎</span><span>Enable Public Link</span></div>
+            </div>
+            <div class="pill-row">
+              <span class="pill pill-progress">In Progress</span>
+              <span class="pill pill-neutral">Due July 14</span>
+              <span class="pill pill-urgent">Urgent</span>
+            </div>
+          </div>
+          <div class="tabs-scroll"><div class="tabs-inner">
+            <div class="tab"><span style="font-size:11px;opacity:.6;">⊞</span> Overview</div>
+            <div class="tab active">Launch HQ</div>
+            <div class="tab">Product Lineup</div>
+            <div class="tab">Creative Direction</div>
+            <div class="tab">Campaign Rollout + PR</div>
+            <div class="tab">Site + Merch</div>
+            <div class="tab-plus">+</div>
+          </div></div>
+        </div>
+        <div class="window-body pr-rail">
+          <div style="border:1px solid #EFECE5;border-radius:10px;padding:12px 14px;margin-bottom:12px;font-size:13px;line-height:1.65;color:var(--ink-2);">
+            <strong style="color:var(--ink);">The Lemon Edit</strong> is Eclat Studio's first seasonal drop — a limited extension of the Soft Glow core line built around lemon as a hero ingredient. Three products. Launch date: July 14. Drop window: 72 hours or until sold out. No restock announcement at launch.
+          </div>
+          <div class="two-cards">
+            <div class="content-card"><div class="content-card-label">Drop Details</div><div class="content-card-text"><strong>Launch date:</strong> July 14<br><strong>Channel priority:</strong> Email → IG → TikTok<br><strong>Lip Balm:</strong> $18 · 400 units<br><strong>Moisturizer:</strong> $42 · 250 units<br><strong>Mist:</strong> $28 · 300 units</div></div>
+            <div class="content-card"><div class="content-card-label">Who We're Talking To</div><div class="content-card-text">Women 22–34. Already in the Rhode/Augustinus Bader orbit but not yet spending at that level. She buys intentionally. She found Eclat through a friend or a TikTok.</div></div>
+          </div>
+          <div class="sec-hdr"><div class="sec-hdr-title">Products</div><div class="sec-hdr-sub">Pinned from Shopify — live inventory and variant status</div></div>
+          <div class="shopify-grid">
+            <div class="shopify-card"><div class="shopify-img">🍋</div><div class="shopify-info"><div class="shopify-name">The Lemon Edit Lip Balm</div><div class="shopify-meta"><div><div class="shopify-mv">400</div><div class="shopify-ml">In stock</div></div><div><div class="shopify-mv">$18</div><div class="shopify-ml">Price</div></div></div><span class="pill pill-neutral">Draft</span></div></div>
+            <div class="shopify-card"><div class="shopify-img" style="background:#EEF2FF;">✨</div><div class="shopify-info"><div class="shopify-name">Lemon Brightening Moisturizer</div><div class="shopify-meta"><div><div class="shopify-mv">250</div><div class="shopify-ml">In stock</div></div><div><div class="shopify-mv">$42</div><div class="shopify-ml">Price</div></div></div><span class="pill pill-neutral">Draft</span></div></div>
+            <div class="shopify-card"><div class="shopify-img" style="background:#E1F5EE;">💧</div><div class="shopify-info"><div class="shopify-name">Lemon Dewy Mist Spray</div><div class="shopify-meta"><div><div class="shopify-mv">300</div><div class="shopify-ml">In stock</div></div><div><div class="shopify-mv">$28</div><div class="shopify-ml">Price</div></div></div><span class="pill pill-neutral">Draft</span></div></div>
+          </div>
+          <div class="sec-hdr"><div class="sec-hdr-title">Master Task Tracker</div><div class="sec-hdr-sub">Pre-production phase</div></div>
+          <div class="task-block">
+            <div class="task-block-header"><div class="task-block-title">Pre-Production</div><div class="task-actions"><span class="task-menu-tag">Menu</span><span>⊞</span><span>⊟</span></div></div>
+            <div class="task-row"><div class="task-check done">✓</div><div class="task-name done">Lock campaign brief</div><span class="pill pill-done">Done</span></div>
+            <div class="task-row"><div class="task-check done">✓</div><div class="task-name done">Confirm unit quantities with manufacturer</div><span class="pill pill-done">Done</span></div>
+            <div class="task-row"><div class="task-check prog"></div><div class="task-name">Brief photographer</div><span class="pill pill-progress">In Progress</span></div>
+            <div class="task-row"><div class="task-check"></div><div class="task-name">Finalize product names + copy direction</div><span class="pill pill-neutral">To-Do</span></div>
+            <div class="task-add">+ Add task</div>
+          </div>
+          <div class="right-rail"><span>L</span><span>AI</span><span>⊞</span><span>C</span><span>U</span></div>
+        </div>
+      </div>
+    </div><!-- /demo-block -->
+
+    <!-- TAB 02 -->
+    <div class="demo-block">
+      <div class="tab-num">Tab 02</div>
+      <h3 class="tab-title">Product Lineup</h3>
+      <p class="tab-desc">One subtab per SKU. Each has the live Shopify block for that product, product story, key details, approval tasks, photography, and manufacturer documents.</p>
+
+      <div class="mock-window">
+        <div class="window-chrome">
+          <div class="window-chrome-inner">
+            <div class="window-title-row"><div class="window-title">THE LEMON EDIT</div><div class="pub-link-btn"><span>◎</span><span>Enable Public Link</span></div></div>
+            <div class="pill-row"><span class="pill pill-progress">In Progress</span><span class="pill pill-neutral">Due July 14</span></div>
+          </div>
+          <div class="tabs-scroll"><div class="tabs-inner">
+            <div class="tab"><span style="font-size:11px;opacity:.6;">⊞</span> Overview</div>
+            <div class="tab">Launch HQ</div>
+            <div class="tab active">Product Lineup</div>
+            <div class="tab">Creative Direction</div>
+            <div class="tab">Campaign Rollout + PR</div>
+            <div class="tab">Site + Merch</div>
+            <div class="tab-plus">+</div>
+          </div></div>
+        </div>
+        <div class="subtab-layout">
+          <div class="subtab-nav">
+            <div class="subtab-nav-label">Subtabs</div>
+            <div class="subtab-item">Lemon Lip Balm</div>
+            <div class="subtab-item active">Brightening Moisturizer</div>
+            <div class="subtab-item">Dewy Mist Spray</div>
+          </div>
+          <div class="window-body pr-rail">
+            <div class="sec-hdr"><div class="sec-hdr-title">Lemon Brightening Moisturizer</div><div class="sec-hdr-sub">Hero treatment SKU — limited run of 250 units</div></div>
+            <div class="shopify-card mb-12" style="display:grid;grid-template-columns:100px 1fr;">
+              <div style="background:linear-gradient(135deg,#EEF2FF,#E3EEF9);display:flex;align-items:center;justify-content:center;font-size:28px;">✨</div>
+              <div class="shopify-info">
+                <div class="shopify-name">Lemon Brightening Moisturizer</div>
+                <div class="shopify-meta">
+                  <div><div class="shopify-mv">250</div><div class="shopify-ml">In stock</div></div>
+                  <div><div class="shopify-mv">$42</div><div class="shopify-ml">Price</div></div>
+                  <div><div class="shopify-mv">1</div><div class="shopify-ml">Variants</div></div>
+                  <div><div class="shopify-mv">0</div><div class="shopify-ml">Units sold</div></div>
+                </div>
+                <span class="pill pill-neutral">Draft — not live</span>
+              </div>
+            </div>
+            <div class="two-cards">
+              <div class="content-card"><div class="content-card-label">Product Story</div><div class="content-card-text">The moisturizer is the collection's anchor — the product that justifies the drop as a skincare story. Lemon vitamin C + niacinamide for a brightening, pore-minimizing effect. Lightweight gel-cream. Works under SPF.</div></div>
+              <div class="content-card"><div class="content-card-label">Key Details</div><div class="content-card-text"><strong>Price:</strong> $42 &nbsp;<strong>Units:</strong> 250<br><strong>Hero ingredients:</strong> Lemon vit C, niacinamide, HA<br><strong>Packaging:</strong> Frosted glass jar, yellow lid<br><strong>Status:</strong> Pending Shopify listing</div></div>
+            </div>
+            <div class="task-block">
+              <div class="task-block-header"><div class="task-block-title">Moisturizer — Product Tasks</div><div class="task-actions"><span class="task-menu-tag">Menu</span><span>⊞</span><span>⊟</span></div></div>
+              <div class="task-row"><div class="task-check done">✓</div><div class="task-name done">Approve product sample</div><span class="pill pill-done">Done</span></div>
+              <div class="task-row"><div class="task-check prog"></div><div class="task-name">Write PDP copy</div><span class="pill pill-progress">In Progress</span></div>
+              <div class="task-row"><div class="task-check"></div><div class="task-name">Approve product photography</div><span class="pill pill-neutral">To-Do</span></div>
+              <div class="task-row"><div class="task-check"></div><div class="task-name">Build Shopify listing</div><span class="pill pill-neutral">To-Do</span></div>
+              <div class="task-add">+ Add task</div>
+            </div>
+            <div class="right-rail"><span>L</span><span>AI</span><span>⊞</span><span>C</span><span>U</span></div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /demo-block -->
+
+    <!-- TAB 03 -->
+    <div class="demo-block">
+      <div class="tab-header-row">
+        <div>
+          <div class="tab-num">Tab 03</div>
+          <h3 class="tab-title">Creative Direction</h3>
+          <p class="tab-desc">The only tab with a Magic Link. Photographer Maya Elias opened it on June 6 — no login, no account. She saw the creative vision, the moodboard, the shot list table, and the files she needed. Nothing else.</p>
+        </div>
+        <div class="magic-badge"><span>◎</span><span>Magic Link</span></div>
+      </div>
+
+      <div class="mock-window">
+        <div class="magic-banner">
+          <div style="display:flex;align-items:center;gap:8px;"><span>◎</span><span>Public page — Creative Brief: The Lemon Edit · Shared by Nour K.</span></div>
+          <span style="font-weight:500;">Copy link →</span>
+        </div>
+        <div class="window-chrome">
+          <div class="window-chrome-inner">
+            <div class="window-title-row"><div class="window-title">THE LEMON EDIT</div><div class="pub-link-btn"><span>◎</span><span>Enable Public Link</span></div></div>
+            <div class="pill-row"><span class="pill pill-progress">In Progress</span><span class="pill pill-neutral">Due July 14</span></div>
+          </div>
+          <div class="tabs-scroll"><div class="tabs-inner">
+            <div class="tab"><span style="font-size:11px;opacity:.6;">⊞</span> Overview</div>
+            <div class="tab">Launch HQ</div>
+            <div class="tab">Product Lineup</div>
+            <div class="tab active">Creative Direction</div>
+            <div class="tab">Campaign Rollout + PR</div>
+            <div class="tab">Site + Merch</div>
+            <div class="tab-plus">+</div>
+          </div></div>
+        </div>
+        <div class="window-body pr-rail">
+          <div style="border:1px solid #EFECE5;border-radius:8px;padding:12px 14px;margin-bottom:12px;font-size:13px;line-height:1.65;color:var(--ink-2);">
+            <strong style="color:var(--ink);">Creative Vision —</strong> The Lemon Edit should feel like early morning light through a window. Not tropical. Not loud. The lemon is a detail, not a costume. Reference points: Aesop campaigns, early Rhode product imagery, Jacquemus Le Citron. Clean surfaces. Natural light. Skin that looks real.
+          </div>
+          <div class="moodboard">
+            <div class="moodboard-header"><span>Campaign Moodboard</span><span style="font-size:11px;color:var(--stone);font-weight:400;">6 images</span></div>
+            <div class="moodboard-grid">
+              <div class="moodboard-tile" style="background:#F8F5EE;">🍋</div>
+              <div class="moodboard-tile" style="background:#F0EDE6;">🌿</div>
+              <div class="moodboard-tile" style="background:#EEF2FF;">✨</div>
+              <div class="moodboard-tile" style="background:#FDF0E8;">☀️</div>
+              <div class="moodboard-tile" style="background:#E1F5EE;">💧</div>
+              <div class="moodboard-tile" style="background:#FAEEDA;">🧴</div>
+            </div>
+          </div>
+          <div class="sec-hdr"><div class="sec-hdr-title">Shot List</div><div class="sec-hdr-sub">Required deliverables per SKU — minimum selects noted</div></div>
+          <div class="table-block">
+            <div class="table-block-header"><span>Shot List</span><span style="font-size:11px;color:var(--stone);font-weight:400;">11 shots</span></div>
+            <div class="table-cols"><div class="c2">Shot Type</div><div class="c15">SKU</div><div class="c1">Min.</div><div class="c1">Status</div></div>
+            <div class="table-row"><div class="c2" style="color:var(--ink);">Hero product still life</div><div class="c15" style="color:var(--ink-2);">All SKUs</div><div class="c1" style="color:var(--ink-2);">3</div><div class="c1"><span class="pill pill-done">Approved</span></div></div>
+            <div class="table-row"><div class="c2" style="color:var(--ink);">Texture macro</div><div class="c15" style="color:var(--ink-2);">Moisturizer</div><div class="c1" style="color:var(--ink-2);">2</div><div class="c1"><span class="pill pill-progress">Needs selects</span></div></div>
+            <div class="table-row"><div class="c2" style="color:var(--ink);">Hand-held lifestyle</div><div class="c15" style="color:var(--ink-2);">Mist Spray</div><div class="c1" style="color:var(--ink-2);">2</div><div class="c1"><span class="pill pill-done">Approved</span></div></div>
+            <div class="table-row"><div class="c2" style="color:var(--ink);">Routine stack</div><div class="c15" style="color:var(--ink-2);">All SKUs</div><div class="c1" style="color:var(--ink-2);">2</div><div class="c1"><span class="pill pill-blue">In review</span></div></div>
+          </div>
+          <div class="right-rail"><span>L</span><span>AI</span><span>⊞</span><span>C</span><span>U</span></div>
+        </div>
+      </div>
+    </div><!-- /demo-block -->
+
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ══════════════════════ AI WORKSPACE ══════════════════════ -->
+<div class="section-py">
+  <div class="wrap-wide">
+
+    <div class="wrap" style="padding-bottom:0;">
+      <div class="eyebrow" style="margin-bottom:12px;">AI Workspace</div>
+      <h2 class="section-h2 mt-8">The AI didn't just answer questions. <span class="accent">It did the work.</span></h2>
+      <p class="body-text mt-12" style="max-width:600px;">Trak's AI lives inside every project. It knows your tasks, your docs, your Shopify data, and your team — and it can act on all of it. The Éclat team used it throughout the launch, not as a chatbot, but as someone who actually understood the project.</p>
+    </div>
+
+    <!-- AI 01 -->
+    <div class="demo-block mt-56">
+      <div class="tab-num">AI in action · 01</div>
+      <h3 class="tab-title">Ask anything. Get a real answer.</h3>
+      <p class="tab-desc">Three days before launch, Nour needed a clear picture of what was still open. She didn't dig through subtabs or message the team. She asked the AI. It scanned every task across all seven tabs, synthesized the full picture, and gave her a prioritized answer in seconds — with context from the project, not generic advice. Then it built the checklist for her.</p>
+
+      <div class="mock-window">
+        <div class="window-chrome">
+          <div class="window-chrome-inner">
+            <div class="window-title-row">
+              <div class="window-title">THE LEMON EDIT</div>
+              <div class="ai-badge">✦ AI Workspace</div>
+            </div>
+            <div class="pill-row"><span class="pill pill-progress">In Progress</span><span class="pill pill-neutral">Due July 14</span><span class="pill pill-urgent">Urgent</span></div>
+          </div>
+          <div class="tabs-scroll"><div class="tabs-inner">
+            <div class="tab"><span style="font-size:11px;opacity:.6;">⊞</span> Overview</div>
+            <div class="tab active">Launch HQ</div>
+            <div class="tab">Product Lineup</div>
+            <div class="tab">Creative Direction</div>
+            <div class="tab">Campaign Rollout + PR</div>
+            <div class="tab">Site + Merch</div>
+            <div class="tab-plus">+</div>
+          </div></div>
+        </div>
+        <div class="window-body pr-rail">
+          <div style="margin-bottom:12px;">
+            <div class="chat-row user">
+              <div class="bubble bubble-user">Which tasks across all three SKUs are still open going into launch week?</div>
+              <div class="av-user">N</div>
+            </div>
+            <div class="chat-row">
+              <div class="av-ai">✦</div>
+              <div class="bubble bubble-ai">
+                Across your three product subtabs, there are <strong>6 open tasks</strong> going into launch week:<br><br>
+                <strong>Lip Balm:</strong> Build Shopify listing · Approve final PDP image<br>
+                <strong>Moisturizer:</strong> Approve product photography · Build Shopify listing<br>
+                <strong>Mist Spray:</strong> Confirm variant label copy · QA Shopify listing<br><br>
+                All 4 manufacturing approval tasks are marked Done. Want me to create a launch-week checklist block grouping these by owner?
+                <div><div class="bubble-action">✦ Scanned 36 tasks across 7 tabs</div></div>
+              </div>
+            </div>
+            <div class="chat-row user">
+              <div class="bubble bubble-user">Yes — create the checklist. Assign Shopify tasks to Lina and copy tasks to me.</div>
+              <div class="av-user">N</div>
+            </div>
+            <div class="chat-row">
+              <div class="av-ai">✦</div>
+              <div class="bubble bubble-ai">
+                Done. I've added a Launch Week Checklist block with all 6 tasks, assigned and prioritized. Lina will see her tasks when she opens the project.
+                <div><div class="bubble-action">✦ Created: Launch Week Checklist · 6 tasks · 2 assignees</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ai-created">
+            <div class="ai-created-header">
+              <div class="ai-created-title">✦ Launch Week Checklist <span class="pill pill-ai">Created by AI</span></div>
+              <div class="ai-created-sub">6 tasks · 2 assignees</div>
+            </div>
+            <div class="ai-task-row"><div class="task-check"></div><div class="task-name" style="flex:1;">Build Mist Spray Shopify listing</div><div class="ai-assignee">Lina</div><span class="pill pill-neutral">To-Do</span></div>
+            <div class="ai-task-row"><div class="task-check"></div><div class="task-name" style="flex:1;">Build Moisturizer Shopify listing</div><div class="ai-assignee">Lina</div><span class="pill pill-neutral">To-Do</span></div>
+            <div class="ai-task-row"><div class="task-check"></div><div class="task-name" style="flex:1;">QA all Shopify listings</div><div class="ai-assignee">Lina</div><span class="pill pill-neutral">To-Do</span></div>
+            <div class="ai-task-row"><div class="task-check"></div><div class="task-name" style="flex:1;">Approve final PDP image — Lip Balm</div><div class="ai-assignee">Nour</div><span class="pill pill-neutral">To-Do</span></div>
+            <div class="ai-task-row"><div class="task-check"></div><div class="task-name" style="flex:1;">Confirm variant label copy — Mist Spray</div><div class="ai-assignee">Nour</div><span class="pill pill-neutral">To-Do</span></div>
+            <div class="ai-task-row"><div class="task-check"></div><div class="task-name" style="flex:1;">Approve Moisturizer product photography</div><div class="ai-assignee">Nour</div><span class="pill pill-neutral">To-Do</span></div>
+          </div>
+          <div class="right-rail"><span>L</span><span>AI</span><span>⊞</span><span>C</span><span>U</span></div>
+        </div>
+      </div>
+    </div><!-- /demo-block -->
+
+    <!-- AI 02 -->
+    <div class="demo-block">
+      <div class="tab-num">AI in action · 02</div>
+      <h3 class="tab-title">One prompt. A block that stays in sync.</h3>
+      <p class="tab-desc">Two weeks out, the team wanted a campaign timeline table — all remaining milestones, sorted by date, visible on the Overview tab. Nour typed the request. The AI built it and placed it. The table wasn't a snapshot — it was a live block, pulling directly from the tasks already in the project. When Lina completed the PR send, the table updated. Nobody maintained it.</p>
+
+      <div class="mock-window">
+        <div class="window-chrome">
+          <div class="window-chrome-inner">
+            <div class="window-title-row">
+              <div class="window-title">THE LEMON EDIT</div>
+              <div class="ai-badge">✦ AI Workspace</div>
+            </div>
+            <div class="pill-row"><span class="pill pill-progress">In Progress</span><span class="pill pill-neutral">Due July 14</span></div>
+          </div>
+          <div class="tabs-scroll"><div class="tabs-inner">
+            <div class="tab active"><span style="font-size:11px;opacity:.6;">⊞</span> Overview</div>
+            <div class="tab">Launch HQ</div>
+            <div class="tab">Product Lineup</div>
+            <div class="tab">Creative Direction</div>
+            <div class="tab">Campaign Rollout + PR</div>
+            <div class="tab">Site + Merch</div>
+            <div class="tab-plus">+</div>
+          </div></div>
+        </div>
+        <div class="window-body pr-rail">
+          <div class="ai-prompt-bar">
+            <span style="font-size:14px;color:var(--blue);flex-shrink:0;">✦</span>
+            <span style="flex:1;">Create a table of all remaining milestones, sorted by due date, and add it to the Overview tab</span>
+            <div class="ai-prompt-run">Run</div>
+          </div>
+          <div class="ai-created">
+            <div class="ai-created-header">
+              <div class="ai-created-title">✦ Remaining Milestones <span class="pill pill-ai">Live — synced to tasks</span></div>
+              <div class="ai-created-sub">Added to Overview tab</div>
+            </div>
+            <div class="table-cols"><div class="c2">Milestone</div><div class="c15">Tab</div><div class="c1">Due</div><div class="c1">Owner</div><div class="c1">Status</div></div>
+            <div class="table-row"><div class="c2" style="color:var(--ink);font-weight:500;">Finalize all PDP copy</div><div class="c15" style="color:var(--stone);font-size:11px;">Product Lineup</div><div class="c1" style="color:var(--ink-2);">July 9</div><div class="c1" style="color:var(--ink-2);">Nour</div><div class="c1"><span class="pill pill-progress">In Progress</span></div></div>
+            <div class="table-row"><div class="c2" style="color:var(--ink);font-weight:500;">Approve shot selects</div><div class="c15" style="color:var(--stone);font-size:11px;">Creative Direction</div><div class="c1" style="color:var(--ink-2);">July 10</div><div class="c1" style="color:var(--ink-2);">Maya</div><div class="c1"><span class="pill pill-progress">In Progress</span></div></div>
+            <div class="table-row"><div class="c2" style="color:var(--ink);font-weight:500;">QA all Shopify listings</div><div class="c15" style="color:var(--stone);font-size:11px;">Product Lineup</div><div class="c1" style="color:var(--ink-2);">July 11</div><div class="c1" style="color:var(--ink-2);">Lina</div><div class="c1"><span class="pill pill-neutral">To-Do</span></div></div>
+            <div class="table-row"><div class="c2" style="color:var(--ink);font-weight:500;">Send launch email #1</div><div class="c15" style="color:var(--stone);font-size:11px;">Campaign Rollout</div><div class="c1" style="color:var(--ink-2);">July 11</div><div class="c1" style="color:var(--ink-2);">Nour</div><div class="c1"><span class="pill pill-neutral">To-Do</span></div></div>
+            <div class="table-row"><div class="c2" style="color:var(--ink);font-weight:500;">Go live — all three SKUs</div><div class="c15" style="color:var(--stone);font-size:11px;">Launch HQ</div><div class="c1" style="color:var(--ink-2);">July 14</div><div class="c1" style="color:var(--ink-2);">Team</div><div class="c1"><span class="pill pill-neutral">To-Do</span></div></div>
+          </div>
+          <div class="right-rail"><span>L</span><span>AI</span><span>⊞</span><span>C</span><span>U</span></div>
+        </div>
+      </div>
+    </div><!-- /demo-block -->
+
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ══════════════════════ MANAGER / VISIBILITY ══════════════════════ -->
+<div class="section-py">
+  <div class="wrap-wide">
+
+    <div class="wrap" style="padding-bottom:0;">
+      <div class="eyebrow" style="margin-bottom:12px;">For the person running the launch</div>
+      <h2 class="section-h2 mt-8">Full visibility. No status meetings.</h2>
+      <p class="body-text mt-12" style="max-width:600px;">Managing a launch means knowing exactly where things stand at any moment — across SKUs, across your team, across every part of the project. Trak gives you that picture without having to ask anyone for it.</p>
+    </div>
+
+    <div class="wrap" style="padding-top:0;">
+      <div class="manager-two-col mt-40">
+        <div class="body-text">
+          <p>Before Trak, Nour was running status updates manually — a Friday Slack message, a shared Notion table she had to update herself, and a running note on her phone of what she was afraid people were forgetting.</p>
+          <p>With Trak, she opened the Overview tab and knew. Every task across every SKU, every assignee, every status — pulled into one view automatically. Nothing to maintain. Nothing to ask.</p>
+          <p>And when she wanted a breakdown by tab or assignee, she didn't build a pivot table. She asked the AI. In fifteen seconds, she had a live chart sitting inside the project — not a screenshot, not a doc. A chart that updated as work got done.</p>
+        </div>
+        <div class="mini-stat-grid">
+          <div class="mini-stat"><div class="mini-stat-val">36</div><div class="mini-stat-lbl">Tasks tracked</div><div class="mini-stat-sub">across 7 tabs</div></div>
+          <div class="mini-stat"><div class="mini-stat-val">3</div><div class="mini-stat-lbl">Assignees coordinated</div><div class="mini-stat-sub">zero status syncs</div></div>
+          <div class="mini-stat"><div class="mini-stat-val">0</div><div class="mini-stat-lbl">Status meetings held</div><div class="mini-stat-sub">during 6 weeks</div></div>
+          <div class="mini-stat"><div class="mini-stat-val">100%</div><div class="mini-stat-lbl">Launch-day readiness</div><div class="mini-stat-sub">confirmed by AI</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI 03 — Chart -->
+    <div class="demo-block" style="margin-top:0;">
+      <div class="tab-num">AI in action · 03</div>
+      <h3 class="tab-title">"Show me task completion by tab."</h3>
+      <p class="tab-desc">Five days out, Nour wanted to know which parts of the project were lagging. She typed one sentence. The AI generated a breakdown chart directly inside the project — pulling from every real task in every real tab. When Lina completed a task, the chart moved. It wasn't a report. It was a live view.</p>
+
+      <div class="mock-window">
+        <div class="window-chrome">
+          <div class="window-chrome-inner">
+            <div class="window-title-row">
+              <div class="window-title">THE LEMON EDIT</div>
+              <div class="ai-badge">✦ AI Workspace</div>
+            </div>
+            <div class="pill-row"><span class="pill pill-progress">In Progress</span><span class="pill pill-neutral">Due July 14</span></div>
+          </div>
+          <div class="tabs-scroll"><div class="tabs-inner">
+            <div class="tab active"><span style="font-size:11px;opacity:.6;">⊞</span> Overview</div>
+            <div class="tab">Launch HQ</div>
+            <div class="tab">Product Lineup</div>
+            <div class="tab">Creative Direction</div>
+            <div class="tab">Campaign Rollout + PR</div>
+            <div class="tab">Site + Merch</div>
+            <div class="tab-plus">+</div>
+          </div></div>
+        </div>
+        <div class="window-body pr-rail">
+          <div class="ai-prompt-bar">
+            <span style="font-size:14px;color:var(--blue);flex-shrink:0;">✦</span>
+            <span style="flex:1;">Show me a breakdown of task status by tab</span>
+          </div>
+          <div class="chat-row mb-12">
+            <div class="av-ai">✦</div>
+            <div class="bubble bubble-ai">Here's a live breakdown of all 36 tasks across your project by tab. Product Lineup has the most open work — 5 tasks still To-Do. Campaign Rollout is in the best shape at 80% done.</div>
+          </div>
+          <div class="ai-created">
+            <div class="ai-created-header">
+              <div class="ai-created-title">✦ Task Status by Tab <span class="pill pill-ai">Live — updates as tasks complete</span></div>
+              <div class="bar-legend">
+                <div class="legend-item"><div class="legend-swatch" style="background:#2F6B49;"></div>Done</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:var(--accent);"></div>In Progress</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#B8B4AC;"></div>To-Do</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#99601A;"></div>Blocked</div>
+              </div>
+            </div>
+            <div class="bar-chart-inner">
+              <div class="bar-row">
+                <div class="bar-label-row"><span class="bar-lbl">Launch HQ</span><span class="bar-cnt">8 tasks</span></div>
+                <div class="bar-track"><div class="bar-seg" style="width:75%;background:#2F6B49;"></div><div class="bar-seg" style="width:12.5%;background:var(--accent);"></div><div class="bar-seg" style="width:12.5%;background:#B8B4AC;"></div></div>
+              </div>
+              <div class="bar-row">
+                <div class="bar-label-row"><span class="bar-lbl">Product Lineup</span><span class="bar-cnt">13 tasks</span></div>
+                <div class="bar-track"><div class="bar-seg" style="width:31%;background:#2F6B49;"></div><div class="bar-seg" style="width:23%;background:var(--accent);"></div><div class="bar-seg" style="width:38%;background:#B8B4AC;"></div><div class="bar-seg" style="width:8%;background:#99601A;"></div></div>
+              </div>
+              <div class="bar-row">
+                <div class="bar-label-row"><span class="bar-lbl">Creative Direction</span><span class="bar-cnt">9 tasks</span></div>
+                <div class="bar-track"><div class="bar-seg" style="width:55%;background:#2F6B49;"></div><div class="bar-seg" style="width:22%;background:var(--accent);"></div><div class="bar-seg" style="width:11%;background:#B8B4AC;"></div><div class="bar-seg" style="width:12%;background:#99601A;"></div></div>
+              </div>
+              <div class="bar-row">
+                <div class="bar-label-row"><span class="bar-lbl">Campaign Rollout</span><span class="bar-cnt">10 tasks</span></div>
+                <div class="bar-track"><div class="bar-seg" style="width:80%;background:#2F6B49;"></div><div class="bar-seg" style="width:20%;background:#B8B4AC;"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="right-rail"><span>L</span><span>AI</span><span>⊞</span><span>C</span><span>U</span></div>
+        </div>
+      </div>
+    </div><!-- /demo-block -->
+
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ══════════════════════ RESULT ══════════════════════ -->
+<div class="section-py">
+  <div class="wrap">
+    <div class="eyebrow" style="margin-bottom:12px;">The Result</div>
+    <h2 class="section-h2 mt-8" style="max-width:680px;">Everything the team needed to launch was already in the room.</h2>
+
+    <div class="mt-32">
+      <div class="result-hero">
+        <div class="result-big">950</div>
+        <div class="result-divider">
+          <div class="result-unit-lbl">Units sold</div>
+          <p class="body-text">The Lemon Edit sold out in 47 minutes because inventory, creative, launch-day tasks, live Shopify data, and real-time visibility were all running from one project — not six tools and a Friday Slack message.</p>
+        </div>
+      </div>
+      <div class="result-cards">
+        <div class="result-card"><div class="result-card-val">$28,850</div><div class="result-card-lbl">Revenue in under one hour</div></div>
+        <div class="result-card"><div class="result-card-val">61%</div><div class="result-card-lbl">Open rate on the live email</div></div>
+        <div class="result-card"><div class="result-card-val">41%</div><div class="result-card-lbl">Orders with 2 or more SKUs</div></div>
+        <div class="result-card"><div class="result-card-val">1,240</div><div class="result-card-lbl">Waitlist signups in 48 hours</div></div>
+      </div>
+      <div class="quote-block">
+        <div class="quote-text">"When launch day came, nobody had to ask where anything lived. The team was already working from the same source of truth."</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ══════════════════════ CTA ══════════════════════ -->
+<div style="padding: 32px 0 80px;">
+  <div class="wrap">
+    <div class="cta-box">
+      <div style="max-width:420px;">
+        <div class="cta-title">Run your next <span class="accent">seasonal drop</span> from one workspace.</div>
+        <div class="cta-sub">Use the same structure for launch HQ, SKU subtabs, creative direction, and launch-day coordination — with AI that knows your project as well as you do.</div>
+      </div>
+      <div class="cta-btns">
+        <a href="https://app.sariasoftware.com/start-free-trial" class="btn-primary">Use this template</a>
+        <a href="/templates" class="btn-secondary">See all templates</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
