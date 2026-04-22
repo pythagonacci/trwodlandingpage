@@ -1,3 +1,5 @@
+import { AutoplayVideo } from "@/components/landing/AutoplayVideo";
+
 export function MagicLinks() {
   const createMagicLinkVideoSrc = "/media/finalml1-web.mp4";
   const createMagicLinkPosterSrc = "/media/finalml1-poster.jpg";
@@ -68,17 +70,12 @@ export function MagicLinks() {
             </div>
             <div className="feature-demo-shell w-full">
               <div className="feature-demo-frame relative aspect-[16/8.6] w-full overflow-hidden max-[880px]:aspect-[16/10]">
-                <video
+                <AutoplayVideo
                   className="h-full w-full object-cover"
                   poster={createMagicLinkPosterSrc}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
+                  src={createMagicLinkVideoSrc}
                   preload="auto"
-                >
-                  <source src={createMagicLinkVideoSrc} type="video/mp4" />
-                </video>
+                />
               </div>
             </div>
           </div>
@@ -94,17 +91,12 @@ export function MagicLinks() {
             </div>
             <div className="feature-demo-shell w-full">
               <div className="feature-demo-frame relative aspect-[16/8.6] w-full overflow-hidden max-[880px]:aspect-[16/10]">
-                <video
+                <AutoplayVideo
                   className="h-full w-full object-cover"
                   poster={collaboratorUploadPosterSrc}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
+                  src={collaboratorUploadVideoSrc}
                   preload="auto"
-                >
-                  <source src={collaboratorUploadVideoSrc} type="video/mp4" />
-                </video>
+                />
               </div>
             </div>
           </div>

@@ -1,36 +1,10 @@
 "use client";
 
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { AutoplayVideo } from "@/components/landing/AutoplayVideo";
 
 export function Hero() {
   const heroVideoSrc = "/media/studiohero-web.mp4";
   const heroPosterSrc = "/media/studiohero-poster.jpg";
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [isVideoReady, setIsVideoReady] = useState(false);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) {
-      return;
-    }
-
-    video.muted = true;
-    video.defaultMuted = true;
-
-    const playVideo = () => {
-      setIsVideoReady(true);
-      void video.play().catch(() => {});
-    };
-
-    if (video.readyState >= 2) {
-      playVideo();
-      return;
-    }
-
-    video.addEventListener("canplay", playVideo, { once: true });
-    return () => video.removeEventListener("canplay", playVideo);
-  }, []);
 
   return (
     <section id="top" className="border-b border-cream-3 bg-cream pt-[60px]">
@@ -71,38 +45,16 @@ export function Hero() {
 
         <div
           className="hero-video-shell hero-anim hero-anim-visual mt-12 w-full max-w-[1320px] lg:mt-16"
-          style={{ width: "100%", maxWidth: "1320px" }}
         >
           <div
             className="hero-video-frame relative flex aspect-[16/8.2] items-center justify-center overflow-hidden max-[880px]:aspect-[4/3]"
-            style={{ position: "relative", width: "100%", aspectRatio: "16 / 8.2", overflow: "hidden" }}
           >
-            <Image
-              src={heroPosterSrc}
-              alt="Saria workspace preview"
-              fill
-              priority
-              sizes="(max-width: 880px) 100vw, 1320px"
-              className={`object-cover transition-opacity duration-300 ${isVideoReady ? "opacity-0" : "opacity-100"}`}
-            />
-            <video
-              ref={videoRef}
-              className={`h-full w-full object-cover transition-opacity duration-300 ${isVideoReady ? "opacity-100" : "opacity-0"}`}
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            <AutoplayVideo
+              className="h-full w-full object-cover"
               poster={heroPosterSrc}
-              autoPlay
-              muted
-              loop
-              playsInline
+              src={heroVideoSrc}
               preload="auto"
-              onLoadedData={() => setIsVideoReady(true)}
-              onCanPlay={() => {
-                setIsVideoReady(true);
-                void videoRef.current?.play().catch(() => {});
-              }}
-            >
-              <source src={heroVideoSrc} type="video/mp4" />
-            </video>
+            />
           </div>
         </div>
       </div>

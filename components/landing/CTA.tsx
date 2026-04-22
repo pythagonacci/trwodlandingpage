@@ -19,7 +19,8 @@ export function CTA() {
         setIsSectionInView(entry.isIntersecting);
       },
       {
-        threshold: 0.45
+        rootMargin: "120px 0px",
+        threshold: 0.15
       }
     );
 
@@ -37,6 +38,15 @@ export function CTA() {
     }
 
     video.muted = isMuted;
+    video.defaultMuted = true;
+    video.playsInline = true;
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "");
+    if (isMuted) {
+      video.setAttribute("muted", "");
+    } else {
+      video.removeAttribute("muted");
+    }
   }, [isMuted]);
 
   useEffect(() => {
@@ -88,9 +98,15 @@ export function CTA() {
             ref={videoRef}
             className="h-full w-full object-cover"
             muted={isMuted}
+            autoPlay
             loop
             playsInline
             preload="metadata"
+            onLoadedData={() => {
+              if (isSectionInView) {
+                void videoRef.current?.play().catch(() => {});
+              }
+            }}
           >
             <source src="/saria%20final.mp4" type="video/mp4" />
           </video>

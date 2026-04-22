@@ -1,5 +1,6 @@
 import { FiEdit3, FiPlus } from "react-icons/fi";
 import { HiOutlineQuestionMarkCircle } from "react-icons/hi2";
+import { AutoplayVideo } from "@/components/landing/AutoplayVideo";
 
 export function Features() {
   const productDemoVideoSrc = "/media/frv2demo2-web.mp4";
@@ -64,17 +65,12 @@ export function Features() {
       <div className="border-b border-cream-3 bg-cream-2 px-[60px] pb-12 pt-6 max-[880px]:px-6 max-[880px]:pb-10 max-[880px]:pt-5">
         <div className="feature-demo-shell mx-auto w-full max-w-[1040px]">
           <div className="feature-demo-frame relative aspect-[16/8.6] w-full overflow-hidden max-[880px]:aspect-[16/10]">
-            <video
+            <AutoplayVideo
               className="h-full w-full object-cover"
               poster={productDemoPosterSrc}
-              autoPlay
-              muted
-              loop
-              playsInline
+              src={productDemoVideoSrc}
               preload="metadata"
-            >
-              <source src={productDemoVideoSrc} type="video/mp4" />
-            </video>
+            />
           </div>
         </div>
       </div>
@@ -126,17 +122,12 @@ export function Features() {
         </div>
         <div className="feature-demo-shell mx-auto mt-7 w-full max-w-[1040px]">
           <div className="feature-demo-frame relative aspect-[16/8.6] w-full overflow-hidden max-[880px]:aspect-[16/10]">
-            <video
+            <AutoplayVideo
               className="h-full w-full object-cover"
               poster={aiDemoPosterSrc}
-              autoPlay
-              muted
-              loop
-              playsInline
+              src={aiDemoVideoSrc}
               preload="metadata"
-            >
-              <source src={aiDemoVideoSrc} type="video/mp4" />
-            </video>
+            />
           </div>
         </div>
       </div>
@@ -163,17 +154,12 @@ export function Features() {
         </p>
         <div className="feature-demo-shell mx-auto w-full max-w-[1040px]">
           <div className="feature-demo-frame relative aspect-[16/8.4] w-full overflow-hidden max-[880px]:aspect-[16/10]">
-            <video
+            <AutoplayVideo
               className="h-full w-full object-cover"
               poster={shopifyDemoPosterSrc}
-              autoPlay
-              muted
-              loop
-              playsInline
+              src={shopifyDemoVideoSrc}
               preload="metadata"
-            >
-              <source src={shopifyDemoVideoSrc} type="video/mp4" />
-            </video>
+            />
           </div>
         </div>
       </div>

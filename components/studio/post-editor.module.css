@@ -1,0 +1,499 @@
+.editorShell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 22px;
+  align-items: start;
+}
+
+.mainColumn,
+.sideColumn {
+  min-width: 0;
+}
+
+.sideColumn {
+  position: sticky;
+  top: 72px;
+  display: grid;
+  gap: 14px;
+}
+
+.titlePanel,
+.editorCard,
+.sidePanel {
+  border: 1px solid rgba(144, 144, 144, 0.2);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 12px 28px rgba(28, 25, 23, 0.04);
+}
+
+.titlePanel {
+  padding: 22px;
+}
+
+.titleInput {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(38px, 5vw, 68px);
+  line-height: 0.98;
+  outline: 0;
+}
+
+.excerptInput {
+  margin-top: 20px;
+  width: 100%;
+  resize: vertical;
+  border: 0;
+  background: transparent;
+  color: var(--ink-2);
+  font-size: 18px;
+  line-height: 1.55;
+  outline: 0;
+}
+
+.editorCard {
+  margin-top: 18px;
+  overflow: hidden;
+}
+
+.panelTabs {
+  display: flex;
+  gap: 6px;
+  border-bottom: 1px solid rgba(144, 144, 144, 0.18);
+  padding: 10px 12px 0;
+}
+
+.tab,
+.activeTab {
+  border: 0;
+  border-radius: 8px 8px 0 0;
+  padding: 9px 14px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.tab {
+  background: transparent;
+  color: var(--ink-3);
+}
+
+.activeTab {
+  background: var(--ink);
+  color: #ffffff;
+}
+
+.editorContent {
+  min-height: 680px;
+  padding: 24px;
+}
+
+.previewPane {
+  min-height: 680px;
+  padding: 28px;
+}
+
+.sidePanel {
+  padding: 16px;
+}
+
+.sidePanel h2 {
+  margin-bottom: 14px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sidePanel label {
+  display: grid;
+  gap: 6px;
+  margin-top: 12px;
+  color: var(--ink-3);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.sidePanel input,
+.sidePanel select,
+.sidePanel textarea {
+  width: 100%;
+  border: 1px solid rgba(144, 144, 144, 0.24);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 10px 11px;
+  color: var(--ink);
+  font-size: 13px;
+  outline: 0;
+}
+
+.sidePanel textarea {
+  resize: vertical;
+}
+
+.checkboxRow {
+  display: flex !important;
+  grid-template-columns: none !important;
+  align-items: center;
+  gap: 8px !important;
+  color: var(--ink-2) !important;
+}
+
+.checkboxRow input {
+  width: auto;
+}
+
+.primaryButton,
+.secondaryButton {
+  border-radius: 999px;
+  padding: 9px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: border-color 0.16s ease, background 0.16s ease, color 0.16s ease;
+}
+
+.primaryButton {
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: #ffffff;
+}
+
+.secondaryButton {
+  border: 1px solid rgba(144, 144, 144, 0.28);
+  background: #ffffff;
+  color: var(--ink);
+}
+
+.primaryButton:disabled,
+.secondaryButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.statusText,
+.errorText {
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+
+.statusText {
+  color: var(--ink-3);
+}
+
+.errorText {
+  color: #b42318;
+}
+
+.coverPreview {
+  overflow: hidden;
+  margin-bottom: 12px;
+  border: 1px solid rgba(144, 144, 144, 0.18);
+  border-radius: 10px;
+  background: var(--cream-3);
+}
+
+.coverPreview img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.layoutGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.layoutButton,
+.activeLayout {
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.layoutButton {
+  border: 1px solid rgba(144, 144, 144, 0.22);
+  background: #ffffff;
+  color: var(--ink-2);
+}
+
+.activeLayout {
+  border: 1px solid var(--accent);
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+.widthControlRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border: 1px solid rgba(144, 144, 144, 0.22);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 8px 9px 8px 11px;
+  color: var(--ink);
+  font-size: 13px;
+}
+
+.miniButton {
+  border: 1px solid rgba(144, 144, 144, 0.24);
+  border-radius: 999px;
+  background: var(--cream-2);
+  padding: 5px 9px;
+  color: var(--ink-2);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.editorContent :global(.blog-editor-prosemirror) {
+  min-height: 620px;
+  max-width: 980px;
+  outline: 0;
+  color: var(--ink-2);
+  font-size: 18px;
+  line-height: 1.85;
+}
+
+.editorContent :global(.blog-editor-prosemirror > * + *) {
+  margin-top: 22px;
+}
+
+.editorContent :global(.blog-editor-prosemirror h2),
+.editorContent :global(.blog-editor-prosemirror h3) {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 500;
+}
+
+.editorContent :global(.blog-editor-prosemirror h2) {
+  margin-top: 48px;
+  font-size: 38px;
+  line-height: 1.08;
+}
+
+.editorContent :global(.blog-editor-prosemirror h3) {
+  margin-top: 36px;
+  font-size: 28px;
+  line-height: 1.14;
+}
+
+.editorContent :global(.blog-editor-prosemirror ul),
+.editorContent :global(.blog-editor-prosemirror ol) {
+  padding-left: 1.35em;
+}
+
+.editorContent :global(.blog-editor-prosemirror blockquote) {
+  border-left: 2px solid var(--ink);
+  padding-left: 20px;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 28px;
+  line-height: 1.45;
+}
+
+.editorContent :global(.blog-editor-prosemirror hr) {
+  margin: 42px 0;
+  border: 0;
+  border-top: 1px solid rgba(144, 144, 144, 0.24);
+}
+
+.editorContent :global(.blog-editor-prosemirror pre) {
+  overflow-x: auto;
+  border-radius: 14px;
+  background: #111111;
+  padding: 18px;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.editorContent :global(.blog-editor-callout) {
+  border: 1px solid rgba(144, 144, 144, 0.22);
+  border-radius: 18px;
+  background: var(--accent-bg);
+  padding: 20px;
+}
+
+.editorContent :global(.blog-editor-image) {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(144, 144, 144, 0.22);
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(28, 25, 23, 0.045);
+  transition: transform 0.16s ease, outline-color 0.16s ease;
+}
+
+.editorContent :global(.blog-editor-image.is-selected) {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.editorContent :global(.blog-editor-image.is-placement-dragging) {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.editorContent :global(.blog-editor-image-placement-float-left) {
+  transform: translateX(-14px);
+}
+
+.editorContent :global(.blog-editor-image-placement-float-right) {
+  transform: translateX(14px);
+}
+
+.editorContent :global(.blog-editor-image-placement-center) {
+  transform: translateX(0) scale(0.985);
+}
+
+.editorContent :global(.blog-editor-image img) {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.editorContent :global(.blog-editor-image figcaption) {
+  border-top: 1px solid rgba(144, 144, 144, 0.16);
+  padding: 12px 14px;
+  color: var(--ink-3);
+  font-size: 12px;
+}
+
+.editorContent :global(.blog-editor-image-drag-handle) {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 3;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 999px;
+  background: rgba(28, 25, 23, 0.78);
+  padding: 5px 9px;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  opacity: 0;
+  cursor: grab;
+  user-select: none;
+  pointer-events: auto;
+  transition: opacity 0.16s ease;
+}
+
+.editorContent :global(.blog-editor-image-drag-handle:active) {
+  cursor: grabbing;
+}
+
+.editorContent :global(.blog-editor-image:hover .blog-editor-image-drag-handle),
+.editorContent :global(.blog-editor-image.is-selected .blog-editor-image-drag-handle) {
+  opacity: 1;
+}
+
+.editorContent :global(.blog-editor-image-order-controls) {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 5;
+  display: flex;
+  gap: 6px;
+  opacity: 0;
+  transition: opacity 0.16s ease;
+}
+
+.editorContent :global(.blog-editor-image:hover .blog-editor-image-order-controls),
+.editorContent :global(.blog-editor-image.is-selected .blog-editor-image-order-controls) {
+  opacity: 1;
+}
+
+.editorContent :global(.blog-editor-image-order-controls button) {
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 999px;
+  background: rgba(28, 25, 23, 0.78);
+  padding: 5px 9px;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.editorContent :global(.blog-editor-image-order-controls button:hover) {
+  background: rgba(28, 25, 23, 0.92);
+}
+
+.editorContent :global(.blog-editor-image-resize-handle) {
+  position: absolute;
+  top: 50%;
+  z-index: 4;
+  width: 14px;
+  height: 56px;
+  transform: translateY(-50%);
+  border: 1px solid rgba(255, 255, 255, 0.56);
+  border-radius: 999px;
+  background: rgba(28, 25, 23, 0.88);
+  box-shadow: 0 8px 18px rgba(28, 25, 23, 0.16);
+  cursor: ew-resize;
+  opacity: 0;
+  transition: opacity 0.16s ease, transform 0.16s ease;
+}
+
+.editorContent :global(.blog-editor-image-resize-handle::after) {
+  content: "";
+  position: absolute;
+  inset: 12px 5px;
+  border-left: 1px solid rgba(255, 255, 255, 0.7);
+  border-right: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+.editorContent :global(.blog-editor-image-resize-left) {
+  left: 8px;
+}
+
+.editorContent :global(.blog-editor-image-resize-right) {
+  right: 8px;
+}
+
+.editorContent :global(.blog-editor-image:hover .blog-editor-image-resize-handle),
+.editorContent :global(.blog-editor-image.is-selected .blog-editor-image-resize-handle) {
+  opacity: 1;
+}
+
+.editorContent :global(.blog-editor-image-resize-handle:hover) {
+  transform: translateY(-50%) scale(1.06);
+}
+
+.editorContent :global(.blog-editor-image-center) {
+  width: min(100%, var(--blog-editor-image-width, 780px));
+}
+
+.editorContent :global(.blog-editor-image-wide) {
+  width: min(100%, var(--blog-editor-image-width, 1040px));
+}
+
+.editorContent :global(.blog-editor-image-float-left),
+.editorContent :global(.blog-editor-image-float-right) {
+  width: min(52%, var(--blog-editor-image-width, 360px));
+  min-width: min(100%, 180px);
+}
+
+.editorContent :global(.blog-editor-image-float-left) {
+  float: left;
+  margin-right: 30px;
+}
+
+.editorContent :global(.blog-editor-image-float-right) {
+  float: right;
+  margin-left: 30px;
+}
+
+@media (max-width: 1040px) {
+  .editorShell {
+    grid-template-columns: 1fr;
+  }
+
+  .sideColumn {
+    position: static;
+  }
+}

@@ -35,6 +35,8 @@ export function Nav({ variant = "default" }: { variant?: NavVariant }) {
   const [productMenuOpen, setProductMenuOpen] = useState(false);
   const [templatesMenuOpen, setTemplatesMenuOpen] = useState(false);
   const [useCaseMenuOpen, setUseCaseMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
   const productMenuRef = useRef<HTMLLIElement>(null);
   const templatesMenuRef = useRef<HTMLLIElement>(null);
   const useCaseMenuRef = useRef<HTMLLIElement>(null);
@@ -43,6 +45,7 @@ export function Nav({ variant = "default" }: { variant?: NavVariant }) {
     setProductMenuOpen(false);
     setTemplatesMenuOpen(false);
     setUseCaseMenuOpen(false);
+    setMobileMenuOpen(false);
   };
 
   useEffect(() => {
@@ -56,18 +59,14 @@ export function Nav({ variant = "default" }: { variant?: NavVariant }) {
   }, []);
 
   useEffect(() => {
-    if (!productMenuOpen && !templatesMenuOpen && !useCaseMenuOpen) {
+    if (!productMenuOpen && !templatesMenuOpen && !useCaseMenuOpen && !mobileMenuOpen) {
       return;
     }
 
     const onPointerDown = (event: PointerEvent) => {
       const target = event.target as Node;
 
-      if (
-        !productMenuRef.current?.contains(target) &&
-        !templatesMenuRef.current?.contains(target) &&
-        !useCaseMenuRef.current?.contains(target)
-      ) {
+      if (!navRef.current?.contains(target)) {
         closeMenus();
       }
     };
@@ -85,13 +84,28 @@ export function Nav({ variant = "default" }: { variant?: NavVariant }) {
       window.removeEventListener("pointerdown", onPointerDown);
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [productMenuOpen, templatesMenuOpen, useCaseMenuOpen]);
+  }, [mobileMenuOpen, productMenuOpen, templatesMenuOpen, useCaseMenuOpen]);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 881px)");
+    const onChange = () => {
+      if (mediaQuery.matches) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    onChange();
+    mediaQuery.addEventListener("change", onChange);
+
+    return () => mediaQuery.removeEventListener("change", onChange);
+  }, []);
 
   const isLinearDark = variant === "linear";
   const isLinearLight = variant === "linearLight";
 
   return (
     <nav
+      ref={navRef}
       className={`fixed inset-x-0 top-0 z-[200] h-[48px] border-b backdrop-blur-xl transition-shadow duration-200 ${
         isLinearDark
           ? `border-white/[0.08] bg-black/75 ${
@@ -121,7 +135,7 @@ export function Nav({ variant = "default" }: { variant?: NavVariant }) {
           <span>Saria</span>
         </Link>
         <ul
-          className={`flex items-center gap-6 text-[11px] font-normal ${
+          className={`hidden items-center gap-6 text-[11px] font-normal min-[881px]:flex ${
             isLinearDark ? "text-white/55" : "text-ink-3"
           }`}
         >
@@ -370,7 +384,136 @@ export function Nav({ variant = "default" }: { variant?: NavVariant }) {
             </Link>
           </li>
         </ul>
+        <button
+          type="button"
+          aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileMenuOpen}
+          className={`inline-flex items-center gap-2 rounded-lg border px-3 py-1.5 text-[11px] font-medium transition-colors duration-200 min-[881px]:hidden ${
+            isLinearDark
+              ? "border-white/[0.14] text-white/85 hover:border-white/25 hover:bg-white/[0.05]"
+              : "border-cream-3 text-ink hover:border-stone hover:bg-cream-2"
+          }`}
+          onClick={() => {
+            setProductMenuOpen(false);
+            setTemplatesMenuOpen(false);
+            setUseCaseMenuOpen(false);
+            setMobileMenuOpen((current) => !current);
+          }}
+        >
+          Menu
+          <span className="text-[13px] leading-none">{mobileMenuOpen ? "x" : "+"}</span>
+        </button>
+      </div>
+      <div
+        className={`absolute inset-x-0 top-full max-h-[calc(100vh-48px)] overflow-y-auto border-b backdrop-blur-xl transition-all duration-200 min-[881px]:hidden ${
+          mobileMenuOpen
+            ? "pointer-events-auto visible translate-y-0 opacity-100"
+            : "pointer-events-none invisible -translate-y-2 opacity-0"
+        } ${
+          isLinearDark
+            ? "border-white/[0.08] bg-black/95 text-white"
+            : "border-cream-3 bg-[rgba(255,255,255,0.98)] text-ink"
+        }`}
+      >
+        <div className="px-4 py-4">
+          <div className="grid gap-3">
+            <MobileMenuGroup
+              title="Product"
+              links={PRODUCT_LINKS}
+              isLinearDark={isLinearDark}
+              onNavigate={closeMenus}
+            />
+            <MobileMenuGroup
+              title="Templates"
+              links={TEMPLATE_LINKS}
+              isLinearDark={isLinearDark}
+              onNavigate={closeMenus}
+            />
+            <MobileMenuGroup
+              title="Use Cases"
+              links={USE_CASE_ITEMS}
+              isLinearDark={isLinearDark}
+              onNavigate={closeMenus}
+            />
+            <div className={`border-t pt-3 ${isLinearDark ? "border-white/[0.08]" : "border-cream-3"}`}>
+              <Link
+                href="/pricing"
+                className={`block rounded-lg px-3 py-2 text-[13px] font-medium ${
+                  isLinearDark
+                    ? "text-white/76 hover:bg-white/[0.06] hover:text-white"
+                    : "text-ink-2 hover:bg-cream hover:text-ink"
+                }`}
+                onClick={closeMenus}
+              >
+                Pricing
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 gap-2 pt-1">
+              <Link
+                href="https://app.sariasoftware.com/login"
+                className={`inline-flex min-h-10 items-center justify-center rounded-lg border px-3 py-2 text-[12px] font-medium transition-colors duration-200 ${
+                  isLinearDark
+                    ? "border-white/[0.14] text-white/85 hover:border-white/25 hover:bg-white/[0.05]"
+                    : "border-cream-3 text-ink hover:border-stone hover:bg-cream-2"
+                }`}
+                onClick={closeMenus}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Log In
+              </Link>
+              <Link
+                href="https://app.sariasoftware.com/start-free-trial"
+                className={`inline-flex min-h-10 items-center justify-center rounded-lg px-3 py-2 text-center text-[12px] font-medium transition-colors duration-200 ${
+                  isLinearDark
+                    ? "bg-white text-black hover:bg-white/90"
+                    : "bg-[#1D4ED8] text-white hover:opacity-90"
+                }`}
+                onClick={closeMenus}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Start Free Trial
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
     </nav>
+  );
+}
+
+type MobileMenuGroupProps = {
+  title: string;
+  links: ReadonlyArray<{ href: string; label: string }>;
+  isLinearDark: boolean;
+  onNavigate: () => void;
+};
+
+function MobileMenuGroup({ title, links, isLinearDark, onNavigate }: MobileMenuGroupProps) {
+  return (
+    <div className={`border-t pt-3 ${isLinearDark ? "border-white/[0.08]" : "border-cream-3"}`}>
+      <div className={`px-3 pb-1 text-[11px] font-medium uppercase tracking-[0.12em] ${
+        isLinearDark ? "text-white/40" : "text-stone"
+      }`}>
+        {title}
+      </div>
+      <div className="grid gap-1">
+        {links.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className={`block rounded-lg px-3 py-2 text-[13px] font-medium ${
+              isLinearDark
+                ? "text-white/76 hover:bg-white/[0.06] hover:text-white"
+                : "text-ink-2 hover:bg-cream hover:text-ink"
+            }`}
+            onClick={onNavigate}
+          >
+            {item.label}
+          </Link>
+        ))}
+      </div>
+    </div>
   );
 }
