@@ -2,7 +2,8 @@ import { Inter } from "next/font/google";
 import { createPageMetadata } from "@/app/seo";
 import { Nav } from "@/components/landing/Nav";
 import { Hero } from "@/components/landing/Hero";
-import { Pain } from "@/components/landing/Pain";
+import { SystemStatement } from "@/components/landing/SystemStatement";
+import { ThreePillars } from "@/components/landing/ThreePillars";
 import { Features } from "@/components/landing/Features";
 import { MagicLinks } from "@/components/landing/MagicLinks";
 import { CTA } from "@/components/landing/CTA";
@@ -27,7 +28,8 @@ export default function Page() {
       <Nav variant="linearLight" />
       <main>
         <Hero />
-        <Pain />
+        <SystemStatement />
+        <ThreePillars />
         <Features />
         <MagicLinks />
         <CTA />

@@ -1,13 +1,10 @@
 "use client";
 
-import { AutoplayVideo } from "@/components/landing/AutoplayVideo";
+import { HeroWorkspaceVisual } from "@/components/landing/HeroWorkspaceVisual";
 
 export function Hero() {
-  const heroVideoSrc = "/media/studiohero-web.mp4";
-  const heroPosterSrc = "/media/studiohero-poster.jpg";
-
   return (
-    <section id="top" className="border-b border-cream-3 bg-cream pt-[60px]">
+    <section id="top" className="bg-cream pt-[60px]">
       <div className="mx-auto max-w-[1320px] px-6 pb-14 md:px-8 lg:px-12 lg:pb-20">
         <div className="grid gap-10 pt-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-x-20 lg:pt-10">
           <div>
@@ -43,18 +40,9 @@ export function Hero() {
           </div>
         </div>
 
-        <div
-          className="hero-video-shell hero-anim hero-anim-visual mt-12 w-full max-w-[1320px] lg:mt-16"
-        >
-          <div
-            className="hero-video-frame relative flex aspect-[16/8.2] items-center justify-center overflow-hidden max-[880px]:aspect-[4/3]"
-          >
-            <AutoplayVideo
-              className="h-full w-full object-cover"
-              poster={heroPosterSrc}
-              src={heroVideoSrc}
-              preload="auto"
-            />
+        <div className="hero-workspace-shell hero-anim hero-anim-visual relative left-1/2 mt-12 w-[min(1520px,calc(100vw-20px))] max-w-none -translate-x-1/2 lg:mt-16 lg:w-[min(1600px,calc(100vw-56px))]">
+          <div className="hero-workspace-frame">
+            <HeroWorkspaceVisual />
           </div>
         </div>
       </div>

@@ -116,7 +116,7 @@ export function Nav({ variant = "default" }: { variant?: NavVariant }) {
             }`
       }`}
     >
-      <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between px-4 md:px-8 lg:px-12">
+      <div className="mx-auto grid h-full w-full max-w-[1360px] grid-cols-[auto_1fr_auto] items-center gap-4 px-7 md:px-14 lg:px-20 xl:px-24">
         <Link
           href="/"
           className={`flex items-center gap-1.5 font-display text-[16px] font-semibold tracking-[-0.015em] ${
@@ -127,15 +127,15 @@ export function Nav({ variant = "default" }: { variant?: NavVariant }) {
           <Image
             src="/logo-copy.png"
             alt="Saria logo"
-            width={24}
-            height={24}
-            className="h-6 w-6 object-contain"
+            width={22}
+            height={22}
+            className="h-[22px] w-[22px] object-contain"
             priority
           />
           <span>Saria</span>
         </Link>
         <ul
-          className={`hidden items-center gap-6 text-[11px] font-normal min-[881px]:flex ${
+          className={`hidden items-center justify-self-center gap-7 text-[11px] font-normal min-[881px]:flex xl:gap-8 ${
             isLinearDark ? "text-white/55" : "text-ink-3"
           }`}
         >
@@ -350,45 +350,45 @@ export function Nav({ variant = "default" }: { variant?: NavVariant }) {
               </Link>
             </li>
           ))}
-          <li className="flex items-center gap-2">
-            <Link
-              href="https://app.sariasoftware.com/login"
-              className={`border px-3.5 py-1.5 text-[11px] font-medium transition-colors duration-200 ${
-                isLinearDark
-                  ? "rounded-lg border-white/[0.14] text-white/85 hover:border-white/25 hover:bg-white/[0.05]"
-                  : isLinearLight
-                    ? "rounded-lg border-cream-3 text-ink hover:border-stone hover:bg-cream-2"
-                    : "rounded-full border-cream-3 text-ink hover:border-stone hover:bg-cream-2"
-              }`}
-              onClick={closeMenus}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Log In
-            </Link>
-            <Link
-              href="https://app.sariasoftware.com/start-free-trial"
-              className={`px-3.5 py-1.5 text-[11px] font-medium text-white transition-colors duration-200 ${
-                isLinearDark
-                  ? "rounded-lg bg-white text-black hover:bg-white/90"
-                  : isLinearLight
-                    ? "rounded-lg hover:opacity-90"
-                    : "rounded-full hover:opacity-90"
-              }`}
-              onClick={closeMenus}
-              target="_blank"
-              rel="noreferrer"
-              style={isLinearDark ? undefined : { backgroundColor: "#1D4ED8" }}
-            >
-              Start Free Trial
-            </Link>
-          </li>
         </ul>
+        <div className="hidden items-center justify-self-end gap-2 min-[881px]:flex">
+          <Link
+            href="https://app.sariasoftware.com/login"
+            className={`border px-3.5 py-1.5 text-[11px] font-medium transition-colors duration-200 ${
+              isLinearDark
+                ? "rounded-lg border-white/[0.14] text-white/85 hover:border-white/25 hover:bg-white/[0.05]"
+                : isLinearLight
+                  ? "rounded-lg border-cream-3 text-ink hover:border-stone hover:bg-cream-2"
+                  : "rounded-full border-cream-3 text-ink hover:border-stone hover:bg-cream-2"
+            }`}
+            onClick={closeMenus}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Log In
+          </Link>
+          <Link
+            href="https://app.sariasoftware.com/start-free-trial"
+            className={`px-3.5 py-1.5 text-[11px] font-medium text-white transition-colors duration-200 ${
+              isLinearDark
+                ? "rounded-lg bg-white text-black hover:bg-white/90"
+                : isLinearLight
+                  ? "rounded-lg hover:opacity-90"
+                  : "rounded-full hover:opacity-90"
+            }`}
+            onClick={closeMenus}
+            target="_blank"
+            rel="noreferrer"
+            style={isLinearDark ? undefined : { backgroundColor: "#1D4ED8" }}
+          >
+            Start Free Trial
+          </Link>
+        </div>
         <button
           type="button"
           aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileMenuOpen}
-          className={`inline-flex items-center gap-2 rounded-lg border px-3 py-1.5 text-[11px] font-medium transition-colors duration-200 min-[881px]:hidden ${
+          className={`inline-flex items-center justify-self-end gap-2 rounded-lg border px-3 py-1.5 text-[11px] font-medium transition-colors duration-200 min-[881px]:hidden ${
             isLinearDark
               ? "border-white/[0.14] text-white/85 hover:border-white/25 hover:bg-white/[0.05]"
               : "border-cream-3 text-ink hover:border-stone hover:bg-cream-2"
