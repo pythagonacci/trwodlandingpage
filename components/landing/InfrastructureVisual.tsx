@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState, type RefObject } from "react";
+import { useEffect, useRef, useState, type Ref } from "react";
 
 const collageImages = [
   { key: "s1", src: "/media/infraforbrands/s1.jpg", alt: "Snowboard launch inspiration hero" },
@@ -10,7 +10,17 @@ const collageImages = [
   { key: "s4", src: "/media/infraforbrands/s4.jpeg", alt: "Snowboard launch inspiration angle four" },
 ] as const;
 
-const designTasks = [
+type DesignTask = {
+  title: string;
+  status: "Done" | "In Progress" | "To-Do";
+  priority: "Urgent" | "High" | "Medium";
+  assignee: string;
+  due: string;
+  comments: number;
+  tags?: string[];
+};
+
+const designTasks: readonly DesignTask[] = [
   {
     title: "Review snowboard spray photo for email hero",
     status: "In Progress",
@@ -719,7 +729,7 @@ function StatusOption({
 }: {
   label: string;
   tone: string;
-  optionRef?: RefObject<HTMLDivElement | null>;
+  optionRef?: Ref<HTMLDivElement>;
 }) {
   return (
     <div ref={optionRef} className={`rounded-[6px] px-[9px] py-[4px] text-[11.5px] font-medium ${tone}`}>
