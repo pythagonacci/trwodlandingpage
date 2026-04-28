@@ -1708,6 +1708,31 @@
       inset 0 1px 0 rgba(255, 255, 255, 0.5);
   }
 
+  .infra-demo-shell {
+    position: relative;
+    isolation: isolate;
+    padding: 16px 14px 0;
+  }
+
+  .infra-demo-shell::before {
+    content: "";
+    position: absolute;
+    inset: 12px 4% 0;
+    z-index: -2;
+    border-radius: 34px;
+    background:
+      radial-gradient(circle at top, rgba(219, 231, 255, 0.52), transparent 58%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
+    filter: blur(22px);
+    opacity: 0.92;
+    pointer-events: none;
+  }
+
+  .infra-demo-window {
+    position: relative;
+    z-index: 1;
+  }
+
   @media (max-width: 880px) {
     .hero-video-shell {
       padding: 12px 0 0;
@@ -1814,6 +1839,15 @@
 
     .feature-demo-frame {
       border-radius: 20px;
+    }
+
+    .infra-demo-shell {
+      padding: 10px 0 0;
+    }
+
+    .infra-demo-shell::before {
+      inset: 8px 0 0;
+      border-radius: 24px;
     }
   }
 

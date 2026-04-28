@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
-import serumProductImage from "@/ChatGPT Image Apr 26, 2026, 11_23_09 PM.png";
 
 const sidebarItems = [
   { label: "Home", icon: <HomeIcon /> },
@@ -760,9 +759,11 @@ export function HeroWorkspaceVisual() {
                         <div className="hero-workspace-shopify-product-top">
                           <div className="hero-workspace-shopify-thumbnail">
                             <Image
-                              src={serumProductImage}
+                              src="/media/restore-serum-product.png"
                               alt="The Restore Serum product image"
                               className="hero-workspace-shopify-thumbnail-image"
+                              width={1122}
+                              height={1402}
                               sizes="46px"
                             />
                           </div>

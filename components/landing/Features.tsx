@@ -1,10 +1,9 @@
 import { FiEdit3, FiPlus } from "react-icons/fi";
 import { HiOutlineQuestionMarkCircle } from "react-icons/hi2";
 import { AutoplayVideo } from "@/components/landing/AutoplayVideo";
+import { InfrastructureVisual } from "@/components/landing/InfrastructureVisual";
 
 export function Features() {
-  const productDemoVideoSrc = "/media/frv2demo2-web.mp4";
-  const productDemoPosterSrc = "/media/frv2demo2-poster.jpg";
   const aiDemoVideoSrc = "/media/v2demo3-web.mp4";
   const aiDemoPosterSrc = "/media/v2demo3-poster.jpg";
   const shopifyDemoVideoSrc = "/media/v2demo4-web.mp4";
@@ -63,16 +62,7 @@ export function Features() {
       </div>
 
       <div className="border-b border-cream-3 bg-cream-2 px-[60px] pb-12 pt-6 max-[880px]:px-6 max-[880px]:pb-10 max-[880px]:pt-5">
-        <div className="feature-demo-shell mx-auto w-full max-w-[1040px]">
-          <div className="feature-demo-frame relative aspect-[16/8.6] w-full overflow-hidden max-[880px]:aspect-[16/10]">
-            <AutoplayVideo
-              className="h-full w-full object-cover"
-              poster={productDemoPosterSrc}
-              src={productDemoVideoSrc}
-              preload="metadata"
-            />
-          </div>
-        </div>
+        <InfrastructureVisual />
       </div>
 
       <div className="border-b border-cream-3 px-[60px] py-[52px] transition-colors duration-200 hover:bg-cream-2 max-[880px]:px-6 max-[880px]:py-10">

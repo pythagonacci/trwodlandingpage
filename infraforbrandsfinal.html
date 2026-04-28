@@ -1,0 +1,620 @@
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
+#demo{font-family:'DM Sans',sans-serif;background:#fff;border-radius:12px;border:1px solid #e5e2dc;width:100%;position:relative;overflow:hidden;}
+.top-bar{height:38px;border-bottom:1px solid #e5e2dc;display:flex;align-items:center;padding:0 20px;gap:16px;flex-shrink:0;}
+.tbl{font-size:12px;color:#999;display:flex;align-items:center;gap:4px;}
+.tbl svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:1.5;}
+.tbr{margin-left:auto;}
+.cs-btn{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:500;color:#2A537A;border:1px solid #b8d0e8;border-radius:6px;padding:3px 9px;}
+.cs-btn svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:1.5;}
+.ph{padding:14px 20px 0;flex-shrink:0;}
+.pt{font-size:22px;font-weight:400;color:#111;margin-bottom:6px;letter-spacing:-0.3px;}
+.bns{font-size:11px;font-weight:500;background:#f1f0ed;color:#666;border:1px solid #ddd;border-radius:5px;padding:2px 8px;display:inline-block;margin-bottom:2px;}
+.tab-bar{display:flex;align-items:center;padding:0 20px;border-bottom:1px solid #e5e2dc;margin-top:10px;gap:0;overflow:hidden;flex-shrink:0;}
+.tab{font-size:12.5px;color:#999;padding:9px 12px;white-space:nowrap;border-bottom:2px solid transparent;display:flex;align-items:center;gap:5px;}
+.tab.active{color:#111;border-bottom:2px solid #111;font-weight:500;}
+.tab svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:1.5;}
+
+/* MAIN SPLIT — left column is now full width; modal lives inside task list area */
+.split{display:flex;align-items:flex-start;overflow:hidden;}
+.left-col{flex:1;padding:18px 20px;overflow-y:auto;min-width:0;}
+
+/* task list area: flex container so modal can sit beside list and compress it */
+.tl-area{display:flex;align-items:flex-start;gap:14px;}
+.tl-main{flex:1;min-width:0;transition:flex 0.28s cubic-bezier(0.4,0,0.2,1);}
+.tl-modal{
+  width:0;
+  flex-shrink:0;
+  overflow:hidden;
+  opacity:0;
+  transition:width 0.28s cubic-bezier(0.4,0,0.2,1), opacity 0.2s;
+}
+.tl-modal.open{width:300px;opacity:1;}
+
+/* collage — two states: row (initial) and focused (after click) */
+.collage-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;}
+.bht{font-size:13px;font-weight:500;color:#111;}
+.ctoggle{display:flex;gap:5px;}
+.ctbtn{font-size:12px;font-weight:500;padding:3px 10px;border-radius:5px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.ctbtn.on{background:#111;color:#fff;border:1px solid #111;}
+.ctbtn.off{background:transparent;color:#888;border:1px solid #ddd;}
+
+/* collage container — flexes within gallery-area, transitions handle layout swap */
+.collage{position:relative;flex:1;min-width:0;display:grid;gap:6px;transition:grid-template-columns 0.4s ease, grid-template-rows 0.4s ease;}
+.cimg{background:#e2dfd9;border-radius:6px;overflow:hidden;cursor:pointer;transition:all 0.4s ease;}
+.cimg-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:10px;color:#bbb;}
+
+/* ROW STATE (initial) — 4 images side-by-side */
+.collage{grid-template-columns:1fr 1fr 1fr 1fr;grid-template-rows:170px;}
+.cimg.c1{grid-column:1;grid-row:1;}
+.cimg.c2{grid-column:2;grid-row:1;}
+.cimg.c3{grid-column:3;grid-row:1;}
+.cimg.c4{grid-column:4;grid-row:1;}
+
+/* FOCUSED STATE — c1 becomes big hero on right; c2,c3,c4 small thumbs on left */
+.collage.focused{grid-template-columns:80px 80px 1fr;grid-template-rows:75px 75px;}
+.collage.focused .cimg.c1{grid-column:3;grid-row:1 / span 2;background:#333;}
+.collage.focused .cimg.c2{grid-column:1;grid-row:1;}
+.collage.focused .cimg.c3{grid-column:2;grid-row:1;}
+.collage.focused .cimg.c4{grid-column:1;grid-row:2;}
+
+/* selected ring on c1 when focused */
+.collage.focused .cimg.c1{box-shadow:0 0 0 2px #2A537A;}
+
+/* context menu — clean spacing, proper SVG icons */
+.ctx-menu{position:absolute;background:#fff;border:1px solid #e0dcd6;border-radius:9px;padding:5px;box-shadow:0 8px 28px rgba(0,0,0,0.14);min-width:170px;z-index:40;left:55%;top:18%;opacity:0;transform:scale(0.94) translateY(-4px);transition:opacity 0.15s,transform 0.15s;pointer-events:none;}
+.ctx-menu.show{opacity:1;transform:scale(1) translateY(0);}
+.ctx-item{display:flex;align-items:center;gap:10px;font-size:13px;color:#222;padding:7px 10px;border-radius:6px;}
+.ctx-ic{width:14px;height:14px;stroke:#555;fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
+.ctx-danger{color:#dc2626;}
+.ctx-danger .ctx-ic{stroke:#dc2626;}
+.ctx-hi{background:#f5f3f0;}
+.ctx-divider{height:1px;background:#eee;margin:4px 2px;}
+
+/* gallery area — flex container holding collage + comments side panel */
+.gallery-area{display:flex;align-items:flex-start;gap:12px;margin-bottom:28px;border:1px solid #e5e2dc;border-radius:10px;padding:14px;background:#fff;}
+
+/* image comment side panel — expands from width 0, compresses collage */
+.icp{flex-shrink:0;width:0;overflow:hidden;transition:width 0.35s cubic-bezier(0.4,0,0.2,1);}
+.icp.show{width:260px;}
+.icp-inner{width:260px;background:#fff;border:1px solid #e5e2dc;border-radius:10px;padding:11px;box-shadow:0 2px 12px rgba(0,0,0,0.04);}
+.icp-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.icp-ttl{font-size:13px;font-weight:600;color:#111;}
+.icp-x{font-size:11px;color:#999;width:18px;height:18px;border-radius:50%;background:#f0ede8;display:flex;align-items:center;justify-content:center;}
+.icp-bubble{border:1px solid #c7d8ea;border-radius:7px;padding:8px 10px 5px;opacity:0;transition:opacity 0.3s,border-color 0.3s,padding 0.3s;}
+.icp-bubble.show{opacity:1;}
+.icp.posted .icp-bubble{border-color:#e8e5e0;padding:8px 10px;}
+.icp-txt{font-size:12.5px;color:#222;line-height:1.45;min-height:14px;}
+.icp-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-top:5px;}
+.icp.posted .icp-actions{display:none;}
+.icp-cancel{font-size:11.5px;color:#888;}
+.icp-send{width:22px;height:22px;border-radius:50%;background:#111;display:flex;align-items:center;justify-content:center;}
+.icp-send svg{width:10px;height:10px;stroke:#fff;fill:#fff;stroke-width:1;}
+.icp-meta{font-size:10.5px;color:#999;margin-top:4px;display:none;}
+.icp.posted .icp-meta{display:block;}
+
+/* @mention popup — anchored to upper right of hero where typing happens */
+.mention-pop{position:absolute;right:10px;top:50px;width:170px;background:#fff;border:1px solid #e0dcd6;border-radius:8px;padding:3px;box-shadow:0 8px 28px rgba(0,0,0,0.16);z-index:50;opacity:0;transform:translateY(4px);transition:opacity 0.16s,transform 0.16s;pointer-events:none;}
+.mention-pop.show{opacity:1;transform:translateY(0);}
+.mp-hdr{font-size:9px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#aaa;padding:4px 7px 2px;}
+.mp-list{display:flex;flex-direction:column;gap:1px;}
+.mp-item{display:flex;align-items:center;gap:7px;padding:4px 7px;border-radius:4px;font-size:11.5px;color:#222;}
+.mp-item.hi{background:#f5f3f0;}
+.mp-av{width:17px;height:17px;border-radius:50%;background:#dde7f1;color:#2A537A;font-size:9px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.mp-name{font-size:11.5px;color:#222;}
+.mp-empty{padding:6px 7px;font-size:10.5px;color:#aaa;}
+
+/* mention pill inline in comment text */
+.mention-tag{color:#2A537A;background:#e6eef7;padding:1px 5px;border-radius:4px;font-weight:500;}
+
+/* status picker dropdown — header + full-pill options */
+.pill-wrap{position:relative;display:inline-flex;}
+.status-pop{position:absolute;top:calc(100% + 5px);left:0;background:#fff;border:1px solid #e0dcd6;border-radius:9px;padding:8px;box-shadow:0 8px 28px rgba(0,0,0,0.16);min-width:170px;z-index:50;opacity:0;transform:translateY(-4px);transition:opacity 0.16s,transform 0.16s;pointer-events:none;}
+.status-pop.show{opacity:1;transform:translateY(0);}
+.sp-hdr{font-size:12px;color:#222;border:1px solid #d8d4cd;border-radius:6px;padding:6px 10px;margin-bottom:7px;background:#fff;}
+.sp-opt{display:block;font-size:12.5px;font-weight:500;padding:5px 10px;border-radius:6px;margin-bottom:3px;border:2px solid transparent;cursor:pointer;}
+.sp-opt:last-child{margin-bottom:0;}
+.sp-none{color:#222;background:transparent;}
+.sp-todo{background:#ececec;color:#444;}
+.sp-ip{background:#dde8f3;color:#2A537A;}
+.sp-done{background:#dff1e1;color:#15803d;}
+.sp-blocked{background:#f5d5d5;color:#b91c1c;}
+.sp-opt.hi.sp-done{border-color:#15803d;}
+.sp-opt.hi.sp-todo{border-color:#666;}
+.sp-opt.hi.sp-ip{border-color:#2A537A;}
+.sp-opt.hi.sp-blocked{border-color:#b91c1c;}
+.sp-opt.hi.sp-none{border-color:#aaa;}
+
+/* task list */
+.tl-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:0;}
+.tl-label{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#aaa;}
+.vtogs{display:flex;gap:3px;}
+.vt{width:22px;height:22px;border-radius:5px;border:1px solid #e0dcd6;display:flex;align-items:center;justify-content:center;background:transparent;}
+.vt.on{background:#111;border-color:#111;}
+.vt svg{width:11px;height:11px;fill:none;stroke-width:1.5;}
+.vt.on svg{stroke:#fff;}
+.vt:not(.on) svg{stroke:#888;}
+.tlist{border:1px solid #e5e2dc;border-radius:8px;overflow:hidden;margin-top:10px;}
+.trow{display:flex;align-items:flex-start;padding:12px 14px;background:#fff;border-bottom:1px solid #e5e2dc;cursor:pointer;transition:background 0.1s;gap:10px;}
+.trow:last-child{border-bottom:none;}
+.trow:hover{background:#faf9f7;}
+.trow.lit{background:#f5f3f0;}
+.tck{width:18px;height:18px;border-radius:50%;border:1.5px solid #ccc;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all 0.22s;}
+.tck.done{background:#16a34a;border-color:#16a34a;}
+.tck.done svg{opacity:1!important;}
+.tck.clk{border-color:#aaa;}
+.tck svg{width:9px;height:9px;stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity 0.2s;}
+.tck.clk svg{stroke:#aaa;opacity:1;}
+.tbdy{flex:1;min-width:0;}
+.tnm{font-size:13px;color:#111;margin-bottom:6px;line-height:1.3;}
+.tnm.struck{text-decoration:line-through;color:#aaa;}
+.ttags{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+.pill{font-size:11px;font-weight:500;padding:2px 7px;border-radius:4px;display:inline-flex;align-items:center;gap:3px;}
+.p-done{background:#dffae6;color:#15803d;}
+.p-ip{background:#e0eaf5;color:#2A537A;}
+.p-todo{background:#f3f3f1;color:#666;}
+.p-urg{background:#fee2e2;color:#b91c1c;}
+.p-high{background:#ffedd5;color:#c2410c;}
+.p-med{background:#fef5d8;color:#a16207;}
+.p-tag{background:#f3f3f1;color:#555;border:1px solid #e5e2dc;}
+.fi{width:10px;height:10px;fill:none;stroke-width:1.5;}
+.meta-p{display:flex;align-items:center;gap:3px;font-size:11px;color:#777;}
+.meta-p svg{width:11px;height:11px;stroke:#999;fill:none;stroke-width:1.5;}
+.meta-d{display:flex;align-items:center;gap:3px;font-size:11px;color:#999;}
+.meta-d svg{width:10px;height:10px;stroke:#bbb;fill:none;stroke-width:1.5;}
+.tright{display:flex;align-items:center;gap:6px;margin-left:auto;flex-shrink:0;padding-top:1px;}
+.cmt{display:flex;align-items:center;gap:3px;font-size:11px;color:#bbb;}
+.cmt svg{width:11px;height:11px;stroke:#bbb;fill:none;stroke-width:1.5;}
+.dots{color:#ccc;font-size:14px;letter-spacing:1px;padding:2px 3px;}
+
+/* right panel inner — self-contained card next to task list */
+.rp-inner{padding:16px 16px 18px;width:300px;border:1px solid #e5e2dc;border-radius:10px;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,0.04);}
+.rp-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:3px;}
+.rp-ttl{font-size:14px;font-weight:600;color:#111;line-height:1.35;flex:1;padding-right:8px;}
+.rp-x{font-size:12px;color:#999;width:22px;height:22px;border-radius:50%;background:#f0ede8;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;}
+.rp-date{font-size:12px;color:#aaa;margin-bottom:8px;display:flex;align-items:center;gap:10px;}
+.rp-adot{width:18px;height:18px;border-radius:50%;background:#dcfce7;color:#15803d;font-size:9px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;}
+.rp-tags{display:flex;gap:5px;margin-bottom:4px;flex-wrap:wrap;align-items:center;}
+.rp-sec{font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#bbb;margin-bottom:5px;margin-top:12px;}
+.rp-notes{background:#f9f7f5;border-radius:6px;padding:9px 11px;font-size:12.5px;color:#333;line-height:1.5;min-height:34px;}
+.rp-cmt-area{display:flex;align-items:center;gap:8px;margin-top:8px;}
+.rp-av{width:22px;height:22px;border-radius:50%;background:#e5e2dc;display:flex;align-items:center;justify-content:center;font-size:9px;color:#888;flex-shrink:0;}
+.rp-ci{flex:1;border:none;border-bottom:1px solid #e5e2dc;font-size:12px;color:#bbb;padding:3px 0;font-family:'DM Sans',sans-serif;background:transparent;}
+.rp-add{font-size:11px;color:#bbb;font-weight:500;}
+.rp-clip svg{width:15px;height:15px;stroke:#ccc;fill:none;stroke-width:1.5;}
+
+.cursor{width:12px;height:12px;background:rgba(0,0,0,0.65);border-radius:50%;position:absolute;pointer-events:none;z-index:100;transform:translate(-50%,-50%);opacity:0;transition:left 0.55s cubic-bezier(0.4,0,0.2,1),top 0.55s cubic-bezier(0.4,0,0.2,1),opacity 0.3s;box-shadow:0 0 0 2.5px rgba(255,255,255,0.9);}
+.rip{position:absolute;width:20px;height:20px;border-radius:50%;border:2px solid rgba(0,0,0,0.3);transform:translate(-50%,-50%) scale(0);pointer-events:none;z-index:99;}
+@keyframes rip{0%{transform:translate(-50%,-50%) scale(0);opacity:1}100%{transform:translate(-50%,-50%) scale(3);opacity:0}}
+.tycur{display:inline-block;width:1.5px;height:12px;background:#111;margin-left:1px;vertical-align:middle;animation:blink 0.65s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+</style>
+
+<div id="demo">
+  <div class="cursor" id="cur"></div>
+  <div class="rip" id="rip"></div>
+
+    <div class="top-bar">
+    <div class="tbl"><svg viewBox="0 0 12 12"><path d="M7.5 9L4.5 6l3-3"/></svg>Back to projects</div>
+    <div class="tbl"><svg viewBox="0 0 12 12"><rect x="1" y="1" width="10" height="10" rx="2"/><path d="M1 5h10M5 5v6"/></svg>Overview</div>
+    <div class="tbl"><svg viewBox="0 0 12 12"><rect x="2" y="1" width="8" height="10" rx="1"/><path d="M4 4h4M4 6.5h4M4 9h2"/></svg>Drive</div>
+  </div>
+
+  <div class="ph">
+    <div class="pt">Limited Ed. Snowboard Launch</div>
+    <span class="bns">Not Started</span>
+  </div>
+
+  <div class="tab-bar">
+    <div class="tab"><svg viewBox="0 0 12 12"><rect x="1" y="1" width="10" height="10" rx="2"/><path d="M1 5h10M5 5v6"/></svg>Overview</div>
+    <div class="tab">Launch Timeline</div>
+    <div class="tab">Campaign Shoot</div>
+    <div class="tab active">Design Inspiration</div>
+    <div class="tab">Product and Inventory</div>
+    <div class="tab">Content Calendar</div>
+    <div class="tab" style="color:#d97706;">✨ Creator Tracking</div>
+    <div class="tab" style="color:#bbb;font-size:15px;padding:6px 8px;">+</div>
+  </div>
+
+  <div class="split">
+    <div class="left-col" id="lc">
+
+      <div class="collage-header">
+        <span class="bht">Campaign Inspiration Photos</span>
+        <div class="ctoggle"><button class="ctbtn on">Collage</button><button class="ctbtn off">Array</button></div>
+      </div>
+
+      <div class="gallery-area">
+      <div class="collage" id="collage">
+        <div class="cimg c1" id="img1"><div class="cimg-ph">photo</div></div>
+        <div class="cimg c2"><div class="cimg-ph">photo</div></div>
+        <div class="cimg c3"><div class="cimg-ph">photo</div></div>
+        <div class="cimg c4"><div class="cimg-ph">photo</div></div>
+
+        <!-- floating overlays positioned within the hero image -->
+        <div class="ctx-menu" id="ctx">
+          <div class="ctx-item ctx-hi" id="ctx-add">
+            <svg class="ctx-ic" viewBox="0 0 16 16"><path d="M2.5 3h11a1 1 0 011 1v7a1 1 0 01-1 1H8.5L5 14.5V12H2.5a1 1 0 01-1-1V4a1 1 0 011-1z"/></svg>
+            Add comment
+          </div>
+          <div class="ctx-item">
+            <svg class="ctx-ic" viewBox="0 0 16 16"><path d="M9.5 6.5L13.5 2.5M13.5 2.5H10M13.5 2.5V6M6.5 9.5L2.5 13.5M2.5 13.5H6M2.5 13.5V10"/></svg>
+            View expanded
+          </div>
+          <div class="ctx-divider"></div>
+          <div class="ctx-item">
+            <svg class="ctx-ic" viewBox="0 0 16 16"><path d="M3 3h6v3h3v3M3 3v6h6V3M9 9h4v4H6"/><path d="M3 9l2-2M11 7l2-2"/></svg>
+            Replace image
+          </div>
+          <div class="ctx-item ctx-danger">
+            <svg class="ctx-ic" viewBox="0 0 16 16"><path d="M3 4.5h10M6 4.5V3a1 1 0 011-1h2a1 1 0 011 1v1.5M4.5 4.5l.5 8.5a1 1 0 001 1h4a1 1 0 001-1l.5-8.5M6.5 7v4M9.5 7v4"/></svg>
+            Remove
+          </div>
+        </div>
+        <div class="mention-pop" id="mpop">
+          <div class="mp-hdr">Mention someone</div>
+          <div class="mp-list" id="mp-list"></div>
+        </div>
+      </div>
+
+      <!-- comments side panel — sibling of collage, compresses gallery when open -->
+      <div class="icp" id="icp">
+        <div class="icp-inner">
+          <div class="icp-hdr">
+            <span class="icp-ttl" id="icp-ttl">0 comments</span>
+            <div class="icp-x">✕</div>
+          </div>
+          <div class="icp-bubble" id="icp-b">
+            <div class="icp-txt" id="icp-t"></div>
+            <div class="icp-actions" id="icp-acts">
+              <span class="icp-cancel">Cancel</span>
+              <div class="icp-send"><svg viewBox="0 0 14 14"><path d="M2 7l10-5-3.5 11L7 8.5z"/></svg></div>
+            </div>
+            <div class="icp-meta" id="icp-meta">3/16/2026, 4:36:58 AM · You</div>
+          </div>
+        </div>
+      </div>
+      </div>
+
+      <div class="tl-area">
+        <div class="tl-main">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;">
+            <span class="tl-label">Design Tasks</span>
+            <div class="vtogs">
+              <div class="vt on"><svg viewBox="0 0 13 13"><rect x="1" y="2" width="11" height="1.8" rx="0.4"/><rect x="1" y="5.6" width="11" height="1.8" rx="0.4"/><rect x="1" y="9.2" width="11" height="1.8" rx="0.4"/></svg></div>
+              <div class="vt"><svg viewBox="0 0 13 13"><rect x="1" y="1" width="5" height="5" rx="1"/><rect x="7" y="1" width="5" height="5" rx="1"/><rect x="1" y="7" width="5" height="5" rx="1"/><rect x="7" y="7" width="5" height="5" rx="1"/></svg></div>
+              <div class="vt"><svg viewBox="0 0 13 13"><rect x="1" y="1" width="11" height="11" rx="1"/><path d="M1 5h11M5 5v7"/></svg></div>
+            </div>
+          </div>
+
+      <div class="tlist" id="tlist">
+        <div class="trow" id="tr1">
+          <div class="tck clk" id="chk1"><svg viewBox="0 0 9 9"><circle cx="4.5" cy="4.5" r="3.2"/><path d="M4.5 2.8v1.7l1 1"/></svg></div>
+          <div class="tbdy">
+            <div class="tnm" id="tn1">Review snowboard spray photo for email hero</div>
+            <div class="ttags">
+              <div class="pill-wrap">
+                <span class="pill p-ip" id="tp1">In Progress</span>
+                <div class="status-pop" id="spop">
+                  <div class="sp-hdr">Status</div>
+                  <div class="sp-opt sp-none">None</div>
+                  <div class="sp-opt sp-todo">To-Do</div>
+                  <div class="sp-opt sp-ip">In Progress</div>
+                  <div class="sp-opt sp-done" id="sp-done">Done</div>
+                  <div class="sp-opt sp-blocked">Blocked</div>
+                </div>
+              </div>
+              <span class="pill p-med"><svg class="fi" viewBox="0 0 11 11" style="stroke:#a16207"><path d="M2 1v9M2 1h7l-1.5 3L9 7H2"/></svg>Medium</span>
+              <span class="meta-p"><svg viewBox="0 0 11 11"><circle cx="5.5" cy="3.5" r="2"/><path d="M1 10c0-2.5 2-4 4.5-4s4.5 1.5 4.5 4"/></svg>Malia</span>
+              <span class="meta-d"><svg viewBox="0 0 10 10"><rect x="1" y="2" width="8" height="7" rx="1"/><path d="M3 1v2M7 1v2M1 5h8"/></svg>Mar 18</span>
+            </div>
+          </div>
+          <div class="tright">
+            <div class="cmt"><svg viewBox="0 0 11 11"><path d="M1 1h9v7H6l-2 2V8H1z"/></svg>1</div>
+            <div class="dots">···</div>
+          </div>
+        </div>
+        <div class="trow">
+          <div class="tck done"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2.5"/></svg></div>
+          <div class="tbdy">
+            <div class="tnm struck">Shortlist action shots for launch visuals</div>
+            <div class="ttags">
+              <span class="pill p-done">Done</span>
+              <span class="pill p-urg"><svg class="fi" viewBox="0 0 11 11" style="stroke:#b91c1c"><path d="M2 1v9M2 1h7l-1.5 3L9 7H2"/></svg>Urgent</span>
+              <span class="meta-p"><svg viewBox="0 0 11 11"><circle cx="5.5" cy="3.5" r="2"/><path d="M1 10c0-2.5 2-4 4.5-4s4.5 1.5 4.5 4"/></svg>Amna</span>
+              <span class="meta-d"><svg viewBox="0 0 10 10"><rect x="1" y="2" width="8" height="7" rx="1"/><path d="M3 1v2M7 1v2M1 5h8"/></svg>Mar 16</span>
+            </div>
+          </div>
+          <div class="tright">
+            <div class="cmt"><svg viewBox="0 0 11 11"><path d="M1 1h9v7H6l-2 2V8H1z"/></svg>1</div>
+            <div class="dots">···</div>
+          </div>
+        </div>
+        <div class="trow">
+          <div class="tck clk"><svg viewBox="0 0 9 9"><circle cx="4.5" cy="4.5" r="3.2"/><path d="M4.5 2.8v1.7l1 1"/></svg></div>
+          <div class="tbdy">
+            <div class="tnm">Refine top sheet graphic for the Pro Rider board</div>
+            <div class="ttags">
+              <span class="pill p-ip">In Progress</span>
+              <span class="pill p-high"><svg class="fi" viewBox="0 0 11 11" style="stroke:#c2410c"><path d="M2 1v9M2 1h7l-1.5 3L9 7H2"/></svg>High</span>
+              <span class="meta-p"><svg viewBox="0 0 11 11"><circle cx="5.5" cy="3.5" r="2"/><path d="M1 10c0-2.5 2-4 4.5-4s4.5 1.5 4.5 4"/></svg>Inez</span>
+              <span class="meta-d"><svg viewBox="0 0 10 10"><rect x="1" y="2" width="8" height="7" rx="1"/><path d="M3 1v2M7 1v2M1 5h8"/></svg>Mar 20</span>
+            </div>
+          </div>
+          <div class="tright"><div class="dots">···</div></div>
+        </div>
+        <div class="trow">
+          <div class="tck"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2.5"/></svg></div>
+          <div class="tbdy">
+            <div class="tnm">Apply winter launch color palette to board graphics</div>
+            <div class="ttags">
+              <span class="pill p-todo">To-Do</span>
+              <span class="pill p-med"><svg class="fi" viewBox="0 0 11 11" style="stroke:#a16207"><path d="M2 1v9M2 1h7l-1.5 3L9 7H2"/></svg>Medium</span>
+              <span class="meta-p"><svg viewBox="0 0 11 11"><circle cx="5.5" cy="3.5" r="2"/><path d="M1 10c0-2.5 2-4 4.5-4s4.5 1.5 4.5 4"/></svg>Amna</span>
+              <span class="meta-d"><svg viewBox="0 0 10 10"><rect x="1" y="2" width="8" height="7" rx="1"/><path d="M3 1v2M7 1v2M1 5h8"/></svg>Mar 22</span>
+              <span class="pill p-tag">Brand</span>
+              <span class="pill p-tag">Creative</span>
+            </div>
+          </div>
+          <div class="tright"><div class="dots">···</div></div>
+        </div>
+        <div class="trow">
+          <div class="tck"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2.5"/></svg></div>
+          <div class="tbdy">
+            <div class="tnm">Create product badge placement for the snowboard visuals</div>
+            <div class="ttags">
+              <span class="pill p-todo">To-Do</span>
+              <span class="pill p-med"><svg class="fi" viewBox="0 0 11 11" style="stroke:#a16207"><path d="M2 1v9M2 1h7l-1.5 3L9 7H2"/></svg>Medium</span>
+              <span class="meta-p"><svg viewBox="0 0 11 11"><circle cx="5.5" cy="3.5" r="2"/><path d="M1 10c0-2.5 2-4 4.5-4s4.5 1.5 4.5 4"/></svg>Robert</span>
+            </div>
+          </div>
+          <div class="tright"><div class="dots">···</div></div>
+        </div>
+      </div>
+
+        </div><!-- /.tl-main -->
+
+        <!-- TASK MODAL — opens beside list, compresses list width -->
+        <div class="tl-modal" id="rc">
+          <div class="rp-inner">
+            <div class="rp-hdr">
+              <div class="rp-ttl">Review snowboard spray photo for email hero</div>
+              <div class="rp-x">✕</div>
+            </div>
+            <div class="rp-date">
+              March 17
+              <span style="display:flex;align-items:center;gap:4px;">
+                <div class="rp-adot">M</div>
+                <span style="font-size:12px;color:#555;">Malia</span>
+              </span>
+            </div>
+            <div class="rp-tags">
+              <span class="pill p-ip" id="rp-st">In Progress</span>
+              <span class="pill p-med"><svg class="fi" viewBox="0 0 11 11" style="stroke:#a16207"><path d="M2 1v9M2 1h7l-1.5 3L9 7H2"/></svg>Medium</span>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#ddd" stroke-width="1.5"><path d="M2 8h10M2 5h6"/></svg>
+            </div>
+            <div class="rp-sec">Notes</div>
+            <div class="rp-notes" id="rp-notes"></div>
+            <div class="rp-sec">Comments</div>
+            <div class="rp-cmt-area">
+              <div class="rp-av">A</div>
+              <div class="rp-ci">Write a comment...</div>
+              <span class="rp-add">Add</span>
+              <div class="rp-clip"><svg viewBox="0 0 15 15"><path d="M3 11V5a4.5 4.5 0 019 0v6a3 3 0 01-6 0V5a1.5 1.5 0 013 0v6"/></svg></div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.tl-area -->
+
+    </div><!-- /.left-col -->
+  </div><!-- /.split -->
+</div>
+
+<script>
+const cur=document.getElementById('cur'),rip=document.getElementById('rip'),ctx=document.getElementById('ctx'),icp=document.getElementById('icp'),icpB=document.getElementById('icp-b'),icpT=document.getElementById('icp-t'),mpop=document.getElementById('mpop'),mpList=document.getElementById('mp-list'),rc=document.getElementById('rc'),rpNotes=document.getElementById('rp-notes'),rpSt=document.getElementById('rp-st'),tr1=document.getElementById('tr1'),chk1=document.getElementById('chk1'),tn1=document.getElementById('tn1'),tp1=document.getElementById('tp1'),lc=document.getElementById('lc'),demo=document.getElementById('demo');
+cur.style.transition='left 0.55s cubic-bezier(0.4,0,0.2,1),top 0.55s cubic-bezier(0.4,0,0.2,1),opacity 0.3s';
+function wait(ms){return new Promise(r=>setTimeout(r,ms));}
+function mv(x,y,d){return new Promise(res=>{setTimeout(()=>{cur.style.left=x+'px';cur.style.top=y+'px';setTimeout(res,580);},d||0);});}
+function doRip(x,y){rip.style.left=x+'px';rip.style.top=y+'px';rip.style.animation='none';rip.offsetHeight;rip.style.animation='rip 0.45s ease-out forwards';}
+function type(el,txt,spd){return new Promise(res=>{el.innerHTML='';const s=document.createElement('span'),c=document.createElement('span');c.className='tycur';el.appendChild(s);el.appendChild(c);let i=0;const iv=setInterval(()=>{if(i<txt.length){s.textContent+=txt[i++];}else{clearInterval(iv);setTimeout(()=>{c.remove();res();},300);}},spd||42);});}
+
+// Append raw chars to el's text content (preserves existing innerHTML/styling)
+function typeRaw(el,txt,spd){return new Promise(res=>{let i=0;const iv=setInterval(()=>{if(i<txt.length){el.appendChild(document.createTextNode(txt[i++]));}else{clearInterval(iv);res();}},spd||60);});}
+
+// Type at end of element, leaving existing children in place
+function typeAppend(el,txt,spd){return new Promise(res=>{const cs=document.createElement('span');el.appendChild(cs);const cur=document.createElement('span');cur.className='tycur';el.appendChild(cur);let i=0;const iv=setInterval(()=>{if(i<txt.length){cs.textContent+=txt[i++];}else{clearInterval(iv);setTimeout(()=>{cur.remove();res();},250);}},spd||42);});}
+
+// Render @mention list filtered by query
+const PEOPLE=[{n:'Inez',av:'I'},{n:'Isabel',av:'I'},{n:'Imani',av:'I'},{n:'Malia',av:'M'},{n:'Robert',av:'R'},{n:'Amna',av:'A'}];
+function renderMentions(q){
+  const ql=(q||'').toLowerCase();
+  const matches=ql ? PEOPLE.filter(p=>p.n.toLowerCase().startsWith(ql)) : PEOPLE.slice(0,4);
+  mpList.innerHTML='';
+  if(!matches.length){mpList.innerHTML='<div class="mp-empty">No matches</div>';return;}
+  matches.forEach(p=>{
+    const d=document.createElement('div');
+    d.className='mp-item';
+    d.innerHTML=`<div class="mp-av">${p.av}</div><div class="mp-name">${p.n}</div>`;
+    mpList.appendChild(d);
+  });
+}
+function getC(el){const dr=demo.getBoundingClientRect(),er=el.getBoundingClientRect();return{x:er.left-dr.left+er.width/2,y:er.top-dr.top+er.height/2};}
+
+async function reset(){
+  cur.style.opacity='0';
+  ctx.classList.remove('show');
+  icp.classList.remove('show');
+  icp.classList.remove('posted');
+  icpB.classList.remove('show');
+  icpT.innerHTML='';
+  mpop.classList.remove('show');
+  mpList.innerHTML='';
+  document.getElementById('collage').classList.remove('focused');
+  document.getElementById('spop').classList.remove('show');
+  document.getElementById('sp-done').classList.remove('hi');
+  rc.classList.remove('open');
+  chk1.classList.remove('done');
+  chk1.classList.add('clk');
+  chk1.innerHTML='<svg viewBox="0 0 9 9"><circle cx="4.5" cy="4.5" r="3.2"/><path d="M4.5 2.8v1.7l1 1"/></svg>';
+  tn1.classList.remove('struck');
+  tp1.className='pill p-ip';
+  tp1.textContent='In Progress';
+  rpNotes.textContent='';
+  rpSt.className='pill p-ip';
+  rpSt.textContent='In Progress';
+  lc.scrollTop=0;
+  await wait(300);
+}
+
+async function run(){
+  await reset();
+  await wait(800);
+  cur.style.opacity='1';
+
+  const img1=document.getElementById('img1');
+  const collage=document.getElementById('collage');
+  const dr=demo.getBoundingClientRect();
+
+  // Step 1: cursor moves to leftmost image and clicks to focus it
+  let r1=img1.getBoundingClientRect();
+  let cx1=r1.left-dr.left+r1.width*0.5;
+  let cy1=r1.top-dr.top+r1.height*0.5;
+  await mv(cx1-50,cy1-20);
+  await mv(cx1,cy1);
+  await wait(220);
+  doRip(cx1,cy1);
+  await wait(150);
+  collage.classList.add('focused');
+  await wait(550); // wait for layout transition
+
+  // Step 2: cursor moves to focused hero (img1 now in new position) and right-clicks
+  r1=img1.getBoundingClientRect();
+  const hx=r1.left-dr.left+r1.width*0.55;
+  const hy=r1.top-dr.top+r1.height*0.38;
+
+  await mv(hx-40,hy-15);
+  await mv(hx,hy);
+  await wait(300);
+  doRip(hx,hy);
+  ctx.classList.add('show');
+  await wait(1000);
+  document.getElementById('ctx-add').style.background='#eee';
+  await wait(250);
+  document.getElementById('ctx-add').style.background='';
+  ctx.classList.remove('show');
+  await wait(150);
+
+  icp.classList.add('show');
+  await wait(350);
+  icpB.classList.add('show');
+
+  // Type "@" — mention popup appears
+  await typeRaw(icpT, '@', 60);
+  await wait(60);
+  renderMentions(''); // show all
+  mpop.classList.add('show');
+  await wait(150);
+
+  // Type each letter of "inez" — popup filters as we go
+  const letters=['i','n','e','z'];
+  for(const ltr of letters){
+    await typeRaw(icpT, ltr, 55);
+    renderMentions(icpT.textContent.slice(1));
+    await wait(90);
+  }
+  await wait(180);
+
+  // Auto-select Inez — highlight then commit (no mouse movement)
+  const items=mpList.querySelectorAll('.mp-item');
+  if(items.length){
+    items[0].classList.add('hi');
+    await wait(180);
+  }
+
+  // Replace "@inez" with styled mention pill
+  icpT.innerHTML='<span class="mention-tag">@Inez</span>&nbsp;';
+  mpop.classList.remove('show');
+  await wait(260);
+
+  // Continue typing the rest of the message
+  await typeAppend(icpT, "use this photo for the header on Monday's email newsletter", 38);
+  await wait(900);
+
+  // Send comment — panel transitions to posted state, stays open
+  icp.classList.add('posted');
+  document.getElementById('icp-ttl').textContent='1 comment';
+  await wait(1200);
+
+  lc.scrollTo({top:200,behavior:'smooth'});
+  await wait(700);
+
+  const tr1r=tr1.getBoundingClientRect();
+  const tx=tr1r.left-dr.left+tr1r.width*0.35;
+  const ty=tr1r.top-dr.top+tr1r.height*0.5;
+  await mv(tx,ty);
+  tr1.classList.add('lit');
+  await wait(250);
+  doRip(tx,ty);
+  tr1.classList.remove('lit');
+
+  // open modal — task is In Progress; modal mirrors that state
+  rc.classList.add('open');
+  await wait(500);
+
+  // cursor moves into the modal Notes field
+  const rcr=rc.getBoundingClientRect();
+  const nx=rcr.left-dr.left+150;
+  const ny=rcr.top-dr.top+170;
+  await mv(nx,ny);
+  await wait(250);
+  doRip(nx,ny);
+  await wait(200);
+
+  // type the note (status pills stay In Progress)
+  await type(rpNotes,'Finalized the black snowboard shot.',42);
+  await wait(1400);
+
+  // close modal — note is saved, but status hasn't changed yet
+  rc.classList.remove('open');
+  await wait(450);
+
+  // cursor moves to the In Progress pill on the list row
+  const tp1r=tp1.getBoundingClientRect();
+  const px=tp1r.left-dr.left+tp1r.width*0.5;
+  const py=tp1r.top-dr.top+tp1r.height*0.5;
+  await mv(px,py);
+  await wait(250);
+  doRip(px,py);
+
+  // status picker dropdown appears
+  const spop=document.getElementById('spop');
+  spop.classList.add('show');
+  await wait(550);
+
+  // highlight Done option (auto-select, no mouse movement to it)
+  const spDone=document.getElementById('sp-done');
+  spDone.classList.add('hi');
+  await wait(380);
+
+  // commit: pill + checkbox + strikethrough flip to Done
+  chk1.classList.remove('clk');
+  chk1.classList.add('done');
+  chk1.innerHTML='<svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2.5"/></svg>';
+  tn1.classList.add('struck');
+  tp1.className='pill p-done';
+  tp1.textContent='Done';
+  rpSt.className='pill p-done';
+  rpSt.textContent='Done';
+  spop.classList.remove('show');
+  await wait(1400);
+
+  lc.scrollTo({top:0,behavior:'smooth'});
+  await wait(700);
+  cur.style.opacity='0';
+  await wait(900);
+  run();
+}
+run();
+</script>
